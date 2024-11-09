@@ -1,141 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:title" content="NaviBook">
-    <meta property="og:description" content="The most advanced mod-free laptop for Scrap Mechanic.">
-    <meta property="og:image" content="https://cotoburger.github.io/images/mainpic.png"> <!-- Изображение предпросмотра -->
-    <meta property="og:url" content="https://cotoburger.github.io/">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="NaviBook">
-    <meta name="twitter:description" content="The most advanced mod-free laptop for Scrap Mechanic.">
-    <meta name="twitter:image" content="https://cotoburger.github.io/images/mainpic.png"> <!-- Изображение предпросмотра -->
-    <meta name="twitter:url" content="https://cotoburger.github.io/">
+<meta property="og:description" content="The most advanced mod-free laptop for Scrap Mechanic.">
+<meta property="og:image" content="https://cotoburger.github.io/images/mainpic.png"> <!-- Изображение предпросмотра -->
+<meta property="og:url" content="https://cotoburger.github.io/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NaviBook">
+<meta name="twitter:description" content="The most advanced mod-free laptop for Scrap Mechanic.">
+<meta name="twitter:image" content="https://cotoburger.github.io/images/mainpic.png"> <!-- Изображение предпросмотра -->
+<meta name="twitter:url" content="https://cotoburger.github.io/">
     <title>NaviBook</title>
     <link rel="icon" href="images/navibook.png" type="image/png">
     <style>
         body {
-    font-family: Consolas, sans-serif;
-    background-color: #1d1d1d;
-    margin: 0;
-    padding: 0;
-    font-size: 20px;
-    color: #b9b4b4;
-    overflow-x: hidden;
-}
+            font-family: Consolas, sans-serif;
+            background-color: #1d1d1d;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            color: #b9b4b4;
+        }
+        header {
+            background-color: #070707;
+            color: #ffffff;
+            padding: 1px 1px;
+            text-align: left;
+            padding-left: 20px;
+        }
+        nav {
+            background-color: #48ff6d;
+            padding: 10px 0px;
+            text-align: center;
+        }
+        nav a {
+            color: #000000;
+            padding: 10px 20px;
+            text-decoration: none;
+        }
+        nav a:hover, nav a:focus {
+            background-color: #05c53f;
+            outline: none;
+            box-shadow: none;
+        }
+        .container {
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #48ff6d;
+        }
+        .section {
+            background-color: rgb(22, 22, 22);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 30px;
+            box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
+            animation: fadeInZoom 0.4s ease-out forwards;
+        }
 
-header {
-    background-color: #070707;
-    color: #ffffff;
-    padding: 1px 1px;
-    text-align: left;
-    padding-left: 20px;
-}
+        /* Анимация появления */
+        @keyframes fadeInZoom {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
 
-nav {
-    background-color: #48ff6d;
-    padding: 10px 0px;
-    text-align: center;
-}
+        .large-image {
+            width: 80%;
+            height: auto;
+            margin: 10px auto;
+            display: block;
+            border-radius: 2%;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: fadeInZoom 0.4s ease-out forwards;
+        }
 
-nav a {
-    color: #000000;
-    padding: 10px 20px;
-    text-decoration: none;
-}
+        /* Медиазапросы для изменения изображений на разных устройствах */
+        /* Для мобильных устройств */
+        @media (max-width: 650px) {
+            .desktop-image {
+                display: none; /* Скрыть изображение для компьютера */
+            }
+            .mobile-image {
+                display: block; /* Показать изображение для мобильных */
+            }
+        }
 
-nav a:hover, nav a:focus {
-    background-color: #05c53f;
-    outline: none;
-    box-shadow: none;
-}
+        /* Для компьютеров */
+        @media (min-width: 651px) {
+            .mobile-image {
+                display: none; /* Скрыть изображение для мобильных */
+            }
+            .desktop-image {
+                display: block; /* Показать изображение для компьютера */
+            }
+        }
 
-.container {
-    margin: 20px;
-}
+        /* Стиль для кнопок */
+        .h20-links-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
 
-h1, h2 {
-    color: #48ff6d;
-}
+        .h20-link {
+            display: block;
+            width: 1000px;
+            background-color: #747574;
+            color: #222222;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 20px;
+            transition: background-color 0.3s ease;
+        }
 
-.section {
-    background-color: rgb(22, 22, 22);
-    padding: 15px;
-    margin: 20px 0;
-    border-radius: 30px;
-    box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
-    animation: fadeInZoom 0.4s ease-out forwards;
-}
-
-@keyframes fadeInZoom {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* Стили для изображений */
-.large-image {
-    width: 80%; /* Изменение ширины на 80% */
-    height: auto;
-    margin: 10px auto;
-    display: block;
-    border-radius: 2%;
-    opacity: 0;
-    transform: scale(0.8);
-    animation: fadeInZoom 0.4s ease-out forwards;
-}
-
-/* Медиазапросы для мобильных устройств */
-@media (max-width: 650px) {
-    .desktop-image {
-        display: none; /* Скрыть изображение для десктопа */
-    }
-    .mobile-image {
-        display: block; /* Показать изображение для мобильных */
-    }
-}
-
-/* Для десктопов */
-@media (min-width: 651px) {
-    .mobile-image {
-        display: none; /* Скрыть изображение для мобильных */
-    }
-    .desktop-image {
-        display: block; /* Показать изображение для десктопа */
-    }
-}
-
-/* Стиль для кнопок */
-.h20-links-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.h20-link {
-    display: block;
-    width: 100%;
-    max-width: 1000px; /* Максимальная ширина для кнопок */
-    background-color: #747574;
-    color: #222222;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 18px;
-    border-radius: 20px;
-    transition: background-color 0.3s ease;
-}
-
-.h20-link:hover {
-    background-color: #5936da;
-    color: rgb(24, 14, 80);
-}
-
+        .h20-link:hover {
+            background-color: #5936da;
+            color: rgb(24, 14, 80);
+        }
     </style>
 </head>
 <body>
