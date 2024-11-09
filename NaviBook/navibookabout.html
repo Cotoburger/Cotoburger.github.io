@@ -60,6 +60,47 @@ nav {
             transform: scale(0.8);
             animation: fadeInZoom 0.4s ease-out forwards;
         }
+        /* Изменение кнопок на полоске сверху*/
+        /* Для мобильных устройств */
+        @media (max-width: 949px) {
+            nav a {
+            padding: 10px 15px;
+            }
+        }
+
+        /* Для компьютеров */
+        @media (min-width: 950px) {
+            nav a {
+            padding: 10px 100px;
+            }
+        }
+        @media (min-width: 1700px) {
+            nav a {
+            padding: 10px 170px;
+            }
+        }
+        
+
+        /* Медиазапросы для изменения изображений на разных устройствах */
+        /* Для мобильных устройств */
+        @media (max-width: 650px) {
+            .desktop-image {
+                display: none; /* Скрыть изображение для компьютера */
+            }
+            .mobile-image {
+                display: block; /* Показать изображение для мобильных */
+            }
+        }
+
+        /* Для компьютеров */
+        @media (min-width: 651px) {
+            .mobile-image {
+                display: none; /* Скрыть изображение для мобильных */
+            }
+            .desktop-image {
+                display: block; /* Показать изображение для компьютера */
+            }
+        }
 
         /* Анимация появления */
         @keyframes fadeInZoom {
