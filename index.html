@@ -4,18 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NaviBook</title>
-    <link rel="icon" href="navibook.png" type="image/png">
-    <script>
-        // Отключаем прокрутку страницы
-        document.body.style.overflow = 'hidden';
-    </script>
+    <link rel="icon" href="images/navibook.png" type="image/png">
     <style>
         body {
             font-family: Consolas, sans-serif;
             background-color: #1d1d1d;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
             font-size: 20px;
             color: #b9b4b4;
         }
@@ -59,6 +54,21 @@
             margin: 40px auto;
             display: block;
             border-radius: 50px;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: fadeInZoom 1.5s ease-out forwards;
+        }
+
+        /* Анимация появления */
+        @keyframes fadeInZoom {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
     </style>
 </head>
@@ -68,14 +78,14 @@
     <h1>NaviBook</h1>
 </header>
 
-<!-- Навигация с исправленными ссылками -->
 <nav>
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
     <a href="sdk.html">APP SDK</a>
 </nav>
 
-<img class="large-image" src="https://cdn.discordapp.com/attachments/1278483801353490522/1304707987193204766/1.png?ex=67305f80&is=672f0e00&hm=b6bd364e12efb055c5dee11042a7a7bdb5590dc3ef0031a4fe87c0d07e127ceb&" alt="Huge Image">
+<!-- Используем локальное изображение -->
+<img class="large-image" src="images/mainpic.png" alt="Huge Image">
 
 <div class="container">
 
