@@ -31,7 +31,7 @@
             text-decoration: none;
         }
         nav a:hover, nav a:focus {
-            background-color: #5e5e5e;
+            background-color: #05c53f;
             outline: none;
             box-shadow: none;
         }
@@ -71,17 +71,23 @@
             }
         }
 
-        /* Стиль для ссылки H20 site, чтобы она была размером с панель */
+        /* Стиль для кнопок */
+        .h20-links-container {
+            display: flex; /* Используем flex для размещения кнопок на одной линии */
+            justify-content: center; /* Центрируем кнопки */
+            gap: 10px; /* Задаем отступ между кнопками */
+        }
+
         .h20-link {
             display: block;
-            width: 100%;
+            width: 1000px; /* Устанавливаем ширину кнопки */
             background-color: #747574;
             color: #222222;
-            padding: 1px 0;
+            padding: 10px;
             text-align: center;
             text-decoration: none;
-            font-size: 30px;
-            border-radius: 20px; /* Добавлено закругление */
+            font-size: 18px;
+            border-radius: 20px;
             transition: background-color 0.3s ease;
         }
 
@@ -89,6 +95,7 @@
             background-color: #5936da;
             color: rgb(24, 14, 80);
         }
+
     </style>
 </head>
 <body>
@@ -107,9 +114,12 @@
 <img class="large-image" src="images/mainpic.png" alt="Huge Image">
 
 <div class="container">
-    <!-- Ссылка на H20 site с шириной в 100% -->
-    <section id="h20-site" class="section">
-        <a href="https://h2o0o0o.github.io/" class="h20-link" target="_blank">Go to my friend site</a>
+    <!-- Раздел для двух кнопок -->
+    <section id="h20-sites" class="section">
+        <div class="h20-links-container">
+            <a href="https://h2o0o0o.github.io/" class="h20-link" target="_blank">Go to my friend site</a>
+            <a href="https://isaacdeve.github.io/" class="h20-link" target="_blank">Go to Uvolenь site</a>
+        </div>
     </section>
 
     <section id="overview" class="section">
