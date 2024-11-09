@@ -15,12 +15,12 @@
             color: #b9b4b4;
         }
         header {
-    background-color: #070707;
-    color: #ffffff;
-    padding: 1px 1px;
-    text-align: left; /* Изменено на left */
-    padding-left: 20px; /* Дополнительный отступ слева */
-}
+            background-color: #070707;
+            color: #ffffff;
+            padding: 1px 1px;
+            text-align: left;
+            padding-left: 20px;
+        }
         nav {
             background-color: #48ff6d;
             padding: 10px 0px;
@@ -48,27 +48,29 @@
             margin: 20px 0;
             border-radius: 30px;
             box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
-            animation: fadeInZoom 0.4s ease-out forwards;
-        }
-        .large-image {
-            width: 80%;
-            height: auto;
-            margin: 10px auto;
-            display: block;
-            border-radius: 2%;
             opacity: 0;
-            transform: scale(0.8);
-            animation: fadeInZoom 0.4s ease-out forwards;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
+        .animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Изменение кнопок на полоске сверху*/
         /* Для мобильных устройств */
-        @media (max-width: 949px) {
+        @media (max-width: 700px) {
             nav a {
             padding: 10px 15px;
             }
         }
 
         /* Для компьютеров */
+        @media (min-width: 701px) {
+            nav a {
+            padding: 10px 40px;
+            }
+        }
         @media (min-width: 950px) {
             nav a {
             padding: 10px 100px;
@@ -79,41 +81,24 @@
             padding: 10px 170px;
             }
         }
-        
 
         /* Медиазапросы для изменения изображений на разных устройствах */
-        /* Для мобильных устройств */
         @media (max-width: 650px) {
             .desktop-image {
-                display: none; /* Скрыть изображение для компьютера */
+                display: none;
             }
             .mobile-image {
-                display: block; /* Показать изображение для мобильных */
+                display: block;
             }
         }
-
-        /* Для компьютеров */
         @media (min-width: 651px) {
             .mobile-image {
-                display: none; /* Скрыть изображение для мобильных */
+                display: none;
             }
             .desktop-image {
-                display: block; /* Показать изображение для компьютера */
+                display: block;
             }
         }
-
-        /* Анимация появления */
-        @keyframes fadeInZoom {
-            0% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
     </style>
 </head>
 <body>
@@ -128,13 +113,43 @@
     <a href="navibookdev.html">Development</a>
 </nav>
 <div class="container">
-
-    <section>
+    <section class="section">
         <h2>INFO</h2>
         <p>Our development team also provides a convenient set of SDKs for software development.
             The App SDK provides a ready-made board with existing internal connections and the necessary checks, you only need to connect the SDK to the laptop board, draw the application icon and the logic itself. The SDK has a copy of the display for your convenience, you only need to display the image on it, no additional checks on your part are required.</p>
     </section>
+
+    <section class="section">
+        <h2>FEATURES</h2>
+        <p>The NaviBook system comes with pre-built features to help developers quickly prototype their ideas. You get seamless integration with the onboard hardware and advanced debugging options out of the box.</p>
+    </section>
+
+    <section class="section">
+        <h2>GET STARTED</h2>
+        <p>To get started, simply download the SDK and follow the integration guide provided in our documentation. You can also access community resources and tutorials to help you with your project.</p>
     </section>
 </div>
+
+<script>
+    // Получаем все секции
+    const sections = document.querySelectorAll('.section');
+
+    // Функция для добавления класса анимации
+    const handleScroll = () => {
+        sections.forEach((section) => {
+            const rect = section.getBoundingClientRect();
+            // Проверяем, попала ли секция в область видимости
+            if (rect.top < window.innerHeight - 1000) {
+                section.classList.add('animate');
+            }
+        });
+    };
+
+    // Добавляем обработчик прокрутки
+    window.addEventListener('scroll', handleScroll);
+    // Запускаем проверку при загрузке страницы
+    handleScroll();
+</script>
+
 </body>
 </html>
