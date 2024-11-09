@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaviBook</title>
+    <style>
+        body {
+            font-family: Consolas, sans-serif;
+            background-color: #1d1d1d;
+            margin: 0;
+            padding: 0;
+            font-size: 20px; /* Размер шрифта для всего текста */
+            color: #b9b4b4; /* Изменение цвета основного текста */
+        }
+        header {
+            background-color: #070707;
+            color: #ffffff; /* Белый цвет для текста в header */
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav {
+            background-color: #30793f;
+            padding: 20px 50px;
+            border-radius: 0px;
+            text-align: center;
+        }
+        nav a {
+            color: #000000; /* Белый цвет для ссылок в навигации */
+            padding: 20px 60px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            background-color: #5e5e5e;
+        }
+        .container {
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #30a74e; /* Зеленый цвет для заголовков */
+        }
+        .section {
+            background-color: rgb(22, 22, 22);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 30px;
+            box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
+        }
+        /* Стиль для изображения */
+        .large-image {
+            width: 80%;  /* Уменьшаем размер картинки до 80% от родительского блока */
+            height: auto; /* Высота будет пропорциональной ширине */
+            margin: 40px auto; /* Выравнивание картинки по центру */
+            display: block; /* Делаем элемент блочным, чтобы применился центрирующий margin */
+            border-radius: 50px; /* Радиус скругления углов */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>NaviBook</h1>
+</header>
+
+<nav>
+    <a href="#overview">О NaviBook</a>
+    <a href="#specs">Как пользоваться</a>
+    <a href="#maintenance">APP SDK</a>
+</nav>
+
+<!-- Добавляем картинку после разделов -->
+<img class="large-image" src="https://cdn.discordapp.com/attachments/1294690046741450956/1304686093748277258/2024-11-09_174821.png?ex=67304b1c&is=672ef99c&hm=9763a02036c778f3706be6eadc4c82400e3ed2e6daf5eb1ff1f5567cd042e4da&" alt="Huge Image">
+
+<div class="container">
+
+    <section id="overview" class="section">
+        <h2>Обзор</h2>
+        <p>Этот ноутбук представляет собой высококачественное устройство для работы, учебы и развлечений. Он оснащен мощным процессором, большим экраном и долговечной батареей. Идеален для студентов и профессионалов.</p>
+    </section>
+
+    <section id="specs" class="section">
+        <h2>Технические характеристики</h2>
+        <ul>
+            <li><strong>Процессор:</strong> Taylor Processing Unit 3</li>
+            <li><strong>Оперативная память:</strong> 20bit</li>
+            <li><strong>Жесткий диск:</strong> timer drive 20bit</li>
+            <li><strong>Экран:</strong> 5х3, Quad HD</li>
+            <li><strong>Операционная система:</strong> Navi OS 2</li>
+        </ul>
+    </section>
+
+    <section id="maintenance" class="section">
+        <h2>Уход и обслуживание</h2>
+        <ul>
+            <li>Регулярно очищайте экран от пыли и пятен с помощью мягкой ткани.</li>
+            <li>Не перегружайте систему, закрывайте ненужные программы для увеличения производительности.</li>
+            <li>Используйте антивирусное ПО для защиты устройства.</li>
+            <li>Следите за уровнем заряда батареи и избегайте глубоких разрядов.</li>
+        </ul>
+    </section>
+
+    <section id="troubleshooting" class="section">
+        <h2>Поиск и устранение неисправностей</h2>
+        <h3>Проблемы с производительностью</h3>
+        <ul>
+            <li>Перезагрузите ноутбук.</li>
+            <li>Закройте ненужные программы и файлы.</li>
+            <li>Проверьте наличие обновлений для системы и драйверов.</li>
+        </ul>
+    </section>
+
+</div>
+</body>
+</html>
