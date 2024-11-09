@@ -21,24 +21,27 @@
             text-align: center;
         }
         nav {
-            background-color: #30793f;
+            background-color: #48ff6d;
             padding: 20px 4px;
             border-radius: 0px;
             text-align: center;
         }
         nav a {
-            color: #000000; /* White color for links in navigation */
+            color: #000000; /* Black color for links in navigation */
             padding: 10px 20px;
             text-decoration: none;
         }
-        nav a:hover {
+        /* Remove the background and outline on hover and focus */
+        nav a:hover, nav a:focus {
             background-color: #5e5e5e;
+            outline: none;  /* Remove outline on focus */
+            box-shadow: none; /* Remove box-shadow on focus */
         }
         .container {
             margin: 20px;
         }
         h1, h2 {
-            color: #30a74e; /* Green color for headings */
+            color: #48ff6d; /* Green color for headings */
         }
         .section {
             background-color: rgb(22, 22, 22);
