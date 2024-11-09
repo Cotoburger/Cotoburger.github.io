@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NaviBook</title>
     <link rel="icon" href="images/navibook.png" type="image/png">
+    
     <style>
         body {
             font-family: Consolas, sans-serif;
@@ -38,6 +39,7 @@ nav {
         }
         .container {
             margin: 20px;
+            animation: fadeIn 0.3s ease-in-out;
         }
         h1, h2 {
             color: #48ff6d;
@@ -118,6 +120,15 @@ nav {
                 transform: scale(1);
             }
         }
+        @keyframes fadeIn {
+    0% {
+        opacity: 0; /* Начальное состояние - невидимый */
+    }
+    100% {
+        opacity: 1; /* Конечное состояние - полностью видимый */
+    }
+}
+
 
     </style>
     
