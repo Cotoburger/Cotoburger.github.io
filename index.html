@@ -5,43 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NaviBook</title>
     <link rel="icon" href="navibook.png" type="image/png">
+    <script>
+        // Отключаем прокрутку страницы
+        document.body.style.overflow = 'hidden';
+    </script>
     <style>
         body {
             font-family: Consolas, sans-serif;
             background-color: #1d1d1d;
             margin: 0;
             padding: 0;
-            font-size: 20px; /* Font size for all text */
-            color: #b9b4b4; /* Changing the main text color */
+            overflow-x: hidden;
+            font-size: 20px;
+            color: #b9b4b4;
         }
         header {
             background-color: #070707;
-            color: #ffffff; /* White color for text in header */
+            color: #ffffff;
             padding: 10px 0;
             text-align: center;
         }
         nav {
             background-color: #48ff6d;
             padding: 20px 4px;
-            border-radius: 0px;
             text-align: center;
         }
         nav a {
-            color: #000000; /* Black color for links in navigation */
+            color: #000000;
             padding: 10px 20px;
             text-decoration: none;
         }
-        /* Remove the background and outline on hover and focus */
         nav a:hover, nav a:focus {
             background-color: #5e5e5e;
-            outline: none;  /* Remove outline on focus */
-            box-shadow: none; /* Remove box-shadow on focus */
+            outline: none;
+            box-shadow: none;
         }
         .container {
             margin: 20px;
         }
         h1, h2 {
-            color: #48ff6d; /* Green color for headings */
+            color: #48ff6d;
         }
         .section {
             background-color: rgb(22, 22, 22);
@@ -50,13 +53,12 @@
             border-radius: 30px;
             box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
         }
-        /* Style for the image */
         .large-image {
-            width: 60%;  /* Reducing the image size to 80% of the parent block */
-            height: auto; /* Height will be proportional to the width */
-            margin: 40px auto; /* Centering the image */
-            display: block; /* Making the element block-level for applying centering margin */
-            border-radius: 50px; /* Rounded corners */
+            width: 60%;
+            height: auto;
+            margin: 40px auto;
+            display: block;
+            border-radius: 50px;
         }
     </style>
 </head>
@@ -66,14 +68,13 @@
     <h1>NaviBook</h1>
 </header>
 
+<!-- Навигация с исправленными ссылками -->
 <nav>
-    <a href="#overview">About</a>
-    <a href="#specs">How to use</a>
-    <a href="#maintenance">APP SDK</a>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="sdk.html">APP SDK</a>
 </nav>
 
-
-<!-- Adding an image after the sections -->
 <img class="large-image" src="https://cdn.discordapp.com/attachments/1278483801353490522/1304707987193204766/1.png?ex=67305f80&is=672f0e00&hm=b6bd364e12efb055c5dee11042a7a7bdb5590dc3ef0031a4fe87c0d07e127ceb&" alt="Huge Image">
 
 <div class="container">
