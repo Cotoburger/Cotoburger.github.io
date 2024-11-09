@@ -70,6 +70,25 @@
                 transform: scale(1);
             }
         }
+
+        /* Стиль для ссылки H20 site, чтобы она была размером с панель */
+        .h20-link {
+            display: block;
+            width: 100%;
+            background-color: #747574;
+            color: #222222;
+            padding: 9px 0;
+            text-align: center;
+            text-decoration: none;
+            font-size: 30px;
+            border-radius: 20px; /* Добавлено закругление */
+            transition: background-color 0.3s ease;
+        }
+
+        .h20-link:hover {
+            background-color: #5e5e5e;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -82,14 +101,16 @@
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
     <a href="sdk.html">APP SDK</a>
-    <a href="https://h2o0o0o.github.io/" target="_blank">H20 site</a>
 </nav>
-
 
 <!-- Используем локальное изображение -->
 <img class="large-image" src="images/mainpic.png" alt="Huge Image">
 
 <div class="container">
+    <!-- Ссылка на H20 site с шириной в 100% -->
+    <section id="h20-site" class="section">
+        <a href="https://h2o0o0o.github.io/" class="h20-link" target="_blank">Go to my friend site</a>
+    </section>
 
     <section id="overview" class="section">
         <h2>Overview</h2>
