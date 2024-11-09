@@ -62,7 +62,7 @@
             animation: fadeInZoom 0.4s ease-out forwards;
         }
         .section2 {
-            background-color: rgb(19, 84, 21);
+            background-color: rgb(13, 113, 16);
             padding: 20px;
             margin: 20px 20px;
             border-radius: 30px;
@@ -82,6 +82,14 @@
                 transform: scale(1);
             }
         }
+        @keyframes fadeIn {
+    0% {
+        opacity: 0; /* Начальное состояние - невидимый */
+    }
+    100% {
+        opacity: 1; /* Конечное состояние - полностью видимый */
+    }
+}
 
         .large-image {
             width: 80%;
@@ -200,7 +208,7 @@
 
 <!-- Добавляем цикличное видео между overview и maintenance -->
 <section id="video" class="videoback">
-    <video width="100%" height="auto" loop muted autoplay preload="auto" playsinline id="background-video" style="border-radius: 20px;">
+    <video width="100%" loading="lazy" height="auto" loop muted autoplay preload="auto" playsinline id="background-video" style="border-radius: 20px;">
         <source src="images/Scrap Mechanic 2024.11.10 - 02.30.18.03.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
