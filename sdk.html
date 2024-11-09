@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NaviBook</title>
-    <link rel="icon" href="navibook.png" type="image/png">
+    <link rel="icon" href="images/navibook.png" type="image/png">
     <style>
         body {
             font-family: Consolas, sans-serif;
@@ -22,7 +22,7 @@
         }
         nav {
             background-color: #48ff6d;
-            padding: 20px 4px;
+            padding: 20px 0px;
             text-align: center;
         }
         nav a {
@@ -31,7 +31,7 @@
             text-decoration: none;
         }
         nav a:hover, nav a:focus {
-            background-color: #5e5e5e;
+            background-color: #05c53f;
             outline: none;
             box-shadow: none;
         }
@@ -49,13 +49,28 @@
             box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
         }
         .large-image {
-            width: 60%;
+            width: 80%;
             height: auto;
-            margin: 40px auto;
-            overflow-x: hidden;
+            margin: 10px auto;
             display: block;
-            border-radius: 50px;
+            border-radius: 2%;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: fadeInZoom 0.4s ease-out forwards;
         }
+
+        /* Анимация появления */
+        @keyframes fadeInZoom {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -64,14 +79,11 @@
     <h1>NaviBook</h1>
 </header>
 
-<!-- Навигация с исправленными ссылками -->
 <nav>
     <a href="index.html">Home</a>
-    <a href="about.html">How to use</a>
+    <a href="about.html">About</a>
     <a href="sdk.html">APP SDK</a>
 </nav>
-
 </div>
 </body>
 </html>
-
