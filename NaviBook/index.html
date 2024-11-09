@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:title" content="NaviBook">
     <meta property="og:description" content="The most advanced mod-free laptop for Scrap Mechanic.">
-    <meta property="og:image" content="https://cotoburger.github.io/NaviBook/images/mainpic.png"> <!-- Изображение предпросмотра -->
+    <meta property="og:image" content="https://cotoburger.github.io/NaviBook/images/mainpic.png">
     <meta property="og:url" content="https://cotoburger.github.io/NaviBook">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="NaviBook">
     <meta name="twitter:description" content="The most advanced mod-free laptop for Scrap Mechanic.">
-    <meta name="twitter:image" content="https://cotoburger.github.io/NaviBook/images/mainpic.png"> <!-- Изображение предпросмотра -->
+    <meta name="twitter:image" content="https://cotoburger.github.io/NaviBook/images/mainpic.png">
     <meta name="twitter:url" content="https://cotoburger.github.io/NaviBook">
     <title>NaviBook</title>
     <link rel="icon" href="images/navibook.png" type="image/png">
@@ -54,10 +54,11 @@
         }
         .section {
             background-color: rgb(22, 22, 22);
-            padding: 15px;
-            margin: 20px 0;
+            padding: 20px;
+            margin: 20px 20px;
             border-radius: 30px;
             box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
+            transform: translateY(30px);
             animation: fadeInZoom 0.4s ease-out forwards;
         }
 
@@ -86,13 +87,18 @@
 
         /* Изменение кнопок на полоске сверху*/
         /* Для мобильных устройств */
-        @media (max-width: 949px) {
+        @media (max-width: 700px) {
             nav a {
             padding: 10px 15px;
             }
         }
 
         /* Для компьютеров */
+        @media (min-width: 701px) {
+            nav a {
+            padding: 10px 40px;
+            }
+        }
         @media (min-width: 950px) {
             nav a {
             padding: 10px 100px;
@@ -103,7 +109,6 @@
             padding: 10px 170px;
             }
         }
-        
 
         /* Медиазапросы для изменения изображений на разных устройствах */
         /* Для мобильных устройств */
@@ -150,6 +155,12 @@
             background-color: #5936da;
             color: rgb(24, 14, 80);
         }
+        .videoback {
+            background-color: #14141400;
+            color: rgba(24, 14, 80, 0);
+            border-radius: 30px;
+            margin: 70px 20px;
+        }
     </style>
 </head>
 <body>
@@ -168,33 +179,38 @@
 <img class="large-image mobile-image" src="images/mobilepic.png" alt="Mobile Image">
 <img class="large-image desktop-image" src="images/mainpic.png" alt="Desktop Image">
 
-<div class="container">
+<section id="overview" class="section">
+    <h2>Overview</h2>
+    <p>NaviBook is the most advanced mod-free laptop for playing Scrap Mechanic, combining a compact design with powerful capabilities that are unattainable for most other full-sized builds in the game.</p>
+</section>
 
-    <section id="overview" class="section">
-        <h2>Overview</h2>
-        <p>NaviBook is the most advanced mod-free laptop for playing Scrap Mechanic, combining a compact design with powerful capabilities that are unattainable for most other full-sized builds in the game.</p>
-    </section>
+<!-- Добавляем цикличное видео между overview и maintenance -->
+<section id="video" class="videoback">
+    <video width="100%" height="auto" loop muted autoplay preload="auto" playsinline id="background-video" style="border-radius: 20px;">
+        <source src="images/Scrap Mechanic 2024.11.10 - 02.30.18.03.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</section>
 
-    <section id="specs" class="section">
-        <h2>Specifications</h2>
-        <ul>
-            <li><strong>CPU:</strong> Taylor Processing Unit 3</li>
-            <li><strong>RAM:</strong> 20bit</li>
-            <li><strong>Hard Drive:</strong> Timer Drive 20bit</li>
-            <li><strong>Screen:</strong> 5x3, Quad HD</li>
-            <li><strong>OS:</strong> Navi OS 2</li>
-        </ul>
-    </section>
+<script>
+    // Получаем элемент видео
+    const video = document.getElementById('background-video');
+    
+    // Устанавливаем функцию для повторного воспроизведения видео
+    video.addEventListener('ended', () => {
+        video.currentTime = 0; // Сбрасываем время видео
+        video.play(); // Снова запускаем видео
+    });
 
-    <section id="maintenance" class="section">
-        <h2>Maintenance</h2>
-        <ul>
-            <li>Regularly clean the screen from dust and stains using a soft cloth.</li>
-            <li>Do not overload the system; close unnecessary programs to improve performance.</li>
-            <li>Use antivirus software to protect the device.</li>
-            <li>Monitor battery levels and avoid deep discharges.</li>
-        </ul>
-    </section>
+    // Запускаем видео сразу после загрузки
+    video.play();
+</script>
+
+
+<section id="Internet" class="section">
+    <h2>Internet</h2>
+    <p>Navibook has ultra-fast internet with which you can remotely control any of your buildings. And also get an image from them.</p>
+</section>
 
     <section id="troubleshooting" class="section">
         <h2>Troubleshooting</h2>
@@ -205,17 +221,18 @@
             <li>Check for updates for the system and drivers.</li>
         </ul>
     </section>
+
     <section id="h20-sites" class="section">
         <div class="h20-links-container">
             <a href="https://h2o0o0o.github.io/" class="h20-link" target="_blank">Go to my friend site</a>
             <a href="https://isaacdeve.github.io/" class="h20-link" target="_blank">Go to Uvolenь site</a>
         </div>
     </section>
+
     <section id="Better API" class="section">
         <h2>Better API</h2>
         <h3>Does not have any trojans</h3>
     </section>
 </div>
-
 </body>
 </html>
