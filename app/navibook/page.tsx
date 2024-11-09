@@ -1,9 +1,7 @@
 import Image from "next/image";
 import MainPic from "@/public/mainpic.png"
 import MobilePic from "@/public/mobilepic.png"
-import NaviBookPic from "@/public/navibook.png"
 import {StaticImport} from "next/dist/shared/lib/get-img-props";
-import Link from "next/link";
 
 export default function Home() {
     return (

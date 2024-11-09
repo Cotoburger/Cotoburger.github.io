@@ -4,7 +4,7 @@ import React from "react";
 import {usePathname} from "next/navigation";
 import Link from "next/link";
 
-const pageNames = {
+const pageNames: Record<string, string> = {
     "/navibook": "Home",
     "/navibook/about": "About",
     "/navibook/dev": "Dev"
@@ -15,7 +15,7 @@ export default function Header() {
     return (
         <>
             <header>
-                <h1>NaviBook|{pageNames[pathname] || "Unknown"}</h1>
+                <h1>NaviBook|{pageNames[pathname as keyof typeof pageNames] || "Unknown"}</h1>
             </header>
             <nav>
                 <Link href="/navibook">Home</Link>

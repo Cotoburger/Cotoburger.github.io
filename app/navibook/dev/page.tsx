@@ -1,4 +1,6 @@
-import Link from "next/link";
+export const metadata = {
+    title: 'NaviBook|Dev'
+}
 
 export default function DevPage() {
     return (<>
