@@ -22,20 +22,6 @@ header {
     padding-left: 20px;
 }
 
-nav {
-    background-color: #68c3f095;
-    padding: 10px 0;
-    margin: 5px;
-    text-align: center;
-    border-radius: 30px;
-}
-
-nav a {
-    color: #000000;
-    padding: 10px 40px;
-    text-decoration: none;
-}
-
 nav a:hover,
 nav a:focus {
     background-color: #4034e73d;
@@ -75,31 +61,6 @@ h1, h2 {
     animation: fadeInZoom 0.4s ease-out forwards;
     box-sizing: border-box; /* Это поможет правильно учитывать отступы */
     width: 100%; /* Обеспечиваем, что контейнер будет занимать всю ширину */
-}
-
-/* Изменение кнопок на полоске сверху*/
-/* Для мобильных устройств */
-@media (max-width: 700px) {
-    nav a {
-    padding: 10px 15px;
-    }
-}
-
-/* Для компьютеров */
-@media (min-width: 701px) {
-    nav a {
-    padding: 10px 40px;
-    }
-}
-@media (min-width: 950px) {
-    nav a {
-    padding: 10px 100px;
-    }
-}
-@media (min-width: 1700px) {
-    nav a {
-    padding: 10px 170px;
-    }
 }
 
 /* Анимация появления */
@@ -227,7 +188,7 @@ h1, h2 {
 /* Стили для изображений */
 .swiper-slide img {
     width: 100%; /* Картинка будет масштабироваться по ширине слайда */
-    max-width: 1300px; /* Максимальная ширина картинки */
+    max-width: 1700px; /* Максимальная ширина картинки */
     height: auto; /* Сохраняем пропорции */
     display: block;
     margin: 15px auto; /* Центрируем картинку с отступами */
