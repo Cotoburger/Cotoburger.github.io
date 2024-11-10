@@ -15,7 +15,7 @@ body {
 }
 
 header {
-    background-color: #68c3f0;
+    background-color: #ffffff05;
     color: #ffffff;
     padding: 1px;
     text-align: left;
@@ -24,7 +24,7 @@ header {
 
 nav a:hover,
 nav a:focus {
-    background-color: #4034e73d;
+    background-color: #0b062a3d;
     outline: none;
     box-shadow: none;
 }
@@ -35,12 +35,12 @@ nav a:focus {
 
 h1, h2 {
     margin-left: 20px; /* Добавляем отступ слева */
-    color: #191b19;
+    color: #ffffff;
 }
 
 /* Сдвиг блока с проектами */
 .section {
-    background-color: rgba(0, 0, 0, 0.977);
+    background-color: rgba(104, 177, 175, 0.215);
     padding: 20px;
     margin: 20px;
     margin-left: px; /* Это сдвинет блок вправо */
