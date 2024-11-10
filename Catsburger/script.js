@@ -1,11 +1,12 @@
 // Инициализация Swiper
 const swiper = new Swiper('.swiper-container', {
-    spaceBetween: 20,
-    slidesPerView: '1',
-    loop: true,
+    // Настройка пространства между слайдами
+    spaceBetween: 20,  // Расстояние между слайдами
+    slidesPerView: 'auto',  // Автоматическое количество слайдов, зависит от ширины
+    loop: true,  // Зацикливаем слайды
     autoplay: {
-        delay: 3500,
-        disableOnInteraction: false,
+        delay: 3500,  // Интервал между прокрутками (в миллисекундах)
+        disableOnInteraction: false,  // Отключить автоматическую прокрутку, если пользователь взаимодействует
     },
     navigation: {
         nextEl: '.swiper-button-next',
@@ -15,28 +16,24 @@ const swiper = new Swiper('.swiper-container', {
         el: '.swiper-pagination',
         clickable: true,
     },
+    
 });
 
 // Находим все изображения на странице и аватарку
 const images = document.querySelectorAll('img');
 const avatar = document.querySelector('.avatar');
 
-// Добавим CSS-анимацию с увеличенной длительностью
-const addTransition = (img) => {
-    img.style.transition = 'opacity 2s cubic-bezier(0.1, 0, 0.2, 0.1)';  // Изменена длительность анимации на 2 секунды
-};
-
 // Отслеживание события прокрутки
 window.addEventListener('scroll', () => {
-    if (scrollY > 100) {
+    if (scrollY > 150) {
         // Меняем фон на белый и делаем изображения прозрачными
         document.body.style.backgroundColor = '#ffffff';
         document.body.style.color = '#000000';
 
         images.forEach((img) => {
+            // Пропускаем аватарку, изменяем прозрачность только других изображений
             if (img !== avatar) {
-                addTransition(img);  // Применяем анимацию для всех изображений
-                img.style.opacity = '0';  // Изображение становится прозрачным
+                img.style.opacity = '0';
             }
         });
     } else {
@@ -46,9 +43,10 @@ window.addEventListener('scroll', () => {
 
         images.forEach((img) => {
             if (img !== avatar) {
-                addTransition(img);  // Применяем анимацию для всех изображений
-                img.style.opacity = '1';  // Восстанавливаем полную непрозрачность
+                img.style.opacity = '1';
             }
         });
     }
 });
+
+

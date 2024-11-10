@@ -94,7 +94,7 @@ h1, h2 {
         width: 110px;
         height: 110px;
         border-radius: 50%;
-        border: 5px solid #070324;
+        border: 5px solid #030014;
         object-fit: cover;
     }
 
@@ -202,27 +202,14 @@ img {
     padding: 10px;
 }
 
-/* Анимация увеличения */
-@keyframes zoomIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* Стили для изображений слайдера */
+/* Стили для изображений */
 .swiper-slide img {
-    width: 100%; /* Масштабируем по ширине слайда */
-    max-width: 1700px; /* Максимальная ширина */
+    width: 100%; /* Картинка будет масштабироваться по ширине слайда */
+    max-width: 1700px; /* Максимальная ширина картинки */
     height: auto; /* Сохраняем пропорции */
     display: block;
-    margin: 15px auto; /* Центрируем картинку */
-    border-radius: 10px; /* Закругленные углы */
-    animation: zoomIn 0.2s ease-out forwards; /* Применяем анимацию */
+    margin: 15px auto; /* Центрируем картинку с отступами */
+    border-radius: 10px; /* Стилизация */
 }
 
 /* Стрелочки */
