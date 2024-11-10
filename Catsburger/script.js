@@ -1,12 +1,11 @@
 // Инициализация Swiper
 const swiper = new Swiper('.swiper-container', {
-    // Настройка пространства между слайдами
-    spaceBetween: 20,  // Расстояние между слайдами
-    slidesPerView: 'auto',  // Автоматическое количество слайдов, зависит от ширины
-    loop: true,  // Зацикливаем слайды
+    spaceBetween: 20,
+    slidesPerView: '1',
+    loop: true,
     autoplay: {
-        delay: 2500,  // Интервал между прокрутками (в миллисекундах)
-        disableOnInteraction: false,  // Отключить автоматическую прокрутку, если пользователь взаимодействует
+        delay: 3500,
+        disableOnInteraction: false,
     },
     navigation: {
         nextEl: '.swiper-button-next',
@@ -16,12 +15,16 @@ const swiper = new Swiper('.swiper-container', {
         el: '.swiper-pagination',
         clickable: true,
     },
-    
 });
 
 // Находим все изображения на странице и аватарку
 const images = document.querySelectorAll('img');
 const avatar = document.querySelector('.avatar');
+
+// Добавим CSS-анимацию с увеличенной длительностью
+const addTransition = (img) => {
+    img.style.transition = 'opacity 2s cubic-bezier(0.1, 0, 0.2, 0.1)';  // Изменена длительность анимации на 2 секунды
+};
 
 // Отслеживание события прокрутки
 window.addEventListener('scroll', () => {
@@ -31,9 +34,9 @@ window.addEventListener('scroll', () => {
         document.body.style.color = '#000000';
 
         images.forEach((img) => {
-            // Пропускаем аватарку, изменяем прозрачность только других изображений
             if (img !== avatar) {
-                img.style.opacity = '0';
+                addTransition(img);  // Применяем анимацию для всех изображений
+                img.style.opacity = '0';  // Изображение становится прозрачным
             }
         });
     } else {
@@ -43,10 +46,9 @@ window.addEventListener('scroll', () => {
 
         images.forEach((img) => {
             if (img !== avatar) {
-                img.style.opacity = '1';
+                addTransition(img);  // Применяем анимацию для всех изображений
+                img.style.opacity = '1';  // Восстанавливаем полную непрозрачность
             }
         });
     }
 });
-
-
