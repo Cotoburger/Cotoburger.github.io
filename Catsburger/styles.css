@@ -20,6 +20,7 @@ header {
     padding: 1px;
     text-align: left;
     padding-left: 20px;
+    font-size: 25px;
 }
 
 nav a:hover,
@@ -96,6 +97,10 @@ h1, h2 {
         border: 4px solid #333;
         object-fit: cover;
     }
+
+    header {
+        font-size: 11px;
+    }
 /* Класс для эффекта "выцветания" */
 .fade-to-white {
     animation: fadeToWhite 2s forwards;
@@ -113,7 +118,7 @@ h1, h2 {
 }
 
 body {
-    transition: background-color 0.5s ease, color 0.5s ease;
+    transition: background-color 1s ease, color 1s ease;
 }
 img {
     transition: opacity 0.5s ease-in-out;
