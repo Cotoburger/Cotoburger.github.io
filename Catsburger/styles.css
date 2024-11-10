@@ -57,7 +57,6 @@ h1, h2 {
     animation: fadeInZoom 0.4s ease-out forwards;
 }
 
-
 .section2 {
     background-color: rgb(13, 113, 16);
     padding: 20px;
@@ -66,6 +65,7 @@ h1, h2 {
     box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
     transform: translateY(30px);
     animation: fadeInZoom 0.4s ease-out forwards;
+    overflow: hidden; /* Это уберет выходящие за пределы элементы */
 }
 
 /* Анимация появления */
@@ -80,9 +80,9 @@ h1, h2 {
     }
 }
 
-/* Основной стиль для изображений */
 .large-image {
-    width: 80%;
+    width: 100%; /* Картинка будет занимать 100% ширины контейнера */
+    max-width: 100%; /* Ограничиваем ширину 100% */
     height: auto;
     margin: 10px auto;
     display: block;
@@ -91,6 +91,7 @@ h1, h2 {
     transform: scale(0.8);
     animation: fadeInZoom 0.4s ease-out forwards;
 }
+
 
 /* Медиазапросы для мобильных устройств */
 @media (max-width: 700px) {
@@ -124,6 +125,11 @@ h1, h2 {
         justify-content: center;
         flex-direction: column; /* Позиционируем аватарку и текст по центру на мобильных */
         align-items: center;
+    }
+
+    .large-image {
+        width: 100%; /* Картинка будет занимать всю доступную ширину экрана */
+        max-width: 100%;
     }
 }
 
@@ -210,7 +216,7 @@ h1, h2 {
 
 /* Стили для изображений */
 .swiper-slide img {
-    width: 99%; /* Картинка будет масштабироваться по ширине слайда */
+    width: 100%; /* Картинка будет масштабироваться по ширине слайда */
     max-width: 500px; /* Максимальная ширина картинки */
     height: auto; /* Сохраняем пропорции */
     display: block;
@@ -269,11 +275,10 @@ h1, h2 {
     .swiper-pagination {
         left: 50%;
         transform: translateX(-50%); /* Центрируем точки на мобильных */
-        width: auto; /* Убираем фиксированную ширину для мобильных */
+        width: 1; /* Убираем фиксированную ширину для мобильных */
         margin: 20 auto; /* Центрируем блок с точками на мобильных устройствах */
     }
 }
-
 
 @media (min-width: 651px) {
     .swiper-slide img {
@@ -284,7 +289,4 @@ h1, h2 {
 /* Убираем горизонтальную прокрутку */
 html, body {
     overflow-x: hidden; /* Запрещаем прокрутку по оси X */
-    margin: 0; /* Убираем стандартные отступы браузера */
-    padding: 0; /* Убираем стандартные отступы */
 }
-
