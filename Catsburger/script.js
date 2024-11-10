@@ -25,7 +25,7 @@ const avatar = document.querySelector('.avatar');
 
 // Отслеживание события прокрутки
 window.addEventListener('scroll', () => {
-    if (scrollY > 400) {
+    if (scrollY > 100) {
         // Меняем фон на белый и делаем изображения прозрачными
         document.body.style.backgroundColor = '#ffffff';
         document.body.style.color = '#000000';
