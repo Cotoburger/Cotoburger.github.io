@@ -70,6 +70,31 @@ h1, h2 {
     width: 100%; /* Обеспечиваем, что контейнер будет занимать всю ширину */
 }
 
+/* Изменение кнопок на полоске сверху*/
+/* Для мобильных устройств */
+@media (max-width: 700px) {
+    nav a {
+    padding: 10px 15px;
+    }
+}
+
+/* Для компьютеров */
+@media (min-width: 701px) {
+    nav a {
+    padding: 10px 40px;
+    }
+}
+@media (min-width: 950px) {
+    nav a {
+    padding: 10px 100px;
+    }
+}
+@media (min-width: 1700px) {
+    nav a {
+    padding: 10px 170px;
+    }
+}
+
 /* Анимация появления */
 @keyframes fadeInZoom {
     0% {
@@ -154,7 +179,7 @@ h1, h2 {
     background-color: rgba(0, 0, 0, 0.7); /* Тёмный полупрозрачный фон */
     border-radius: 50px; /* Закругленные углы */
     padding: 20px; /* Отступы вокруг текста */
-    width: 40%; /* Занимает всю ширину слайда */
+    width: 50%; /* Занимает всю ширину слайда */
     box-sizing: border-box; /* Чтобы отступы не выходили за пределы */
     margin-top: 10px; /* Отступ сверху */
 }
