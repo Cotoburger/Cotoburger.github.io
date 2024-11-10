@@ -57,6 +57,7 @@ h1, h2 {
     animation: fadeInZoom 0.4s ease-out forwards;
 }
 
+/* Контейнер проекта */
 .section2 {
     background-color: rgb(13, 113, 16);
     padding: 20px;
@@ -65,7 +66,8 @@ h1, h2 {
     box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
     transform: translateY(30px);
     animation: fadeInZoom 0.4s ease-out forwards;
-    overflow: hidden; /* Это уберет выходящие за пределы элементы */
+    box-sizing: border-box; /* Это поможет правильно учитывать отступы */
+    width: 100%; /* Обеспечиваем, что контейнер будет занимать всю ширину */
 }
 
 /* Анимация появления */
@@ -80,10 +82,12 @@ h1, h2 {
     }
 }
 
+/* Изображение проекта */
 .large-image {
-    width: 100%; /* Картинка будет занимать 100% ширины контейнера */
-    max-width: 100%; /* Ограничиваем ширину 100% */
-    height: auto;
+    width: 100%; /* Изображение будет занимать 100% ширины контейнера */
+    max-width: 100%; /* Не выйдет за пределы */
+    height: auto; /* Сохраняет пропорции */
+    object-fit: contain; /* Обеспечивает, что изображение останется внутри контейнера */
     margin: 10px auto;
     display: block;
     border-radius: 2%;
@@ -168,25 +172,8 @@ h1, h2 {
 .avatar-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin: 20px 50px;
-}
-
-.avatar {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    border: 4px solid #333;
-    object-fit: cover;
-    animation: fadeInZoom 0.4s ease-out forwards;
-}
-
-.avtext {
-    margin-left: 20px;
-    color: #000000;
-    font-size: 60px;
-    font-weight: bold;
-    animation: fadeInZoom 0.4s ease-out forwards;
+    justify-content: center; /* Это будет работать для мобильных устройств */
+    margin: 20px 20px;
 }
 
 /* Для мобильных устройств */
@@ -195,6 +182,13 @@ h1, h2 {
         flex-direction: column; /* Расположить элементы вертикально */
         align-items: center; /* Центрировать элементы */
     }
+    .avatar {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 4px solid #333;
+        object-fit: cover;
+    }
 
     .avtext {
         margin-left: 0;
@@ -202,6 +196,31 @@ h1, h2 {
         font-size: 50px; /* Уменьшить размер текста на мобильных устройствах */
     }
 }
+
+/* Для устройств с шириной экрана более 650px (например, компьютеров) */
+@media (min-width: 651px) {
+    .avatar-container {
+        flex-direction: row; /* Горизонтальное расположение элементов */
+        align-items: flex-start; /* Выравнивание аватарки слева */
+        justify-content: flex-start; /* Сдвигаем влево */
+    }
+
+    .avatar {
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        border: 4px solid #333;
+    object-fit: cover;
+    }
+
+    .avtext {
+        margin-left: 20px; /* Отступ от аватарки */
+        margin-top: 0; /* Отступ от аватарки */
+        font-size: 60px; /* Размер текста */
+        margin-top: 81px;
+    }
+}
+
 
 /* Слайд Swiper */
 .swiper-slide {
