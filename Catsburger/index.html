@@ -20,6 +20,7 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
+    
     <header class="header">
         <h1>Catsburger Web</h1>
     </header>
@@ -29,44 +30,41 @@
         <a href="navibookabout.html">Guide</a>
         <a href="navibookdev.html">Development</a>
     </nav>
-
-    <div class="avatar-container">
-        <img src="images/avatar.png" alt="Avatar" class="avatar">
-        <h1 class="avtext">Catsburger</h1>
-    </div>    
+        <!-- Контейнер Swiper -->
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <!-- Карточка 1 -->
+                <div class="swiper-slide">
+                    <a href="https://example.com/project1">
+                        <img src="images/tstgitbaner4.png" alt="Project 1">
+                    </a>
+                    <div class="text-container">
+                        <h3>Taylor Swift Test</h3>
+                        <p>Description of Project 1</p>
+                    </div>
+                </div>
+                <!-- Карточка 2 -->
+                <div class="swiper-slide">
+                    <a href="https://example.com/project2">
+                        <img src="images/Монтажная область 1.png" alt="Project 2">
+                    </a>
+                    <div class="text-container">
+                        <h3>NaviBook</h3>
+                        <p>Description of Project 2</p>
+                    </div>
+                </div>
+            </div>
+        </div>   
 
     <section id="overview" class="section">
         <h2>Hello</h2>
         <p>My name is Aleksei</p>
     </section>
 
-    <h2>My Projects</h2>
-    <!-- Контейнер Swiper -->
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <!-- Карточка 1 -->
-            <div class="swiper-slide">
-                <a href="https://example.com/project1">
-                    <img src="images/tstgitbaner4.png" alt="Project 1">
-                </a>
-                <div class="text-container">
-                    <h3>Taylor Swift Test</h3>
-                    <p>Description of Project 1</p>
-                </div>
-            </div>
-            <!-- Карточка 2 -->
-            <div class="swiper-slide">
-                <a href="https://example.com/project2">
-                    <img src="images/Монтажная область 1.png" alt="Project 2">
-                </a>
-                <div class="text-container">
-                    <h3>NaviBook</h3>
-                    <p>Description of Project 2</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <div class="avatar-container">
+        <img src="images/avatar.png" alt="Avatar" class="avatar">
+        <h1 class="avtext">Catsburger</h1>
+    </div> 
     <!-- Подключение Swiper JS -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="script.js"></script>
