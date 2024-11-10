@@ -10,7 +10,7 @@ body {
 header {
     background-color: #23d068;
     color: #ffffff;
-    padding: 10px;
+    padding: 1px;
     text-align: left;
     padding-left: 20px;
 }
@@ -31,7 +31,7 @@ nav a {
 
 nav a:hover,
 nav a:focus {
-    background-color: #060606;
+    background-color: #4034e770;
     outline: none;
     box-shadow: none;
 }
@@ -80,92 +80,6 @@ h1, h2 {
         opacity: 1;
         transform: scale(1);
     }
-}
-
-/* Изображение проекта */
-.large-image {
-    width: 100%; /* Изображение будет занимать 100% ширины контейнера */
-    max-width: 100%; /* Не выйдет за пределы */
-    height: auto; /* Сохраняет пропорции */
-    object-fit: contain; /* Обеспечивает, что изображение останется внутри контейнера */
-    margin: 10px auto;
-    display: block;
-    border-radius: 2%;
-    opacity: 0;
-    transform: scale(0.8);
-    animation: fadeInZoom 0.4s ease-out forwards;
-}
-
-
-/* Медиазапросы для мобильных устройств */
-@media (max-width: 700px) {
-    nav a {
-        padding: 10px 15px;
-    }
-}
-
-/* Для компьютеров */
-@media (min-width: 701px) {
-    nav a {
-        padding: 10px 40px;
-    }
-}
-
-@media (min-width: 950px) {
-    nav a {
-        padding: 10px 100px;
-    }
-}
-
-@media (min-width: 1700px) {
-    nav a {
-        padding: 10px 170px;
-    }
-}
-
-/* Медиазапросы для изменения изображений на разных устройствах */
-@media (max-width: 650px) {
-    .avatar-container {
-        justify-content: center;
-        flex-direction: column; /* Позиционируем аватарку и текст по центру на мобильных */
-        align-items: center;
-    }
-
-    .large-image {
-        width: 100%; /* Картинка будет занимать всю доступную ширину экрана */
-        max-width: 100%;
-    }
-}
-
-@media (min-width: 651px) {
-    .avatar-container {
-        justify-content: left;
-        flex-direction: row; /* Горизонтальное выравнивание на больших экранах */
-    }
-}
-
-/* Стиль для кнопок */
-.h20-links-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.h20-link {
-    display: block;
-    background-color: #747574;
-    color: #222222;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 18px;
-    border-radius: 20px;
-    transition: background-color 0.3s ease;
-}
-
-.h20-link:hover {
-    background-color: #5936da;
-    color: rgb(24, 14, 80);
 }
 
 /* Стиль для аватарки */
@@ -221,6 +135,44 @@ h1, h2 {
     }
 }
 
+/* Изображение проекта */
+.large-image {
+    width: 100%; /* Изображение будет занимать 100% ширины контейнера */
+    max-width: 100%; /* Не выйдет за пределы */
+    height: auto; /* Сохраняет пропорции */
+    object-fit: contain; /* Обеспечивает, что изображение останется внутри контейнера */
+    margin: 10px auto;
+    display: block;
+    border-radius: 2%;
+    opacity: 0;
+    transform: scale(0.8);
+    animation: fadeInZoom 0.4s ease-out forwards;
+}
+
+/* Контейнер для текста проекта */
+.swiper-slide .text-container {
+    background-color: rgba(0, 0, 0, 0.7); /* Тёмный полупрозрачный фон */
+    border-radius: 50px; /* Закругленные углы */
+    padding: 20px; /* Отступы вокруг текста */
+    width: 40%; /* Занимает всю ширину слайда */
+    box-sizing: border-box; /* Чтобы отступы не выходили за пределы */
+    margin-top: 10px; /* Отступ сверху */
+}
+
+/* Заголовок проекта */
+.swiper-slide .text-container h3 {
+    font-size: 30px;
+    font-weight: bold;
+    color: #fff; /* Белый цвет для текста */
+    margin: 0; /* Убираем отступы */
+}
+
+/* Описание проекта */
+.swiper-slide .text-container p {
+    font-size: 18px;
+    color: #ddd; /* Светлый цвет для описания */
+    margin-top: 10px; /* Отступ сверху */
+}
 
 /* Слайд Swiper */
 .swiper-slide {
@@ -241,20 +193,6 @@ h1, h2 {
     display: block;
     margin: 15px auto; /* Центрируем картинку с отступами */
     border-radius: 10px; /* Стилизация */
-}
-
-/* Заголовок и описание проекта */
-.swiper-slide h3 {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333; /* Цвет заголовка */
-    margin: 10px 20px 5px; /* Отступ сверху и снизу */
-}
-
-.swiper-slide p {
-    font-size: 14px;
-    color: #666; /* Цвет описания */
-    margin: 0; /* Убираем отступы */
 }
 
 /* Стрелочки */
@@ -279,33 +217,5 @@ h1, h2 {
 /* Пагинация */
 .swiper-pagination {
     position: absolute;
-    bottom: 10px; /* Отступ от нижнего края */
-    left: 50%;
-    transform: translateX(-50%); /* Центрируем пагинацию */
-    z-index: 10; /* Устанавливаем выше изображения */
-    display: flex;
-    justify-content: center; /* Центрируем точки */
-    width: 100%; /* Обеспечиваем, что пагинация занимает всю ширину */
-    box-sizing: border-box; /* Для правильного расчета ширины */
-}
-
-/* Пагинация для мобильных устройств */
-@media (max-width: 650px) {
-    .swiper-pagination {
-        left: 50%;
-        transform: translateX(-50%); /* Центрируем точки на мобильных */
-        width: 1; /* Убираем фиксированную ширину для мобильных */
-        margin: 20 auto; /* Центрируем блок с точками на мобильных устройствах */
-    }
-}
-
-@media (min-width: 651px) {
-    .swiper-slide img {
-        max-width: 750px; /* Ограничение ширины изображения для экранов больших 650px */
-    }
-}
-
-/* Убираем горизонтальную прокрутку */
-html, body {
-    overflow-x: hidden; /* Запрещаем прокрутку по оси X */
-}
+    bottom: 10px;
+} /* Отступ от нижнего края
