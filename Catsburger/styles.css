@@ -1,197 +1,271 @@
+body {
+    font-family: Consolas, sans-serif;
+    background-color: #ccf5f8;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    color: #b9b4b4;
+}
 
-        body {
-            font-family: Consolas, sans-serif;
-            background-color: #c0eff8;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            color: #b9b4b4;
-        }
-        header {
-            background-color: #1ecd64;
-            color: #ffffff;
-            padding: 1px 1px;
-            text-align: left;
-            padding-left: 20px;
-        }
-        nav {
-            background-color: #86b690;
-            padding: 10px 0px;
-            margin: 5px;
-            text-align: center;
-            border-radius: 30px;
-        }
-        nav a {
-            color: #000000;
-            padding: 10px 100px;
-            text-decoration: none;
-        }
-        nav a:hover, nav a:focus {
-            background-color: #060606;
-            outline: none;
-            box-shadow: none;
-        }
-        .container {
-            margin: 20px;
-        }
-        h1, h2 {
-            color: #191b19;
-        }
-        .section {
-            background-color: rgb(22, 22, 22);
-            padding: 20px;
-            margin: 20px 20px;
-            border-radius: 30px;
-            box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
-            transform: translateY(30px);
-            animation: fadeInZoom 0.4s ease-out forwards;
-        }
-        .section2 {
-            background-color: rgb(13, 113, 16);
-            padding: 20px;
-            margin: 20px 20px;
-            border-radius: 30px;
-            box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
-            transform: translateY(30px);
-            animation: fadeInZoom 0.4s ease-out forwards;
-        }
+header {
+    background-color: #23d068;
+    color: #ffffff;
+    padding: 10px;
+    text-align: left;
+    padding-left: 20px;
+}
 
-        /* Анимация появления */
-        @keyframes fadeInZoom {
-            0% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        @keyframes fadeIn {
+nav {
+    background-color: #4a73b1;
+    padding: 10px 0;
+    margin: 5px;
+    text-align: center;
+    border-radius: 30px;
+}
+
+nav a {
+    color: #000000;
+    padding: 10px 40px;
+    text-decoration: none;
+}
+
+nav a:hover,
+nav a:focus {
+    background-color: #060606;
+    outline: none;
+    box-shadow: none;
+}
+
+.container {
+    margin: 20px;
+}
+
+h1, h2 {
+    color: #191b19;
+}
+
+.section {
+    background-color: rgba(0, 0, 0, 0.977);
+    padding: 20px;
+    margin: 20px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
+    transform: translateY(30px);
+    animation: fadeInZoom 0.4s ease-out forwards;
+}
+
+.section2 {
+    background-color: rgb(13, 113, 16);
+    padding: 20px;
+    margin: 20px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
+    transform: translateY(30px);
+    animation: fadeInZoom 0.4s ease-out forwards;
+}
+
+/* Анимация появления */
+@keyframes fadeInZoom {
     0% {
-        opacity: 0; /* Начальное состояние - невидимый */
+        opacity: 0;
+        transform: scale(0.5);
     }
     100% {
-        opacity: 1; /* Конечное состояние - полностью видимый */
+        opacity: 1;
+        transform: scale(1);
     }
 }
 
-        .large-image {
-            width: 80%;
-            height: auto;
-            margin: 10px auto;
-            display: block;
-            border-radius: 2%;
-            opacity: 0;
-            transform: scale(0.8);
-            animation: fadeInZoom 0.4s ease-out forwards;
-        }
+/* Основной стиль для изображений */
+.large-image {
+    width: 80%;
+    height: auto;
+    margin: 10px auto;
+    display: block;
+    border-radius: 2%;
+    opacity: 0;
+    transform: scale(0.8);
+    animation: fadeInZoom 0.4s ease-out forwards;
+}
 
-        /* Изменение кнопок на полоске сверху*/
-        /* Для мобильных устройств */
-        @media (max-width: 700px) {
-            nav a {
-            padding: 10px 15px;
-            }
-        }
+/* Медиазапросы для мобильных устройств */
+@media (max-width: 700px) {
+    nav a {
+        padding: 10px 15px;
+    }
+}
 
-        /* Для компьютеров */
-        @media (min-width: 701px) {
-            nav a {
-            padding: 10px 40px;
-            }
-        }
-        @media (min-width: 950px) {
-            nav a {
-            padding: 10px 100px;
-            }
-        }
-        @media (min-width: 1700px) {
-            nav a {
-            padding: 10px 170px;
-            }
-        }
+/* Для компьютеров */
+@media (min-width: 701px) {
+    nav a {
+        padding: 10px 40px;
+    }
+}
 
-        /* Медиазапросы для изменения изображений на разных устройствах */
-        /* Для мобильных устройств */
-        @media (max-width: 650px) {
-            .avatar-container {
-                justify-content: center;
-            }
-        }
+@media (min-width: 950px) {
+    nav a {
+        padding: 10px 100px;
+    }
+}
 
-        /* Для компьютеров */
-        @media (min-width: 651px) {
-        .avatar-container {
-        justify-content: left; 
-            }
-        }
+@media (min-width: 1700px) {
+    nav a {
+        padding: 10px 170px;
+    }
+}
 
-        /* Стиль для кнопок */
-        .h20-links-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
+/* Медиазапросы для изменения изображений на разных устройствах */
+@media (max-width: 650px) {
+    .avatar-container {
+        justify-content: center;
+        flex-direction: column; /* Позиционируем аватарку и текст по центру на мобильных */
+        align-items: center;
+    }
+}
 
-        .h20-link {
-            display: block;
-            width: 1000px;
-            background-color: #747574;
-            color: #222222;
-            padding: 10px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 18px;
-            border-radius: 20px;
-            transition: background-color 0.3s ease;
-        }
+@media (min-width: 651px) {
+    .avatar-container {
+        justify-content: left;
+        flex-direction: row; /* Горизонтальное выравнивание на больших экранах */
+    }
+}
 
-        .h20-link:hover {
-            background-color: #5936da;
-            color: rgb(24, 14, 80);
-        }
-        .videoback {
-            background-color: #14141400;
-            color: rgba(24, 14, 80, 0);
-            border-radius: 30px;
-            margin: 25px 20px;
-            animation: fadeInZoom 0.4s ease-out forwards;
-        }
-        .avatar-container {
-            display: flex;
-            align-items: center;
-            margin: 20px 50px;
-        }
-        
-        /* Стиль для аватарки */
-        .avatar {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            border: 4px solid #333;
-            object-fit: cover;
-        }
-        
-        /* Стиль для текста */
-        .avtext {
-            margin-left: 20px;
-            color: #000000;
-            font-size: 60px;
-            font-weight: bold;
-        }
-        
-        /* Для мобильных устройств */
-        @media (max-width: 650px) {
-            .avatar-container {
-                flex-direction: column; /* Расположить элементы вертикально */
-                align-items: center; /* Центрировать элементы */
-            }
-        
-            .avtext {
-                margin-left: 0;
-                margin-top: 10px; /* Отступ сверху */
-                font-size: 50px; /* Уменьшить размер текста на мобильных устройствах */
-            }
-        }
-        
+/* Стиль для кнопок */
+.h20-links-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.h20-link {
+    display: block;
+    background-color: #747574;
+    color: #222222;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.h20-link:hover {
+    background-color: #5936da;
+    color: rgb(24, 14, 80);
+}
+
+/* Стиль для аватарки */
+.avatar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 50px;
+}
+
+.avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 4px solid #333;
+    object-fit: cover;
+    animation: fadeInZoom 0.4s ease-out forwards;
+}
+
+.avtext {
+    margin-left: 20px;
+    color: #000000;
+    font-size: 60px;
+    font-weight: bold;
+    animation: fadeInZoom 0.4s ease-out forwards;
+}
+
+/* Для мобильных устройств */
+@media (max-width: 650px) {
+    .avatar-container {
+        flex-direction: column; /* Расположить элементы вертикально */
+        align-items: center; /* Центрировать элементы */
+    }
+
+    .avtext {
+        margin-left: 0;
+        margin-top: 10px; /* Отступ сверху */
+        font-size: 50px; /* Уменьшить размер текста на мобильных устройствах */
+    }
+}
+
+/* Слайд Swiper */
+.swiper-slide {
+    display: flex;
+    flex-direction: column; /* Выравниваем элементы по вертикали */
+    justify-content: center; /* Центрируем контент по вертикали */
+    align-items: center; /* Центрируем по горизонтали */
+    text-align: center;
+    width: 100%; /* Убираем лишние отступы */
+    padding: 10px;
+}
+
+/* Стили для изображений */
+.swiper-slide img {
+    width: 100%; /* Картинка будет масштабироваться по ширине слайда */
+    max-width: 500px; /* Максимальная ширина картинки */
+    height: auto; /* Сохраняем пропорции */
+    display: block;
+    margin: 20px auto; /* Центрируем картинку с отступами */
+    border-radius: 10px; /* Стилизация */
+}
+
+/* Заголовок и описание проекта */
+.swiper-slide h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333; /* Цвет заголовка */
+    margin: 10px 20px 5px; /* Отступ сверху и снизу */
+}
+
+.swiper-slide p {
+    font-size: 14px;
+    color: #666; /* Цвет описания */
+    margin: 0; /* Убираем отступы */
+}
+
+/* Стрелочки */
+.swiper-button-next, .swiper-button-prev {
+    position: absolute;
+    top: 50%; /* Центрируем стрелки по вертикали */
+    transform: translateY(-50%); /* Для точного выравнивания */
+    color: #fff; /* Белый цвет стрелок */
+    font-size: 30px; /* Размер стрелок */
+    z-index: 10; /* Обеспечиваем, чтобы стрелки были поверх картинки */
+}
+
+/* Позиционирование стрелок */
+.swiper-button-next {
+    right: 10px; /* Расстояние от правого края */
+}
+
+.swiper-button-prev {
+    left: 10px; /* Расстояние от левого края */
+}
+
+/* Пагинация */
+.swiper-pagination {
+    position: absolute;
+    bottom: 10px; /* Отступ от нижнего края */
+    left: 50%;
+    transform: translateX(-50%); /* Центрируем пагинацию */
+    z-index: 10; /* Устанавливаем выше изображения */
+}
+
+/* Медиазапросы для изменения изображений на разных устройствах */
+@media (max-width: 650px) {
+    .swiper-slide img {
+        width: 100%; /* Картинка будет масштабироваться по ширине слайда */
+        max-width: 100%; /* Убираем ограничение максимальной ширины для мобильных устройств */
+    }
+}
+
+@media (min-width: 651px) {
+    .swiper-slide img {
+        max-width: 750px; /* Ограничение ширины изображения для экранов больших 650px */
+    }
+}
