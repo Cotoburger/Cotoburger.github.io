@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="NaviBook">
+    <meta property="og:description" content="The most advanced mod-free laptop for Scrap Mechanic.">
+    <meta property="og:image" content="https://cotoburger.github.io/NaviBook/images/mainpic.png">
+    <meta property="og:url" content="https://cotoburger.github.io/NaviBook">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NaviBook">
+    <meta name="twitter:description" content="The most advanced mod-free laptop for Scrap Mechanic.">
+    <meta name="twitter:image" content="https://cotoburger.github.io/NaviBook/images/mainpic.png">
+    <meta name="twitter:url" content="https://cotoburger.github.io/NaviBook">
+    <title>NaviBook</title>
+    <link rel="icon" href="images/navibook.png" type="image/png">
+    <style>
+        body {
+            font-family: Consolas, sans-serif;
+            background-color: #c0eff8;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            color: #b9b4b4;
+        }
+        header {
+            background-color: #1ecd64;
+            color: #ffffff;
+            padding: 1px 1px;
+            text-align: left;
+            padding-left: 20px;
+        }
+        nav {
+            background-color: #86b690;
+            padding: 10px 0px;
+            margin: 5px;
+            text-align: center;
+            border-radius: 30px;
+        }
+        nav a {
+            color: #000000;
+            padding: 10px 100px;
+            text-decoration: none;
+        }
+        nav a:hover, nav a:focus {
+            background-color: #060606;
+            outline: none;
+            box-shadow: none;
+        }
+        .container {
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #191b19;
+        }
+        .section {
+            background-color: rgb(22, 22, 22);
+            padding: 20px;
+            margin: 20px 20px;
+            border-radius: 30px;
+            box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
+            transform: translateY(30px);
+            animation: fadeInZoom 0.4s ease-out forwards;
+        }
+        .section2 {
+            background-color: rgb(13, 113, 16);
+            padding: 20px;
+            margin: 20px 20px;
+            border-radius: 30px;
+            box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
+            transform: translateY(30px);
+            animation: fadeInZoom 0.4s ease-out forwards;
+        }
+
+        /* Анимация появления */
+        @keyframes fadeInZoom {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        @keyframes fadeIn {
+    0% {
+        opacity: 0; /* Начальное состояние - невидимый */
+    }
+    100% {
+        opacity: 1; /* Конечное состояние - полностью видимый */
+    }
+}
+
+        .large-image {
+            width: 80%;
+            height: auto;
+            margin: 10px auto;
+            display: block;
+            border-radius: 2%;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: fadeInZoom 0.4s ease-out forwards;
+        }
+
+        /* Изменение кнопок на полоске сверху*/
+        /* Для мобильных устройств */
+        @media (max-width: 700px) {
+            nav a {
+            padding: 10px 15px;
+            }
+        }
+
+        /* Для компьютеров */
+        @media (min-width: 701px) {
+            nav a {
+            padding: 10px 40px;
+            }
+        }
+        @media (min-width: 950px) {
+            nav a {
+            padding: 10px 100px;
+            }
+        }
+        @media (min-width: 1700px) {
+            nav a {
+            padding: 10px 170px;
+            }
+        }
+
+        /* Медиазапросы для изменения изображений на разных устройствах */
+        /* Для мобильных устройств */
+        @media (max-width: 650px) {
+            .desktop-image {
+                display: none; /* Скрыть изображение для компьютера */
+            }
+            .mobile-image {
+                display: block; /* Показать изображение для мобильных */
+            }
+        }
+
+        /* Для компьютеров */
+        @media (min-width: 651px) {
+            .mobile-image {
+                display: none; /* Скрыть изображение для мобильных */
+            }
+            .desktop-image {
+                display: block; /* Показать изображение для компьютера */
+            }
+        }
+
+        /* Стиль для кнопок */
+        .h20-links-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .h20-link {
+            display: block;
+            width: 1000px;
+            background-color: #747574;
+            color: #222222;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .h20-link:hover {
+            background-color: #5936da;
+            color: rgb(24, 14, 80);
+        }
+        .videoback {
+            background-color: #14141400;
+            color: rgba(24, 14, 80, 0);
+            border-radius: 30px;
+            margin: 25px 20px;
+            animation: fadeInZoom 0.4s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Catsburger</h1>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="navibookabout.html">Guide</a>
+    <a href="navibookdev.html">Development</a>
+</nav>
+
+<!-- Используем локальное изображение для мобильных устройств и для десктопов -->
+<img class="large-image mobile-image" src="images/mobilepic.png" alt="Mobile Image">
+<img class="large-image desktop-image" src="images/mainpic.png" alt="Desktop Image">
+
+<section id="overview" class="section">
+    <h2>Overview</h2>
+    <p>NaviBook is the most advanced mod-free laptop for playing Scrap Mechanic, combining a compact design with powerful capabilities that are unattainable for most other full-sized builds in the game.</p>
+</section>
+
+<section id="Internet" class="section2">
+    <h2>Internet</h2>
+    <p>Navibook has ultra-fast internet with which you can remotely control any of your buildings. And also get an image from them.</p>
+</section>
+
+</div>
+</body>
+</html>
