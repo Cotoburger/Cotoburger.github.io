@@ -110,6 +110,12 @@ h3 {
 
 /* Для мобильных устройств */
 @media (max-width: 650px) {
+    h1, h2 {
+        font-size: 35px;
+    }
+    h3 {
+        font-size: 25px;
+    }
     .avatar-container {
         flex-direction: column; /* Расположить элементы вертикально */
         align-items: center; /* Центрировать элементы */
@@ -123,7 +129,8 @@ h3 {
 
     .local-time {
         margin-top: 10px; /* Отступ между погодой и временем */
-        text-align: left; /* Центрируем текст */
+        margin-right: 40px; /* Отступ между погодой и временем */
+
     }
     .avatar {
         width: 110px;
@@ -133,7 +140,7 @@ h3 {
         object-fit: cover;
     }
     .weather-icon {
-        font-size: 30px; /* Размер иконки погоды */
+        font-size: 25px; /* Размер иконки погоды */
         margin-top: 1px; /* Совпадает с отступом никнейма */
     }
 
