@@ -130,6 +130,7 @@ h3 {
         margin-top: 5px; /* Отступ между погодой и временем */
         margin-right: 60px; /* Отступ между погодой и временем */
         font-size: 25px; /* Размер иконки погоды */
+        font-family: Consolas, sans-serif,;
 
     }
     .avatar {
