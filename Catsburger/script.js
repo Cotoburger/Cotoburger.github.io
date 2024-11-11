@@ -129,3 +129,61 @@ function updateKamchatkaTime() {
 // Обновляем время каждую секунду
 setInterval(updateKamchatkaTime, 1000);
 updateKamchatkaTime();
+
+(function() {
+    // Получаем виджет
+    const widget = document.getElementById('weather-widget');
+
+    // Замените на свой ключ API от OpenWeatherMap
+    const apiKey = 'bf6fe63e6eb2ba55bb0fffe350177538';
+    const city = 'Petropavlovsk-Kamchatsky'; // Измените на нужный город
+
+    // Получаем данные о погоде
+    function getWeather() {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ru`)
+            .then(response => response.json())
+            .then(data => {
+                const weatherIcon = document.querySelector('.weather-icon');
+                const localTime = document.querySelector('.local-time');
+
+                // Иконка погоды
+                weatherIcon.textContent = getWeatherIcon(data.weather[0].icon);
+
+                // Время
+                const time = new Date(data.dt * 1000);
+                localTime.textContent = time.toLocaleTimeString();
+            })
+            .catch(error => console.log('Ошибка при получении погоды:', error));
+    }
+
+    // Функция для отображения иконки погоды
+    function getWeatherIcon(iconCode) {
+        const icons = {
+            '01d': '☀️',
+            '01n': '🌙',
+            '02d': '🌤️',
+            '02n': '🌥️',
+            '03d': '☁️',
+            '03n': '☁️',
+            '04d': '☁️',
+            '04n': '☁️',
+            '09d': '🌧️',
+            '09n': '🌧️',
+            '10d': '🌦️',
+            '10n': '🌦️',
+            '11d': '🌩️',
+            '11n': '🌩️',
+            '13d': '❄️',
+            '13n': '❄️',
+            '50d': '🌫️',
+            '50n': '🌫️'
+        };
+        return icons[iconCode] || '❓';
+    }
+
+    // Инициализация виджета
+    getWeather();
+
+    // Обновляем погоду каждые 10 минут
+    setInterval(getWeather, 600000);
+})();
