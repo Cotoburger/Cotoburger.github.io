@@ -260,6 +260,12 @@ img {
     padding: 10px;
 }
 
+/* Плавный переход для цвета текста */
+body, h1, h2 {
+    transition: color 0.5s ease, background-color 0.5s ease;
+}
+
+
 /* Стили для изображений */
 .swiper-slide img {
     width: 100%; /* Картинка будет масштабироваться по ширине слайда */

@@ -21,7 +21,7 @@ const swiper = new Swiper('.swiper-container', {
     },
 });
 
-// Отслеживание события прокрутки с оптимизацией
+
 let scrollTimeout;
 window.addEventListener('scroll', () => {
     if (scrollTimeout) {
@@ -29,7 +29,7 @@ window.addEventListener('scroll', () => {
     }
     scrollTimeout = requestAnimationFrame(() => {
         const h1h2Elements = document.querySelectorAll('h1, h2'); // Получаем все заголовки h1 и h2
-        if (scrollY > 350) {
+        if (scrollY > 450) {
             // Тёмная тема
             document.body.style.backgroundColor = '#90a4bf';
             document.body.style.color = '#000000';
