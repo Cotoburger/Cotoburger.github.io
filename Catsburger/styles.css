@@ -47,8 +47,8 @@ h3 {
 /* Сдвиг блока с проектами */
 .section {
     background-color: rgba(99, 100, 100, 0.215);
-    padding: 20px;
-    margin: 20px;
+    padding: 10px;
+    margin: 15px;
     margin-left: px; /* Это сдвинет блок вправо */
     border-radius: 30px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
@@ -113,6 +113,16 @@ h3 {
     .avatar-container {
         flex-direction: column; /* Расположить элементы вертикально */
         align-items: center; /* Центрировать элементы */
+    }
+
+    .name-weather {
+        flex-direction: column; /* Размещаем элементы вертикально */
+        align-items: center; /* Центрируем элементы по горизонтали */
+        margin-left: 0; /* Убираем отступы слева */
+    }
+
+    .local-time {
+        margin-top: 10px; /* Отступ между погодой и временем */
     }
     .avatar {
         width: 110px;
