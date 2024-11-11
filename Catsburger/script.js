@@ -146,3 +146,21 @@ function updateKamchatkaTime() {
     const currentTime = new Intl.DateTimeFormat('ru-RU', options).format(new Date());
     timeElement.textContent = `time: ${currentTime}`;
 }
+
+// Обновляем время каждую секунду
+setInterval(updateKamchatkaTime, 1000);
+updateKamchatkaTime();
+
+document.addEventListener("DOMContentLoaded", () => {
+    const swiper = new Swiper('.swiper-container', {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        loop: true,
+    });
+});
+
+
