@@ -28,9 +28,10 @@ window.addEventListener('scroll', () => {
         cancelAnimationFrame(scrollTimeout);
     }
     scrollTimeout = requestAnimationFrame(() => {
-        if (scrollY > 300) {
+        const h1h2Elements = document.querySelectorAll('h1, h2'); // Получаем все заголовки h1 и h2
+        if (scrollY > 350) {
             // Тёмная тема
-            document.body.style.backgroundColor = '#b2cccf';
+            document.body.style.backgroundColor = '#90a4bf';
             document.body.style.color = '#000000';
 
             images.forEach((img) => {
@@ -38,6 +39,12 @@ window.addEventListener('scroll', () => {
                     img.style.opacity = '0'; // Пропускаем аватарку
                 }
             });
+
+            // Меняем цвет для h1 и h2
+            h1h2Elements.forEach((el) => {
+                el.style.color = '#1a4b8e'; // Цвет заголовков в темной теме
+            });
+
         } else {
             // Светлая тема
             document.body.style.backgroundColor = '#000000';
@@ -48,9 +55,15 @@ window.addEventListener('scroll', () => {
                     img.style.opacity = '1'; // Восстанавливаем изображения
                 }
             });
+
+            // Меняем цвет для h1 и h2 на синий
+            h1h2Elements.forEach((el) => {
+                el.style.color = '#78b89a'; // Цвет заголовков в светлой теме
+            });
         }
     });
 });
+
 
 // Ваш API-ключ OpenWeatherMap
 const apiKey = 'bf6fe63e6eb2ba55bb0fffe350177538';
