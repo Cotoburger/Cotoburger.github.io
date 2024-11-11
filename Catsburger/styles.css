@@ -117,13 +117,13 @@ h3 {
 
     .name-weather {
         flex-direction: column; /* Размещаем элементы вертикально */
-        align-items: center; /* Центрируем элементы по горизонтали */
+        align-items: left; /* Центрируем элементы по горизонтали */
         margin-left: 0; /* Убираем отступы слева */
     }
 
     .local-time {
         margin-top: 10px; /* Отступ между погодой и временем */
-        text-align: center; /* Центрируем текст */
+        text-align: left; /* Центрируем текст */
     }
     .avatar {
         width: 110px;
