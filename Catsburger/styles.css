@@ -48,18 +48,6 @@ h3 {
     font-size: 30px;
 }
 
-/* Контейнер для иконок */
-.socials-container {
-    display: flex;
-    justify-content: center;  /* Центрируем иконки по горизонтали */
-    align-items: center;      /* Центрируем иконки по вертикали */
-    gap: 30px;                /* Увеличиваем расстояние между иконками */
-    margin-top: 20px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;          /* Разрешаем обтекание, если иконок слишком много */
-    max-width: 100%;          /* Контейнер не выходит за пределы */
-}
-
 /* Индивидуальные иконки */
 .social-icon {
     width: 100px;             /* Увеличиваем размер иконок */
@@ -68,33 +56,7 @@ h3 {
     transition: transform 0.3s ease; /* Плавный эффект увеличения */
     display: inline-block;    /* Чтобы иконки располагались в строку */
     object-fit: cover;        /* Картинка внутри иконки будет правильно масштабироваться */
-    margin: 15px;
-}
-
-/* Контейнер для иконок */
-.socials-container {
-    display: flex;
-    justify-content: center;  /* Центрируем иконки по горизонтали */
-    align-items: center;      /* Центрируем иконки по вертикали */
-    gap: 30px;                /* Увеличиваем расстояние между иконками */
-    margin-top: 20px;
-    margin-bottom: 20px;
-    position: absolute;       /* Делаем позиционирование абсолютным */
-    top: 50%;                 /* Центрируем по вертикали */
-    left: 50%;                /* Центрируем по горизонтали */
-    transform: translate(-50%, -50%); /* Сдвигаем на 50% ширины и высоты контейнера, чтобы точно центрировать */
-    flex-wrap: nowrap;        /* Убираем обтекание, чтобы контейнер был ровно по ширине */
-
-    background-color: rgba(99, 100, 100, 0.215); /* Полупрозрачный фон вокруг иконок */
-    padding: 10px 10px;          /* Отступы внутри контейнера */
-    border-radius: 30px;      /* Закругленные углы фона */
-    margin-top: 50px;         /* Добавлен отступ сверху для сдвига вниз */
-    position: relative; /* Родительский контейнер с позиционированием */
-}
-.social-icon {
-    margin: -15px;
-    width: 80px;   /* Меньше размер иконок на мобильных */
-    height: 80px;
+    margin: px;
 }
 
 /* Сдвиг блока с проектами */
@@ -120,10 +82,8 @@ h3 {
 /* Сдвиг блока с проектами */
 .section3 {
     background-color: rgba(99, 100, 100, 0);
-    padding: 10px;
-    margin-top: 15px;
-    margin: 15px;
-    margin-left: px; /* Это сдвинет блок вправо */
+    padding: 40px;
+    margin: 0px;
     border-radius: 30px;
     transform: translateY(30px);
     animation: fadeInZoom 0.4s ease-out forwards;
@@ -242,8 +202,7 @@ img {
     justify-content: center;  /* Центрируем иконки по горизонтали */
     align-items: center;      /* Центрируем иконки по вертикали */
     gap: 30px;                /* Увеличиваем расстояние между иконками */
-    margin-top: 20px;
-    margin-bottom: 20px;
+
     position: absolute;       /* Делаем позиционирование абсолютным */
     top: 50%;                 /* Центрируем по вертикали */
     left: 50%;                /* Центрируем по горизонтали */
@@ -251,8 +210,8 @@ img {
     flex-wrap: nowrap;        /* Убираем обтекание, чтобы контейнер был ровно по ширине */
     max-width: fit-content;   /* Контейнер будет шириной ровно под иконки */
     background-color: rgba(99, 100, 100, 0.215); /* Полупрозрачный фон вокруг иконок */
-    padding: 10px 0;          /* Отступы внутри контейнера */
-    border-radius: 30px;      /* Закругленные углы фона */
+    padding: 0px 0;          /* Отступы внутри контейнера */
+    border-radius: 50px;      /* Закругленные углы фона */
 }
 
 .social-icon {
@@ -266,11 +225,12 @@ img {
     object-fit: cover;        /* Картинка будет правильно масштабироваться */
 }
 
+/* Эффект при наведении */
 .social-icon:hover {
     transform: scale(1.1);    /* Увеличение размера при наведении */
+    border-radius: 50px;      /* Закругленные углы фона */
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);  /* Тень */
 }
-
 /* Для устройств с шириной экрана более 650px (например, компьютеров) */
 @media (min-width: 751px) {
     .avatar-container {
