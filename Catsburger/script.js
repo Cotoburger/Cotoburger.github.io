@@ -59,7 +59,7 @@ const weatherIcon = document.getElementById('weather-icon');
 
 async function getWeather() {
     try {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ru`);
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=en`);
         if (!response.ok) {
             throw new Error('Ошибка при получении данных о погоде');
         }
