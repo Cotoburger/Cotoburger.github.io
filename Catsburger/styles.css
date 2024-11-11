@@ -98,18 +98,19 @@ h3 {
 }
 
 .weather-icon {
-    font-size: 50px; /* Размер иконки погоды */
+    font-size: 45px; /* Размер иконки погоды */
     margin-top: 1px; /* Отступ от аватарки */
+    font-family: Consolas, sans-serif,;
 }
 
 .local-time {
-    font-size: 35px;
+    font-size: 45px;
     margin-top: 14px; /* Дополнительный отступ слева */
-    margin-left: 70px; /* Дополнительный отступ слева */
+    margin-left:20px; /* Дополнительный отступ слева */
 }
 
 /* Для мобильных устройств */
-@media (max-width: 650px) {
+@media (max-width: 750px) {
     h1, h2 {
         font-size: 35px;
     }
@@ -122,14 +123,13 @@ h3 {
     }
 
     .name-weather {
-        flex-direction: column; /* Размещаем элементы вертикально */
-        align-items: left; /* Центрируем элементы по горизонтали */
-        margin-left: 0; /* Убираем отступы слева */
+        margin-left: 25px; /* Убираем отступы слева */
     }
 
     .local-time {
-        margin-top: 10px; /* Отступ между погодой и временем */
-        margin-right: 40px; /* Отступ между погодой и временем */
+        margin-top: 5px; /* Отступ между погодой и временем */
+        margin-right: 60px; /* Отступ между погодой и временем */
+        font-size: 25px; /* Размер иконки погоды */
 
     }
     .avatar {
@@ -141,7 +141,6 @@ h3 {
     }
     .weather-icon {
         font-size: 25px; /* Размер иконки погоды */
-        margin-top: 1px; /* Совпадает с отступом никнейма */
     }
 
     header {
