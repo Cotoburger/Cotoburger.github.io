@@ -3,12 +3,13 @@ const images = document.querySelectorAll('img');
 const avatar = document.querySelector('.avatar');
 const socialIcons = document.querySelectorAll('.social-icon'); // Изображения соцсетей
 
+// Инициализация Swiper
 const swiper = new Swiper('.swiper-container', {
-    spaceBetween: 20,  // Расстояние между слайдами
-    slidesPerView: '1',
+    spaceBetween: 30,
+    slidesPerView: 'auto',
     loop: true,
     autoplay: {
-        delay: 2500,
+        delay: 3500,
         disableOnInteraction: false,
     },
     navigation: {
@@ -19,12 +20,6 @@ const swiper = new Swiper('.swiper-container', {
         el: '.swiper-pagination',
         clickable: true,
     },
-    // Обработчик изменения слайда
-    on: {
-        slideChange: function() {
-            // После смены слайда можно сделать дополнительные действия
-        }
-    }
 });
 let scrollTimeout;
 window.addEventListener('scroll', () => {

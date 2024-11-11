@@ -48,6 +48,33 @@ h3 {
     font-size: 30px;
 }
 
+/* Контейнер для иконок */
+.socials-container {
+    display: flex;
+    justify-content: center;  /* Центрируем иконки по горизонтали */
+    align-items: center;      /* Центрируем иконки по вертикали */
+    gap: 30px;                /* Увеличиваем расстояние между иконками */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;          /* Разрешаем обтекание, если иконок слишком много */
+    max-width: 100%;          /* Контейнер не выходит за пределы */
+}
+
+/* Индивидуальные иконки */
+.social-icon {
+    width: 100px;             /* Увеличиваем размер иконок */
+    height: 100px;            /* Увеличиваем высоту иконок */
+    border-radius: 15px;      /* Увеличиваем закругление углов */
+    transition: transform 0.3s ease; /* Плавный эффект увеличения */
+    display: inline-block;    /* Чтобы иконки располагались в строку */
+    object-fit: cover;        /* Картинка внутри иконки будет правильно масштабироваться */
+}
+
+/* Эффект при наведении */
+.social-icon:hover {
+    transform: scale(1.1);    /* Увеличение размера при наведении */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);  /* Тень */
+}
 /* Сдвиг блока с проектами */
 .section {
     background-color: rgba(99, 100, 100, 0.215);
@@ -68,7 +95,17 @@ h3 {
     border-radius: 30px;
     box-shadow: 0 0 10px rgba(79, 79, 79, 0.1);
 }
-
+.section3 {
+    background-color: rgba(82, 135, 135, 0.215);
+    padding: 10px;
+    margin: 15px;
+    margin-left: 250px;
+    margin-right: 250px; /* Это сдвинет блок вправо */
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    transform: translateY(30px);
+    animation: fadeInZoom 0.4s ease-out forwards;
+}
 /* Анимация появления */
 @keyframes fadeInZoom {
     0% {
