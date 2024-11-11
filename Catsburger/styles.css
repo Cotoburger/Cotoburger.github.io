@@ -36,7 +36,12 @@ nav a:focus {
 
 h1, h2 {
     margin-left: 20px; /* Добавляем отступ слева */
+    font-size: 40px;
     color: #006eff;
+}
+h3 {
+    margin-left: 20px; /* Добавляем отступ слева */
+    font-size: 30px;
 }
 
 /* Сдвиг блока с проектами */
@@ -53,15 +58,11 @@ h1, h2 {
 
 /* Контейнер проекта */
 .section2 {
-    background-color: rgb(13, 113, 16);
+    background-color: rgba(13, 113, 16, 0.9); /* Убедитесь, что цвет непрозрачный */
     padding: 20px;
     margin: 20px;
     border-radius: 30px;
     box-shadow: 0 0 10px rgba(79, 79, 79, 0.1);
-    transform: translateY(30px);
-    animation: fadeInZoom 0.4s ease-out forwards;
-    box-sizing: border-box; /* Это поможет правильно учитывать отступы */
-    width: 100%; /* Обеспечиваем, что контейнер будет занимать всю ширину */
 }
 
 /* Анимация появления */
@@ -76,12 +77,35 @@ h1, h2 {
     }
 }
 
-/* Стиль для аватарки */
 .avatar-container {
     display: flex;
     align-items: center;
-    justify-content: center; /* Это будет работать для мобильных устройств */
+    justify-content: center;
     margin: 20px 20px;
+}
+
+.name-weather {
+    display: flex;
+    align-items: center; /* Выравнивание по вертикали */
+    justify-content: flex-start; /* Сдвигаем элементы влево */
+    gap: 20px; /* Отступ между ником и иконкой погоды */
+    margin-left: 20px; /* Отступ от аватарки */
+}
+
+.avtext {
+    font-size: 60px;
+    margin: 0;
+}
+
+.weather-icon {
+    font-size: 50px; /* Размер иконки погоды */
+    margin-top: 1px; /* Отступ от аватарки */
+}
+
+.local-time {
+    font-size: 35px;
+    margin-top: 14px; /* Дополнительный отступ слева */
+    margin-left: 70px; /* Дополнительный отступ слева */
 }
 
 /* Для мобильных устройств */
@@ -96,6 +120,10 @@ h1, h2 {
         border-radius: 50%;
         border: 5px solid #0f0f0f;
         object-fit: cover;
+    }
+    .weather-icon {
+        font-size: 30px; /* Размер иконки погоды */
+        margin-top: 1px; /* Совпадает с отступом никнейма */
     }
 
     header {
@@ -131,7 +159,7 @@ img {
         align-items: flex-start; /* Выравнивание аватарки слева */
         justify-content: flex-start; /* Сдвигаем влево */
     }
-
+    
     .avatar {
         width: 250px;
         margin-top: 100px; /* Отступ от аватарки */
@@ -145,10 +173,9 @@ img {
         width: 50%; /* Занимает всю ширину слайда */
     }
     .avtext {
-        margin-left: 50px; /* Отступ от аватарки */
-        margin-top: 0; /* Отступ от аватарки */
-        font-size: 60px; /* Размер текста */
-        margin-top: 183px;
+        font-size: 60px;
+        margin: 20px;
+        margin-top: 183px; /* Отступ от верхнего края */
     }
 }
 
@@ -210,16 +237,6 @@ img {
     display: block;
     margin: 15px auto; /* Центрируем картинку с отступами */
     border-radius: 10px; /* Стилизация */
-}
-
-/* Стрелочки */
-.swiper-button-next, .swiper-button-prev {
-    position: absolute;
-    top: 50%; /* Центрируем стрелки по вертикали */
-    transform: translateY(-50%); /* Для точного выравнивания */
-    color: #fff; /* Белый цвет стрелок */
-    font-size: 30px; /* Размер стрелок */
-    z-index: 10; /* Обеспечиваем, чтобы стрелки были поверх картинки */
 }
 
 /* Позиционирование стрелок */
