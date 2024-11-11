@@ -28,7 +28,7 @@ window.addEventListener('scroll', () => {
     }
     scrollTimeout = requestAnimationFrame(() => {
         const h1h2Elements = document.querySelectorAll('h1, h2'); // Получаем все заголовки h1 и h2
-        if (scrollY > 450) {
+        if (scrollY > 400) {
             // Тёмная тема
             document.body.style.backgroundColor = '#02090e'; // САМОЕ ВАЖНОЕ
             document.body.style.color = '#4f99c1'; // ЦВЕТ ТЕКСТА
