@@ -28,6 +28,8 @@ window.addEventListener('scroll', () => {
     }
     scrollTimeout = requestAnimationFrame(() => {
         const h1h2Elements = document.querySelectorAll('h1, h2'); // Получаем все заголовки h1 и h2
+        const avtextElement = document.querySelector('.avtext'); // Ваш никнейм
+
         if (scrollY > 400) {
             // Тёмная тема
             document.body.style.backgroundColor = '#02090e'; // САМОЕ ВАЖНОЕ
@@ -39,10 +41,14 @@ window.addEventListener('scroll', () => {
                 }
             });
 
-            // Меняем цвет для h1 и h2
+            // Меняем цвет для h1, h2 и никнейма
             h1h2Elements.forEach((el) => {
                 el.style.color = '#1a4b8e'; // Цвет заголовков в темной теме
             });
+
+            if (avtextElement) {
+                avtextElement.style.color = '#1a4b8e'; // Меняем цвет никнейма в темной теме
+            }
 
         } else {
             // Светлая тема
@@ -55,14 +61,17 @@ window.addEventListener('scroll', () => {
                 }
             });
 
-            // Меняем цвет для h1 и h2 на синий
+            // Меняем цвет для h1, h2 и никнейма на светлый
             h1h2Elements.forEach((el) => {
                 el.style.color = '#78b89a'; // Цвет заголовков в светлой теме
             });
+
+            if (avtextElement) {
+                avtextElement.style.color = '#78b89a'; // Меняем цвет никнейма в светлой теме
+            }
         }
     });
 });
-
 
 
 // Ваш API-ключ OpenWeatherMap
