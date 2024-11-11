@@ -5,7 +5,7 @@ const socialIcons = document.querySelectorAll('.social-icon'); // Изображ
 
 // Инициализация Swiper
 const swiper = new Swiper('.swiper-container', {
-    spaceBetween: 30,
+    spaceBetween: 20,
     slidesPerView: 'auto',
     loop: true,
     autoplay: {

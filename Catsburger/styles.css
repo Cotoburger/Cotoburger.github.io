@@ -70,11 +70,29 @@ h3 {
     object-fit: cover;        /* Картинка внутри иконки будет правильно масштабироваться */
 }
 
-/* Эффект при наведении */
-.social-icon:hover {
-    transform: scale(1.1);    /* Увеличение размера при наведении */
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);  /* Тень */
+.socials-container {
+    display: flex;
+    justify-content: center;  /* Центрируем иконки по горизонтали */
+    align-items: center;      /* Центрируем иконки по вертикали */
+    gap: 30px;                /* Увеличиваем расстояние между иконками */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    flex-wrap: nowrap;        /* Убираем обтекание, чтобы контейнер был ровно по ширине */
+    max-width: fit-content;   /* Контейнер будет шириной ровно под иконки */
+    background-color: rgba(99, 100, 100, 0.215); /* Полупрозрачный фон вокруг иконок */
+    padding: 10px 0;          /* Отступы внутри контейнера */
+    border-radius: 30px;      /* Закругленные углы фона */
 }
+.social-icon {
+    width: 80px;   /* Меньше размер иконок на мобильных */
+    height: 80px;
+}
+
+.social-icon {
+    width: 80px;   /* Меньше размер иконок на мобильных */
+    height: 80px;
+}
+
 /* Сдвиг блока с проектами */
 .section {
     background-color: rgba(99, 100, 100, 0.215);
@@ -95,12 +113,16 @@ h3 {
     border-radius: 30px;
     box-shadow: 0 0 10px rgba(79, 79, 79, 0.1);
 }
+/* Контейнер секции */
 .section3 {
+    display: flex;
+    justify-content: center;  /* Центрируем иконки по горизонтали */
+    align-items: center;      /* Центрируем иконки по вертикали */
+    width: 400px;   /* Меньше размер иконок на мобильных */
+    height: 150px;
     background-color: rgba(82, 135, 135, 0.215);
     padding: 10px;
     margin: 15px;
-    margin-left: 250px;
-    margin-right: 250px; /* Это сдвинет блок вправо */
     border-radius: 30px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     transform: translateY(30px);
@@ -162,7 +184,10 @@ h3 {
         flex-direction: column; /* Расположить элементы вертикально */
         align-items: center; /* Центрировать элементы */
     }
-
+    .section3 {
+        margin-left: 125px;
+        margin-right: 125px; /* Это сдвинет блок вправо */
+    }
     .name-weather {
         margin-left: 25px; /* Убираем отступы слева */
     }
@@ -209,25 +234,36 @@ body {
 img {
     transition: opacity 0.5s ease-in-out;
 }
+
+/* Социальные иконки */
 .socials-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
+    justify-content: center;  /* Центрируем иконки по горизонтали */
+    align-items: center;      /* Центрируем иконки по вертикали */
+    gap: 30px;                /* Расстояние между иконками */
     margin-top: 20px;
     margin-bottom: 20px;
+    width: 100%;              /* Контейнер занимает 100% ширины */
+    background-color: rgba(99, 100, 100, 0.215); /* Полупрозрачный фон */
+    padding: 20px;            /* Отступы внутри контейнера */
+    border-radius: 30px;      /* Закругленные углы */
+    padding-left: 20px
 }
 
 .social-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 10px;
-    transition: transform 0.3s ease;
+    justify-content: center;  /* Центрируем иконки по горизонтали */
+    align-items: center; 
+    width: 100px;             /* Размер иконок */
+    height: 100px;            /* Высота иконок */
+    border-radius: 15px;      /* Закругление углов */
+    transition: transform 0.3s ease; /* Плавный эффект увеличения */
+    display: inline-block;    /* Иконки располагаться в одну строку */
+    object-fit: cover;        /* Картинка будет правильно масштабироваться */
 }
 
 .social-icon:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);    /* Увеличение размера при наведении */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);  /* Тень */
 }
 
 /* Для устройств с шириной экрана более 650px (например, компьютеров) */
@@ -237,7 +273,12 @@ img {
         align-items: flex-start; /* Выравнивание аватарки слева */
         justify-content: flex-start; /* Сдвигаем влево */
     }
-    
+    .section3 {
+        margin-left: 240px;
+        margin-right: 240px; /* Это сдвинет блок вправо */
+        align-items: auto;
+        justify-content: auto;
+    }
     .avatar {
         width: 250px;
         margin-top: 100px; /* Отступ от аватарки */
