@@ -123,6 +123,7 @@ h3 {
 
     .local-time {
         margin-top: 10px; /* Отступ между погодой и временем */
+        text-align: center; /* Центрируем текст */
     }
     .avatar {
         width: 110px;

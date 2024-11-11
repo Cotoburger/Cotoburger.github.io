@@ -28,9 +28,9 @@ window.addEventListener('scroll', () => {
         cancelAnimationFrame(scrollTimeout);
     }
     scrollTimeout = requestAnimationFrame(() => {
-        if (scrollY > 150) {
+        if (scrollY > 300) {
             // Тёмная тема
-            document.body.style.backgroundColor = '#e2e2e2';
+            document.body.style.backgroundColor = '#b2cccf';
             document.body.style.color = '#000000';
 
             images.forEach((img) => {
