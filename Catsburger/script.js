@@ -147,7 +147,36 @@ function updateKamchatkaTime() {
     timeElement.textContent = `time: ${currentTime}`;
 }
 
-// Обновляем время каждую секунду
-setInterval(updateKamchatkaTime, 1000);
-updateKamchatkaTime();
+// Ваш API-ключ Steam (получите его на сайте Steam)
+const steamApiKey = '3B52416F553AFD49DCCB3C9FBC4C3E2E';
+const appId = 387990; // ID игры Scrap Mechanic
 
+async function fetchLatestSteamUpdate() {
+    const url = `https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=${appId}&count=1&maxlength=300&format=json&key=${steamApiKey}`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Ошибка запроса к Steam API');
+        const data = await response.json();
+
+        // Проверка на наличие новостей
+        if (data && data.appnews && data.appnews.newsitems && data.appnews.newsitems.length > 0) {
+            const latestUpdate = data.appnews.newsitems[0];
+            const date = new Date(latestUpdate.date * 1000).toLocaleDateString(); // Преобразуем дату
+            const title = latestUpdate.title;
+            const content = latestUpdate.contents;
+
+            // Отображение последнего изменения на странице
+            const updatesList = document.getElementById('updates-list');
+            updatesList.innerHTML = `<li><strong>${date}</strong>: <em>${title}</em> - ${content}</li>`;
+        } else {
+            document.getElementById('updates-list').textContent = 'Нет данных о последнем изменении.';
+        }
+    } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+        document.getElementById('updates-list').textContent = 'Не удалось загрузить данные.';
+    }
+}
+
+// Вызываем функцию для получения данных
+fetchLatestSteamUpdate();
