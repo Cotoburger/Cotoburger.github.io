@@ -105,12 +105,11 @@ function updateKamchatkaTime() {
         timeZone: 'Asia/Kamchatka',
         hour: '2-digit',
         minute: '2-digit',
-        second: '2-digit',
         hour12: false,
     };
 
     const currentTime = new Intl.DateTimeFormat('ru-RU', options).format(new Date());
-    timeElement.textContent = `Время: ${currentTime}`;
+    timeElement.textContent = `time: ${currentTime}`;
 }
 
 // Обновляем время каждую секунду
