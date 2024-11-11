@@ -128,7 +128,6 @@ h3 {
 
     .local-time {
         margin-top: 5px; /* Отступ между погодой и временем */
-        margin-right: 60px; /* Отступ между погодой и временем */
         font-size: 25px; /* Размер иконки погоды */
         font-family: Consolas, sans-serif,;
 
@@ -171,7 +170,7 @@ img {
 }
 
 /* Для устройств с шириной экрана более 650px (например, компьютеров) */
-@media (min-width: 651px) {
+@media (min-width: 751px) {
     .avatar-container {
         flex-direction: row; /* Горизонтальное расположение элементов */
         align-items: flex-start; /* Выравнивание аватарки слева */
@@ -194,6 +193,20 @@ img {
         font-size: 60px;
         margin: 20px;
         margin-top: 183px; /* Отступ от верхнего края */
+    }
+    .name-weather {
+        flex-direction: column; /* Располагаем элементы вертикально */
+        align-items: flex-start; /* Сдвигаем элементы влево */
+        margin-left: 0; /* Убираем отступ слева */
+    }
+    
+    .local-time {
+        margin-top: 5px; /* Отступ между погодой и временем */
+        font-size: 35px; /* Уменьшаем размер времени на больших экранах */
+    }
+
+    .weather-icon {
+        font-size: 35px; /* Размер иконки погоды на компьютере */
     }
 }
 
