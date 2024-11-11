@@ -15,12 +15,16 @@ body {
 }
 
 header {
-    background-color: #000000;
+    background-color: #ffffff06;
     color: #ffffff;
-    padding: 1px;
+    padding: 0px;
     text-align: left;
     padding-left: 20px;
     font-size: 25px;
+    margin-top: 20px;
+    border-radius: 50px;
+    margin-left: 20px; /* Отступ от левого края */
+    margin-right: 20px; /* Отступ от правого края */
 }
 
 nav a:hover,
@@ -167,6 +171,26 @@ body {
 }
 img {
     transition: opacity 0.5s ease-in-out;
+}
+.socials-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.social-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.social-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 /* Для устройств с шириной экрана более 650px (например, компьютеров) */

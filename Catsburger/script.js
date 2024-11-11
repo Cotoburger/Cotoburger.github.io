@@ -1,14 +1,14 @@
-// Находим все изображения на странице и аватарку
+// Находим все изображения на странице и аватарку, а также изображения соцсетей
 const images = document.querySelectorAll('img');
 const avatar = document.querySelector('.avatar');
+const socialIcons = document.querySelectorAll('.social-icon'); // Изображения соцсетей
 
-// Инициализация Swiper
 const swiper = new Swiper('.swiper-container', {
-    spaceBetween: 20,
-    slidesPerView: 'auto',
+    spaceBetween: 20,  // Расстояние между слайдами
+    slidesPerView: '1',
     loop: true,
     autoplay: {
-        delay: 3500,
+        delay: 2500,
         disableOnInteraction: false,
     },
     navigation: {
@@ -19,9 +19,13 @@ const swiper = new Swiper('.swiper-container', {
         el: '.swiper-pagination',
         clickable: true,
     },
+    // Обработчик изменения слайда
+    on: {
+        slideChange: function() {
+            // После смены слайда можно сделать дополнительные действия
+        }
+    }
 });
-
-
 let scrollTimeout;
 window.addEventListener('scroll', () => {
     if (scrollTimeout) {
@@ -31,12 +35,12 @@ window.addEventListener('scroll', () => {
         const h1h2Elements = document.querySelectorAll('h1, h2'); // Получаем все заголовки h1 и h2
         if (scrollY > 450) {
             // Тёмная тема
-            document.body.style.backgroundColor = '#90a4bf';
-            document.body.style.color = '#000000';
+            document.body.style.backgroundColor = '#02090e'; // САМОЕ ВАЖНОЕ
+            document.body.style.color = '#4f99c1'; // ЦВЕТ ТЕКСТА
 
             images.forEach((img) => {
-                if (img !== avatar) {
-                    img.style.opacity = '0'; // Пропускаем аватарку
+                if (img !== avatar && !socialIcons.includes(img)) { // Исключаем иконки соцсетей
+                    img.style.opacity = '0'; // Пропускаем аватарку и изображения соцсетей
                 }
             });
 
@@ -51,7 +55,7 @@ window.addEventListener('scroll', () => {
             document.body.style.color = '#b9b4b4';
 
             images.forEach((img) => {
-                if (img !== avatar) {
+                if (img !== avatar && !socialIcons.includes(img)) { // Исключаем иконки соцсетей
                     img.style.opacity = '1'; // Восстанавливаем изображения
                 }
             });
@@ -63,6 +67,7 @@ window.addEventListener('scroll', () => {
         }
     });
 });
+
 
 
 // Ваш API-ключ OpenWeatherMap
