@@ -73,6 +73,73 @@ window.addEventListener('scroll', () => {
     });
 });
 
+// Видео и аудио
+const video = document.getElementById('background-video');
+const audio = new Audio('images/Josh Hutcherson __ Whistle.mp3'); // Загружаем аудио-файл отдельно
+
+// Устанавливаем начальную громкость аудио
+audio.volume = 0;
+
+// Видео запускается автоматически, но без звука (muted)
+video.muted = true;
+
+// Создаем Intersection Observer для аудио
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            audio.play().catch((error) => console.log("Аудио не запустилось автоматически:", error));
+            fadeInVolume(audio); // Увеличиваем громкость аудио
+        } else {
+            fadeOutVolume(audio); // Уменьшаем громкость аудио
+        }
+    });
+}, {
+    threshold: 0.5
+});
+
+observer.observe(audio);
+
+// Функция для плавного увеличения громкости
+function fadeInVolume(audioElement) {
+    const fadeInInterval = setInterval(() => {
+        if (audioElement.volume < 1) {
+            audioElement.volume = Math.min(audioElement.volume + 0.05, 1);
+        } else {
+            clearInterval(fadeInInterval);
+        }
+    }, 30);
+}
+
+// Функция для плавного уменьшения громкости
+function fadeOutVolume(audioElement) {
+    const fadeOutInterval = setInterval(() => {
+        if (audioElement.volume > 0) {
+            audioElement.volume = Math.max(audioElement.volume - 0.05, 0);
+        } else {
+            audioElement.pause(); // Останавливаем аудио, когда громкость достигает 0
+            clearInterval(fadeOutInterval);
+        }
+    }, 30);
+}
+
+// Кнопка для включения/выключения звука
+const muteButton = document.getElementById('mute-btn');
+const muteIcon = document.getElementById('mute-icon');
+
+// Иконки для включенного и выключенного звука
+const soundOnIcon = 'images/sound-on.svg';
+const soundOffIcon = 'images/sound-off.svg';
+
+// Обработчик клика на кнопку для включения/выключения звука видео
+muteButton.addEventListener('click', () => {
+    if (video.muted) {
+        video.muted = false; // Включаем звук видео
+        muteIcon.src = soundOnIcon; // Меняем иконку на включенный звук
+    } else {
+        video.muted = true; // Выключаем звук видео
+        muteIcon.src = soundOffIcon; // Меняем иконку на выключенный звук
+    }
+});
 
 // Ваш API-ключ OpenWeatherMap
 const apiKey = 'bf6fe63e6eb2ba55bb0fffe350177538';
@@ -171,5 +238,4 @@ document.addEventListener("DOMContentLoaded", () => {
         loop: true,
     });
 });
-
 

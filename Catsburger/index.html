@@ -58,7 +58,18 @@
                 <div id="local-time" class="local-time"></div>
             </div>
         </section>
-        
+
+        <section id="video" class="videoback">
+            <video id="background-video" width="100%" height="auto" autoplay="true" playsinline muted>
+                <source src="images/Josh Hutcherson __ Whistle (1).mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <!-- Кнопка для управления звуком -->
+            <button id="mute-btn" class="mute-btn">
+                <img id="mute-icon" src="images/sound-on.svg" alt="Mute Icon">
+            </button>
+        </section>
+
         <section id="overview" class="section">
             <h2>My playlist</h2>
             <iframe style="border-radius:20px" src="https://open.spotify.com/embed/playlist/5kY91XNoqV7SUWOxbJR8JL?utm_source=generator" width="100%" height="370" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
