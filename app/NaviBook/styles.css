@@ -1,0 +1,179 @@
+body {
+    font-family: Consolas, sans-serif;
+    background-color: #1d1d1d;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    color: #b9b4b4;
+}
+header {
+    background-color: #070707;
+    color: #ffffff;
+    padding: 1px 1px;
+    text-align: left;
+    padding-left: 20px;
+}
+nav {
+    background-color: #48ff6d;
+    text-align: center;
+    display: flex;
+    place-content: center;
+    gap: 2rem;
+}
+nav a {
+    color: #000000;
+    padding: 10px 100px;
+    text-decoration: none;
+}
+nav a:hover {
+    background-color: #05c53f;
+    outline: none;
+    box-shadow: none;
+}
+.container {
+    margin: 20px;
+}
+h1, h2 {
+    color: #48ff6d;
+}
+.section {
+    background-color: rgba(20, 20, 20, 0.215);
+    padding: 7px;
+    margin: 25px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(184, 184, 184, 0.1);
+    transform: translateY(30px);
+    animation: fadeInZoom 0.4s ease-out forwards;
+}
+.section2 {
+    background-color: rgb(13, 113, 16);
+    padding: 20px;
+    margin: 20px 20px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
+    transform: translateY(30px);
+    animation: fadeInZoom 0.4s ease-out forwards;
+}
+
+/* Анимация появления */
+@keyframes fadeInZoom {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0; /* Начальное состояние - невидимый */
+    }
+    100% {
+        opacity: 1; /* Конечное состояние - полностью видимый */
+    }
+}
+
+.large-image {
+    width: 80%;
+    height: auto;
+    margin: 10px auto;
+    display: block;
+    border-radius: 2%;
+    opacity: 0;
+    transform: scale(0.8);
+    animation: fadeInZoom 0.4s ease-out forwards;
+}
+
+/* Изменение кнопок на полоске сверху*/
+/* Для мобильных устройств */
+@media (max-width: 700px) {
+    nav a {
+        padding: 10px 15px;
+    }
+}
+
+/* Для компьютеров */
+@media (min-width: 701px) {
+    nav a {
+        padding: 10px 40px;
+    }
+}
+@media (min-width: 950px) {
+    nav a {
+        padding: 10px 100px;
+    }
+}
+@media (min-width: 1700px) {
+    nav a {
+        padding: 10px 170px;
+    }
+}
+
+/* Медиазапросы для изменения изображений на разных устройствах */
+/* Для мобильных устройств */
+@media (max-width: 650px) {
+    .desktop-image {
+        display: none; /* Скрыть изображение для компьютера */
+    }
+    .mobile-image {
+        display: block; /* Показать изображение для мобильных */
+    }
+}
+
+/* Для компьютеров */
+@media (min-width: 651px) {
+    .mobile-image {
+        display: none; /* Скрыть изображение для мобильных */
+    }
+    .desktop-image {
+        display: block; /* Показать изображение для компьютера */
+    }
+}
+
+/* Стиль для кнопок */
+.h20-links-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.h20-link {
+    display: block;
+    width: 1000px;
+    background-color: #747574;
+    color: #222222;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.h20-link:hover {
+    background-color: #5936da;
+    color: rgb(24, 14, 80);
+}
+.videoback {
+    background-color: #14141400;
+    color: rgba(24, 14, 80, 0);
+    border-radius: 30px;
+    margin: 25px 20px;
+    animation: fadeInZoom 0.4s ease-out forwards;
+}
+@media (min-width: 2000px) {
+    .section {
+        margin-left: 300px;
+        margin-right: 300px;
+    }
+    .section2 {
+        margin-left: 300px;
+        margin-right: 300px;
+    }
+    .videoback {
+        margin-left: 300px;
+        margin-right: 300px;
+    }
+}
