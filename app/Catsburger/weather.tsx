@@ -2,7 +2,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchWeather } from './weatherActions';
 
 const WeatherAndTime = () => {
     const [weatherData, setWeatherData] = useState(null);
@@ -11,11 +10,22 @@ const WeatherAndTime = () => {
     // Получаем погоду
     useEffect(() => {
         async function getWeather() {
-            const data = await fetchWeather();
-            if (data.error) {
-                setError(data.error);
-            } else {
-                setWeatherData(data);
+            try {
+                const response = await fetch('/api/weather');
+                if (!response.ok) {
+                    throw new Error('Error fetching weather data');
+                }
+
+                const data = await response.json();
+
+                if (data.error) {
+                    setError(data.error);
+                } else {
+                    setWeatherData(data);
+                }
+            } catch (error) {
+                // @ts-expect-error
+                setError(error.message);
             }
         }
 
