@@ -135,6 +135,9 @@ h3 {
     .local-time {
         font-size: 1.5625rem; /* 25px */
     }
+    .weather-icon {
+        font-size: 1.5625rem; /* 25px */
+    }
     .avatar {
         width: 6.875rem; /* 110px */
         height: 6.875rem;
