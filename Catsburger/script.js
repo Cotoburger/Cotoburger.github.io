@@ -5,7 +5,7 @@ const socialIcons = document.querySelectorAll('.social-icon'); // Изображ
 
 // Инициализация Swiper
 const swiper = new Swiper('.swiper-container', {
-    spaceBetween: parseFloat(pxToRem(20)), // Используем rem вместо пикселей
+    spaceBetween: 20,
     slidesPerView: 'auto',
     loop: true,
     autoplay: {
@@ -21,12 +21,6 @@ const swiper = new Swiper('.swiper-container', {
         clickable: true,
     },
 });
-
-// Функция для конвертации px в rem (предполагаем, что 1rem = 16px)
-function pxToRem(px) {
-    return px / 16 + 'rem';
-}
-
 let scrollTimeout;
 window.addEventListener('scroll', () => {
     if (scrollTimeout) {
@@ -36,39 +30,44 @@ window.addEventListener('scroll', () => {
         const h1h2Elements = document.querySelectorAll('h1, h2'); // Получаем все заголовки h1 и h2
         const avtextElement = document.querySelector('.avtext'); // Ваш никнейм
 
-        if (scrollY > 25 * 16) { // scrollY > 400px, эквивалентно 25rem
-            document.body.style.backgroundColor = '#02090e';
-            document.body.style.color = '#4f99c1';
-        
+        if (scrollY > 400) {
+            // Тёмная тема
+            document.body.style.backgroundColor = '#02090e'; // САМОЕ ВАЖНОЕ
+            document.body.style.color = '#4f99c1'; // ЦВЕТ ТЕКСТА
+
             images.forEach((img) => {
-                if (img !== avatar && !socialIcons.includes(img)) {
-                    img.style.opacity = '0';
+                if (img !== avatar && !socialIcons.includes(img)) { // Исключаем иконки соцсетей
+                    img.style.opacity = '0'; // Пропускаем аватарку и изображения соцсетей
                 }
             });
-        
+
+            // Меняем цвет для h1, h2 и никнейма
             h1h2Elements.forEach((el) => {
-                el.style.color = '#1a4b8e';
+                el.style.color = '#1a4b8e'; // Цвет заголовков в темной теме
             });
-        
+
             if (avtextElement) {
-                avtextElement.style.color = '#1a4b8e';
+                avtextElement.style.color = '#1a4b8e'; // Меняем цвет никнейма в темной теме
             }
+
         } else {
+            // Светлая тема
             document.body.style.backgroundColor = '#000000';
             document.body.style.color = '#b9b4b4';
-        
+
             images.forEach((img) => {
-                if (img !== avatar && !socialIcons.includes(img)) {
-                    img.style.opacity = '1';
+                if (img !== avatar && !socialIcons.includes(img)) { // Исключаем иконки соцсетей
+                    img.style.opacity = '1'; // Восстанавливаем изображения
                 }
             });
-        
+
+            // Меняем цвет для h1, h2 и никнейма на светлый
             h1h2Elements.forEach((el) => {
-                el.style.color = '#78b89a';
+                el.style.color = '#78b89a'; // Цвет заголовков в светлой теме
             });
-        
+
             if (avtextElement) {
-                avtextElement.style.color = '#78b89a';
+                avtextElement.style.color = '#78b89a'; // Меняем цвет никнейма в светлой теме
             }
         }
     });
