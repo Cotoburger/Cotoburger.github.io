@@ -11,7 +11,8 @@ const WeatherAndTime = () => {
     useEffect(() => {
         async function getWeather() {
             try {
-                const response = await fetch('/api/weather');
+                const city = '53.033980, 158.669447';
+                const response = await fetch(`http://api.weatherapi.com/v1/current.json?key=c532a6657c064d5c8b2145117230101&q=${city}&lang=en`);
                 if (!response.ok) {
                     throw new Error('Error fetching weather data');
                 }
