@@ -64,7 +64,6 @@ h3 {
     background-color: rgba(99, 100, 100, 0.215);
     padding: 7px;
     margin: 25px;
-    margin-left: px; /* Это сдвинет блок вправо */
     border-radius: 30px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     transform: translateY(30px);
@@ -262,7 +261,7 @@ img {
     }
     /* Контейнер для текста проекта */
     .swiper-slide .text-container {
-        width: 50%; /* Занимает всю ширину слайда */
+        width: 100%; /* Занимает всю ширину слайда */
     }
     .avtext {
         font-size: 60px;
@@ -274,7 +273,6 @@ img {
     position: relative;
     padding: 7px;
     margin: 25px;
-    margin-left: px; /* Это сдвинет блок вправо */
     border-radius: 30px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     transform: translateY(30px);
@@ -294,8 +292,8 @@ img {
 }
 /* Изображение проекта */
 .large-image {
-    width: 100%; /* Изображение будет занимать 100% ширины контейнера */
-    max-width: 100%; /* Не выйдет за пределы */
+    width: 1000%; /* Изображение будет занимать 100% ширины контейнера */
+    max-width: 1000%; /* Не выйдет за пределы */
     height: auto; /* Сохраняет пропорции */
     object-fit: contain; /* Обеспечивает, что изображение останется внутри контейнера */
     margin: 10px auto;
@@ -375,3 +373,22 @@ body, h1, h2 {
     bottom: 10px;
 }
 
+@media (min-width: 2000px) {
+.section {
+    margin-left: 300px;
+    margin-right: 300px;
+}
+.avatar-container {
+    flex-direction: column; /* Расположить элементы вертикально */
+    align-items: center; /* Центрировать элементы */
+}
+.avtext {
+    font-size: 60px;
+    margin: 20px;
+    margin-top: 10px; /* Отступ от верхнего края */
+}
+.videoback {
+    margin-left: 300px;
+    margin-right: 300px;
+}
+}
