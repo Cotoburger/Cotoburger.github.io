@@ -1,91 +1,82 @@
 /* Убираем горизонтальную прокрутку */
 html, body {
-    overflow-x: hidden; /* Запрещаем прокрутку по оси X */
-    margin: 0; /* Убираем стандартные отступы */
-    padding: 0; /* Убираем стандартные отступы */
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 body {
     font-family: Consolas, sans-serif;
-    background-color: #000000;
-    margin: 0;
-    padding: 0;
-    font-size: 20px;
+    background-color: #000;
     color: #b9b4b4;
+    font-size: 1.25rem; /* Размер шрифта 20px */
 }
 
 header {
     background-color: #ffffff06;
-    color: #ffffff;
-    padding: 0px;
+    color: #fff;
+    padding: 0;
     text-align: left;
-    padding-left: 20px;
-    font-size: 25px;
-    margin-top: 20px;
-    border-radius: 50px;
-    margin-left: 20px; /* Отступ от левого края */
-    margin-right: 20px; /* Отступ от правого края */
+    padding-left: 1.25rem;
+    font-size: 1.5625rem; /* 25px */
+    margin-top: 1.25rem;
+    border-radius: 3.125rem;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
 }
 
 nav a:hover,
 nav a:focus {
     background-color: #0b062a3d;
-    outline: none;
-    box-shadow: none;
 }
 
 .container {
-    margin: 20px;
+    margin: 1.25rem;
 }
 
 h1, h2 {
-    margin-left: 20px; /* Добавляем отступ слева */
-    font-size: 40px;
+    margin-left: 1.25rem;
+    font-size: 2.5rem; /* 40px */
     color: #78b89a;
 }
+
 h3 {
-    margin-left: 20px; /* Добавляем отступ слева */
-    font-size: 30px;
+    margin-left: 1.25rem;
+    font-size: 1.875rem; /* 30px */
 }
 
-/* Индивидуальные иконки */
 .social-icon {
-    width: 100px;             /* Увеличиваем размер иконок */
-    height: 100px;            /* Увеличиваем высоту иконок */
-    border-radius: 15px;      /* Увеличиваем закругление углов */
-    transition: transform 0.3s ease; /* Плавный эффект увеличения */
-    display: inline-block;    /* Чтобы иконки располагались в строку */
-    object-fit: cover;        /* Картинка внутри иконки будет правильно масштабироваться */
-    margin: px;
+    width: 6.25rem; /* 100px */
+    height: 6.25rem;
+    border-radius: 0.9375rem; /* 15px */
+    transition: transform 0.3s ease;
+    display: inline-block;
+    object-fit: cover;
 }
 
-/* Сдвиг блока с проектами */
 .section {
     background-color: rgba(99, 100, 100, 0.215);
-    padding: 7px;
-    margin: 25px;
-    border-radius: 30px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-    transform: translateY(30px);
+    padding: 0.4375rem; /* 7px */
+    margin: 1.5625rem; /* 25px */
+    border-radius: 1.875rem; /* 30px */
+    box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.1);
+    transform: translateY(1.875rem);
     animation: fadeInZoom 0.4s ease-out forwards;
 }
 
-/* Контейнер проекта */
 .section2 {
-    background-color: rgba(13, 113, 16, 0.9); /* Убедитесь, что цвет непрозрачный */
-    padding: 20px;
-    margin: 20px;
-    border-radius: 30px;
-    box-shadow: 0 0 10px rgba(79, 79, 79, 0.1);
+    background-color: rgba(13, 113, 16, 0.9);
+    padding: 1.25rem;
+    margin: 1.25rem;
+    border-radius: 1.875rem;
+    box-shadow: 0 0 0.625rem rgba(79, 79, 79, 0.1);
 }
-/* Сдвиг блока с проектами */
+
 .section3 {
-    
-    padding: 40px;
-    border-radius: 30px;
-    animation: fadeInZoom 0.4s ease-out forwards;
+    padding: 2.5rem;
+    border-radius: 1.875rem;
 }
-/* Анимация появления */
+
 @keyframes fadeInZoom {
     0% {
         opacity: 0;
@@ -101,174 +92,81 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 20px 20px;
+    margin: 1.25rem;
 }
 
 .name-weather {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Разделяем элементы по сторонам */
-    gap: 20px;
-    margin-left: 20px;
-    font-family: 'Consolas', sans-serif;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-left: 1.25rem;
 }
 
-/* Основной текст с ником */
 .avtext {
-    font-size: 60px;
-    font-weight: bold;
+    font-size: 3.75rem; /* 60px */
     color: #81bda6;
-    margin: 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Тень для улучшения читаемости */
+    text-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.5);
 }
 
 .weather-icon {
-    font-size: 45px; /* Размер иконки погоды */
-    margin-top: 1px; /* Отступ от аватарки */
+    font-size: 2.8125rem; /* 45px */
 }
-
 
 .local-time {
-    font-size: 45px;
-    margin-top: 10px;
-    margin-left: 20px; /* Отступ слева */
-    margin-right: 30px; /* Отступ слева */
-    display: flex;
-    flex-direction: column; /* Разбиваем время на две строки */
-    gap: 5px; /* Немного пространства между строками */
+    font-size: 2.8125rem;
+    margin-top: 0.625rem;
+    margin-left: 1.25rem;
+    gap: 0.3125rem;
 }
 
-
-/* Для мобильных устройств */
-@media (max-width: 750px) {
+@media (max-width: 46.875rem) { /* 750px */
     h1, h2 {
-        font-size: 35px;
+        font-size: 2.1875rem; /* 35px */
     }
     h3 {
-        font-size: 25px;
+        font-size: 1.5625rem; /* 25px */
     }
     .avatar-container {
-        flex-direction: column; /* Расположить элементы вертикально */
-        align-items: center; /* Центрировать элементы */
+        flex-direction: column;
     }
-    .section3 {
-        margin-left: 125px;
-        margin-right: 125px; /* Это сдвинет блок вправо */
-    }
-    .name-weather {
-        margin-left: 25px; /* Убираем отступы слева */
-    }
-
     .local-time {
-        margin-top: 5px; /* Отступ между погодой и временем */
-        font-size: 25px; /* Размер иконки погоды */
-        font-family: Consolas, sans-serif,;
-
+        font-size: 1.5625rem; /* 25px */
     }
     .avatar {
-        width: 110px;
-        height: 110px;
+        width: 6.875rem; /* 110px */
+        height: 6.875rem;
         border-radius: 50%;
-        border: 5px solid #0f0f0f;
-        object-fit: cover;
-    }
-    .weather-icon {
-        font-size: 25px; /* Размер иконки погоды */
-    }
-
-    header {
-        font-size: 11px;
-    }
-/* Класс для эффекта "выцветания" */
-.fade-to-white {
-    animation: fadeToWhite 2s forwards;
-}
-
-    .avtext {
-        margin-left: 0;
-        margin-top: 10px; /* Отступ сверху */
-        font-size: 50px; /* Уменьшить размер текста на мобильных устройствах */
-    }
-    /* Контейнер для текста проекта */
-    .swiper-slide .text-container {
-        width: 80%; /* Занимает всю ширину слайда */
     }
 }
 
-body {
-    transition: background-color 1s ease, color 1s ease;
-}
-img {
-    transition: opacity 0.5s ease-in-out;
-}
-
-/* Социальные иконки */
-/* Контейнер для иконок */
 .socials-container {
     display: flex;
-    justify-content: center;  /* Центрируем иконки по горизонтали */
-    align-items: center;      /* Центрируем иконки по вертикали */
-    gap: 30px;                /* Увеличиваем расстояние между иконками */
-
-    position: absolute;       /* Делаем позиционирование абсолютным */
-    top: 50%;                 /* Центрируем по вертикали */
-    left: 50%;                /* Центрируем по горизонтали */
-    transform: translate(-50%, -50%); /* Сдвигаем на 50% ширины и высоты контейнера, чтобы точно центрировать */
-    flex-wrap: nowrap;        /* Убираем обтекание, чтобы контейнер был ровно по ширине */
-    max-width: fit-content;   /* Контейнер будет шириной ровно под иконки */
-    background-color: rgba(0, 0, 0, 0); /* Полупрозрачный фон вокруг иконок */
-    padding: 0px 0;          /* Отступы внутри контейнера */
-    border-radius: 50px;      /* Закругленные углы фона */
+    justify-content: center;
+    gap: 1.875rem; /* 30px */
 }
 
-.social-icon {
-    justify-content: center;  /* Центрируем иконки по горизонтали */
-    align-items: center; 
-    width: 100px;             /* Размер иконок */
-    height: 100px;            /* Высота иконок */
-    border-radius: 15px;      /* Закругление углов */
-    transition: transform 0.3s ease; /* Плавный эффект увеличения */
-    display: inline-block;    /* Иконки располагаться в одну строку */
-    object-fit: cover;        /* Картинка будет правильно масштабироваться */
-}
-
-/* Эффект при наведении */
 .social-icon:hover {
-    transform: scale(1.1);    /* Увеличение размера при наведении */
-    border-radius: 50px;      /* Закругленные углы фона */
-    color: #9e9e9e;
+    transform: scale(1.1);
+    border-radius: 3.125rem; /* 50px */
 }
-/* Для устройств с шириной экрана более 650px (например, компьютеров) */
-@media (min-width: 751px) {
+
+@media (min-width: 46.875rem) {
     .avatar-container {
-        flex-direction: row; /* Горизонтальное расположение элементов */
-        align-items: flex-start; /* Выравнивание аватарки слева */
-        justify-content: flex-start; /* Сдвигаем влево */
-    }
-    .section3 {
-        margin-left: 240px;
-        margin-right: 240px; /* Это сдвинет блок вправо */
-        align-items: auto;
-        justify-content: auto;
+        flex-direction: row;
+        align-items: flex-start;
     }
     .avatar {
-        width: 250px;
-        margin-top: 100px; /* Отступ от аватарки */
-        height: 250px;
+        width: 15.625rem; /* 250px */
+        height: 15.625rem;
         border-radius: 50%;
-        border: 4px solid #333;
-    object-fit: cover;
-    }
-    /* Контейнер для текста проекта */
-    .swiper-slide .text-container {
-        width: 100%; /* Занимает всю ширину слайда */
     }
     .avtext {
-        font-size: 60px;
-        margin: 20px;
-        margin-top: 183px; /* Отступ от верхнего края */
+        font-size: 3.75rem;
+        margin-top: 11.4375rem; /* 183px */
     }
 }
+
 .videoback {
     position: relative;
     padding: 7px;
@@ -278,25 +176,13 @@ img {
     transform: translateY(30px);
     animation: fadeInZoom 0.4s ease-out forwards;
 }
-.mute-btn {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-}
-.mute-btn img {
-    width: 30px;
-    height: 30px;
-}
 /* Изображение проекта */
 .large-image {
     width: 1000%; /* Изображение будет занимать 100% ширины контейнера */
     max-width: 1000%; /* Не выйдет за пределы */
     height: auto; /* Сохраняет пропорции */
     object-fit: contain; /* Обеспечивает, что изображение останется внутри контейнера */
-    margin: 10px auto;
+    margin: 0,625rem auto;
     display: block;
     border-radius: 2%;
     opacity: 0;
@@ -308,9 +194,9 @@ img {
 .swiper-slide .text-container {
     background-color: rgba(0, 96, 251, 0.123); /* Тёмный полупрозрачный фон */
     border-radius: 30px; /* Закругленные углы */
-    padding: 10px; /* Отступы вокруг текста */
+    padding: 0,625rem; /* Отступы вокруг текста */
     box-sizing: border-box; /* Чтобы отступы не выходили за пределы */
-    margin-top: 10px; /* Отступ сверху */
+    margin-top: 0,625rem; /* Отступ сверху */
     margin-right: 20px; /* Отступ сверху */
 }
 
@@ -326,7 +212,7 @@ img {
 .swiper-slide .text-container p {
     font-size: 18px;
     color: #ddd; /* Светлый цвет для описания */
-    margin-top: 10px; /* Отступ сверху */
+    margin-top: 0,625rem; /* Отступ сверху */
 }
 .background-video {
     border-radius: 30px; /* Закругленные углы */
@@ -339,7 +225,7 @@ img {
     align-items: center; /* Центрируем по горизонтали */
     text-align: center;
     width: 100%; /* Убираем лишние отступы */
-    padding: 10px;
+    padding: 0,625rem;
 }
 
 /* Плавный переход для цвета текста */
@@ -355,40 +241,40 @@ body, h1, h2 {
     height: auto; /* Сохраняем пропорции */
     display: block;
     margin: 15px auto; /* Центрируем картинку с отступами */
-    border-radius: 10px; /* Стилизация */
+    border-radius: 0,625rem; /* Стилизация */
 }
 
 /* Позиционирование стрелок */
 .swiper-button-next {
-    right: 10px; /* Расстояние от правого края */
+    right: 0,625rem; /* Расстояние от правого края */
 }
 
 .swiper-button-prev {
-    left: 10px; /* Расстояние от левого края */
+    left: 0,625rem; /* Расстояние от левого края */
 }
 
 /* Пагинация */
 .swiper-pagination {
     position: absolute;
-    bottom: 10px;
+    bottom: 0,625rem;
 }
 
-@media (min-width: 2000px) {
+@media (min-width: 125rem) {
 .section {
-    margin-left: 300px;
-    margin-right: 300px;
+    margin-left: 18,75rem;
+    margin-right: 18,75rem;
 }
 .avatar-container {
     flex-direction: column; /* Расположить элементы вертикально */
     align-items: center; /* Центрировать элементы */
 }
 .avtext {
-    font-size: 60px;
-    margin: 20px;
-    margin-top: 10px; /* Отступ от верхнего края */
+    font-size: 3,75rem;
+    margin: 1,25rem;
+    margin-top: 0,625rem; /* Отступ от верхнего края */
 }
 .videoback {
-    margin-left: 300px;
-    margin-right: 300px;
+    margin-left: 18,75rem;
+    margin-right: 18,75rem;
 }
 }
