@@ -270,7 +270,28 @@ img {
         margin-top: 183px; /* Отступ от верхнего края */
     }
 }
-
+.videoback {
+    position: relative;
+    padding: 7px;
+    margin: 25px;
+    margin-left: px; /* Это сдвинет блок вправо */
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    transform: translateY(30px);
+    animation: fadeInZoom 0.4s ease-out forwards;
+}
+.mute-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.mute-btn img {
+    width: 30px;
+    height: 30px;
+}
 /* Изображение проекта */
 .large-image {
     width: 100%; /* Изображение будет занимать 100% ширины контейнера */
@@ -309,7 +330,9 @@ img {
     color: #ddd; /* Светлый цвет для описания */
     margin-top: 10px; /* Отступ сверху */
 }
-
+.background-video {
+    border-radius: 30px; /* Закругленные углы */
+}
 /* Слайд Swiper */
 .swiper-slide {
     display: flex;

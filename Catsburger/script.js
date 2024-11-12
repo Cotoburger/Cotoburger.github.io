@@ -73,73 +73,57 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Видео и аудио
 const video = document.getElementById('background-video');
-const audio = new Audio('images/Josh Hutcherson __ Whistle.mp3'); // Загружаем аудио-файл отдельно
 
-// Устанавливаем начальную громкость аудио
-audio.volume = 0;
+// Устанавливаем начальную громкость и запускаем видео без звука
+video.volume = 0;
+let isFading = false;
 
-// Видео запускается автоматически, но без звука (muted)
-video.muted = true;
-
-// Создаем Intersection Observer для аудио
+// Создаем Intersection Observer для отслеживания видимости видео
 const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
         if (entry.isIntersecting) {
-            audio.play().catch((error) => console.log("Аудио не запустилось автоматически:", error));
-            fadeInVolume(audio); // Увеличиваем громкость аудио
+            // Когда видео видно на экране, плавно включаем звук
+            fadeInVolume(video);
         } else {
-            fadeOutVolume(audio); // Уменьшаем громкость аудио
+            // Когда видео выходит из зоны видимости, плавно уменьшаем звук
+            fadeOutVolume(video);
         }
     });
 }, {
-    threshold: 0.5
+    threshold: 0.5 // Эффект запускается, если видео видно на 50%
 });
 
-observer.observe(audio);
+// Наблюдаем за видео
+observer.observe(video);
 
 // Функция для плавного увеличения громкости
-function fadeInVolume(audioElement) {
+function fadeInVolume(videoElement) {
+    if (isFading) return;
+    isFading = true;
     const fadeInInterval = setInterval(() => {
-        if (audioElement.volume < 1) {
-            audioElement.volume = Math.min(audioElement.volume + 0.05, 1);
+        if (videoElement.volume < 0.8) {
+            videoElement.volume = Math.min(videoElement.volume + 0.05, 1);
         } else {
             clearInterval(fadeInInterval);
+            isFading = false;
         }
-    }, 30);
+    }, 10);
 }
 
 // Функция для плавного уменьшения громкости
-function fadeOutVolume(audioElement) {
+function fadeOutVolume(videoElement) {
+    if (isFading) return;
+    isFading = true;
     const fadeOutInterval = setInterval(() => {
-        if (audioElement.volume > 0) {
-            audioElement.volume = Math.max(audioElement.volume - 0.05, 0);
+        if (videoElement.volume > 0.2) {
+            videoElement.volume = Math.max(videoElement.volume - 0.05, 0);
         } else {
-            audioElement.pause(); // Останавливаем аудио, когда громкость достигает 0
             clearInterval(fadeOutInterval);
+            isFading = false;
         }
-    }, 30);
+    }, 10);
 }
-
-// Кнопка для включения/выключения звука
-const muteButton = document.getElementById('mute-btn');
-const muteIcon = document.getElementById('mute-icon');
-
-// Иконки для включенного и выключенного звука
-const soundOnIcon = 'images/sound-on.svg';
-const soundOffIcon = 'images/sound-off.svg';
-
-// Обработчик клика на кнопку для включения/выключения звука видео
-muteButton.addEventListener('click', () => {
-    if (video.muted) {
-        video.muted = false; // Включаем звук видео
-        muteIcon.src = soundOnIcon; // Меняем иконку на включенный звук
-    } else {
-        video.muted = true; // Выключаем звук видео
-        muteIcon.src = soundOffIcon; // Меняем иконку на выключенный звук
-    }
-});
 
 // Ваш API-ключ OpenWeatherMap
 const apiKey = 'bf6fe63e6eb2ba55bb0fffe350177538';
@@ -239,3 +223,41 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+const getCurrentLesson = () => {
+    const daysOfWeek = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница"];
+    const currentDay = daysOfWeek[new Date().getDay() - 1]; // получаем текущий день недели
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+    const currentMinute = currentTime.getMinutes();
+    
+    // Форматируем время для удобства
+    const currentTimeString = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
+  
+    return { currentDay, currentTimeString };
+  };
+  
+  const getLessonForTime = (schedule, currentDay, currentTimeString) => {
+    const daySchedule = schedule[currentDay];
+    
+    // Для каждой смены (shift1, shift2) ищем текущий урок
+    for (const shift of Object.values(daySchedule)) {
+      for (const lesson of shift) {
+        if (currentTimeString >= lesson.start && currentTimeString <= lesson.end) {
+          return lesson.lesson;
+        }
+      }
+    }
+    return "Нет урока"; // если текущее время не попадает в расписание
+  };
+  
+  const displayCurrentLesson = () => {
+    const { currentDay, currentTimeString } = getCurrentLesson();
+    const currentLesson = getLessonForTime(schedule, currentDay, currentTimeString);
+  
+    const lessonElement = document.getElementById("current-lesson");
+    lessonElement.textContent = `Текущий урок: ${currentLesson}`;
+  };
+  
+  // Вызовем функцию для отображения текущего урока
+  displayCurrentLesson();
+  
