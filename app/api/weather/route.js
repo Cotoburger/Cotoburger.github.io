@@ -1,3 +1,6 @@
+export const dynamic = "force-static";
+export const revalidate = 60;
+
 export async function GET() {
     try {
         const city = '53.033980, 158.669447';
