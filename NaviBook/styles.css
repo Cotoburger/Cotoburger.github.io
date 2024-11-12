@@ -35,11 +35,11 @@ h1, h2 {
     color: #48ff6d;
 }
 .section {
-    background-color: rgba(20, 20, 20, 0.215);
-    padding: 7px;
-    margin: 25px;
+    background-color: rgb(22, 22, 22);
+    padding: 20px;
+    margin: 20px 20px;
     border-radius: 30px;
-    box-shadow: 0 0 10px rgba(184, 184, 184, 0.1);
+    box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
     transform: translateY(30px);
     animation: fadeInZoom 0.4s ease-out forwards;
 }
@@ -161,18 +161,3 @@ opacity: 1; /* Конечное состояние - полностью види
     margin: 25px 20px;
     animation: fadeInZoom 0.4s ease-out forwards;
 }
-@media (min-width: 2000px) {
-    .section {
-        margin-left: 300px;
-        margin-right: 300px;
-    }
-    .section2 {
-        margin-left: 300px;
-        margin-right: 300px;
-    }
-    .videoback {
-        margin-left: 300px;
-        margin-right: 300px;
-    }
-    }
-    
