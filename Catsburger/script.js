@@ -108,7 +108,7 @@ function fadeInVolume(videoElement) {
             clearInterval(fadeInInterval);
             isFading = false;
         }
-    }, 10);
+    }, 20);
 }
 
 // Функция для плавного уменьшения громкости
@@ -122,7 +122,7 @@ function fadeOutVolume(videoElement) {
             clearInterval(fadeOutInterval);
             isFading = false;
         }
-    }, 10);
+    }, 20);
 }
 
 // Ваш API-ключ OpenWeatherMap
@@ -223,41 +223,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-const getCurrentLesson = () => {
-    const daysOfWeek = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница"];
-    const currentDay = daysOfWeek[new Date().getDay() - 1]; // получаем текущий день недели
-    const currentTime = new Date();
-    const currentHour = currentTime.getHours();
-    const currentMinute = currentTime.getMinutes();
-    
-    // Форматируем время для удобства
-    const currentTimeString = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
-  
-    return { currentDay, currentTimeString };
-  };
-  
-  const getLessonForTime = (schedule, currentDay, currentTimeString) => {
-    const daySchedule = schedule[currentDay];
-    
-    // Для каждой смены (shift1, shift2) ищем текущий урок
-    for (const shift of Object.values(daySchedule)) {
-      for (const lesson of shift) {
-        if (currentTimeString >= lesson.start && currentTimeString <= lesson.end) {
-          return lesson.lesson;
-        }
-      }
-    }
-    return "Нет урока"; // если текущее время не попадает в расписание
-  };
-  
-  const displayCurrentLesson = () => {
-    const { currentDay, currentTimeString } = getCurrentLesson();
-    const currentLesson = getLessonForTime(schedule, currentDay, currentTimeString);
-  
-    const lessonElement = document.getElementById("current-lesson");
-    lessonElement.textContent = `Текущий урок: ${currentLesson}`;
-  };
-  
-  // Вызовем функцию для отображения текущего урока
-  displayCurrentLesson();
-  
