@@ -1,5 +1,4 @@
 import type {Metadata} from "next";
-import "./styles.css";
 
 export const metadata: Metadata = {
     title: "Catsburger",
