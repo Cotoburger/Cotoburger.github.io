@@ -7,7 +7,6 @@ import { fetchWeather } from './weatherActions';
 const WeatherAndTime = () => {
     const [weatherData, setWeatherData] = useState(null);
     const [error, setError] = useState(null);
-    const [localTime, setLocalTime] = useState('');
 
     // Получаем погоду
     useEffect(() => {
@@ -21,15 +20,6 @@ const WeatherAndTime = () => {
         }
 
         getWeather();
-
-        // Обновляем время каждую секунду
-        const timer = setInterval(() => {
-            const now = new Date();
-            setLocalTime(now.toLocaleTimeString());
-        }, 1000);
-
-        // Очищаем таймер при размонтировании
-        return () => clearInterval(timer);
     }, []);
 
     // Функция для обновления иконки погоды

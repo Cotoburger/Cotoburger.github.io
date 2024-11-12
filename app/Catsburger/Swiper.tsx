@@ -3,7 +3,6 @@ import {Swiper as LSwiper, SwiperSlide} from "swiper/react";
 import 'swiper/css';
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
 import {Autoplay} from "swiper/modules";
 
 export interface ImageSwipe {

@@ -16,14 +16,10 @@ const getKamchatkaTime = () => {
     // Получаем текущее UTC время
     const now = new Date();
 
-    // Камчатка - UTC +12
-    const kamchatkaOffset = 12 * 60; // В минутах (12 часов * 60 минут)
-
     // Получаем текущие компоненты времени
     const utcHours = now.getUTCHours();
     const utcMinutes = now.getUTCMinutes();
     const utcSeconds = now.getUTCSeconds();
-    const utcMilliseconds = now.getUTCMilliseconds();
 
     // Добавляем смещение для Камчатки (12 часов)
     const kamchatkaHours = (utcHours + 12) % 24; // Используем % 24, чтобы часы не выходили за 24
@@ -76,7 +72,6 @@ export default function Home() {
     })
 
     useEffect(() => {
-        const video = document.getElementById("background-video")!;
         const images = document.querySelectorAll('img');
         const avatar = document.querySelector('.avatar');
         const socialIcons = document.querySelectorAll('.social-icon'); // Изображения соцсетей
@@ -187,7 +182,7 @@ export default function Home() {
                 hour12: false,
             };
 
-            // @ts-ignore
+            // @ts-expect-error
             const currentTime = new Intl.DateTimeFormat('ru-RU', options).format(new Date());
             timeElement.textContent = `time: ${currentTime}`;
         }
@@ -216,9 +211,9 @@ export default function Home() {
 
             <section id="overview" className="section">
                 <h2>Hello</h2>
-                <h3>My name is Alexey. I'm from Petropavlovsk-Kamchatsky, Russia. I've been interested in
+                <h3>My name is Alexey. I&apos;m from Petropavlovsk-Kamchatsky, Russia. I&apos;ve been interested in
                     HTML/JavaScript
-                    since early childhood. I can also write code in C++. I'm a professional player in the sandbox game
+                    since early childhood. I can also write code in C++. I&apos;m a professional player in the sandbox game
                     Scrap
                     Mechanic. I really enjoy listening to Taylor Swift and Olivia Rodrigo.</h3>
             </section>
@@ -233,7 +228,7 @@ export default function Home() {
                             <hr />
                             <p>1st shift:</p>
                             <ul>
-                                {/*// @ts-ignore*/}
+                                {/*// @ts-expect-error*/}
                                 {schedule[new Date().getDay()]?.shift1.map((lesson, index) => {
                                     const { isLessonActive, progressValue, lessonEndInMinutes } = updateProgress(lesson, currentKamchatkaTime);
                                     if (isLessonActive) console.log(progressValue)
@@ -250,7 +245,7 @@ export default function Home() {
 
                             <p>2nd shift:</p>
                             <ul>
-                                {/*// @ts-ignore*/}
+                                {/*// @ts-expect-error*/}
                                 {schedule[new Date().getDay()]?.shift2.map((lesson, index) => {
                                     const { isLessonActive, progressValue, lessonEndInMinutes } = updateProgress(lesson, currentKamchatkaTime);
 

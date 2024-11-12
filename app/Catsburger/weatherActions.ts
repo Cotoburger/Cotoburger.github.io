@@ -10,7 +10,7 @@ export async function fetchWeather() {
         }
         return await response.json()
     } catch (error) {
-        // @ts-ignore
+        // @ts-expect-error
         return { error: error.message };
     }
 }

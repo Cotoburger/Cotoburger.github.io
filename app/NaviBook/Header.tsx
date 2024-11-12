@@ -14,7 +14,7 @@ export default function Header() {
     return (
         <>
             <header>
-                {/*// @ts-ignore*/}
+                {/*// @ts-expect-error*/}
                 <h1>NaviBook|{names[pathname]}</h1>
             </header>
 

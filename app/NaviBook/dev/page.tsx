@@ -3,7 +3,7 @@ export default function DevPage() {
         <div className="container">
             <section>
                 <h2>1. Turn On/Off</h2>
-                <p>To turn the laptop on or off, you can press the red button on the device's body. If you want to do
+                <p>To turn the laptop on or off, you can press the red button on the device&apos;s body. If you want to do
                     this without closing the screen, press the blue button in the top left corner of the keyboard.</p>
             </section>
             <section>
