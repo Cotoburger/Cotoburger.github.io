@@ -291,6 +291,7 @@ h3 {
     }
     .avtext {
         font-size: 3.75rem;
+        margin-top: 5rem;
     }
 }
 
@@ -387,7 +388,7 @@ body, h1, h2 {
     .avtext {
         font-size: 3.75rem;
         margin-left: 1.25rem;
-        margin-top: 15.625rem;
+        margin-top: 5rem;
     }
     .videoback {
         margin-left: 18.75rem;
