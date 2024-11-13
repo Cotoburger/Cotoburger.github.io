@@ -16,8 +16,9 @@ body {
 header {
     background-color: #11111129;
     text-align: left;
+    color: #78b89a;
     padding-left: 0.25rem;
-    font-size: 0.7625rem; /* 25px */
+    font-size: 2.7625rem; /* 25px */
     margin-top: 1.25rem;
     border-radius: 3.125rem;
     margin-left: 1.25rem;
@@ -265,6 +266,14 @@ h3 {
         width: 6.875rem; /* 110px */
         height: 6.875rem;
         border-radius: 50%;
+    }
+    header {
+        padding-left: 0rem;
+        font-size: 1.0625rem; /* 25px */
+        margin-top: 1.25rem;
+        border-radius: 3.125rem;
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
     }
 }
 
