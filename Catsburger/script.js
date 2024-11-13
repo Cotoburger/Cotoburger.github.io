@@ -37,7 +37,7 @@ window.addEventListener('DOMContentLoaded', () => {
         scrollTimeout = requestAnimationFrame(() => {
             const h1h2Elements = document.querySelectorAll('h1, h2'); // Все заголовки h1 и h2
             const avtextElement = document.querySelector('.avtext'); // Ваш никнейм
-            const scheduleElements = document.querySelectorAll('#lesson-info .sectionles, #lesson-info, .local-time'); // Элементы расписания
+            const scheduleElements = document.querySelectorAll('#lesson-info .sectionles, #lesson-info, .local-time, .lesson2'); // Элементы расписания
             const isScrolled = window.scrollY > 400; // Проверка прокрутки (400px)
 
             // Изменяем цвета для всех элементов, кроме погоды
