@@ -72,6 +72,9 @@ h3 {
 .lesson-info {
         font-size: 2.8125rem; /* 45px */
 }
+.lesson2 {
+        color: rgb(187, 187, 187);
+}
 .social-icon {
     width: 6.25rem; /* 100px */
     height: 6.25rem;
