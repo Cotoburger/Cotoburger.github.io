@@ -299,9 +299,8 @@ h3 {
 
 .videoback {
     position: relative;
-    margin: 20px;
+    margin: 25px;
     border-radius: 3.125rem;
-    transform: translateY(30px);
     overflow: hidden; /* Это скроет части видео, выходящие за пределы контейнера */
     text-shadow: 0.125rem 0.125rem 0.25rem rgba(255, 255, 255, 0.5);
 }
