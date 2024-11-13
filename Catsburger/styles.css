@@ -60,7 +60,6 @@ nav a:focus {
 }
 
 h1, h2 {
-    margin-left: 1.25rem;
     font-size: 3rem; /* 40px */
     color: #78b89a;
 }
@@ -89,6 +88,12 @@ h3 {
     border-radius: 1.875rem; /* 30px */
     box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.1);
     transform: translateY(1.875rem);
+}
+
+.lol {
+    font-size: 3rem;
+    color: #78b89a;
+    padding-left: 1.5625rem;
 }
 
 .sectionles {
