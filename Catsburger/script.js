@@ -224,3 +224,155 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+
+
+const schedule = {
+    1: {
+        shift1: [
+            {lesson: "Классный час", start: 29700, end: 30600},
+            {lesson: "1 урок", start: 30900, end: 34100},
+            {lesson: "2 урок", start: 35400, end: 37800},
+            {lesson: "3 урок", start: 38700, end: 41100},
+            {lesson: "4 урок", start: 41400, end: 43000},
+            {lesson: "5 урок", start: 43600, end: 46800},
+            {lesson: "6 урок", start: 48000, end: 50400},
+            {lesson: "7 урок", start: 50700, end: 53100}
+        ],
+        shift2: [
+            {lesson: "0 урок", start: 43600, end: 46800},
+            {lesson: "1 урок", start: 48000, end: 50400},
+            {lesson: "2 урок", start: 50700, end: 53100},
+            {lesson: "3 урок", start: 54600, end: 57000},
+            {lesson: "Классный час", start: 57700, end: 58900},
+            {lesson: "4 урок", start: 60000, end: 62400},
+            {lesson: "5 урок", start: 63000, end: 65400},
+            {lesson: "6 урок", start: 65800, end: 68400}
+        ]
+    },
+    2: {
+        shift1: [
+            {lesson: "1 урок", start: 29700, end: 32100},
+            {lesson: "2 урок", start: 32400, end: 34800},
+            {lesson: "3 урок", start: 36000, end: 38400},
+            {lesson: "4 урок", start: 39600, end: 42000},
+            {lesson: "5 урок", start: 42000, end: 43200},
+            {lesson: "6 урок", start: 43800, end: 46200},
+            {lesson: "7 урок", start: 47400, end: 49800}
+        ],
+        shift2: [
+            {lesson: "0 урок", start: 42000, end: 43200},
+            {lesson: "1 урок", start: 43800, end: 46200},
+            {lesson: "2 урок", start: 47400, end: 49800},
+            {lesson: "3 урок", start: 53100, end: 55500},
+            {lesson: "4 урок", start: 56400, end: 57600},
+            {lesson: "5 урок", start: 59400, end: 61800},
+            {lesson: "6 урок", start: 62400, end: 64800},
+        ]
+    },
+    3: {
+        shift1: [
+            {lesson: "1 урок", start: 29700, end: 32100},
+            {lesson: "2 урок", start: 32400, end: 34800},
+            {lesson: "3 урок", start: 36000, end: 38400},
+            {lesson: "Классный час", start: 38100, end: 38700},
+            {lesson: "4 урок", start: 39000, end: 41400},
+            {lesson: "5 урок", start: 43600, end: 46800},
+            {lesson: "6 урок", start: 48000, end: 50400},
+            {lesson: "7 урок", start: 50700, end: 53100}
+        ],
+        shift2: [
+            {lesson: "0 урок", start: 43600, end: 46800},
+            {lesson: "1 урок", start: 48000, end: 50400},
+            {lesson: "2 урок", start: 50700, end: 53100},
+            {lesson: "3 урок", start: 54600, end: 57000},
+            {lesson: "Классный час", start: 57700, end: 58900},
+            {lesson: "4 урок", start: 60000, end: 62400},
+            {lesson: "5 урок", start: 63000, end: 65400},
+            {lesson: "6 урок", start: 65800, end: 68400}
+        ]
+    },
+    4: {
+        shift1: [
+            {lesson: "1 урок", start: 29700, end: 32100},
+            {lesson: "2 урок", start: 32400, end: 34800},
+            {lesson: "3 урок", start: 36000, end: 38400},
+            {lesson: "Классный час", start: 38100, end: 38700},
+            {lesson: "4 урок", start: 39000, end: 41400},
+            {lesson: "5 урок", start: 43600, end: 46800},
+            {lesson: "6 урок", start: 48000, end: 50400},
+            {lesson: "7 урок", start: 50700, end: 53100}
+        ],
+        shift2: [
+            {lesson: "0 урок", start: 43600, end: 46800},
+            {lesson: "1 урок", start: 48000, end: 50400},
+            {lesson: "2 урок", start: 50700, end: 53100},
+            {lesson: "3 урок", start: 54600, end: 57000},
+            {lesson: "Классный час", start: 57700, end: 58900},
+            {lesson: "4 урок", start: 60000, end: 62400},
+            {lesson: "5 урок", start: 63000, end: 65400},
+            {lesson: "6 урок", start: 65800, end: 68400}
+        ]
+    },
+    5: {
+        shift1: [
+            {lesson: "1 урок", start: 29700, end: 32100},
+            {lesson: "2 урок", start: 32400, end: 34800},
+            {lesson: "3 урок", start: 36000, end: 38400},
+            {lesson: "4 урок", start: 39600, end: 42000},
+            {lesson: "5 урок", start: 42000, end: 43200},
+            {lesson: "6 урок", start: 43800, end: 46200},
+            {lesson: "7 урок", start: 47400, end: 49800}
+        ],
+        shift2: [
+            {lesson: "0 урок", start: 42000, end: 43200},
+            {lesson: "1 урок", start: 43800, end: 46200},
+            {lesson: "2 урок", start: 47400, end: 49800},
+            {lesson: "3 урок", start: 53100, end: 55500},
+            {lesson: "4 урок", start: 56400, end: 57600},
+            {lesson: "5 урок", start: 59400, end: 61800},
+            {lesson: "6 урок", start: 62400, end: 64800},
+        ]
+    }
+};
+// Функция для перевода текущего времени в секунды с полуночи
+const getCurrentTimeInSeconds = () => {
+    const now = new Date();
+    return now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+};
+
+// Получаем текущий день недели (0 - воскресенье, 1 - понедельник, ..., 6 - суббота)
+const currentDay = new Date().getDay();
+
+// Функция для нахождения текущего урока для указанной смены
+const getCurrentLesson = (shift) => {
+    const currentTime = getCurrentTimeInSeconds(); // получаем текущее время в секундах
+
+    // Проверяем уроки только для текущего дня (currentDay)
+    const lessons = schedule[currentDay][shift]; // получаем уроки для текущего дня и смены
+
+    for (let lesson of lessons) {
+        if (currentTime >= lesson.start && currentTime < lesson.end) {
+            return lesson.lesson; // возвращаем текущий урок
+        }
+    }
+
+    return "-"; // если урока нет в этот момент
+};
+
+// Функция для обновления текущих уроков
+const updateCurrentLessons = () => {
+    // Определяем текущий урок для смены shift1 и shift2
+    const currentLessonShift1 = getCurrentLesson('shift1');
+    const currentLessonShift2 = getCurrentLesson('shift2');
+
+    // Выводим результат на страницу
+    document.getElementById("currentLessonShift1").innerHTML = `1st shift: ${currentLessonShift1}`;
+    document.getElementById("currentLessonShift2").innerHTML = `2nd shift: ${currentLessonShift2}`;
+    document.getElementById("currentTime").innerHTML = `Current time(s): ${getCurrentTimeInSeconds()}`;
+};
+
+// Обновляем уроки сразу после загрузки страницы
+updateCurrentLessons();
+
+// Обновляем данные каждую секунду (1000 миллисекунд)
+setInterval(updateCurrentLessons, 1000);  // обновление каждую секунду

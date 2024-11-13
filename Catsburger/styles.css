@@ -12,7 +12,18 @@ body {
     color: #b9b4b4;
     font-size: 1.25rem; /* Размер шрифта 20px */
 }
-
+.section3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(99, 100, 100, 0.215);
+    padding: 0.4375rem; /* 7px */
+    margin: 1.5625rem; /* 25px */
+    border-radius: 1.875rem; /* 30px */
+    box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.1);
+    transform: translateY(1.875rem);
+    animation: fadeInZoom 0.4s ease-out forwards;
+}
 header {
     background-color: #ffffff06;
     color: #fff;
@@ -74,8 +85,8 @@ h3 {
 }
 
 .section3 {
-    padding: 2.5rem;
-    border-radius: 1.875rem;
+    margin: 1.5625rem; /* 25px */
+    padding: 2.5rem; /* Много отступов вокруг контента */
 }
 
 @keyframes fadeInZoom {
@@ -91,10 +102,13 @@ h3 {
 
 .avatar-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: center;  /* Выровнять по вертикали */
+    justify-content: center;  /* Центрировать по горизонтали */
     margin: 1.25rem;
 }
+
+
+
 
 .name-weather {
     display: flex;
@@ -104,14 +118,22 @@ h3 {
     margin-left: 1.25rem;
 }
 
+
+
 .avtext {
     font-size: 3.75rem; /* 60px */
     color: #81bda6;
     text-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.5);
+    margin-left: 1.25rem; /* Отступ между аватаром и текстом */
 }
 
 .weather-icon {
     font-size: 2.8125rem; /* 45px */
+}
+
+.lesson-info {
+    font-size: 2.8125rem; /* 45px */
+    padding: -2rem;
 }
 
 .local-time {
@@ -135,9 +157,14 @@ h3 {
     .local-time {
         font-size: 1.5625rem; /* 25px */
     }
+    .lesson-info {
+        font-size: 1.5625rem; /* 25px */
+    }
     .weather-icon {
         font-size: 1.5625rem; /* 25px */
     }
+
+    
     .avatar {
         width: 6.875rem; /* 110px */
         height: 6.875rem;
@@ -168,7 +195,7 @@ h3 {
     }
     .avtext {
         font-size: 3.75rem;
-        margin-top: 11.4375rem; /* 183px */
+        margin-top: 5.4375rem; /* 183px */
     }
 }
 
@@ -266,6 +293,10 @@ body, h1, h2 {
 
 @media (min-width: 125rem) {
     .section {
+        margin-left: 18.75rem;
+        margin-right: 18.75rem;
+    }
+    .section3 {
         margin-left: 18.75rem;
         margin-right: 18.75rem;
     }

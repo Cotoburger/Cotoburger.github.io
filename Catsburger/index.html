@@ -52,13 +52,24 @@
             <h2>Hello</h2>
             <h3>My name is Alexey. I'm from Petropavlovsk-Kamchatsky, Russia. I've been interested in HTML/JavaScript since early childhood. I can also write code in C++. I'm a professional player in the sandbox game Scrap Mechanic. I really enjoy listening to Taylor Swift and Olivia Rodrigo.</h3>
         </section>
-        <section id="overview" class="section">
+        <section id="Weather" class="section3">
             <h2>Weather and Time</h2>
-            <div class="name-weather">
+            <div class="weather-container">
                 <div id="weather-icon" class="weather-icon">🔃</div>
                 <div id="local-time" class="local-time"></div>
             </div>
         </section>
+        
+        <section id="schedule" class="section3">
+            <h2>Current Lesson</h2>
+            <div id="lesson-info" class="lesson-info">
+                <div id="currentLessonShift1"></div>
+                <div id="currentLessonShift2"></div>
+                <div id="currentTime"></div>
+            </div>
+        </section>
+
+
         <!-- Добавляем цикличное видео между overview и maintenance -->
         <section id="video" class="videoback">
             <video width="100%" loading="lazy" height="auto" loop controls preload="auto" playsinline id="background-video" style="border-radius: 20px;">
