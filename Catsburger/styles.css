@@ -108,10 +108,10 @@ h3 {
 }
 
 .sectionx {
-    background-color: rgba(99, 100, 100, 0.215);
+    background-color: rgba(10, 207, 207, 0.215);
     padding: 0.4375rem; /* 7px */
     margin-right: 0.5125rem; /* 25px */
-    margin-left: 0.5125rem; /* 25px */
+    margin-left: 0.9125rem; /* 25px */
     border-radius: 1.875rem; /* 30px */
     box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.1);
     transform: translateY(1.875rem);
@@ -120,7 +120,7 @@ h3 {
 .sectionz {
     background-color: rgba(99, 100, 100, 0.215);
     padding: 0.4375rem; /* 7px */
-    margin-right: 0.5125rem; /* 25px */
+    margin-right: 0.9125rem; /* 25px */
     margin-left: 0.5125rem; /* 25px */
     border-radius: 1.875rem; /* 30px */
     box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.1);
@@ -178,14 +178,6 @@ h3 {
     display: flex;
     justify-content: space-between;
     padding: 20px;
-}
-
-.sectionz {
-    width: 45%;
-}
-
-.sectionx {
-    width: 45%;
 }
 
 #schedule h2 {
