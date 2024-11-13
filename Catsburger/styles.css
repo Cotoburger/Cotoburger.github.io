@@ -73,7 +73,7 @@ h3 {
         font-size: 2.8125rem; /* 45px */
 }
 .lesson2 {
-        color: rgb(187, 187, 187);
+        color: rgb(75, 151, 179);
 }
 .social-icon {
     width: 6.25rem; /* 100px */
@@ -104,8 +104,8 @@ h3 {
     min-width: 14rem;
     min-width: 95%;
     padding: 0.7375rem; /* 7px */
-    margin: 0.2625rem; /* 25px */
-    margin-bottom: 0.2625rem; /* 25px */
+    margin-top: -1.0625rem; /* 25px */
+    margin-bottom: 0.5625rem; /* 25px */
     border-radius: 1.175rem; /* 30px */
     transform: translateY(1.175rem);
 }
