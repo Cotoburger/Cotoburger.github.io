@@ -37,12 +37,14 @@ window.addEventListener('DOMContentLoaded', () => {
         scrollTimeout = requestAnimationFrame(() => {
             const h1h2Elements = document.querySelectorAll('h1, h2'); // Все заголовки h1 и h2
             const avtextElement = document.querySelector('.avtext'); // Ваш никнейм
-            const scheduleElements = document.querySelectorAll('#lesson-info .sectionles, #lesson-info, .local-time, .lesson2'); // Элементы расписания
+            const scheduleElements = document.querySelectorAll('#lesson-info .sectionles, .lesson-info'); // Элементы расписания, кроме времени
+            const shiftElements = document.querySelectorAll('#currentLessonShift1, #currentLessonShift2'); // Элементы заголовков смен
+            const localTimeElement = document.querySelector('.local-time'); // Элемент локального времени
             const isScrolled = window.scrollY > 400; // Проверка прокрутки (400px)
 
-            // Изменяем цвета для всех элементов, кроме погоды
+            // Изменяем цвета для всех элементов, кроме заголовков смен
             if (isScrolled) {
-                changeStyles('#02090e', '#4f99c1', '#1a4b8e'); //фон текст заголовки
+                changeStyles('#02090e', '#4f99c1', '#1a4b8e'); //фон, текст, заголовки
             } else {
                 changeStyles('#000000', '#b9b4b4', '#78b89a');
             }
@@ -58,17 +60,28 @@ window.addEventListener('DOMContentLoaded', () => {
                     el.style.color = elementsColor;
                 });
 
-                // Изменяем цвет элементов расписания
+                // Изменяем цвет элементов расписания, кроме заголовков смен
                 scheduleElements.forEach((el) => {
                     el.style.color = elementsColor;
                     el.style.transition = 'color 0.3s ease'; // Плавное изменение цвета
                 });
+
+                // Изменяем цвет локального времени
+                if (localTimeElement) {
+                    localTimeElement.style.color = elementsColor;
+                    localTimeElement.style.transition = 'color 0.3s ease'; // Плавное изменение цвета
+                }
 
                 // Изменяем цвет никнейма
                 if (avtextElement) {
                     avtextElement.style.color = elementsColor;
                     avtextElement.style.transition = 'color 0.3s ease'; // Плавное изменение цвета
                 }
+
+                // Оставляем цвет заголовков смен без изменений
+                shiftElements.forEach((el) => {
+                    el.style.color = ''; // Сброс цвета до значения по умолчанию
+                });
             }
         });
     });
@@ -362,29 +375,41 @@ const getCurrentTimeInSeconds = () => {
 // Получаем текущий день недели (0 - воскресенье, 1 - понедельник, ..., 6 - суббота)
 const currentDay = new Date().getDay();
 
-// Функция для нахождения текущего урока для указанной смены
 const getCurrentLesson = (shift) => {
     const currentTime = getCurrentTimeInSeconds(); // получаем текущее время в секундах
-
-    // Проверяем уроки только для текущего дня (currentDay)
     const lessons = schedule[currentDay][shift]; // получаем уроки для текущего дня и смены
 
-    for (let lesson of lessons) {
-        // Убедимся, что текущее время попадает в промежуток урока
-        if (currentTime >= lesson.start && currentTime < lesson.end) {
-            // Время до конца урока
-            const timeLeft = lesson.end - currentTime;
-            const minutesLeft = Math.floor(timeLeft / 60); // оставшееся время в минутах
+    // Проверяем все уроки
+    for (let i = 0; i < lessons.length; i++) {
+        const lesson = lessons[i];
 
-            // Возвращаем объект с названием урока и временем до конца
+        // Если текущее время попадает в промежуток урока
+        if (currentTime >= lesson.start && currentTime < lesson.end) {
+            const timeLeft = lesson.end - currentTime;
+            const minutesLeft = Math.floor(timeLeft / 60);
+
             return {
-                lessonName: lesson.lesson, // название урока
-                timeLeft: minutesLeft, // оставшееся время в минутах
+                lessonName: lesson.lesson,
+                timeLeft: minutesLeft,
+                isBreak: false // Урок идет, не перемена
+            };
+        }
+
+        // Если текущее время между концом текущего урока и началом следующего урока, то перемена
+        if (i < lessons.length - 1 && currentTime >= lesson.end && currentTime < lessons[i + 1].start) {
+            const timeLeft = lessons[i + 1].start - currentTime;
+            const minutesLeft = Math.floor(timeLeft / 60);
+
+            return {
+                lessonName: "Break", // Перемена
+                timeLeft: minutesLeft,
+                isBreak: true
             };
         }
     }
 
-    return { lessonName: null, timeLeft: 0 }; // если урока нет в этот момент
+    // Если текущее время не попадает в учебное время
+    return { lessonName: null, timeLeft: 0, isBreak: false };
 };
 
 const updateCurrentLessons = () => {
@@ -395,21 +420,31 @@ const updateCurrentLessons = () => {
     // Обновляем информацию для 1-й смены
     document.getElementById("currentLessonShift1").innerHTML = `1st shift`;
     if (currentLessonShift1.lessonName) {
-        document.getElementById("lessonShift1").innerHTML = `${currentLessonShift1.lessonName}`;
-        document.getElementById("timeLeftShift1").innerHTML = `(${currentLessonShift1.timeLeft} min left)`;
+        if (currentLessonShift1.isBreak) {
+            document.getElementById("lessonShift1").innerHTML = "Break";
+            document.getElementById("timeLeftShift1").innerHTML = `(${currentLessonShift1.timeLeft} min left)`;
+        } else {
+            document.getElementById("lessonShift1").innerHTML = `${currentLessonShift1.lessonName}`;
+            document.getElementById("timeLeftShift1").innerHTML = `(${currentLessonShift1.timeLeft} min left)`;
+        }
     } else {
-        document.getElementById("lessonShift1").innerHTML = "-"; // если урока нет
-        document.getElementById("timeLeftShift1").innerHTML = ""; // если урока нет, не показываем время
+        document.getElementById("lessonShift1").innerHTML = "-";
+        document.getElementById("timeLeftShift1").innerHTML = "";
     }
 
     // Обновляем информацию для 2-й смены
     document.getElementById("currentLessonShift2").innerHTML = `2nd shift`;
     if (currentLessonShift2.lessonName) {
-        document.getElementById("lessonShift2").innerHTML = `${currentLessonShift2.lessonName}`;
-        document.getElementById("timeLeftShift2").innerHTML = `(${currentLessonShift2.timeLeft} min left)`;
+        if (currentLessonShift2.isBreak) {
+            document.getElementById("lessonShift2").innerHTML = "Break";
+            document.getElementById("timeLeftShift2").innerHTML = `(${currentLessonShift2.timeLeft} min left)`;
+        } else {
+            document.getElementById("lessonShift2").innerHTML = `${currentLessonShift2.lessonName}`;
+            document.getElementById("timeLeftShift2").innerHTML = `(${currentLessonShift2.timeLeft} min left)`;
+        }
     } else {
-        document.getElementById("lessonShift2").innerHTML = "-"; // если урока нет
-        document.getElementById("timeLeftShift2").innerHTML = ""; // если урока нет, не показываем время
+        document.getElementById("lessonShift2").innerHTML = "-";
+        document.getElementById("timeLeftShift2").innerHTML = "";
     }
 
     document.getElementById("currentTime").innerHTML = `Current time(s): ${getCurrentTimeInSeconds()}`;
