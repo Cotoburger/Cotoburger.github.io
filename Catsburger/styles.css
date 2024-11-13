@@ -293,7 +293,6 @@ h3 {
     }
     .avtext {
         font-size: 3.75rem;
-        margin-top: 5.4375rem; /* 183px */
     }
 }
 
@@ -322,7 +321,9 @@ h3 {
     opacity: 0;
     transform: scale(0.8);
 }
-
+.time-left {
+    color: #198819; /* Белый цвет для текста */
+}
 /* Контейнер для текста проекта */
 .swiper-slide .text-container {
     background-color: rgba(0, 96, 251, 0.123); /* Тёмный полупрозрачный фон */
@@ -387,8 +388,8 @@ body, h1, h2 {
     }
     .avtext {
         font-size: 3.75rem;
-        margin: 1.25rem;
-        margin-top: 0.625rem;
+        margin-left: 1.25rem;
+        margin-top: 15.625rem;
     }
     .videoback {
         margin-left: 18.75rem;
