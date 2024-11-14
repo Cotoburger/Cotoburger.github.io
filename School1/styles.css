@@ -28,7 +28,8 @@ header {
 .container-flex {
     display: flex;
     flex-wrap: wrap; /* Чтобы секции адаптировались при изменении ширины */
-    padding: 0.4375rem; /* 7px */   
+    padding: 0.6375rem; /* 7px */
+       
 }
 
 /* Секция с уроками */
@@ -229,7 +230,7 @@ h3 {
     color: #198819; /* Белый цвет для текста */
 }
 
-@media (min-width: 100rem) {
+@media (min-width: 80rem) {
     .section {
         margin-left: 18.75rem;
         margin-right: 18.75rem;
@@ -241,5 +242,10 @@ h3 {
     }
     .sectionles {
         margin-bottom: 1.8625rem; /* 25px */
+    }
+    .container-flex {
+        padding: 1.4375rem; /* 7px */
+        max-width: 100%;
+           
     }
 }
