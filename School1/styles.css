@@ -121,7 +121,7 @@ h3 {
     width: 4.25rem; /* 100px */
     height: 4.25rem;
     margin-top: 1rem;
-    border-radius: 0.9375rem; /* 15px */
+    border-radius: 3.125rem; /* 50px */
     transition: transform 0.3s ease;
     display: inline-block;
     object-fit: cover;
@@ -263,6 +263,7 @@ h3 {
     display: flex;
     justify-content: center;
     gap: 1.875rem; /* 30px */
+    border-radius: 3.125rem; /* 50px */
 }
 
 .social-icon:hover {
