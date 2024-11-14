@@ -264,6 +264,7 @@ h3 {
     justify-content: center;
     gap: 1.875rem; /* 30px */
     border-radius: 3.125rem; /* 50px */
+    animation: fadeInZoom 0.4s ease-out forwards;
 }
 
 .social-icon:hover {
