@@ -1,0 +1,243 @@
+/* Убираем горизонтальную прокрутку */
+html, body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    font-size: 16px; /* 1rem = 16px */
+}
+
+body {
+    align-items: center;
+    font-family: Consolas, sans-serif;
+    background-color: #0e1213;
+    color: #000000;
+    font-size: 1.25rem; /* Размер шрифта 20px */
+}
+
+header {
+    text-align: center;
+    color: #1875d8;
+    padding-left: 0.25rem;
+    font-size: 2.7625rem; /* 25px */
+    margin-top: 1.25rem;
+    border-radius: 3.125rem;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+}
+/* Контейнер для размещения секций рядом */
+.container-flex {
+    display: flex;
+    flex-wrap: wrap; /* Чтобы секции адаптировались при изменении ширины */
+    padding: 0.4375rem; /* 7px */   
+}
+
+/* Секция с уроками */
+#schedule {
+    flex: 2; /* Занимает доступное пространство */
+    min-width: 170px; /* Минимальная ширина секции */
+    background-color: rgba(55, 168, 255, 0.226); /* Цвет фона */
+    padding: 1rem;
+    border-radius: 1.875rem; /* Закруглённые углы */
+    color: rgb(187, 187, 187);
+}
+
+nav a:hover,
+nav a:focus {
+    background-color: #0b062a3d;
+}
+
+h1, h2 {
+    font-size: 3rem; /* 40px */
+    color: #78b89a;
+}
+
+h3 {
+    margin-left: 1.25rem;
+    font-size: 1.875rem; /* 30px */
+}
+.currenles {
+    color:rgb(75, 151, 179);
+    font-size: 1.7625rem; /* 25px */
+    padding-bottom: 10px; /* Добавить немного отступа от текста до линии */
+    border-bottom: 4px solid #00000042; /* Серый цвет для линии */
+}
+.lesson-info {
+        font-size: 2.8125rem; /* 45px */
+        
+}
+.lesson2 {
+        color: rgb(187, 232, 248);
+        
+}
+.social-icon {
+    width: 6.25rem; /* 100px */
+    height: 6.25rem;
+    border-radius: 0.9375rem; /* 15px */
+    transition: transform 0.3s ease;
+    display: inline-block;
+    object-fit: cover;
+}
+
+.section {
+    background-color: rgba(99, 100, 100, 0.215);
+    padding: 0.4375rem; /* 7px */
+    margin: 1.5625rem; /* 25px */
+    border-radius: 1.875rem; /* 30px */
+    box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.1);
+    transform: translateY(1.875rem);
+}
+
+.lol {
+    font-size: 3rem;
+    color: #000000;
+    padding-left: 1.5625rem;
+}
+
+.sectionles {
+    background-color: rgba(5, 5, 5, 0.313);
+    min-width: 14rem;
+    min-width: 95%;
+    padding: 0.7375rem; /* 7px */
+    margin-top: -1.0625rem; /* 25px */
+    margin-bottom: 0.8625rem; /* 25px */
+    border-radius: 1.175rem; /* 30px */
+    transform: translateY(1.175rem);
+    padding-bottom: 10px; /* Добавить немного отступа от текста до линии */
+    border-bottom: 4px solid #00000042; /* Серый цвет для линии */
+}
+
+.les2 {
+    margin-bottom: 1.5625rem; /* 25px */
+}
+
+.sectionz {
+    
+    background-color: rgba(99, 100, 100, 0.215);
+    padding: 0.4375rem; /* 7px */
+    align-items: center;
+    margin-right: 0.9125rem; /* 25px */
+    margin-left: 0.5125rem; /* 25px */
+    border-radius: 1.875rem; /* 30px */
+    box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.1);
+    transform: translateY(1.875rem);
+
+}
+
+@keyframes fadeInZoom {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+#currentLessonShift1 {
+    margin-bottom: 0.3rem;
+    font-size: 1.75rem; /* 60px */
+    padding-bottom: 5px; /* Добавить немного отступа от текста до линии */
+    border-bottom: 4px solid #00000019; /* Серый цвет для линии */
+}
+#currentLessonShift2 {
+    margin-bottom: 0.3rem;
+    font-size: 1.75rem; /* 60px */
+    padding-bottom: 5px; /* Добавить немного отступа от текста до линии */
+    border-bottom: 4px solid #00000019; /* Серый цвет для линии */
+}
+
+#schedule h2 {
+    color: #81bda6;
+    text-align: center;
+}
+
+.lesson-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.shift {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.shift-title {
+    background-color: #4CAF50; /* тот же цвет, что и для заголовка */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center; /* название смены по центру */
+    font-weight: bold;
+}
+
+.shift-lesson {
+    font-size: 18px;
+    text-align: left; /* урок выравнивается слева */
+    width: 100%;
+    margin-top: 5px;
+    padding-left: 20px; /* немного отступаем от края */
+}
+
+#currentTime {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+
+
+@media (max-width: 46.875rem) { /* 750px */
+    h1, h2 {
+        font-size: 2.1875rem; /* 35px */
+    }
+    h3 {
+        font-size: 1.5625rem; /* 25px */
+    }
+    .lesson-info {
+        font-size: 1.5625rem; /* 25px */
+    }
+    header {
+        padding-left: 0rem;
+        font-size: 2.0625rem; /* 25px */
+        margin-top: 1.25rem;
+        border-radius: 3.125rem;
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+    }
+}
+
+.socials-container {
+    display: flex;
+    justify-content: center;
+    gap: 1.875rem; /* 30px */
+}
+
+.social-icon:hover {
+    transform: scale(1.1);
+    border-radius: 3.125rem; /* 50px */
+}
+
+
+
+.time-left {
+    color: #198819; /* Белый цвет для текста */
+}
+
+@media (min-width: 100rem) {
+    .section {
+        margin-left: 18.75rem;
+        margin-right: 18.75rem;
+    }
+
+    .sectionz {
+        margin-right: 17.75rem;
+        margin-left: 17.75rem;
+    }
+    .sectionles {
+        margin-bottom: 1.8625rem; /* 25px */
+    }
+}
