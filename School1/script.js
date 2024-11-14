@@ -1,11 +1,10 @@
-// Находим все изображения на странице и аватарку, а также изображения соцсетей
+
 const images = document.querySelectorAll('img');
 const avatar = document.querySelector('.avatar');
-const socialIcons = document.querySelectorAll('.social-icon'); // Изображения соцсетей
+const socialIcons = document.querySelectorAll('.social-icon');
 
-// Инициализация Swiper
 const swiper = new Swiper('.swiper-container', {
-    spaceBetween: parseFloat(pxToRem(20)), // Используем rem вместо пикселей
+    spaceBetween: parseFloat(pxToRem(20)),
     slidesPerView: 'auto',
     loop: true,
     autoplay: {
@@ -22,12 +21,12 @@ const swiper = new Swiper('.swiper-container', {
     },
 });
 
-// Функция для конвертации px в rem (предполагаем, что 1rem = 16px)
+// Функция для конвертации px в rem
 function pxToRem(px) {
     return px / 16 + 'rem';
 }
 
-// Функция для отображения текущего времени в Петропавловске-Камчатском
+// Функция для отображения текущего времени
 function updateKamchatkaTime() {
     const timeElement = document.getElementById("local-time");
     const options = {
@@ -42,7 +41,6 @@ function updateKamchatkaTime() {
     timeElement.textContent = `time: ${currentTime}`;
 }
 
-// Обновляем время каждую секунду
 setInterval(updateKamchatkaTime, 1000);
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -185,19 +183,15 @@ const convertScheduleToSeconds = (schedule) => {
     }
 };
 
-// Преобразуем расписание в секунды
 convertScheduleToSeconds(schedule);
 
-// Функция для перевода текущего времени в секунды с полуночи
 const getCurrentTimeInSeconds = () => {
     const now = new Date();
     return now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
 };
 
-// Получаем текущий день недели (0 - воскресенье, 1 - понедельник, ..., 6 - суббота)
 const currentDay = new Date().getDay();
 
-// Функция для форматирования времени в MM:SS
 const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -236,7 +230,6 @@ const getCurrentLesson = (shift) => {
     return { lessonName: null, timeLeft: 0, isBreak: false };
 };
 
-// Функция для обновления информации на странице
 const updateCurrentLessons = () => {
     const currentLessonShift1 = getCurrentLesson('shift1');
     const currentLessonShift2 = getCurrentLesson('shift2');
@@ -281,7 +274,7 @@ updateCurrentLessons();
 setInterval(updateCurrentLessons, 1000);
 
 AOS.init({
-    duration: 400,  // Ускоряет анимацию (значение в миллисекундах)
-    once: true       // Анимация срабатывает только один раз
+    duration: 400,
+    once: true
     
 }); 
