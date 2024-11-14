@@ -347,8 +347,8 @@ const schedule = {
 };
 // Функция для перевода времени в секунды с полуночи
 const timeToSeconds = (time) => {
-    const [hours, minutes] = time.split(":").map(Number); // Разбиваем строку на часы и минуты
-    return hours * 3600 + minutes * 60; // Переводим в секунды
+    const [hours, minutes] = time.split(":").map(Number);
+    return hours * 3600 + minutes * 60;
 };
 
 // Обновляем расписание, преобразуя времена в секунды
@@ -356,8 +356,8 @@ const convertScheduleToSeconds = (schedule) => {
     for (let day in schedule) {
         for (let shift in schedule[day]) {
             schedule[day][shift].forEach(lesson => {
-                lesson.start = timeToSeconds(lesson.start); // Конвертируем время начала
-                lesson.end = timeToSeconds(lesson.end); // Конвертируем время окончания
+                lesson.start = timeToSeconds(lesson.start);
+                lesson.end = timeToSeconds(lesson.end);
             });
         }
     }
@@ -375,45 +375,47 @@ const getCurrentTimeInSeconds = () => {
 // Получаем текущий день недели (0 - воскресенье, 1 - понедельник, ..., 6 - суббота)
 const currentDay = new Date().getDay();
 
-const getCurrentLesson = (shift) => {
-    const currentTime = getCurrentTimeInSeconds(); // получаем текущее время в секундах
-    const lessons = schedule[currentDay][shift]; // получаем уроки для текущего дня и смены
+// Функция для форматирования времени в MM:SS
+const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+    const formattedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`;
+    return `${formattedMinutes}:${formattedSeconds}`;
+};
 
-    // Проверяем все уроки
+// Функция для получения текущего урока
+const getCurrentLesson = (shift) => {
+    const currentTime = getCurrentTimeInSeconds();
+    const lessons = schedule[currentDay]?.[shift] || [];
+
     for (let i = 0; i < lessons.length; i++) {
         const lesson = lessons[i];
 
-        // Если текущее время попадает в промежуток урока
         if (currentTime >= lesson.start && currentTime < lesson.end) {
             const timeLeft = lesson.end - currentTime;
-            const minutesLeft = Math.floor(timeLeft / 60);
-
             return {
                 lessonName: lesson.lesson,
-                timeLeft: minutesLeft,
-                isBreak: false // Урок идет, не перемена
+                timeLeft,
+                isBreak: false
             };
         }
 
-        // Если текущее время между концом текущего урока и началом следующего урока, то перемена
         if (i < lessons.length - 1 && currentTime >= lesson.end && currentTime < lessons[i + 1].start) {
             const timeLeft = lessons[i + 1].start - currentTime;
-            const minutesLeft = Math.floor(timeLeft / 60);
-
             return {
-                lessonName: "Break", // Перемена
-                timeLeft: minutesLeft,
+                lessonName: "Break",
+                timeLeft,
                 isBreak: true
             };
         }
     }
 
-    // Если текущее время не попадает в учебное время
     return { lessonName: null, timeLeft: 0, isBreak: false };
 };
 
+// Функция для обновления информации на странице
 const updateCurrentLessons = () => {
-    // Определяем текущий урок для смены shift1 и shift2
     const currentLessonShift1 = getCurrentLesson('shift1');
     const currentLessonShift2 = getCurrentLesson('shift2');
 
@@ -422,10 +424,10 @@ const updateCurrentLessons = () => {
     if (currentLessonShift1.lessonName) {
         if (currentLessonShift1.isBreak) {
             document.getElementById("lessonShift1").innerHTML = "Break";
-            document.getElementById("timeLeftShift1").innerHTML = `(${currentLessonShift1.timeLeft} min left)`;
+            document.getElementById("timeLeftShift1").innerHTML = formatTime(currentLessonShift1.timeLeft);
         } else {
             document.getElementById("lessonShift1").innerHTML = `${currentLessonShift1.lessonName}`;
-            document.getElementById("timeLeftShift1").innerHTML = `(${currentLessonShift1.timeLeft} min left)`;
+            document.getElementById("timeLeftShift1").innerHTML = formatTime(currentLessonShift1.timeLeft);
         }
     } else {
         document.getElementById("lessonShift1").innerHTML = "-";
@@ -437,25 +439,24 @@ const updateCurrentLessons = () => {
     if (currentLessonShift2.lessonName) {
         if (currentLessonShift2.isBreak) {
             document.getElementById("lessonShift2").innerHTML = "Break";
-            document.getElementById("timeLeftShift2").innerHTML = `(${currentLessonShift2.timeLeft} min left)`;
+            document.getElementById("timeLeftShift2").innerHTML = formatTime(currentLessonShift2.timeLeft);
         } else {
             document.getElementById("lessonShift2").innerHTML = `${currentLessonShift2.lessonName}`;
-            document.getElementById("timeLeftShift2").innerHTML = `(${currentLessonShift2.timeLeft} min left)`;
+            document.getElementById("timeLeftShift2").innerHTML = formatTime(currentLessonShift2.timeLeft);
         }
     } else {
         document.getElementById("lessonShift2").innerHTML = "-";
         document.getElementById("timeLeftShift2").innerHTML = "";
     }
 
-    document.getElementById("currentTime").innerHTML = `Current time(s): ${getCurrentTimeInSeconds()}`;
+
 };
 
 // Обновляем уроки сразу после загрузки страницы
 updateCurrentLessons();
 
-// Обновляем данные каждую секунду (1000 миллисекунд)
+// Обновляем данные каждую секунду
 setInterval(updateCurrentLessons, 1000);
-
 
 AOS.init({
     duration: 400,  // Ускоряет анимацию (значение в миллисекундах)
