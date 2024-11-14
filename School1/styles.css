@@ -47,7 +47,7 @@ header {
 /* Контейнер для размещения секций рядом */
 .container-flex {
     margin-top: 0.5rem;
-    display: flex;
+    margin-left: 0.25rem;
     flex-wrap: wrap; /* Чтобы секции адаптировались при изменении ширины */
     padding: 0.6375rem; /* 7px */
        
@@ -55,7 +55,7 @@ header {
 /* Контейнер для размещения секций рядом */
 .container-flex1 {
     margin-top: 0.5rem;
-    display: flex;
+    margin-left: 0.25rem;
     flex-wrap: wrap; /* Чтобы секции адаптировались при изменении ширины */
     padding: 0.6375rem; /* 7px */
        
@@ -296,4 +296,10 @@ h3 {
         max-width: 100%;
            
     }
+    .container-flex1 {
+        padding: 1.4375rem; /* 7px */
+        max-width: 100%;
+           
+    }
+
 }
