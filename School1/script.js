@@ -213,21 +213,22 @@ const getCurrentLesson = (shift) => {
             return {
                 lessonName: lesson.lesson,
                 timeLeft,
-                isBreak: false
+                isBreak: false,
+                totalTime: lesson.end - lesson.start
             };
         }
 
         if (i < lessons.length - 1 && currentTime >= lesson.end && currentTime < lessons[i + 1].start) {
             const timeLeft = lessons[i + 1].start - currentTime;
             return {
-                lessonName: "Break",
+                lessonName: "Перемена",
                 timeLeft,
                 isBreak: true
             };
         }
     }
 
-    return { lessonName: null, timeLeft: 0, isBreak: false };
+    return { lessonName: null, timeLeft: 0, isBreak: false, totalTime: 0 };
 };
 
 const updateCurrentLessons = () => {
@@ -240,13 +241,19 @@ const updateCurrentLessons = () => {
         if (currentLessonShift1.isBreak) {
             document.getElementById("lessonShift1").innerHTML = "Перемена";
             document.getElementById("timeLeftShift1").innerHTML = formatTime(currentLessonShift1.timeLeft);
+            document.getElementById("progressShift1").style.display = 'none'; // Скрыть прогресс-бар
         } else {
             document.getElementById("lessonShift1").innerHTML = `${currentLessonShift1.lessonName}`;
             document.getElementById("timeLeftShift1").innerHTML = formatTime(currentLessonShift1.timeLeft);
+            // Заполняем прогресс-бар
+            const progress = ((currentLessonShift1.totalTime - currentLessonShift1.timeLeft) / currentLessonShift1.totalTime) * 100;
+            document.getElementById("progressShift1").style.display = 'inline-block'; // Показываем прогресс-бар
+            document.getElementById("progressShift1").value = progress;
         }
     } else {
         document.getElementById("lessonShift1").innerHTML = "-";
         document.getElementById("timeLeftShift1").innerHTML = "";
+        document.getElementById("progressShift1").style.display = 'none'; // Скрыть прогресс-бар
     }
 
     // Обновляем информацию для 2-й смены
@@ -255,16 +262,20 @@ const updateCurrentLessons = () => {
         if (currentLessonShift2.isBreak) {
             document.getElementById("lessonShift2").innerHTML = "Перемена";
             document.getElementById("timeLeftShift2").innerHTML = formatTime(currentLessonShift2.timeLeft);
+            document.getElementById("progressShift2").style.display = 'none'; // Скрыть прогресс-бар
         } else {
             document.getElementById("lessonShift2").innerHTML = `${currentLessonShift2.lessonName}`;
             document.getElementById("timeLeftShift2").innerHTML = formatTime(currentLessonShift2.timeLeft);
+            // Заполняем прогресс-бар
+            const progress = ((currentLessonShift2.totalTime - currentLessonShift2.timeLeft) / currentLessonShift2.totalTime) * 100;
+            document.getElementById("progressShift2").style.display = 'inline-block'; // Показываем прогресс-бар
+            document.getElementById("progressShift2").value = progress;
         }
     } else {
         document.getElementById("lessonShift2").innerHTML = "-";
         document.getElementById("timeLeftShift2").innerHTML = "";
+        document.getElementById("progressShift2").style.display = 'none'; // Скрыть прогресс-бар
     }
-
-
 };
 
 // Обновляем уроки сразу после загрузки страницы
@@ -272,6 +283,7 @@ updateCurrentLessons();
 
 // Обновляем данные каждую секунду
 setInterval(updateCurrentLessons, 1000);
+
 
 AOS.init({
     duration: 400,
