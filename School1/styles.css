@@ -26,6 +26,7 @@ header {
 }
 /* Контейнер для размещения секций рядом */
 .container-flex {
+    margin-top: 0.5rem;
     display: flex;
     flex-wrap: wrap; /* Чтобы секции адаптировались при изменении ширины */
     padding: 0.6375rem; /* 7px */
@@ -73,8 +74,9 @@ h3 {
         
 }
 .social-icon {
-    width: 6.25rem; /* 100px */
-    height: 6.25rem;
+    width: 4.25rem; /* 100px */
+    height: 4.25rem;
+    margin-top: 1rem;
     border-radius: 0.9375rem; /* 15px */
     transition: transform 0.3s ease;
     display: inline-block;
