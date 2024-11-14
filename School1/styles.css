@@ -52,12 +52,36 @@ header {
     padding: 0.6375rem; /* 7px */
        
 }
-
+/* Контейнер для размещения секций рядом */
+.container-flex1 {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap; /* Чтобы секции адаптировались при изменении ширины */
+    padding: 0.6375rem; /* 7px */
+       
+}
+/* Секция с уроками */
+#schedule1 {
+    flex: 2; /* Занимает доступное пространство */
+    min-width: 170px; /* Минимальная ширина секции */
+    background-color: rgba(44, 100, 143, 0.226); /* Цвет фона */
+    padding: 1rem;
+    border-radius: 1.875rem; /* Закруглённые углы */
+    color: rgba(41, 117, 188, 0.614);
+    text-align-last: left;
+}
+.priority {
+    color:rgb(45, 82, 185);
+    font-size: 1.7625rem; /* 25px */
+    text-align-last: center;
+    padding-bottom: 10px; /* Добавить немного отступа от текста до линии */
+    border-bottom: 4px solid #00000042; /* Серый цвет для линии */
+}
 /* Секция с уроками */
 #schedule {
     flex: 2; /* Занимает доступное пространство */
     min-width: 170px; /* Минимальная ширина секции */
-    background-color: rgba(55, 168, 255, 0.226); /* Цвет фона */
+    background-color: rgba(43, 144, 220, 0.226); /* Цвет фона */
     padding: 1rem;
     border-radius: 1.875rem; /* Закруглённые углы */
     color: rgb(187, 187, 187);
