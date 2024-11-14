@@ -251,7 +251,7 @@ const updateCurrentLessons = () => {
             document.getElementById("progressShift1").value = progress;
         }
     } else {
-        document.getElementById("lessonShift1").innerHTML = "-";
+        document.getElementById("lessonShift1").innerHTML = "Нет уроков";
         document.getElementById("timeLeftShift1").innerHTML = "";
         document.getElementById("progressShift1").style.display = 'none'; // Скрыть прогресс-бар
     }
@@ -272,7 +272,7 @@ const updateCurrentLessons = () => {
             document.getElementById("progressShift2").value = progress;
         }
     } else {
-        document.getElementById("lessonShift2").innerHTML = "-";
+        document.getElementById("lessonShift2").innerHTML = "Нет уроков";
         document.getElementById("timeLeftShift2").innerHTML = "";
         document.getElementById("progressShift2").style.display = 'none'; // Скрыть прогресс-бар
     }
