@@ -286,7 +286,7 @@ setInterval(updateCurrentLessons, 1000);
 
 
 AOS.init({
-    duration: 400,
+    duration: 500,
     once: true
     
 }); 
