@@ -26,23 +26,6 @@ function pxToRem(px) {
     return px / 16 + 'rem';
 }
 
-// Функция для отображения текущего времени
-function updateKamchatkaTime() {
-    const timeElement = document.getElementById("local-time");
-    const options = {
-        timeZone: 'Asia/Kamchatka',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-    };
-
-    const currentTime = new Intl.DateTimeFormat('ru-RU', options).format(new Date());
-    timeElement.textContent = `time: ${currentTime}`;
-}
-
-setInterval(updateKamchatkaTime, 1000);
-
 document.addEventListener("DOMContentLoaded", () => {
     const swiper = new Swiper('.swiper-container', {
         slidesPerView: 1,
