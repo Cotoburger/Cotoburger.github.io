@@ -27,68 +27,50 @@ function pxToRem(px) {
     return px / 16 + 'rem';
 }
 
-let scrollTimeout;
-window.addEventListener('scroll', () => {
-    if (scrollTimeout) {
-        cancelAnimationFrame(scrollTimeout);
-    }
-    scrollTimeout = requestAnimationFrame(() => {
-        const h1h2Elements = document.querySelectorAll('h1, h2'); // Получаем все заголовки h1 и h2
-        const avtextElement = document.querySelector('.avtext'); // Ваш никнейм
-        const scheduleElements = document.querySelectorAll('#lesson-info div'); // Элементы расписания
-        const weatherElements = document.querySelectorAll('.weather-container, #weather-icon, #local-time'); // Элементы погоды
-
-        if (scrollY > 25 * 16) { // scrollY > 400px, эквивалентно 25rem
-            document.body.style.backgroundColor = '#02090e';
-            document.body.style.color = '#4f99c1';
-        
-            images.forEach((img) => {
-                if (img !== avatar && !socialIcons.includes(img)) {
-                    img.style.opacity = '0';
-                }
-            });
-        
-            h1h2Elements.forEach((el) => {
-                el.style.color = '#1a4b8e';
-            });
-        
-            scheduleElements.forEach((el) => {
-                el.style.color = '#1a4b8e'; // Цвет текста расписания
-            });
-        
-            weatherElements.forEach((el) => {
-                el.style.color = '#1a4b8e'; // Цвет текста погоды
-            });
-        
-            if (avtextElement) {
-                avtextElement.style.color = '#1a4b8e';
-            }
-        } else {
-            document.body.style.backgroundColor = '#000000';
-            document.body.style.color = '#b9b4b4';
-        
-            images.forEach((img) => {
-                if (img !== avatar && !socialIcons.includes(img)) {
-                    img.style.opacity = '1';
-                }
-            });
-        
-            h1h2Elements.forEach((el) => {
-                el.style.color = '#78b89a';
-            });
-        
-            scheduleElements.forEach((el) => {
-                el.style.color = '#78b89a'; // Цвет текста расписания
-            });
-        
-            weatherElements.forEach((el) => {
-                el.style.color = '#78b89a'; // Цвет текста погоды
-            });
-        
-            if (avtextElement) {
-                avtextElement.style.color = '#78b89a';
-            }
+// Ждем, пока страница полностью загрузится
+window.addEventListener('DOMContentLoaded', () => {
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+        if (scrollTimeout) {
+            cancelAnimationFrame(scrollTimeout);
         }
+        scrollTimeout = requestAnimationFrame(() => {
+            const h1h2Elements = document.querySelectorAll('h1, h2'); // Все заголовки h1 и h2
+            const avtextElement = document.querySelector('.avtext'); // Ваш никнейм
+            const scheduleElements = document.querySelectorAll('#lesson-info .sectionles, #lesson-info .time-left, .local-time'); // Элементы расписания
+            const isScrolled = window.scrollY > 400; // Проверка прокрутки (400px)
+
+            // Изменяем цвета для всех элементов, кроме погоды
+            if (isScrolled) {
+                changeStyles('#02090e', '#4f99c1', '#1a4b8e');
+            } else {
+                changeStyles('#000000', '#b9b4b4', '#78b89a');
+            }
+
+            // Функция для изменения стилей
+            function changeStyles(bgColor, textColor, elementsColor) {
+                // Изменяем цвет фона и текста страницы
+                document.body.style.backgroundColor = bgColor;
+                document.body.style.color = textColor;
+
+                // Изменяем цвет заголовков h1 и h2
+                h1h2Elements.forEach((el) => {
+                    el.style.color = elementsColor;
+                });
+
+                // Изменяем цвет элементов расписания
+                scheduleElements.forEach((el) => {
+                    el.style.color = elementsColor;
+                    el.style.transition = 'color 0.3s ease'; // Плавное изменение цвета
+                });
+
+                // Изменяем цвет никнейма
+                if (avtextElement) {
+                    avtextElement.style.color = elementsColor;
+                    avtextElement.style.transition = 'color 0.3s ease'; // Плавное изменение цвета
+                }
+            }
+        });
     });
 });
 const video = document.getElementById('background-video');
