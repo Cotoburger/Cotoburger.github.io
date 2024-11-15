@@ -129,7 +129,6 @@ function fadeOutVolume(videoElement) {
 const apiKey = 'bf6fe63e6eb2ba55bb0fffe350177538';
 const city = 'Petropavlovsk-Kamchatsky, RU';
 const weatherIcon = document.getElementById('weather-icon');
-
 async function getWeather() {
     try {
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=en`);
@@ -421,3 +420,11 @@ updateCurrentLessons();
 
 // Обновляем данные каждую секунду (1000 миллисекунд)
 setInterval(updateCurrentLessons, 1000);
+
+
+AOS.init({
+    duration: 400,  // Ускоряет анимацию (значение в миллисекундах)
+    once: true       // Анимация срабатывает только один раз
+    
+});
+
