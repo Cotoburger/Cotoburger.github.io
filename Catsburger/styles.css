@@ -62,7 +62,7 @@ nav a:focus {
 
 h1, h2 {
     margin-left: 1.25rem;
-    font-size: 2.5rem; /* 40px */
+    font-size: 3rem; /* 40px */
     color: #78b89a;
 }
 
@@ -308,10 +308,11 @@ h3 {
 .videoback {
     position: relative;
     padding: 7px;
-    margin: 25px;
-    border-radius: 30px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    margin: 20px;
+    border-radius: 3.125rem;
     transform: translateY(30px);
+    overflow: hidden; /* Это скроет части видео, выходящие за пределы контейнера */
+    text-shadow: 0.125rem 0.125rem 0.25rem rgba(255, 255, 255, 0.5);
 }
 /* Изображение проекта */
 .large-image {
@@ -349,9 +350,6 @@ h3 {
     font-size: 18px;
     color: #ddd; /* Светлый цвет для описания */
     margin-top: 0.625rem; /* Отступ сверху */
-}
-.background-video {
-    border-radius: 30px; /* Закругленные углы */
 }
 /* Слайд Swiper */
 .swiper-slide {

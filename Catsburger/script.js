@@ -42,7 +42,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             // Изменяем цвета для всех элементов, кроме погоды
             if (isScrolled) {
-                changeStyles('#02090e', '#4f99c1', '#1a4b8e');
+                changeStyles('#02090e', '#4f99c1', '#1a4b8e'); //фон текст заголовки
             } else {
                 changeStyles('#000000', '#b9b4b4', '#78b89a');
             }
