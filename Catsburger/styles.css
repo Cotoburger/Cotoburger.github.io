@@ -307,12 +307,17 @@ h3 {
 
 .videoback {
     position: relative;
-    padding: 7px;
     margin: 20px;
     border-radius: 3.125rem;
     transform: translateY(30px);
     overflow: hidden; /* Это скроет части видео, выходящие за пределы контейнера */
     text-shadow: 0.125rem 0.125rem 0.25rem rgba(255, 255, 255, 0.5);
+}
+.videoback iframe {
+    border-radius: 3.125rem;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Видео будет заполнять контейнер, возможно, с обрезкой */
 }
 /* Изображение проекта */
 .large-image {
@@ -399,9 +404,9 @@ body, h1, h2 {
         margin-right: 18.75rem;
     }
     .sectionx {
-        margin-right: 18.75rem;
+        margin-right: 17.75rem;
     }
     .sectionz {
-        margin-left: 18.75rem;
+        margin-left: 17.75rem;
     }
 }

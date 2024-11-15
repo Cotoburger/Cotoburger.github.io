@@ -91,7 +91,7 @@ const observer = new IntersectionObserver((entries) => {
         }
     });
 }, {
-    threshold: 0.5 // Эффект запускается, если видео видно на 50%
+    threshold: 0.3 // Эффект запускается, если видео видно на 30%
 });
 
 // Наблюдаем за видео
@@ -102,7 +102,7 @@ function fadeInVolume(videoElement) {
     if (isFading) return;
     isFading = true;
     const fadeInInterval = setInterval(() => {
-        if (videoElement.volume < 0.8) {
+        if (videoElement.volume < 0.6) {
             videoElement.volume = Math.min(videoElement.volume + 0.05, 1);
         } else {
             clearInterval(fadeInInterval);
@@ -116,7 +116,7 @@ function fadeOutVolume(videoElement) {
     if (isFading) return;
     isFading = true;
     const fadeOutInterval = setInterval(() => {
-        if (videoElement.volume > 0.2) {
+        if (videoElement.volume > 0.1) {
             videoElement.volume = Math.max(videoElement.volume - 0.05, 0);
         } else {
             clearInterval(fadeOutInterval);
