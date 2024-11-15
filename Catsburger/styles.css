@@ -95,6 +95,7 @@ h3 {
 
 .sectionles {
     background-color: rgba(5, 5, 5, 0.313);
+    min-width: 10rem;
     padding: 0.7375rem; /* 7px */
     margin: 0.2625rem; /* 25px */
     margin-bottom: 0.2625rem; /* 25px */
@@ -110,7 +111,8 @@ h3 {
 .sectionx {
     background-color: rgba(99, 100, 100, 0.215);
     padding: 0.4375rem; /* 7px */
-    margin: 1.5625rem; /* 25px */
+    margin-right: 0.5125rem; /* 25px */
+    margin-left: 0.5125rem; /* 25px */
     border-radius: 1.875rem; /* 30px */
     box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.1);
     transform: translateY(1.875rem);
@@ -119,7 +121,8 @@ h3 {
 .sectionz {
     background-color: rgba(99, 100, 100, 0.215);
     padding: 0.4375rem; /* 7px */
-    margin: 1.5625rem; /* 25px */
+    margin-right: 0.5125rem; /* 25px */
+    margin-left: 0.5125rem; /* 25px */
     border-radius: 1.875rem; /* 30px */
     box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.1);
     transform: translateY(1.875rem);
@@ -330,9 +333,9 @@ h3 {
 .swiper-slide .text-container {
     background-color: rgba(0, 96, 251, 0.123); /* Тёмный полупрозрачный фон */
     border-radius: 30px; /* Закругленные углы */
-    padding: 0,625rem; /* Отступы вокруг текста */
+    padding: 0.625rem; /* Отступы вокруг текста */
     box-sizing: border-box; /* Чтобы отступы не выходили за пределы */
-    margin-top: 0,625rem; /* Отступ сверху */
+    margin-top: 0.625rem; /* Отступ сверху */
     margin-right: 20px; /* Отступ сверху */
 }
 
@@ -348,7 +351,7 @@ h3 {
 .swiper-slide .text-container p {
     font-size: 18px;
     color: #ddd; /* Светлый цвет для описания */
-    margin-top: 0,625rem; /* Отступ сверху */
+    margin-top: 0.625rem; /* Отступ сверху */
 }
 .background-video {
     border-radius: 30px; /* Закругленные углы */
@@ -361,7 +364,7 @@ h3 {
     align-items: center; /* Центрируем по горизонтали */
     text-align: center;
     width: 100%; /* Убираем лишние отступы */
-    padding: 0,625rem;
+    padding: 0.625rem;
 }
 
 /* Плавный переход для цвета текста */
@@ -377,22 +380,13 @@ body, h1, h2 {
     height: auto; /* Сохраняем пропорции */
     display: block;
     margin: 15px auto; /* Центрируем картинку с отступами */
-    border-radius: 0,625rem; /* Стилизация */
-}
-
-/* Позиционирование стрелок */
-.swiper-button-next {
-    right: 0,625rem; /* Расстояние от правого края */
-}
-
-.swiper-button-prev {
-    left: 0,625rem; /* Расстояние от левого края */
+    border-radius: 0.625rem; /* Стилизация */
 }
 
 /* Пагинация */
 .swiper-pagination {
     position: absolute;
-    bottom: 0,625rem;
+    bottom: 0.625rem;
 }
 
 @media (min-width: 125rem) {
