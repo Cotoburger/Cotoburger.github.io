@@ -92,6 +92,21 @@ h3 {
     transform: translateY(1.875rem);
     animation: fadeInZoom 0.4s ease-out forwards;
 }
+
+.sectionles {
+    background-color: rgba(5, 5, 5, 0.313);
+    padding: 0.7375rem; /* 7px */
+    margin: 0.2625rem; /* 25px */
+    margin-bottom: 0.2625rem; /* 25px */
+    border-radius: 1.175rem; /* 30px */
+    transform: translateY(1.175rem);
+    animation: fadeInZoom 0.4s ease-out forwards;
+}
+
+.les2 {
+    margin-bottom: 1.5625rem; /* 25px */
+}
+
 .sectionx {
     background-color: rgba(99, 100, 100, 0.215);
     padding: 0.4375rem; /* 7px */
@@ -149,6 +164,7 @@ h3 {
     justify-content: space-between;
     gap: 1.25rem;
     margin-left: 1.25rem;
+    
 }
 
 .avtext {
@@ -156,9 +172,74 @@ h3 {
     color: #81bda6;
     text-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.5);
 }
+.container-flex {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
 
+.sectionz {
+    width: 45%;
+}
+
+.sectionx {
+    width: 45%;
+}
+
+#schedule h2 {
+    color: #81bda6;
+    text-align: center;
+}
+
+.lesson-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.shift {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.shift-title {
+    background-color: #4CAF50; /* тот же цвет, что и для заголовка */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center; /* название смены по центру */
+    font-weight: bold;
+}
+/* Секция с погодой */
+#weather {
+    flex: 2; /* Занимает доступное пространство */
+    background-color: rgba(99, 100, 100, 0.215); /* Цвет фона */
+    border-radius: 1.875rem;
+    color: rgb(187, 187, 187);
+    display: flex; /* Используем flex для центрирования */
+    flex-direction: column; /* Выравнивание по вертикали */
+    align-items: center; /* Центрируем по горизонтали */
+    text-align: center; /* Текст по центру */
+}
+.shift-lesson {
+    font-size: 18px;
+    text-align: left; /* урок выравнивается слева */
+    width: 100%;
+    margin-top: 5px;
+    padding-left: 20px; /* немного отступаем от края */
+}
+
+#currentTime {
+    font-size: 18px;
+    margin-top: 20px;
+}
 .weather-icon {
     font-size: 2.8125rem; /* 45px */
+    
 }
 
 .local-time {
@@ -218,7 +299,7 @@ h3 {
     }
     .avtext {
         font-size: 3.75rem;
-        margin-top: 11.4375rem; /* 183px */
+        margin-top: 5.4375rem; /* 183px */
     }
 }
 

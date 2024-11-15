@@ -35,6 +35,8 @@ window.addEventListener('scroll', () => {
     scrollTimeout = requestAnimationFrame(() => {
         const h1h2Elements = document.querySelectorAll('h1, h2'); // Получаем все заголовки h1 и h2
         const avtextElement = document.querySelector('.avtext'); // Ваш никнейм
+        const scheduleElements = document.querySelectorAll('#lesson-info div'); // Элементы расписания
+        const weatherElements = document.querySelectorAll('.weather-container, #weather-icon, #local-time'); // Элементы погоды
 
         if (scrollY > 25 * 16) { // scrollY > 400px, эквивалентно 25rem
             document.body.style.backgroundColor = '#02090e';
@@ -48,6 +50,14 @@ window.addEventListener('scroll', () => {
         
             h1h2Elements.forEach((el) => {
                 el.style.color = '#1a4b8e';
+            });
+        
+            scheduleElements.forEach((el) => {
+                el.style.color = '#1a4b8e'; // Цвет текста расписания
+            });
+        
+            weatherElements.forEach((el) => {
+                el.style.color = '#1a4b8e'; // Цвет текста погоды
             });
         
             if (avtextElement) {
@@ -67,13 +77,20 @@ window.addEventListener('scroll', () => {
                 el.style.color = '#78b89a';
             });
         
+            scheduleElements.forEach((el) => {
+                el.style.color = '#78b89a'; // Цвет текста расписания
+            });
+        
+            weatherElements.forEach((el) => {
+                el.style.color = '#78b89a'; // Цвет текста погоды
+            });
+        
             if (avtextElement) {
                 avtextElement.style.color = '#78b89a';
             }
         }
     });
 });
-
 const video = document.getElementById('background-video');
 
 // Устанавливаем начальную громкость и запускаем видео без звука
@@ -229,111 +246,132 @@ document.addEventListener("DOMContentLoaded", () => {
 const schedule = {
     1: {
         shift1: [
-            {lesson: "Классный час", start: 29700, end: 30600},
-            {lesson: "1 урок", start: 30900, end: 34100},
-            {lesson: "2 урок", start: 35400, end: 37800},
-            {lesson: "3 урок", start: 38700, end: 41100},
-            {lesson: "4 урок", start: 41400, end: 43000},
-            {lesson: "5 урок", start: 43600, end: 46800},
-            {lesson: "6 урок", start: 48000, end: 50400},
-            {lesson: "7 урок", start: 50700, end: 53100}
+            {lesson: "Классный час", start: "08:15", end: "08:45"},
+            {lesson: "1 урок", start: "08:55", end: "09:35"},
+            {lesson: "2 урок", start: "09:50", end: "10:30"},
+            {lesson: "3 урок", start: "10:45", end: "11:25"},
+            {lesson: "4 урок", start: "11:30", end: "12:10"},
+            {lesson: "5 урок", start: "12:20", end: "13:00"},
+            {lesson: "6 урок", start: "13:20", end: "14:00"},
+            {lesson: "7 урок", start: "14:15", end: "14:55"}
         ],
         shift2: [
-            {lesson: "0 урок", start: 43600, end: 46800},
-            {lesson: "1 урок", start: 48000, end: 50400},
-            {lesson: "2 урок", start: 50700, end: 53100},
-            {lesson: "3 урок", start: 54600, end: 57000},
-            {lesson: "Классный час", start: 57700, end: 58900},
-            {lesson: "4 урок", start: 60000, end: 62400},
-            {lesson: "5 урок", start: 63000, end: 65400},
-            {lesson: "6 урок", start: 65800, end: 68400}
+            {lesson: "0 урок", start: "12:20", end: "13:00"},
+            {lesson: "1 урок", start: "13:20", end: "14:00"},
+            {lesson: "2 урок", start: "14:15", end: "14:55"},
+            {lesson: "3 урок", start: "15:10", end: "15:50"},
+            {lesson: "Классный час", start: "16:05", end: "16:35"},
+            {lesson: "4 урок", start: "16:40", end: "17:20"},
+            {lesson: "5 урок", start: "17:30", end: "18:10"},
+            {lesson: "6 урок", start: "18:20", end: "19:00"}
         ]
     },
     2: {
         shift1: [
-            {lesson: "1 урок", start: 29700, end: 32100},
-            {lesson: "2 урок", start: 32400, end: 34800},
-            {lesson: "3 урок", start: 36000, end: 38400},
-            {lesson: "4 урок", start: 39600, end: 42000},
-            {lesson: "5 урок", start: 42000, end: 43200},
-            {lesson: "6 урок", start: 43800, end: 46200},
-            {lesson: "7 урок", start: 47400, end: 49800}
+            {lesson: "1 урок", start: "08:15", end: "08:55"},
+            {lesson: "2 урок", start: "09:05", end: "09:45"},
+            {lesson: "3 урок", start: "10:00", end: "10:40"},
+            {lesson: "4 урок", start: "11:00", end: "11:40"},
+            {lesson: "5 урок", start: "11:50", end: "12:30"},
+            {lesson: "6 урок", start: "12:50", end: "13:30"},
+            {lesson: "7 урок", start: "13:50", end: "14:30"}
         ],
         shift2: [
-            {lesson: "0 урок", start: 42000, end: 43200},
-            {lesson: "1 урок", start: 43800, end: 46200},
-            {lesson: "2 урок", start: 47400, end: 49800},
-            {lesson: "3 урок", start: 53100, end: 55500},
-            {lesson: "4 урок", start: 56400, end: 57600},
-            {lesson: "5 урок", start: 59400, end: 61800},
-            {lesson: "6 урок", start: 62400, end: 64800},
+            {lesson: "0 урок", start: "11:50", end: "12:30"},
+            {lesson: "1 урок", start: "12:50", end: "13:30"},
+            {lesson: "2 урок", start: "13:50", end: "14:30"},
+            {lesson: "3 урок", start: "14:45", end: "15:25"},
+            {lesson: "4 урок", start: "15:40", end: "16:20"},
+            {lesson: "5 урок", start: "16:30", end: "17:10"},
+            {lesson: "6 урок", start: "17:20", end: "18:00"},
         ]
     },
     3: {
         shift1: [
-            {lesson: "1 урок", start: 29700, end: 32100},
-            {lesson: "2 урок", start: 32400, end: 34800},
-            {lesson: "3 урок", start: 36000, end: 38400},
-            {lesson: "Классный час", start: 38100, end: 38700},
-            {lesson: "4 урок", start: 39000, end: 41400},
-            {lesson: "5 урок", start: 43600, end: 46800},
-            {lesson: "6 урок", start: 48000, end: 50400},
-            {lesson: "7 урок", start: 50700, end: 53100}
+            {lesson: "1 урок", start: "08:15", end: "08:55"},
+            {lesson: "2 урок", start: "09:05", end: "09:45"},
+            {lesson: "3 урок", start: "10:00", end: "10:40"},
+            {lesson: "Классный час", start: "10:55", end: "11:25"},
+            {lesson: "4 урок", start: "11:30", end: "12:10"},
+            {lesson: "5 урок", start: "12:20", end: "13:00"},
+            {lesson: "6 урок", start: "13:20", end: "14:00"},
+            {lesson: "7 урок", start: "14:15", end: "14:55"}
         ],
         shift2: [
-            {lesson: "0 урок", start: 43600, end: 46800},
-            {lesson: "1 урок", start: 48000, end: 50400},
-            {lesson: "2 урок", start: 50700, end: 53100},
-            {lesson: "3 урок", start: 54600, end: 57000},
-            {lesson: "Классный час", start: 57700, end: 58900},
-            {lesson: "4 урок", start: 60000, end: 62400},
-            {lesson: "5 урок", start: 63000, end: 65400},
-            {lesson: "6 урок", start: 65800, end: 68400}
+            {lesson: "0 урок", start: "12:20", end: "13:00"},
+            {lesson: "1 урок", start: "13:20", end: "14:00"},
+            {lesson: "2 урок", start: "14:15", end: "14:55"},
+            {lesson: "3 урок", start: "15:10", end: "15:50"},
+            {lesson: "Классный час", start: "16:05", end: "16:35"},
+            {lesson: "4 урок", start: "16:40", end: "17:20"},
+            {lesson: "5 урок", start: "17:30", end: "18:10"},
+            {lesson: "6 урок", start: "18:20", end: "19:00"}
         ]
     },
     4: {
         shift1: [
-            {lesson: "1 урок", start: 29700, end: 32100},
-            {lesson: "2 урок", start: 32400, end: 34800},
-            {lesson: "3 урок", start: 36000, end: 38400},
-            {lesson: "Классный час", start: 38100, end: 38700},
-            {lesson: "4 урок", start: 39000, end: 41400},
-            {lesson: "5 урок", start: 43600, end: 46800},
-            {lesson: "6 урок", start: 48000, end: 50400},
-            {lesson: "7 урок", start: 50700, end: 53100}
+            {lesson: "1 урок", start: "08:15", end: "08:55"},
+            {lesson: "2 урок", start: "09:05", end: "09:45"},
+            {lesson: "3 урок", start: "10:00", end: "10:40"},
+            {lesson: "Классный час", start: "10:55", end: "11:25"},
+            {lesson: "4 урок", start: "11:30", end: "12:10"},
+            {lesson: "5 урок", start: "12:20", end: "13:00"},
+            {lesson: "6 урок", start: "13:20", end: "14:00"},
+            {lesson: "7 урок", start: "14:15", end: "14:55"}
         ],
         shift2: [
-            {lesson: "0 урок", start: 43600, end: 46800},
-            {lesson: "1 урок", start: 48000, end: 50400},
-            {lesson: "2 урок", start: 50700, end: 53100},
-            {lesson: "3 урок", start: 54600, end: 57000},
-            {lesson: "Классный час", start: 57700, end: 58900},
-            {lesson: "4 урок", start: 60000, end: 62400},
-            {lesson: "5 урок", start: 63000, end: 65400},
-            {lesson: "6 урок", start: 65800, end: 68400}
+            {lesson: "0 урок", start: "12:20", end: "13:00"},
+            {lesson: "1 урок", start: "13:20", end: "14:00"},
+            {lesson: "2 урок", start: "14:15", end: "14:55"},
+            {lesson: "3 урок", start: "15:10", end: "15:50"},
+            {lesson: "Классный час", start: "16:05", end: "16:35"},
+            {lesson: "4 урок", start: "16:40", end: "17:20"},
+            {lesson: "5 урок", start: "17:30", end: "18:10"},
+            {lesson: "6 урок", start: "18:20", end: "19:00"}
         ]
     },
     5: {
         shift1: [
-            {lesson: "1 урок", start: 29700, end: 32100},
-            {lesson: "2 урок", start: 32400, end: 34800},
-            {lesson: "3 урок", start: 36000, end: 38400},
-            {lesson: "4 урок", start: 39600, end: 42000},
-            {lesson: "5 урок", start: 42000, end: 43200},
-            {lesson: "6 урок", start: 43800, end: 46200},
-            {lesson: "7 урок", start: 47400, end: 49800}
+            {lesson: "1 урок", start: "08:15", end: "08:55"},
+            {lesson: "2 урок", start: "09:05", end: "09:45"},
+            {lesson: "3 урок", start: "10:00", end: "10:40"},
+            {lesson: "4 урок", start: "11:00", end: "11:40"},
+            {lesson: "5 урок", start: "11:50", end: "12:30"},
+            {lesson: "6 урок", start: "12:50", end: "13:30"},
+            {lesson: "7 урок", start: "13:50", end: "14:30"}
         ],
         shift2: [
-            {lesson: "0 урок", start: 42000, end: 43200},
-            {lesson: "1 урок", start: 43800, end: 46200},
-            {lesson: "2 урок", start: 47400, end: 49800},
-            {lesson: "3 урок", start: 53100, end: 55500},
-            {lesson: "4 урок", start: 56400, end: 57600},
-            {lesson: "5 урок", start: 59400, end: 61800},
-            {lesson: "6 урок", start: 62400, end: 64800},
+            {lesson: "0 урок", start: "11:50", end: "12:30"},
+            {lesson: "1 урок", start: "12:50", end: "13:30"},
+            {lesson: "2 урок", start: "13:50", end: "14:30"},
+            {lesson: "3 урок", start: "14:45", end: "15:25"},
+            {lesson: "4 урок", start: "15:40", end: "16:20"},
+            {lesson: "5 урок", start: "16:30", end: "17:10"},
+            {lesson: "6 урок", start: "17:20", end: "18:00"},
         ]
     }
 };
+// Функция для перевода времени в секунды с полуночи
+const timeToSeconds = (time) => {
+    const [hours, minutes] = time.split(":").map(Number); // Разбиваем строку на часы и минуты
+    return hours * 3600 + minutes * 60; // Переводим в секунды
+};
+
+// Обновляем расписание, преобразуя времена в секунды
+const convertScheduleToSeconds = (schedule) => {
+    for (let day in schedule) {
+        for (let shift in schedule[day]) {
+            schedule[day][shift].forEach(lesson => {
+                lesson.start = timeToSeconds(lesson.start); // Конвертируем время начала
+                lesson.end = timeToSeconds(lesson.end); // Конвертируем время окончания
+            });
+        }
+    }
+};
+
+// Преобразуем расписание в секунды
+convertScheduleToSeconds(schedule);
+
 // Функция для перевода текущего времени в секунды с полуночи
 const getCurrentTimeInSeconds = () => {
     const now = new Date();
@@ -351,23 +389,48 @@ const getCurrentLesson = (shift) => {
     const lessons = schedule[currentDay][shift]; // получаем уроки для текущего дня и смены
 
     for (let lesson of lessons) {
+        // Убедимся, что текущее время попадает в промежуток урока
         if (currentTime >= lesson.start && currentTime < lesson.end) {
-            return lesson.lesson; // возвращаем текущий урок
+            // Время до конца урока
+            const timeLeft = lesson.end - currentTime;
+            const minutesLeft = Math.floor(timeLeft / 60); // оставшееся время в минутах
+
+            // Возвращаем объект с названием урока и временем до конца
+            return {
+                lessonName: lesson.lesson, // название урока
+                timeLeft: minutesLeft, // оставшееся время в минутах
+            };
         }
     }
 
-    return "-"; // если урока нет в этот момент
+    return { lessonName: null, timeLeft: 0 }; // если урока нет в этот момент
 };
 
-// Функция для обновления текущих уроков
 const updateCurrentLessons = () => {
     // Определяем текущий урок для смены shift1 и shift2
     const currentLessonShift1 = getCurrentLesson('shift1');
     const currentLessonShift2 = getCurrentLesson('shift2');
 
-    // Выводим результат на страницу
-    document.getElementById("currentLessonShift1").innerHTML = `1st shift: ${currentLessonShift1}`;
-    document.getElementById("currentLessonShift2").innerHTML = `2nd shift: ${currentLessonShift2}`;
+    // Обновляем информацию для 1-й смены
+    document.getElementById("currentLessonShift1").innerHTML = `1st shift`;
+    if (currentLessonShift1.lessonName) {
+        document.getElementById("lessonShift1").innerHTML = `${currentLessonShift1.lessonName}`;
+        document.getElementById("timeLeftShift1").innerHTML = `(${currentLessonShift1.timeLeft} min left)`;
+    } else {
+        document.getElementById("lessonShift1").innerHTML = "-"; // если урока нет
+        document.getElementById("timeLeftShift1").innerHTML = ""; // если урока нет, не показываем время
+    }
+
+    // Обновляем информацию для 2-й смены
+    document.getElementById("currentLessonShift2").innerHTML = `2nd shift`;
+    if (currentLessonShift2.lessonName) {
+        document.getElementById("lessonShift2").innerHTML = `${currentLessonShift2.lessonName}`;
+        document.getElementById("timeLeftShift2").innerHTML = `(${currentLessonShift2.timeLeft} min left)`;
+    } else {
+        document.getElementById("lessonShift2").innerHTML = "-"; // если урока нет
+        document.getElementById("timeLeftShift2").innerHTML = ""; // если урока нет, не показываем время
+    }
+
     document.getElementById("currentTime").innerHTML = `Current time(s): ${getCurrentTimeInSeconds()}`;
 };
 
@@ -375,4 +438,4 @@ const updateCurrentLessons = () => {
 updateCurrentLessons();
 
 // Обновляем данные каждую секунду (1000 миллисекунд)
-setInterval(updateCurrentLessons, 1000);  // обновление каждую секунду
+setInterval(updateCurrentLessons, 1000);
