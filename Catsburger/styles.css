@@ -95,7 +95,8 @@ h3 {
 
 .sectionles {
     background-color: rgba(5, 5, 5, 0.313);
-    min-width: 10rem;
+    min-width: 14rem;
+    min-width: 95%;
     padding: 0.7375rem; /* 7px */
     margin: 0.2625rem; /* 25px */
     margin-bottom: 0.2625rem; /* 25px */
