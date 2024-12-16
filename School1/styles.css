@@ -95,7 +95,8 @@ nav a:focus {
 
 h1, h2 {
     font-size: 3rem; /* 40px */
-    color: #78b89a;
+    color: #3c8cce;
+    text-align-last: center;
 }
 
 h3 {
@@ -302,4 +303,75 @@ h3 {
            
     }
 
+}
+.header-container {
+    display: flex; /* Устанавливаем Flexbox */
+    align-items: center; /* Выравниваем элементы по вертикали */
+    justify-content: space-between; /* Размещаем элементы по краям */
+    padding: 1px 20px; /* Добавляем отступы для удобства */
+    background-color: rgba(41, 117, 188, 0.406); /* (Опционально) Фон для заголовка */
+    border-bottom: 1px solid #004586; /* (Опционально) Разделительная линия */
+}
+
+.menu-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.menu-icon div {
+    height: 4px;
+    background-color: #0b6cad;
+    border-radius: 2px;
+}
+
+/* Стили для панели инструментов */
+.tools-panel {
+    position: absolute;
+    top: 10px;
+    right: -250px; /* Панель скрыта за пределами экрана */
+    width: 200px;
+    height: 250px;
+    background-color: rgba(22, 51, 67, 0.833);
+    color: rgb(209, 40, 40);
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    border-radius: 1.125rem;
+    visibility: hidden; /* Панель скрыта по умолчанию */
+    opacity: 0; /* Прозрачность 0 при скрытой панели */
+    pointer-events: none; /* Запрещаем взаимодействие, когда панель скрыта */
+    transition: opacity 0.3s ease, visibility 0s ease 0.3s, right 0.3s ease;
+    backdrop-filter: blur(5px); /* Применяем блюр к фону */
+}
+
+/* Когда панель активна, она появляется */
+.tools-panel.active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    right: 15px; /* Панель появляется справа от кнопки */
+    transition: opacity 0.3s ease, visibility 0s ease 0s, right 0.3s ease;
+}
+/* Скрыть кнопку, когда панель активна */
+.tools-panel.active + .menu-icon {
+    display: none; /* Кнопка скрывается, когда панель активна */
+}
+/* Стили для ссылок на панели */
+.tools-panel a {
+    color: rgb(40, 107, 183);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.5625rem; /* 25px */
+}
+.tools-panel a2 {
+    color: rgb(29, 77, 132);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.5625rem; /* 25px */
 }

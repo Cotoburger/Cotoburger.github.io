@@ -274,4 +274,33 @@ AOS.init({
     
 }); 
 
+document.addEventListener("click", function(event) {
+    var menu = document.getElementById("toolsPanel");
+    var menuIcon = document.querySelector(".menu-icon");
 
+    // Если клик был вне панели и кнопки, то скрыть панель
+    if (!menu.contains(event.target) && !menuIcon.contains(event.target)) {
+        menu.classList.remove("active");
+        menuIcon.style.display = 'flex'; // Показываем кнопку обратно, если панель скрыта
+    }
+});
+
+// Находим элементы
+const menuIcon = document.querySelector('.menu-icon');
+const toolsPanel = document.querySelector('.tools-panel');
+
+// Добавляем событие на клик по гамбургеру
+menuIcon.addEventListener('click', (event) => {
+    event.stopPropagation(); // Чтобы клик по кнопке не приводил к срабатыванию события в document
+    // Переключаем класс активного состояния на гамбургере
+    menuIcon.classList.toggle('active');
+    // Переключаем класс активного состояния на панели
+    toolsPanel.classList.toggle('active');
+
+    // Когда панель активна, скрываем кнопку
+    if (toolsPanel.classList.contains("active")) {
+        menuIcon.style.display = 'none'; // Скрываем кнопку
+    } else {
+        menuIcon.style.display = 'flex'; // Показываем кнопку обратно
+    }
+});
