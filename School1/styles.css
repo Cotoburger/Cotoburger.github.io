@@ -344,7 +344,7 @@ h3 {
     visibility: hidden; /* Панель скрыта по умолчанию */
     opacity: 0; /* Прозрачность 0 при скрытой панели */
     pointer-events: none; /* Запрещаем взаимодействие, когда панель скрыта */
-    transition: opacity 0.3s ease, visibility 0s ease 0.3s, right 0.3s ease;
+    transition: opacity 0.1s ease, visibility 0s ease 0.1s, right 0.1s ease;
     backdrop-filter: blur(5px); /* Применяем блюр к фону */
 }
 
@@ -354,7 +354,7 @@ h3 {
     opacity: 1;
     pointer-events: auto;
     right: 15px; /* Панель появляется справа от кнопки */
-    transition: opacity 0.3s ease, visibility 0s ease 0s, right 0.3s ease;
+    transition: opacity 0.1s ease, visibility 0s ease 0s, right 0.1s ease;
 }
 /* Скрыть кнопку, когда панель активна */
 .tools-panel.active + .menu-icon {
