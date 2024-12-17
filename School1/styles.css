@@ -348,6 +348,7 @@ h4 {
 /* Применение анимации к #schedule1 */
 #schedule1 {
     animation: fadeInZoom 0.4s ease-out forwards;
+    margin-bottom: 8rem;
 }
 .socials-container {
     display: flex;
@@ -373,6 +374,7 @@ h4 {
         transform: scale(1.1) translateY(1rem); /* Масштаб в 150% и смещение по оси Y */
         transform-origin: top center; /* Масштабирование начинается от верхней центральной точки */
         min-width: 39rem;
+        margin-bottom: 10rem;
     }
     #schedule {
         flex: 0.5; /* Занимает доступное пространство */
@@ -503,14 +505,14 @@ h4 {
 
 /* Стили для снежинок */
 #snowflakes {
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 50%;
     width: 94vw;
     height: 100vh;
     pointer-events: none;
-    z-index: -1000;
+    z-index: -9999;
     display: flex;
     justify-content: center;
     align-items: center;
