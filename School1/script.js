@@ -80,7 +80,9 @@ const schedule = {
             {lesson: "3-й урок", start: "14:45", end: "15:25"},
             {lesson: "4-й урок", start: "15:40", end: "16:20"},
             {lesson: "5-й урок", start: "16:30", end: "17:10"},
-            {lesson: "6-й урок", start: "17:20", end: "18:00"}
+            {lesson: "6-й урок", start: "17:20", end: "18:00"},
+            {lesson: "7-й урок", start: "18:20", end: "19:00"},
+            {lesson: "8-й урок", start: "19:20", end: "20:00"},
         ]
     },
     3: {
@@ -168,9 +170,18 @@ const convertScheduleToSeconds = (schedule) => {
 
 convertScheduleToSeconds(schedule);
 
+// Функция для получения текущего времени в секундах Камчатского времени
 const getCurrentTimeInSeconds = () => {
-    const now = new Date();
-    return now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+    // Получаем текущее время по UTC
+    const nowUTC = new Date().toISOString();
+
+    // Используем Intl.DateTimeFormat для преобразования времени в Камчатское (UTC+12)
+    const kamchatkaTime = new Date(nowUTC).toLocaleString('en-US', { timeZone: 'Asia/Kamchatka' });
+
+    // Преобразуем в объект Date
+    const kamchatkaDate = new Date(kamchatkaTime);
+
+    return kamchatkaDate.getHours() * 3600 + kamchatkaDate.getMinutes() * 60 + kamchatkaDate.getSeconds();
 };
 
 const currentDay = new Date().getDay();
