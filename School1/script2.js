@@ -38,6 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+const menuIcon = document.getElementById("menuIcon");
+
+menuIcon.addEventListener("pointerdown", toggleMenu); // моментальное срабатывание
 
 AOS.init({
     duration: 500,
@@ -45,33 +48,21 @@ AOS.init({
     
 }); 
 
-document.addEventListener("click", function(event) {
-    var menu = document.getElementById("toolsPanel");
-    var menuIcon = document.querySelector(".menu-icon");
+document.addEventListener("DOMContentLoaded", () => {
+    const menuIcon = document.getElementById("menuIcon");
+    const toolsPanel = document.getElementById("toolsPanel");
 
-    // Если клик был вне панели и кнопки, то скрыть панель
-    if (!menu.contains(event.target) && !menuIcon.contains(event.target)) {
-        menu.classList.remove("active");
-        menuIcon.style.display = 'flex'; // Показываем кнопку обратно, если панель скрыта
-    }
-});
+    menuIcon.addEventListener("click", (event) => {
+        event.stopPropagation(); // Не передаём клик дальше
+        toolsPanel.classList.toggle("active");
+        menuIcon.style.display = toolsPanel.classList.contains("active") ? "none" : "flex";
+    });
 
-// Находим элементы
-const menuIcon = document.querySelector('.menu-icon');
-const toolsPanel = document.querySelector('.tools-panel');
-
-// Добавляем событие на клик по гамбургеру
-menuIcon.addEventListener('click', (event) => {
-    event.stopPropagation(); // Чтобы клик по кнопке не приводил к срабатыванию события в document
-    // Переключаем класс активного состояния на гамбургере
-    menuIcon.classList.toggle('active');
-    // Переключаем класс активного состояния на панели
-    toolsPanel.classList.toggle('active');
-
-    // Когда панель активна, скрываем кнопку
-    if (toolsPanel.classList.contains("active")) {
-        menuIcon.style.display = 'none'; // Скрываем кнопку
-    } else {
-        menuIcon.style.display = 'flex'; // Показываем кнопку обратно
-    }
+    // Закрываем меню при клике вне его
+    document.addEventListener("click", (event) => {
+        if (!toolsPanel.contains(event.target) && !menuIcon.contains(event.target)) {
+            toolsPanel.classList.remove("active");
+            menuIcon.style.display = "flex";
+        }
+    });
 });

@@ -265,6 +265,10 @@ h3 {
 
 
 @media (max-width: 46.875rem) { /* 750px */
+    .menu-icon {
+        touch-action: manipulation; /* Убирает задержку на мобильных устройствах */
+    }
+
     h1, h2 {
         font-size: 1.6875rem; /* 35px */
     }
