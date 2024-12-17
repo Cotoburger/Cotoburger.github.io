@@ -5,15 +5,28 @@ html, body {
     overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
     min-height: 100vh; /* Минимальная высота окна */
     font-size: 16px; /* Базовый размер шрифта */
-    box-sizing: border-box;
+    box-sizing: border-box; /* Корректный расчет размеров блока */
+    line-height: 1.6; /* Улучшенное расстояние между строками */
+    scroll-behavior: smooth; /* Плавная прокрутка */
+    background-color: #0e1213; /* Цвет фона страницы */
+    color: #ffffff; /* Цвет текста */
+    
+    justify-content: center; /* Центрируем по горизонтали */
+    align-items: center; /* Центрируем по вертикали */
+    height: 100vh; /* Занимает всю высоту экрана */
+}
+
+/* Наследование box-sizing для всех элементов */
+*, *::before, *::after {
+    box-sizing: inherit;
 }
 
 body {
     overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
     align-items: center;
     font-family: Consolas, sans-serif;
-    background-color: #0e1213;
-    color: #000000;
+    background-color: #0e121300;
+    color: #00000000;
     font-size: 1.25rem; /* Размер шрифта 20px */
     box-sizing: border-box;
 }
@@ -60,26 +73,19 @@ header {
 }
 
 
-/* Контейнер для размещения секций рядом */
-.container-flex {
+.container-flex, .container-flex1 {
+    display: flex; /* Добавлено для flex-расположения */
+    justify-content: center; /* Центрирование по горизонтали */
+    align-items: center; /* Центрирование по вертикали */
     margin-top: 0.5rem;
     margin-left: 0.25rem;
-    flex-wrap: wrap; /* Чтобы секции адаптировались при изменении ширины */
-    padding: 0.6375rem; /* 7px */
-       
-}
-/* Контейнер для размещения секций рядом */
-.container-flex1 {
-    margin-top: 0.5rem;
-    margin-left: 0.25rem;
-    flex-wrap: wrap; /* Чтобы секции адаптировались при изменении ширины */
-    padding: 0.6375rem; /* 7px */
-       
+    flex-wrap: wrap;
+    padding: 0.6375rem;
 }
 /* Секция с уроками */
 #schedule1 {
-    flex: 2; /* Занимает доступное пространство */
-    min-width: 170px; /* Минимальная ширина секции */
+    flex: 1; /* Занимает доступное пространство */
+    min-width: 1rem; /* Минимальная ширина секции */
     background-color: rgba(44, 100, 143, 0.226); /* Цвет фона */
     padding: 1rem;
     border-radius: 1.875rem; /* Закруглённые углы */
@@ -96,14 +102,15 @@ header {
 }
 /* Секция с уроками */
 #schedule {
-    flex: 2; /* Занимает доступное пространство */
-    min-width: 170px; /* Минимальная ширина секции */
+    flex: 1; /* Не растягивается */
+    width: 100%; /* Ширина блока */
     background-color: rgba(43, 144, 220, 0.226); /* Цвет фона */
     padding: 1rem;
     border-radius: 1.875rem; /* Закруглённые углы */
     color: rgb(187, 187, 187);
-    text-align-last: left;
+    text-align: left; /* Выравнивание текста */
     backdrop-filter: blur(8px); /* Применяем блюр к фону */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Тень для красоты */
 }
 
 nav a:hover,
@@ -173,7 +180,7 @@ h4 {
     min-width: 95%;
     padding: 0.7375rem; /* 7px */
     margin-top: -1.0625rem; /* 25px */
-    margin-bottom: 0.8625rem; /* 25px */
+    margin-bottom: 1.6625rem; /* 25px */
     border-radius: 1.175rem; /* 30px */
     transform: translateY(1.175rem);
     padding-bottom: 10px; /* Добавить немного отступа от текста до линии */
@@ -331,55 +338,35 @@ h4 {
     color: #198819; /* Белый цвет для текста */
 }
 @media (min-width: 60rem) {
-    .section {
-        margin-left: 18.75rem;
-        margin-right: 18.75rem;
+    #schedule1 {
+        flex: 0.7; /* Занимает доступное пространство */
+        transform: scale(1) translateY(1rem); /* Масштаб в 100% и смещение по оси Y */
+        transform-origin: top center; /* Масштабирование начинается от верхней центральной точки */
+        margin-bottom: 1rem; /* Отступ снизу от #schedule1 */
     }
-
-    .sectionz {
-        margin-right: 5.75rem;
-        margin-left: 5.75rem;
+    #schedule {
+        flex: 0.7; /* Занимает доступное пространство */
+        transform: scale(1); /* Масштаб в 100% */
+        transform-origin: top center; /* Масштабирование начинается от верхней центральной точки */
     }
-    .sectionles {
-        margin-bottom: 1.8625rem; /* 25px */
-    }
-    .container-flex {
-        padding: 1.4375rem; /* 7px */
-        max-width: 100%;
-           
-    }
-    .container-flex1 {
-        padding: 1.4375rem; /* 7px */
-        max-width: 100%;
-           
-    }
-
 }
 
-@media (min-width: 80rem) {
-    .section {
-        margin-left: 18.75rem;
-        margin-right: 18.75rem;
+@media (min-width: 90rem) {
+    #schedule1 {
+        flex: 0.2; /* Занимает доступное пространство */
+        transform: scale(1.4) translateY(1rem); /* Масштаб в 150% и смещение по оси Y */
+        transform-origin: top center; /* Масштабирование начинается от верхней центральной точки */
+        min-width: 45rem;
     }
-
-    .sectionz {
-        margin-right: 17.75rem;
-        margin-left: 17.75rem;
+    #schedule {
+        flex: 0.5; /* Занимает доступное пространство */
+        transform: scale(1.5); /* Масштаб в 150% */
+        transform-origin: top center; /* Масштабирование начинается от верхней центральной точки */
+        margin-bottom: 25rem; /* Увеличенный отступ снизу от #schedule1 */
     }
-    .sectionles {
-        margin-bottom: 1.8625rem; /* 25px */
+    .socials-container {
+        margin-top: 6.25rem;
     }
-    .container-flex {
-        padding: 1.4375rem; /* 7px */
-        max-width: 100%;
-           
-    }
-    .container-flex1 {
-        padding: 1.4375rem; /* 7px */
-        max-width: 100%;
-           
-    }
-
 }
 .header-container {
     display: flex; /* Устанавливаем Flexbox */
@@ -467,15 +454,15 @@ h4 {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 50%; /* Центрируем по горизонтали */
-    width: 94vw; /* Ширина контейнера для снежинок */
-    height: 100vh; /* Высота контейнера на всю высоту экрана */
-    pointer-events: none; /* Чтобы снежинки не мешали взаимодействовать с элементами */
-    z-index: -1000; /* Снежинки будут поверх всего контента */
+    left: 50%;
+    width: 94vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: -1000;
     display: flex;
-    justify-content: center; /* Выравниваем элементы по горизонтали */
-    align-items: center; /* Выравниваем элементы по вертикали */
-    transform: translateX(-50%); /* Сдвигаем контейнер на 50% влево, чтобы он был точно по центру */
+    justify-content: center;
+    align-items: center;
+    transform: translateX(-50%);
 }
 
 .snowflake {
