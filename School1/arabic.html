@@ -45,34 +45,43 @@
     <div class="container-flex">
         <section id="schedule" class="sectionz" data-aos="zoom-in">
             <div class="currenles">Словарь</div>
-            <div id="wordinfo" class="wordinfo">
-                <div class="sectionword">
-                    <div>альхамду ляля = слава богу </div>
-                </div>
-                <div class="sectionword">
-                    <div> Тифль = ребёнок</div>
-                </div>
-                <div class="sectionword">
-                    <div> Наам = да </div>
-                    <div> Ла = нет </div>
-                </div>
-                <div class="sectionword">
-                    <div> Анта/Анти массаст = сосал?</div>
-                    <div> Имтэс = сосать лох </div>
-                </div>
-                <div class="sectionword">
-                    <div> Вахад = 1 </div>
-                    <div> Иснан = 2 </div>
-                    <div> Талаата = 3 </div>
-                    <div> Арбаа = 4 </div>
-                </div>
+            <div id="aboutinfo" class="aboutinfo">
+                <!-- Текст из LastPushTime.txt будет вставлен сюда -->
             </div>
         </section>
     </div>
 
-    </div>
+    <script>
+        // Загрузка текста из файла
+        fetch('Arabic.txt')
+        .then(response => {
+        if (!response.ok) {
+            throw new Error('Сетевой ответ не ok');
+        }
+        return response.text();
+    })
+    .then(text => {
+        console.log('Текст из файла:', text);  // Печать текста в консоль для отладки
+        
+        if (text.trim() === "") {
+            console.error("Файл пуст!");
+        } else {
+            const lines = text.split('\n'); // Разделяем текст на строки
+            const aboutInfoDiv = document.getElementById('aboutinfo'); // Родительский контейнер
+            
+            lines.forEach((line, index) => {
+                const tile = document.createElement('div');
+                tile.classList.add('tile');
+                tile.textContent = `${index + 1}. ${line}`; // Добавляем номер строки
+                aboutInfoDiv.appendChild(tile);
+            });125
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка при загрузке файла:', error);
+    });
+    </script>
 
-                <h2></h2>
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="script2.js"></script>

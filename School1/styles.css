@@ -228,7 +228,6 @@ h4 {
 }
 
 .sectionz {
-    
     background-color: rgba(99, 100, 100, 0.215);
     padding: 0.4375rem; /* 7px */
     align-items: center;
@@ -238,6 +237,10 @@ h4 {
     box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.1);
     transform: translateY(1.875rem);
 
+    width: 100%;  /* Позволяет элементу сжиматься */
+    max-width: 100%; /* Ограничивает максимальную ширину */
+    height: auto;  /* Позволяет элементу сжиматься по высоте */
+    display: inline-block;  /* Позволяет элементу сжиматься по содержимому */
 }
 
 @keyframes fadeInZoom {

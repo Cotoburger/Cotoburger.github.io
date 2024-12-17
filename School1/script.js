@@ -50,7 +50,7 @@ const schedule = {
             {lesson: "4-й урок", start: "11:30", end: "12:10"},
             {lesson: "5-й урок", start: "12:20", end: "13:00"},
             {lesson: "6-й урок", start: "13:20", end: "14:00"},
-            {lesson: "7-й урок", start: "14:15", end: "14:55"}
+            {lesson: "7-й урок", start: "14:15", end: "14:55"},
         ],
         shift2: [
             {lesson: "0-й урок", start: "12:20", end: "13:00"},
@@ -72,7 +72,6 @@ const schedule = {
             {lesson: "5-й урок", start: "11:50", end: "12:30"},
             {lesson: "6-й урок", start: "12:50", end: "13:30"},
             {lesson: "7-й урок", start: "13:50", end: "14:30"},
-            {lesson: "дебаг", start: "00:00", end: "24:00"},
         ],
         shift2: [
             {lesson: "0-й урок", start: "11:50", end: "12:30"},
@@ -82,7 +81,6 @@ const schedule = {
             {lesson: "4-й урок", start: "15:40", end: "16:20"},
             {lesson: "5-й урок", start: "16:30", end: "17:10"},
             {lesson: "6-й урок", start: "17:20", end: "18:00"},
-            {lesson: "дебаг", start: "18:01", end: "24:00"},
         ]
     },
     3: {
@@ -94,7 +92,7 @@ const schedule = {
             {lesson: "4-й урок", start: "11:30", end: "12:10"},
             {lesson: "5-й урок", start: "12:20", end: "13:00"},
             {lesson: "6-й урок", start: "13:20", end: "14:00"},
-            {lesson: "7-й урок", start: "14:15", end: "14:55"}
+            {lesson: "7-й урок", start: "14:15", end: "14:55"},
         ],
         shift2: [
             {lesson: "0-й урок", start: "12:20", end: "13:00"},
@@ -104,7 +102,7 @@ const schedule = {
             {lesson: "Классный час", start: "16:05", end: "16:35"},
             {lesson: "4-й урок", start: "16:40", end: "17:20"},
             {lesson: "5-й урок", start: "17:30", end: "18:10"},
-            {lesson: "6-й урок", start: "18:20", end: "19:00"}
+            {lesson: "6-й урок", start: "18:20", end: "19:00"},
         ]
     },
     4: {
@@ -116,7 +114,7 @@ const schedule = {
             {lesson: "4-й урок", start: "11:30", end: "12:10"},
             {lesson: "5-й урок", start: "12:20", end: "13:00"},
             {lesson: "6-й урок", start: "13:20", end: "14:00"},
-            {lesson: "7-й урок", start: "14:15", end: "14:55"}
+            {lesson: "7-й урок", start: "14:15", end: "14:55"},
         ],
         shift2: [
             {lesson: "0-й урок", start: "12:20", end: "13:00"},
@@ -126,7 +124,7 @@ const schedule = {
             {lesson: "Классный час", start: "16:05", end: "16:35"},
             {lesson: "4-й урок", start: "16:40", end: "17:20"},
             {lesson: "5-й урок", start: "17:30", end: "18:10"},
-            {lesson: "6-й урок", start: "18:20", end: "19:00"}
+            {lesson: "6-й урок", start: "18:20", end: "19:00"},
         ]
     },
     5: {
@@ -137,7 +135,7 @@ const schedule = {
             {lesson: "4-й урок", start: "11:00", end: "11:40"},
             {lesson: "5-й урок", start: "11:50", end: "12:30"},
             {lesson: "6-й урок", start: "12:50", end: "13:30"},
-            {lesson: "7-й урок", start: "13:50", end: "14:30"}
+            {lesson: "7-й урок", start: "13:50", end: "14:30"},
         ],
         shift2: [
             {lesson: "0-й урок", start: "11:50", end: "12:30"},
@@ -146,7 +144,8 @@ const schedule = {
             {lesson: "3-й урок", start: "14:45", end: "15:25"},
             {lesson: "4-й урок", start: "15:40", end: "16:20"},
             {lesson: "5-й урок", start: "16:30", end: "17:10"},
-            {lesson: "6-й урок", start: "17:20", end: "18:00"}
+            {lesson: "6-й урок", start: "17:20", end: "18:00"},
+            {lesson: "ДЕБАГ", start: "00:00", end: "24:00"},
         ]
     }
 };
