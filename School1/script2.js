@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Генерируем случайные параметры для каждой снежинки
         const size = Math.random() * 11 + 4; // Размер снежинки от 5px до 15px
         const leftPosition = Math.random() * 100; // Позиция по горизонтали
-        const animationDuration = Math.random() * 20 + 3; // Длительность анимации от 5 до 10 секунд
+        const animationDuration = Math.random() * 15 + 5; // Длительность анимации от 5 до 10 секунд
 
         snowflake.style.width = `${size}px`;
         snowflake.style.height = `${size}px`;
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Удаляем снежинку, когда она достигнет нижней части экрана, чтобы не перегружать DOM
         setTimeout(() => {
             snowflake.remove();
-        }, animationDuration * 999);
+        }, animationDuration * 979);
     }
 
     // Создаем снежинки каждую секунду
