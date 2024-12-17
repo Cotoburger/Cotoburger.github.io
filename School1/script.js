@@ -278,17 +278,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const menuIcon = document.getElementById("menuIcon");
     const toolsPanel = document.getElementById("toolsPanel");
 
-    menuIcon.addEventListener("click", (event) => {
-        event.stopPropagation(); // Не передаём клик дальше
-        toolsPanel.classList.toggle("active");
-        menuIcon.style.display = toolsPanel.classList.contains("active") ? "none" : "flex";
+    // Переключаем состояние панели при клике на кнопку
+    menuIcon.addEventListener("mousedown", (event) => {
+        event.stopPropagation(); // Предотвращаем всплытие события, чтобы не сработал обработчик ниже
+        toolsPanel.classList.toggle("active"); // Переключаем класс "active"
     });
 
-    // Закрываем меню при клике вне его
-    document.addEventListener("click", (event) => {
+    // Закрываем панель, если клик был вне панели и кнопки
+    document.addEventListener("mousedown", (event) => {
         if (!toolsPanel.contains(event.target) && !menuIcon.contains(event.target)) {
-            toolsPanel.classList.remove("active");
-            menuIcon.style.display = "flex";
+            toolsPanel.classList.remove("active"); // Убираем класс "active", скрывая панель
         }
     });
 });
