@@ -12,7 +12,6 @@ html, body {
     
     justify-content: center; /* Центрируем по горизонтали */
     align-items: center; /* Центрируем по вертикали */
-    height: 100vh; /* Занимает всю высоту экрана */
 }
 
 /* Наследование box-sizing для всех элементов */
@@ -505,17 +504,16 @@ h4 {
 
 /* Стили для снежинок */
 #snowflakes {
-    position: absolute;
+    position: absolute; /* Меняем fixed на absolute */
     top: 0;
-    bottom: 0;
     left: 50%;
     width: 94vw;
     height: 100vh;
     pointer-events: none;
-    z-index: -9999;
+    z-index: -1000;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: top;
+    align-items: top;
     transform: translateX(-50%);
 }
 
@@ -535,8 +533,8 @@ h4 {
         transform: translateX(0);
     }
     100% {
-        top: 90vh; /* Конечная точка — низ экрана */
-        transform: translateX(calc(-50% + 1.3vw));
+        top: 97vh; /* Конечная точка — низ экрана */
+        transform: translateX(calc(-300% + 7vw));
         
     }
 }
