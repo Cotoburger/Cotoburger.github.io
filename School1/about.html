@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <meta property="og:title" content="Schedule">
+    <meta property="og:description" content="Расписание звонков в МАОУ Средняя школа №1">
+    <meta property="og:image" content="https://cotoburger.github.io/School1//images/icon.png">
+    <meta property="og:url" content="https://cotoburger.github.io/School1/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Schedule">
+    <meta name="twitter:description" content="Расписание звонков в МАОУ Средняя школа №1">
+    <meta name="twitter:image" content="https://cotoburger.github.io/School1//images/icon.png">
+    <meta name="twitter:url" content="https://cotoburger.github.io/School1/">
+    <title>Расписание звонков</title>
+    <link rel="icon" href="images/icon.png" type="image/png">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        /* Добавляем стиль для плиток */
+        .tile {
+            color: #b0b4b5;
+            background-color: rgba(1, 1, 1, 0.313);
+            align-self: center;
+            min-width: 10%;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 1.175rem; /* 30px */
+            padding-bottom: 10px; /* Добавить немного отступа от текста до линии */
+            border-bottom: 4px solid #00000042; /* Серый цвет для линии */
+        }
+    </style>
+</head>
+<body>
+    <!-- Контейнер для снежинок -->
+    <div id="snowflakes"></div>
+
+    <!-- Панель с инструментами -->
+    <div id="toolsPanel" class="tools-panel">
+        <a href="index.html">Расписание</a>
+        <a href="arabic.html">Арабские слова</a>
+        <a href="#">Инструмент 3</a>
+        <c href="#">Сведения</c>
+    </div>
+
+    <!-- Контент страницы -->
+    <div class="header-container">
+        <h2>Сведения</h2>
+        <div class="menu-icon" id="menuIcon">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <div class="container-flex">
+        <section id="schedule" class="sectionz" data-aos="zoom-in">
+            <div class="currenles">DebugInfo.txt</div>
+            <div id="aboutinfo" class="aboutinfo">
+                <!-- Текст из LastPushTime.txt будет вставлен сюда -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Загрузка текста из файла
+        fetch('DebugInfo.txt')
+        .then(response => {
+        if (!response.ok) {
+            throw new Error('Сетевой ответ не ok');
+        }
+        return response.text();
+    })
+    .then(text => {
+        console.log('Текст из файла:', text);  // Печать текста в консоль для отладки
+        
+        if (text.trim() === "") {
+            console.error("Файл пуст!");
+        } else {
+            const lines = text.split('\n'); // Разделяем текст на строки
+            const aboutInfoDiv = document.getElementById('aboutinfo'); // Родительский контейнер
+            
+            lines.forEach((line, index) => {
+                const tile = document.createElement('div');
+                tile.classList.add('tile');
+                tile.textContent = `${index + 1}. ${line}`; // Добавляем номер строки
+                aboutInfoDiv.appendChild(tile);
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка при загрузке файла:', error);
+    });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="script2.js"></script>
+</body>
+</html>
