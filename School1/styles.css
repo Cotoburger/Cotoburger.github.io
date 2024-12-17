@@ -505,7 +505,7 @@ h4 {
 
 /* Стили для снежинок */
 #snowflakes {
-    position: fixed;
+    position: absolute;
     top: 0;
     bottom: 0;
     left: 50%;
