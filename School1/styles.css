@@ -7,7 +7,6 @@ html, body {
     font-size: 16px; /* Базовый размер шрифта */
     box-sizing: border-box; /* Корректный расчет размеров блока */
     line-height: 1.6; /* Улучшенное расстояние между строками */
-    scroll-behavior: smooth; /* Плавная прокрутка */
     background-color: #0e1213; /* Цвет фона страницы */
     color: #ffffff; /* Цвет текста */
     
