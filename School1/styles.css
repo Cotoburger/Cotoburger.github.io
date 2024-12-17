@@ -2,6 +2,7 @@
 html, body {
     margin: 0;
     padding: 0;
+    overflow-y: auto; /* Отключаем горизонтальную прокрутку */
     overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
     min-height: 100vh; /* Минимальная высота окна */
     font-size: 16px; /* Базовый размер шрифта */
@@ -20,6 +21,7 @@ html, body {
 }
 
 body {
+    overflow-y: hidden; /* Отключаем горизонтальную прокрутку */
     overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
     align-items: center;
     font-family: Consolas, sans-serif;
@@ -196,30 +198,7 @@ h4 {
     padding-bottom: 10px; /* Добавить немного отступа от текста до линии */
     border-bottom: 4px solid #00000042; /* Серый цвет для линии */
 }
-.sectionword {
-    background-color: rgba(5, 5, 5, 0.313);
-    min-width: 14rem;
-    min-width: 95%;
-    font-size: 1.3rem;
-    padding: 0.7375rem; /* 7px */
-    margin-top: 0.0625rem; /* 25px */
-    margin-bottom: 0.8625rem; /* 25px */
-    border-radius: 1.175rem; /* 30px */
-    transform: translateY(1.175rem);
-    padding-bottom: 10px; /* Добавить немного отступа от текста до линии */
-    border-bottom: 4px solid #00000042; /* Серый цвет для линии */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 0px;
-}
 
-.wordinfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 0px;
-}
 
 .les2 {
     margin-bottom: 1.5625rem; /* 25px */
