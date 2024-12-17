@@ -90,5 +90,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Создаем снежинки каждую секунду
-    setInterval(createSnowflake, 125);
+    setInterval(createSnowflake, 170);
 });
