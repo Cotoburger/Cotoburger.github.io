@@ -88,7 +88,10 @@ document.addEventListener("DOMContentLoaded", () => {
             snowflake.remove();
         }, animationDuration * 979);
     }
-
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        AOS.init(); // Принудительно инициализируем AOS
+    });
     // Создаем снежинки каждую секунду
     setInterval(createSnowflake, 175);
 });

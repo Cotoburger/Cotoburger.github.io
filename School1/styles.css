@@ -1,9 +1,11 @@
-/* Убираем горизонтальную прокрутку */
+/* Убираем горизонтальную прокрутку и задаем базовые стили */
 html, body {
-    overflow-x: hidden;
     margin: 0;
     padding: 0;
-    font-size: 16px; /* 1rem = 16px */
+    overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
+    min-height: 100vh; /* Минимальная высота окна */
+    font-size: 16px; /* Базовый размер шрифта */
+    box-sizing: border-box;
 }
 
 body {
@@ -13,8 +15,21 @@ body {
     background-color: #0e1213;
     color: #000000;
     font-size: 1.25rem; /* Размер шрифта 20px */
+    box-sizing: border-box;
 }
 
+/* Добавляем стиль для плиток */
+.tile {
+    color: #b0b4b5;
+    background-color: rgba(1, 1, 1, 0.313);
+    align-self: center;
+    min-width: 10%;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 1.175rem; /* 30px */
+    padding-bottom: 10px; /* Добавить немного отступа от текста до линии */
+    border-bottom: 4px solid #00000042; /* Серый цвет для линии */
+}
 .time-progress {
     width: 100%;
     height: 20px;
