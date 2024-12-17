@@ -445,7 +445,7 @@ h3 {
     }
     100% {
         top: 97vh; /* Конечная точка — низ экрана */
-        transform: translateX(calc(-300% + 7vw));
+        transform: translateX(calc(-390% + 7vw));
         
     }
 }
