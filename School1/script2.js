@@ -86,12 +86,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // Удаляем снежинку, когда она достигнет нижней части экрана, чтобы не перегружать DOM
         setTimeout(() => {
             snowflake.remove();
-        }, animationDuration * 979);
+        }, animationDuration * 999);
     }
-    
-    document.addEventListener('DOMContentLoaded', () => {
-        AOS.init(); // Принудительно инициализируем AOS
-    });
+
     // Создаем снежинки каждую секунду
     setInterval(createSnowflake, 175);
 });

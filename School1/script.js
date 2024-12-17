@@ -325,7 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Удаляем снежинку, когда она достигнет нижней части экрана, чтобы не перегружать DOM
         setTimeout(() => {
             snowflake.remove();
-        }, animationDuration * 973);
+        }, animationDuration * 999);
     }
 
     // Создаем снежинки каждую секунду
