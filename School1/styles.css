@@ -69,6 +69,7 @@ header {
     border-radius: 1.875rem; /* Закруглённые углы */
     color: rgba(41, 117, 188, 0.614);
     text-align-last: left;
+    backdrop-filter: blur(8px); /* Применяем блюр к фону */
 }
 .priority {
     color:rgb(45, 82, 185);
@@ -86,6 +87,7 @@ header {
     border-radius: 1.875rem; /* Закруглённые углы */
     color: rgb(187, 187, 187);
     text-align-last: left;
+    backdrop-filter: blur(8px); /* Применяем блюр к фону */
 }
 
 nav a:hover,
@@ -337,8 +339,9 @@ h3 {
     align-items: center; /* Выравниваем элементы по вертикали */
     justify-content: space-between; /* Размещаем элементы по краям */
     padding: 1px 20px; /* Добавляем отступы для удобства */
-    background-color: rgba(41, 117, 188, 0.406); /* (Опционально) Фон для заголовка */
+    background-color: rgba(34, 77, 118, 0.822); /* (Опционально) Фон для заголовка */
     border-bottom: 1px solid #004586; /* (Опционально) Разделительная линия */
+    backdrop-filter: blur(10px); /* Применяем блюр к фону */
 }
 
 .menu-icon {
@@ -406,4 +409,50 @@ h3 {
     margin-top: 6px;
     margin-bottom: 6px;
     font-size: 1.5625rem; /* 25px */
+}
+
+
+/* Стили для снежинок */
+#snowflakes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Чтобы снежинки не мешали взаимодействовать с элементами */
+    z-index: -1000; /* Снежинки будут поверх всего контента */
+}
+
+.snowflake {
+    position: absolute;
+    top: -10px; /* Начинаем с верхней части экрана */
+    background-color: rgba(255, 255, 255, 0.749);
+    border-radius: 50%;
+    opacity: 0.8;
+    pointer-events: none;
+    animation: fall 15s linear infinite, fadeOut 1s ease-out infinite;
+}
+
+@keyframes fall {
+    0% {
+        top: -10px;
+        transform: translateX(0);
+    }
+    100% {
+        top: 97vh; /* Конечная точка — низ экрана */
+        transform: translateX(calc(-50% + 5vw)); /* Снежинки будут двигаться по экрану */
+        
+    }
+}
+/* Анимация исчезновения снежинок */
+@keyframes fadeOut {
+    0% {
+        opacity: 0.8;
+    }
+    80% {
+        opacity: 0.6; /* Уменьшаем прозрачность до 40% */
+    }
+    100% {
+        opacity: 0; /* Плавно исчезаем в конце */
+    }
 }

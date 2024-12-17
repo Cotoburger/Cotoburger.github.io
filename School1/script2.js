@@ -62,3 +62,33 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const snowflakesContainer = document.getElementById("snowflakes");
+
+    // Функция для создания снежинки
+    function createSnowflake() {
+        const snowflake = document.createElement("div");
+        snowflake.classList.add("snowflake");
+        
+        // Генерируем случайные параметры для каждой снежинки
+        const size = Math.random() * 10 + 5; // Размер снежинки от 5px до 15px
+        const leftPosition = Math.random() * 100; // Позиция по горизонтали
+        const animationDuration = Math.random() * 15 + 10; // Длительность анимации от 5 до 10 секунд
+
+        snowflake.style.width = `${size}px`;
+        snowflake.style.height = `${size}px`;
+        snowflake.style.left = `${leftPosition}%`;
+        snowflake.style.animationDuration = `${animationDuration}s`;
+
+        snowflakesContainer.appendChild(snowflake);
+
+        // Удаляем снежинку, когда она достигнет нижней части экрана, чтобы не перегружать DOM
+        setTimeout(() => {
+            snowflake.remove();
+        }, animationDuration * 999);
+    }
+
+    // Создаем снежинки каждую секунду
+    setInterval(createSnowflake, 125);
+});
