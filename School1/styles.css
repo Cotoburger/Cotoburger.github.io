@@ -360,7 +360,7 @@ h3 {
 .tools-panel {
     position: absolute;
     top: 10px;
-    right: 0px; /* Панель скрыта за пределами экрана */
+    right: -250px; /* Панель скрыта за пределами экрана */
     width: 205px;
     height: 250px;
     background-color: rgba(22, 51, 67, 0.833);
@@ -372,7 +372,7 @@ h3 {
     visibility: hidden; /* Панель скрыта по умолчанию */
     opacity: 0; /* Прозрачность 0 при скрытой панели */
     pointer-events: none; /* Запрещаем взаимодействие, когда панель скрыта */
-    transition: opacity 0.03s ease, visibility 0s ease 0.03s, right 0.03s ease;
+    transition: right 0.15s ease, opacity 0.15s ease, visibility 0s ease 0s;
     backdrop-filter: blur(5px); /* Применяем блюр к фону */
 }
 
@@ -382,8 +382,9 @@ h3 {
     opacity: 1;
     pointer-events: auto;
     right: 15px; /* Панель появляется справа от кнопки */
-    transition: opacity 0.03s ease, visibility 0s ease 0s, right 0.03s ease;
+    transition: right 0.15s ease, opacity 0.15s ease, visibility 0s ease 0s;
 }
+
 /* Скрыть кнопку, когда панель активна */
 .tools-panel.active + .menu-icon {
     display: none; /* Кнопка скрывается, когда панель активна */
