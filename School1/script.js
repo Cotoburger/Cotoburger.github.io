@@ -102,7 +102,6 @@ const schedule = {
             {lesson: "4-й урок", start: "16:40", end: "17:20"},
             {lesson: "5-й урок", start: "17:30", end: "18:10"},
             {lesson: "6-й урок", start: "18:20", end: "19:00"},
-            {lesson: "ДЕБАГ", start: "00:00", end: "24:00"},
         ]
     },
     4: {
@@ -145,7 +144,7 @@ const schedule = {
             {lesson: "4-й урок", start: "15:40", end: "16:20"},
             {lesson: "5-й урок", start: "16:30", end: "17:10"},
             {lesson: "6-й урок", start: "17:20", end: "18:00"},
-            {lesson: "ДЕБАГ", start: "00:00", end: "24:00"},
+           // {lesson: "ДЕБАГ", start: "00:00", end: "24:00"},
         ]
     }
 };
