@@ -295,18 +295,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const snowflake = document.createElement("div");
         snowflake.classList.add("snowflake");
 
-        const size = Math.random() * 11 + 4;
-        const leftPosition = Math.random() * 97;
-        const animationDuration = Math.random() * 15 + 5;
-
-        snowflake.style.width = `${size}px`;
-        snowflake.style.height = `${size}px`;
-        snowflake.style.left = `${leftPosition}%`;
-        snowflake.style.animationDuration = `${animationDuration}s`;
-        snowflake.style.top = `-10px`; // Начальная позиция чуть выше контейнера
+        const size = Math.random() * 11 + 4; // Размер снежинки
+        const leftPosition = Math.random() * 97; // Начальная горизонтальная позиция
+        const animationDuration = Math.random() * 15 + 5; // Длительность падения
 
         snowflakesContainer.appendChild(snowflake);
-        snowflakes.push({ element: snowflake, leftPosition });
+        snowflakes.push({ element: snowflake, currentLeft: leftPosition });
 
         setTimeout(() => {
             snowflake.remove();
@@ -322,10 +316,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Обновляем горизонтальные позиции снежинок
         snowflakes.forEach((snowflakeObj) => {
-            const { element, leftPosition } = snowflakeObj;
-            const currentLeft = leftPosition + tiltX * 1.5; // Корректируем исходную позицию
-            snowflakeObj.leftPosition = Math.min(Math.max(currentLeft, 0), 100); // Ограничиваем в пределах 0-100%
-            element.style.left = `${snowflakeObj.leftPosition}%`;
+            const { element, currentLeft } = snowflakeObj;
+
+            // Смещение снежинки в зависимости от наклона устройства
+            const newLeft = currentLeft + tiltX * 0.5;
+
+            // Обновляем текущую позицию и стиль
+            snowflakeObj.currentLeft = Math.min(Math.max(newLeft, 0), 100); // Ограничиваем в пределах 0-100%
+            element.style.left = `${snowflakeObj.currentLeft}%`;
         });
     });
 });
