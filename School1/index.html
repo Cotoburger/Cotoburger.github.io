@@ -19,6 +19,13 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then(() => console.log('Service Worker зарегистрирован!'))
+            .catch((error) => console.error('Ошибка регистрации Service Worker:', error));
+    }
+</script>
 <body>
     <div id="snowflakes"></div>
     
