@@ -325,7 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const { element, currentLeft } = snowflakeObj;
 
             // Смещение снежинки в зависимости от наклона устройства
-            const newLeft = currentLeft + tiltX * -0.3;
+            const newLeft = currentLeft + tiltX * -0.05;
 
             // Обновляем текущую позицию и стиль
             snowflakeObj.currentLeft = Math.min(Math.max(newLeft, 0), 100); // Ограничиваем в пределах 0-100%
