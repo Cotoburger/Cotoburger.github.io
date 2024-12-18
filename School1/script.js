@@ -296,17 +296,17 @@ document.addEventListener("DOMContentLoaded", () => {
         snowflake.classList.add("snowflake");
 
         const size = Math.random() * 11 + 4; // Размер снежинки
-        const leftPosition = Math.random() * 97; // Начальная горизонтальная позиция
+        const leftPosition = Math.random() * 100; // Начальная горизонтальная позиция от 0 до 100%
         const animationDuration = Math.random() * 15 + 5; // Длительность падения
 
         snowflake.style.width = `${size}px`;
         snowflake.style.height = `${size}px`;
         snowflake.style.left = `${leftPosition}%`;
         snowflake.style.animationDuration = `${animationDuration}s`;
-        snowflake.style.top = `-10px`; // Начальная позиция над экраном
 
+        // Добавляем снежинку в контейнер
         snowflakesContainer.appendChild(snowflake);
-        snowflakes.push({ element: snowflake, currentLeft: leftPosition });
+        snowflakes.push({ element: snowflake, currentLeft: leftPosition, animationDuration });
 
         setTimeout(() => {
             snowflake.remove();
@@ -320,7 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const acceleration = event.accelerationIncludingGravity;
         tiltX = acceleration.x || 0;
 
-        // Обновляем горизонтальные позиции снежинок
+        // Обновляем горизонтальные позиции снежинок в зависимости от наклона устройства
         snowflakes.forEach((snowflakeObj) => {
             const { element, currentLeft } = snowflakeObj;
 
@@ -328,7 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const newLeft = currentLeft + tiltX * -0.016;
 
             // Обновляем текущую позицию и стиль
-            snowflakeObj.currentLeft = Math.min(Math.max(newLeft, -45), 145); // Ограничиваем в пределах 0-100%
+            snowflakeObj.currentLeft = Math.min(Math.max(newLeft, -10), 110); // Ограничиваем в пределах от -10% до 110%
             element.style.left = `${snowflakeObj.currentLeft}%`;
         });
     });
