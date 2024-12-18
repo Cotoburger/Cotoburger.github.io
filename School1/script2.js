@@ -83,5 +83,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }, animationDuration * 999);
     }
 
-    setInterval(createSnowflake, 175);
+    setInterval(createSnowflake, 225);
 });
