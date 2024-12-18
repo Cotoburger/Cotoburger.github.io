@@ -288,48 +288,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     const snowflakesContainer = document.getElementById("snowflakes");
-    const snowflakes = [];
-    let tiltX = 0;
 
     function createSnowflake() {
         const snowflake = document.createElement("div");
         snowflake.classList.add("snowflake");
-
-        const size = Math.random() * 11 + 4; // Размер снежинки
-        const leftPosition = Math.random() * 97; // Начальная горизонтальная позиция
-        const animationDuration = Math.random() * 15 + 5; // Длительность падения
+        
+        const size = Math.random() * 11 + 4;
+        const leftPosition = Math.random() * 97;
+        const animationDuration = Math.random() * 15 + 5;
 
         snowflake.style.width = `${size}px`;
         snowflake.style.height = `${size}px`;
         snowflake.style.left = `${leftPosition}%`;
         snowflake.style.animationDuration = `${animationDuration}s`;
-        snowflake.style.top = `-10px`; // Начальная позиция над экраном
 
         snowflakesContainer.appendChild(snowflake);
-        snowflakes.push({ element: snowflake, currentLeft: leftPosition });
 
         setTimeout(() => {
             snowflake.remove();
-            snowflakes.splice(snowflakes.findIndex((sf) => sf.element === snowflake), 1);
-        }, animationDuration * 1000);
+        }, animationDuration * 999);
     }
 
-    setInterval(createSnowflake, 175);
-
-    window.addEventListener("devicemotion", (event) => {
-        const acceleration = event.acceleration;
-        tiltX = acceleration.x || 0; // Используем только акселерометр
-
-        // Обновляем горизонтальные позиции снежинок
-        snowflakes.forEach((snowflakeObj) => {
-            const { element, currentLeft } = snowflakeObj;
-
-            // Смещение снежинки в зависимости от наклона устройства
-            const newLeft = currentLeft + tiltX * -0.1; // Уменьшил множитель для более мягкого эффекта
-
-            // Обновляем текущую позицию и стиль
-            snowflakeObj.currentLeft = Math.min(Math.max(newLeft, 0), 100); // Ограничиваем в пределах 0-100%
-            element.style.left = `${snowflakeObj.currentLeft}%`;
-        });
-    });
+    setInterval(createSnowflake, 225);
 });
