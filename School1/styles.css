@@ -490,7 +490,7 @@ h4 {
 
 /* Стили для снежинок */
 #snowflakes {
-    position: absolute; /* Меняем fixed на absolute */
+    position: fixed;
     top: 0;
     left: 50%;
     width: 94vw;
@@ -501,11 +501,13 @@ h4 {
     justify-content: top;
     align-items: top;
     transform: translateX(-50%);
+    overflow: hidden;  /* Оставляем overflow: hidden для вертикальной части */
 }
 
 .snowflake {
     position: absolute;
     top: -10px; /* Начинаем с верхней части экрана */
+    transform-origin: center; /* Для корректного смещения снежинок */
     background-color: rgba(255, 255, 255, 0.749);
     border-radius: 50%;
     opacity: 0.8;
