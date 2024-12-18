@@ -314,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, animationDuration * 1000);
     }
 
-    setInterval(createSnowflake, 175);
+    setInterval(createSnowflake, 200);
 
     window.addEventListener("devicemotion", (event) => {
         const acceleration = event.accelerationIncludingGravity;
@@ -325,10 +325,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const { element, currentLeft } = snowflakeObj;
 
             // Смещение снежинки в зависимости от наклона устройства
-            const newLeft = currentLeft + tiltX * -0.016;
+            const newLeft = currentLeft + tiltX * -0.01;
 
             // Обновляем текущую позицию и стиль
-            snowflakeObj.currentLeft = Math.min(Math.max(newLeft, -10), 110); // Ограничиваем в пределах от -10% до 110%
+            snowflakeObj.currentLeft = Math.min(Math.max(newLeft, 0), 100); // Ограничиваем в пределах от -10% до 110%
             element.style.left = `${snowflakeObj.currentLeft}%`;
         });
     });
