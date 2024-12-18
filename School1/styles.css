@@ -490,24 +490,22 @@ h4 {
 
 /* Стили для снежинок */
 #snowflakes {
-    position: fixed;
+    position: absolute; /* Меняем fixed на absolute */
     top: 0;
     left: 50%;
-    width: 100vw;
-    height: 105vh;
+    width: 94vw;
+    height: 100vh;
     pointer-events: none;
     z-index: -1000;
     display: flex;
     justify-content: top;
     align-items: top;
     transform: translateX(-50%);
-    overflow: hidden;  /* Оставляем overflow: hidden для вертикальной части */
 }
 
 .snowflake {
     position: absolute;
     top: -10px; /* Начинаем с верхней части экрана */
-    transform-origin: center; /* Для корректного смещения снежинок */
     background-color: rgba(255, 255, 255, 0.749);
     border-radius: 50%;
     opacity: 0.8;
@@ -521,7 +519,7 @@ h4 {
         transform: translateX(0);
     }
     100% {
-        top: 102vh; /* Конечная точка — низ экрана */
+        top: 97vh; /* Конечная точка — низ экрана */
         transform: translateX(calc(-300% + 7vw));
         
     }
