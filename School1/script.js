@@ -287,6 +287,22 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+    const menuIcon = document.getElementById("menuIcon");
+    const toolsPanel = document.getElementById("toolsPanel");
+
+    menuIcon.addEventListener("mousedown", (event) => {
+        event.stopPropagation();
+        toolsPanel.classList.toggle("active");
+    });
+
+    document.addEventListener("mousedown", (event) => {
+        if (!toolsPanel.contains(event.target) && !menuIcon.contains(event.target)) {
+            toolsPanel.classList.remove("active");
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
     const snowflakesContainer = document.getElementById("snowflakes");
     const snowflakes = [];
     let tiltX = 0;
@@ -309,12 +325,18 @@ document.addEventListener("DOMContentLoaded", () => {
         snowflakes.push({ element: snowflake, currentLeft: leftPosition, animationDuration });
 
         setTimeout(() => {
-            snowflake.remove();
-            snowflakes.splice(snowflakes.findIndex((sf) => sf.element === snowflake), 1);
+            // Добавляем анимацию исчезновения
+            snowflake.classList.add("fade-out");
+
+            // Удаляем снежинку после завершения анимации
+            setTimeout(() => {
+                snowflake.remove();
+                snowflakes.splice(snowflakes.findIndex((sf) => sf.element === snowflake), 1);
+            }, 1000); // Задержка, чтобы дождаться завершения анимации
         }, animationDuration * 1000);
     }
 
-    setInterval(createSnowflake, 200);
+    setInterval(createSnowflake, 400);
 
     window.addEventListener("devicemotion", (event) => {
         const acceleration = event.accelerationIncludingGravity;
@@ -328,14 +350,20 @@ document.addEventListener("DOMContentLoaded", () => {
             const newLeft = currentLeft + tiltX * -0.01;
 
             // Обновляем текущую позицию и стиль
-            snowflakeObj.currentLeft = Math.min(Math.max(newLeft, 0), 98); // Ограничиваем в пределах от 0% до 98%
+            snowflakeObj.currentLeft = Math.min(Math.max(newLeft, 0), 100); // Ограничиваем в пределах от 0% до 98%
 
             element.style.left = `${snowflakeObj.currentLeft}%`;
 
-            // Если снежинка выходит за экран по бокам, удаляем её
+            // Если снежинка выходит за экран по бокам, добавляем анимацию исчезновения
             if (snowflakeObj.currentLeft <= 1 || snowflakeObj.currentLeft >= 99) {
-                snowflakeObj.element.remove();
-                snowflakes.splice(snowflakes.indexOf(snowflakeObj), 1); // Удаляем снежинку из массива
+                // Добавляем анимацию исчезновения
+                snowflakeObj.element.classList.add("fade-out");
+
+                // Удаляем снежинку после завершения анимации
+                setTimeout(() => {
+                    snowflakeObj.element.remove();
+                    snowflakes.splice(snowflakes.indexOf(snowflakeObj), 1);
+                }, 1000); // Задержка для анимации исчезновения
             }
         });
     });
