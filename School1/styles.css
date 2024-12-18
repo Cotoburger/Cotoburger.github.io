@@ -2,14 +2,14 @@
 html, body {
     margin: 0;
     padding: 0;
-    overflow-y: auto; /* Отключаем горизонтальную прокрутку */
-    overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
-    min-height: 100vh; /* Минимальная высота окна */
-    font-size: 16px; /* Базовый размер шрифта */
-    box-sizing: border-box; /* Корректный расчет размеров блока */
-    line-height: 1.6; /* Улучшенное расстояние между строками */
-    background-color: #0e1213; /* Цвет фона страницы */
-    color: #ffffff; /* Цвет текста */
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 100vh;
+    font-size: 16px;
+    box-sizing: border-box;
+    line-height: 1.6;
+    background-color: #0e1213;
+    color: #ffffff;
     
     justify-content: center; /* Центрируем по горизонтали */
     align-items: center; /* Центрируем по вертикали */
@@ -281,12 +281,6 @@ h4 {
     padding-left: 20px; /* немного отступаем от края */
 }
 
-#currentTime {
-    font-size: 18px;
-    margin-top: 20px;
-}
-
-
 
 @media (max-width: 46.875rem) { /* 750px */
     .menu-icon {
@@ -336,7 +330,7 @@ h4 {
 /* Применение анимации к #schedule1 */
 #schedule1 {
     animation: fadeInZoom 0.4s ease-out forwards;
-    margin-bottom: 8rem;
+    margin-bottom: 2rem;
 }
 .socials-container {
     display: flex;
