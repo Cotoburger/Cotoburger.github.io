@@ -437,7 +437,7 @@ h4 {
     top: 0.6rem;
     right: 5px; /* Панель скрыта за пределами экрана */
     width: 15rem;
-    height: 10rem;
+    height: 11rem;
     background-color: rgba(22, 51, 67, 0.833);
     padding-left: 1rem;
     padding-right: 1rem;
@@ -471,8 +471,8 @@ h4 {
     padding-bottom: 1px; /* Добавить немного отступа от текста до линии */
     border-bottom: 4px solid #00000060; /* Серый цвет для линии */
     text-decoration: none;
-    margin-top: 0.2rem;
-    margin-bottom: 0.2rem;
+    margin-top: 8px;
+    margin-bottom: 8px;
     font-size: 1.5625rem; /* 25px */
 }
 /* Стили для ссылок на панели */
@@ -480,10 +480,10 @@ h4 {
     color: rgb(40, 107, 183);
     padding-bottom: 1px; /* Добавить немного отступа от текста до линии */
     border-bottom: 4px solid #00000017; /* Серый цвет для линии */
-    display: block;
     text-decoration: none;
-    margin-top: 0.2rem;
-    margin-bottom: 0.2rem;
+    display: block;
+    margin-top: 8px;
+    margin-bottom: 8px;
     font-size: 1.5625rem; /* 25px */
 }
 
