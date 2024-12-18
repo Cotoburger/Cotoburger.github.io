@@ -18,6 +18,12 @@
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        /* Скрываем страницу до загрузки файла */
+        body.hidden {
+            visibility: hidden;
+        }
+    </style>
 </head>
 <script>
     if ('serviceWorker' in navigator) {
@@ -26,9 +32,7 @@
             .catch((error) => console.error('Ошибка регистрации Service Worker:', error));
     }
 </script>
-<body>
-
-
+<body class="hidden">
     <!-- Контейнер для снежинок -->
     <div id="snowflakes"></div>
 
@@ -36,7 +40,7 @@
     <div id="toolsPanel" class="tools-panel">
         <a href="index.html">Расписание</a>
         <a href="arabic.html">Арабские слова</a>
-        <c href="#">Сведения</c>
+        <a href="#">Сведения</a>
     </div>
 
     <!-- Контент страницы -->
@@ -53,7 +57,7 @@
         <section id="schedule" class="sectionz" data-aos="zoom-in">
             <div class="currenles">DebugInfo.txt</div>
             <div id="aboutinfo" class="aboutinfo">
-                <!-- Текст из LastPushTime.txt будет вставлен сюда -->
+                <!-- Текст из DebugInfo.txt будет вставлен сюда -->
             </div>
         </section>
     </div>
@@ -62,40 +66,47 @@
         // Загрузка текста из файла
         fetch('DebugInfo.txt')
         .then(response => {
-        if (!response.ok) {
-            throw new Error('Сетевой ответ не ok');
-        }
-        return response.text();
-    })
-    .then(text => {
-        console.log('Текст из файла:', text);  // Печать текста в консоль для отладки
-        
-        if (text.trim() === "") {
-            console.error("Файл пуст!");
-        } else {
-            const lines = text.split('\n'); // Разделяем текст на строки
-            const aboutInfoDiv = document.getElementById('aboutinfo'); // Родительский контейнер
+            if (!response.ok) {
+                throw new Error('Сетевой ответ не ok');
+            }
+            return response.text();
+        })
+        .then(text => {
+            console.log('Текст из файла:', text);  // Печать текста в консоль для отладки
             
-            lines.forEach((line, index) => {
-                const tile = document.createElement('div');
-                tile.classList.add('tile');
-                tile.textContent = `${index + 1}. ${line}`; // Добавляем номер строки
-                aboutInfoDiv.appendChild(tile);
-            });
-        }
-    })
-    .catch(error => {
-        console.error('Ошибка при загрузке файла:', error);
-    });
+            if (text.trim() === "") {
+                console.error("Файл пуст!");
+            } else {
+                const lines = text.split('\n'); // Разделяем текст на строки
+                const aboutInfoDiv = document.getElementById('aboutinfo'); // Родительский контейнер
+                
+                lines.forEach((line, index) => {
+                    const tile = document.createElement('div');
+                    tile.classList.add('tile');
+                    tile.textContent = `${index + 1}. ${line}`; // Добавляем номер строки
+                    aboutInfoDiv.appendChild(tile);
+                });
+
+                // Показываем страницу после успешной загрузки
+                document.body.classList.remove('hidden');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при загрузке файла:', error);
+            // В случае ошибки отображаем сообщение об ошибке
+            const aboutInfoDiv = document.getElementById('aboutinfo');
+            aboutInfoDiv.textContent = "Ошибка при загрузке данных!";
+            document.body.classList.remove('hidden'); // Показываем страницу
+        });
     </script>
-        <section id="social-links" class="section3">
-            <div class="socials-container">
-                <a href="https://github.com/Cotoburger" target="_blank">
-                    <img src="images/image-26.png" alt="GitHub" class="social-icon" loading="lazy">
-                </a>
-            </div>
-        </section>
-    </body>
+
+    <section id="social-links" class="section3">
+        <div class="socials-container">
+            <a href="https://github.com/Cotoburger" target="_blank">
+                <img src="images/image-26.png" alt="GitHub" class="social-icon" loading="lazy">
+            </a>
+        </div>
+    </section>
 
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
