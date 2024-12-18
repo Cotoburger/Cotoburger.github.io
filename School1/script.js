@@ -328,8 +328,15 @@ document.addEventListener("DOMContentLoaded", () => {
             const newLeft = currentLeft + tiltX * -0.01;
 
             // Обновляем текущую позицию и стиль
-            snowflakeObj.currentLeft = Math.min(Math.max(newLeft, 0), 100); // Ограничиваем в пределах от -10% до 110%
+            snowflakeObj.currentLeft = Math.min(Math.max(newLeft, 0), 98); // Ограничиваем в пределах от 0% до 98%
+
             element.style.left = `${snowflakeObj.currentLeft}%`;
+
+            // Если снежинка выходит за экран по бокам, удаляем её
+            if (snowflakeObj.currentLeft <= 1 || snowflakeObj.currentLeft >= 99) {
+                snowflakeObj.element.remove();
+                snowflakes.splice(snowflakes.indexOf(snowflakeObj), 1); // Удаляем снежинку из массива
+            }
         });
     });
 });
