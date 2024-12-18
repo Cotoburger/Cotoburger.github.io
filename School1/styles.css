@@ -510,29 +510,29 @@ h4 {
     border-radius: 50%;
     opacity: 0.8;
     pointer-events: none;
-    animation: fall 15s linear infinite, fadeOut 1s ease-out infinite;
+    animation: fall linear infinite, fadeOut ease forwards;
 }
 
 @keyframes fall {
     0% {
         top: -10px;
-        transform: translateX(0);
+        opacity: 1;
     }
-    100% {
-        top: 97vh; /* Конечная точка — низ экрана */
-        transform: translateX(calc(-300% + 7vw));
-        
-    }
-}
-/* Анимация исчезновения снежинок */
-@keyframes fadeOut {
-    0% {
+    50% {
+        top: 60vh;
         opacity: 0.8;
     }
-    80% {
-        opacity: 0.6; /* Уменьшаем прозрачность до 40% */
+    100% {
+        top: 98vh;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
     }
     100% {
-        opacity: 0; /* Плавно исчезаем в конце */
+        opacity: 0;
     }
 }
