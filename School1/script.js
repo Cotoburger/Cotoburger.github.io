@@ -21,7 +21,6 @@ const swiper = new Swiper('.swiper-container', {
     },
 });
 
-// Функция для конвертации px в rem
 function pxToRem(px) {
     return px / 16 + 'rem';
 }
@@ -103,6 +102,7 @@ const schedule = {
             {lesson: "4-й урок", start: "16:40", end: "17:20"},
             {lesson: "5-й урок", start: "17:30", end: "18:10"},
             {lesson: "6-й урок", start: "18:20", end: "19:00"},
+            {lesson: "ДЕБАГ", start: "00:00", end: "24:00"},
         ]
     },
     4: {
@@ -149,13 +149,11 @@ const schedule = {
         ]
     }
 };
-// Функция для перевода времени в секунды с полуночи
 const timeToSeconds = (time) => {
     const [hours, minutes] = time.split(":").map(Number);
     return hours * 3600 + minutes * 60;
 };
 
-// Обновляем расписание, преобразуя времена в секунды
 const convertScheduleToSeconds = (schedule) => {
     for (let day in schedule) {
         for (let shift in schedule[day]) {
@@ -169,17 +167,10 @@ const convertScheduleToSeconds = (schedule) => {
 
 convertScheduleToSeconds(schedule);
 
-// Функция для получения текущего времени в секундах Камчатского времени
 const getCurrentTimeInSeconds = () => {
-    // Получаем текущее время по UTC
     const nowUTC = new Date().toISOString();
-
-    // Используем Intl.DateTimeFormat для преобразования времени в Камчатское (UTC+12)
     const kamchatkaTime = new Date(nowUTC).toLocaleString('en-US', { timeZone: 'Asia/Kamchatka' });
-
-    // Преобразуем в объект Date
     const kamchatkaDate = new Date(kamchatkaTime);
-
     return kamchatkaDate.getHours() * 3600 + kamchatkaDate.getMinutes() * 60 + kamchatkaDate.getSeconds();
 };
 
@@ -193,7 +184,6 @@ const formatTime = (seconds) => {
     return `${formattedMinutes}:${formattedSeconds}`;
 };
 
-// Функция для получения текущего урока
 const getCurrentLesson = (shift) => {
     const currentTime = getCurrentTimeInSeconds();
     const lessons = schedule[currentDay]?.[shift] || [];
@@ -228,25 +218,24 @@ const updateCurrentLessons = () => {
     const currentLessonShift1 = getCurrentLesson('shift1');
     const currentLessonShift2 = getCurrentLesson('shift2');
 
-    // Обновляем информацию для 1-й смены
     document.getElementById("currentLessonShift1").innerHTML = `Первая смена`;
     if (currentLessonShift1.lessonName) {
         if (currentLessonShift1.isBreak) {
             document.getElementById("lessonShift1").innerHTML = "Перемена";
             document.getElementById("timeLeftShift1").innerHTML = formatTime(currentLessonShift1.timeLeft);
-            document.getElementById("progressShift1").style.display = 'none'; // Скрыть прогресс-бар
+            document.getElementById("progressShift1").style.display = 'none';
         } else {
             document.getElementById("lessonShift1").innerHTML = `${currentLessonShift1.lessonName}`;
             document.getElementById("timeLeftShift1").innerHTML = formatTime(currentLessonShift1.timeLeft);
             // Заполняем прогресс-бар
             const progress = ((currentLessonShift1.totalTime - currentLessonShift1.timeLeft) / currentLessonShift1.totalTime) * 100;
-            document.getElementById("progressShift1").style.display = 'inline-block'; // Показываем прогресс-бар
+            document.getElementById("progressShift1").style.display = 'inline-block';
             document.getElementById("progressShift1").value = progress;
         }
     } else {
         document.getElementById("lessonShift1").innerHTML = "Нет уроков";
         document.getElementById("timeLeftShift1").innerHTML = "";
-        document.getElementById("progressShift1").style.display = 'none'; // Скрыть прогресс-бар
+        document.getElementById("progressShift1").style.display = 'none';
     }
 
     // Обновляем информацию для 2-й смены
@@ -255,26 +244,24 @@ const updateCurrentLessons = () => {
         if (currentLessonShift2.isBreak) {
             document.getElementById("lessonShift2").innerHTML = "Перемена";
             document.getElementById("timeLeftShift2").innerHTML = formatTime(currentLessonShift2.timeLeft);
-            document.getElementById("progressShift2").style.display = 'none'; // Скрыть прогресс-бар
+            document.getElementById("progressShift2").style.display = 'none';
         } else {
             document.getElementById("lessonShift2").innerHTML = `${currentLessonShift2.lessonName}`;
             document.getElementById("timeLeftShift2").innerHTML = formatTime(currentLessonShift2.timeLeft);
             // Заполняем прогресс-бар
             const progress = ((currentLessonShift2.totalTime - currentLessonShift2.timeLeft) / currentLessonShift2.totalTime) * 100;
-            document.getElementById("progressShift2").style.display = 'inline-block'; // Показываем прогресс-бар
+            document.getElementById("progressShift2").style.display = 'inline-block';
             document.getElementById("progressShift2").value = progress;
         }
     } else {
         document.getElementById("lessonShift2").innerHTML = "Нет уроков";
         document.getElementById("timeLeftShift2").innerHTML = "";
-        document.getElementById("progressShift2").style.display = 'none'; // Скрыть прогресс-бар
+        document.getElementById("progressShift2").style.display = 'none';
     }
 };
 
-// Обновляем уроки сразу после загрузки страницы
 updateCurrentLessons();
 
-// Обновляем данные каждую секунду
 setInterval(updateCurrentLessons, 1000);
 
 
@@ -288,16 +275,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const menuIcon = document.getElementById("menuIcon");
     const toolsPanel = document.getElementById("toolsPanel");
 
-    // Переключаем состояние панели при клике на кнопку
     menuIcon.addEventListener("mousedown", (event) => {
-        event.stopPropagation(); // Предотвращаем всплытие события, чтобы не сработал обработчик ниже
-        toolsPanel.classList.toggle("active"); // Переключаем класс "active"
+        event.stopPropagation();
+        toolsPanel.classList.toggle("active");
     });
 
-    // Закрываем панель, если клик был вне панели и кнопки
     document.addEventListener("mousedown", (event) => {
         if (!toolsPanel.contains(event.target) && !menuIcon.contains(event.target)) {
-            toolsPanel.classList.remove("active"); // Убираем класс "active", скрывая панель
+            toolsPanel.classList.remove("active");
         }
     });
 });
@@ -305,15 +290,13 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const snowflakesContainer = document.getElementById("snowflakes");
 
-    // Функция для создания снежинки
     function createSnowflake() {
         const snowflake = document.createElement("div");
         snowflake.classList.add("snowflake");
         
-        // Генерируем случайные параметры для каждой снежинки
-        const size = Math.random() * 11 + 4; // Размер снежинки от 5px до 15px
-        const leftPosition = Math.random() * 97; // Позиция по горизонтали
-        const animationDuration = Math.random() * 15 + 5; // Длительность анимации от 5 до 10 секунд
+        const size = Math.random() * 11 + 4;
+        const leftPosition = Math.random() * 97;
+        const animationDuration = Math.random() * 15 + 5;
 
         snowflake.style.width = `${size}px`;
         snowflake.style.height = `${size}px`;
@@ -322,12 +305,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         snowflakesContainer.appendChild(snowflake);
 
-        // Удаляем снежинку, когда она достигнет нижней части экрана, чтобы не перегружать DOM
         setTimeout(() => {
             snowflake.remove();
         }, animationDuration * 999);
     }
 
-    // Создаем снежинки каждую секунду
     setInterval(createSnowflake, 175);
 });
