@@ -299,6 +299,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const leftPosition = Math.random() * 97; // Начальная горизонтальная позиция
         const animationDuration = Math.random() * 15 + 5; // Длительность падения
 
+        snowflake.style.width = `${size}px`;
+        snowflake.style.height = `${size}px`;
+        snowflake.style.left = `${leftPosition}%`;
+        snowflake.style.animationDuration = `${animationDuration}s`;
+        snowflake.style.top = `-10px`; // Начальная позиция над экраном
+
         snowflakesContainer.appendChild(snowflake);
         snowflakes.push({ element: snowflake, currentLeft: leftPosition });
 
@@ -319,7 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const { element, currentLeft } = snowflakeObj;
 
             // Смещение снежинки в зависимости от наклона устройства
-            const newLeft = currentLeft + tiltX * 0.5;
+            const newLeft = currentLeft + tiltX * 0.001;
 
             // Обновляем текущую позицию и стиль
             snowflakeObj.currentLeft = Math.min(Math.max(newLeft, 0), 100); // Ограничиваем в пределах 0-100%
