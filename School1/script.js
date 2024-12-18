@@ -288,11 +288,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     const snowflakesContainer = document.getElementById("snowflakes");
+    const snowflakes = [];
+    let tiltX = 0, tiltY = 0;
 
     function createSnowflake() {
         const snowflake = document.createElement("div");
         snowflake.classList.add("snowflake");
-        
+
         const size = Math.random() * 11 + 4;
         const leftPosition = Math.random() * 97;
         const animationDuration = Math.random() * 15 + 5;
@@ -303,11 +305,27 @@ document.addEventListener("DOMContentLoaded", () => {
         snowflake.style.animationDuration = `${animationDuration}s`;
 
         snowflakesContainer.appendChild(snowflake);
+        snowflakes.push(snowflake);
 
         setTimeout(() => {
             snowflake.remove();
-        }, animationDuration * 999);
+            snowflakes.splice(snowflakes.indexOf(snowflake), 1);
+        }, animationDuration * 1000);
     }
 
     setInterval(createSnowflake, 175);
+
+    window.addEventListener("devicemotion", (event) => {
+        // Извлекаем данные акселерометра
+        const acceleration = event.accelerationIncludingGravity;
+        tiltX = acceleration.x || 0;
+        tiltY = acceleration.y || 0;
+
+        // Обновляем позиции снежинок
+        snowflakes.forEach((snowflake) => {
+            const currentLeft = parseFloat(snowflake.style.left);
+            const newLeft = Math.min(Math.max(currentLeft + tiltX * 0.5, 0), 100); // Смещение по горизонтали
+            snowflake.style.left = `${newLeft}%`;
+        });
+    });
 });
