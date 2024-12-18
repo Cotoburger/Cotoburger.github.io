@@ -21,7 +21,6 @@ const swiper = new Swiper('.swiper-container', {
     },
 });
 
-// Функция для конвертации px в rem
 function pxToRem(px) {
     return px / 16 + 'rem';
 }
@@ -49,16 +48,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const menuIcon = document.getElementById("menuIcon");
     const toolsPanel = document.getElementById("toolsPanel");
 
-    // Переключаем состояние панели при клике на кнопку
     menuIcon.addEventListener("mousedown", (event) => {
-        event.stopPropagation(); // Предотвращаем всплытие события, чтобы не сработал обработчик ниже
-        toolsPanel.classList.toggle("active"); // Переключаем класс "active"
+        event.stopPropagation();
+        toolsPanel.classList.toggle("active");
     });
 
-    // Закрываем панель, если клик был вне панели и кнопки
     document.addEventListener("mousedown", (event) => {
         if (!toolsPanel.contains(event.target) && !menuIcon.contains(event.target)) {
-            toolsPanel.classList.remove("active"); // Убираем класс "active", скрывая панель
+            toolsPanel.classList.remove("active");
         }
     });
 });
@@ -66,15 +63,13 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const snowflakesContainer = document.getElementById("snowflakes");
 
-    // Функция для создания снежинки
     function createSnowflake() {
         const snowflake = document.createElement("div");
         snowflake.classList.add("snowflake");
         
-        // Генерируем случайные параметры для каждой снежинки
-        const size = Math.random() * 11 + 4; // Размер снежинки от 5px до 15px
-        const leftPosition = Math.random() * 97; // Позиция по горизонтали
-        const animationDuration = Math.random() * 15 + 5; // Длительность анимации от 5 до 10 секунд
+        const size = Math.random() * 11 + 4;
+        const leftPosition = Math.random() * 97;
+        const animationDuration = Math.random() * 15 + 5;
 
         snowflake.style.width = `${size}px`;
         snowflake.style.height = `${size}px`;
@@ -83,12 +78,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         snowflakesContainer.appendChild(snowflake);
 
-        // Удаляем снежинку, когда она достигнет нижней части экрана, чтобы не перегружать DOM
         setTimeout(() => {
             snowflake.remove();
         }, animationDuration * 999);
     }
 
-    // Создаем снежинки каждую секунду
     setInterval(createSnowflake, 175);
 });
