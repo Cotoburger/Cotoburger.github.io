@@ -289,7 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const snowflakesContainer = document.getElementById("snowflakes");
     const snowflakes = [];
-    let tiltX = 0, tiltY = 0;
+    let tiltX = 0;
 
     function createSnowflake() {
         const snowflake = document.createElement("div");
@@ -303,29 +303,29 @@ document.addEventListener("DOMContentLoaded", () => {
         snowflake.style.height = `${size}px`;
         snowflake.style.left = `${leftPosition}%`;
         snowflake.style.animationDuration = `${animationDuration}s`;
+        snowflake.style.top = `-10px`; // Начальная позиция чуть выше контейнера
 
         snowflakesContainer.appendChild(snowflake);
-        snowflakes.push(snowflake);
+        snowflakes.push({ element: snowflake, leftPosition });
 
         setTimeout(() => {
             snowflake.remove();
-            snowflakes.splice(snowflakes.indexOf(snowflake), 1);
+            snowflakes.splice(snowflakes.findIndex((sf) => sf.element === snowflake), 1);
         }, animationDuration * 1000);
     }
 
     setInterval(createSnowflake, 175);
 
     window.addEventListener("devicemotion", (event) => {
-        // Извлекаем данные акселерометра
         const acceleration = event.accelerationIncludingGravity;
         tiltX = acceleration.x || 0;
-        tiltY = acceleration.y || 0;
 
-        // Обновляем позиции снежинок
-        snowflakes.forEach((snowflake) => {
-            const currentLeft = parseFloat(snowflake.style.left);
-            const newLeft = Math.min(Math.max(currentLeft + tiltX * 0.5, 0), 100); // Смещение по горизонтали
-            snowflake.style.left = `${newLeft}%`;
+        // Обновляем горизонтальные позиции снежинок
+        snowflakes.forEach((snowflakeObj) => {
+            const { element, leftPosition } = snowflakeObj;
+            const currentLeft = leftPosition + tiltX * 1.5; // Корректируем исходную позицию
+            snowflakeObj.leftPosition = Math.min(Math.max(currentLeft, 0), 100); // Ограничиваем в пределах 0-100%
+            element.style.left = `${snowflakeObj.leftPosition}%`;
         });
     });
 });
