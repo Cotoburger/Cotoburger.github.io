@@ -287,22 +287,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const menuIcon = document.getElementById("menuIcon");
-    const toolsPanel = document.getElementById("toolsPanel");
-
-    menuIcon.addEventListener("mousedown", (event) => {
-        event.stopPropagation();
-        toolsPanel.classList.toggle("active");
-    });
-
-    document.addEventListener("mousedown", (event) => {
-        if (!toolsPanel.contains(event.target) && !menuIcon.contains(event.target)) {
-            toolsPanel.classList.remove("active");
-        }
-    });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
     const snowflakesContainer = document.getElementById("snowflakes");
     const snowflakes = [];
     let tiltX = 0;
@@ -312,59 +296,40 @@ document.addEventListener("DOMContentLoaded", () => {
         snowflake.classList.add("snowflake");
 
         const size = Math.random() * 11 + 4; // Размер снежинки
-        const leftPosition = Math.random() * 100; // Начальная горизонтальная позиция от 0 до 100%
+        const leftPosition = Math.random() * 97; // Начальная горизонтальная позиция
         const animationDuration = Math.random() * 15 + 5; // Длительность падения
 
         snowflake.style.width = `${size}px`;
         snowflake.style.height = `${size}px`;
         snowflake.style.left = `${leftPosition}%`;
         snowflake.style.animationDuration = `${animationDuration}s`;
+        snowflake.style.top = `-10px`; // Начальная позиция над экраном
 
-        // Добавляем снежинку в контейнер
         snowflakesContainer.appendChild(snowflake);
-        snowflakes.push({ element: snowflake, currentLeft: leftPosition, animationDuration });
+        snowflakes.push({ element: snowflake, currentLeft: leftPosition });
 
         setTimeout(() => {
-            // Добавляем анимацию исчезновения
-            snowflake.classList.add("fade-out");
-
-            // Удаляем снежинку после завершения анимации
-            setTimeout(() => {
-                snowflake.remove();
-                snowflakes.splice(snowflakes.findIndex((sf) => sf.element === snowflake), 1);
-            }, 1000); // Задержка, чтобы дождаться завершения анимации
+            snowflake.remove();
+            snowflakes.splice(snowflakes.findIndex((sf) => sf.element === snowflake), 1);
         }, animationDuration * 1000);
     }
 
-    setInterval(createSnowflake, 400);
+    setInterval(createSnowflake, 175);
 
     window.addEventListener("devicemotion", (event) => {
-        const acceleration = event.accelerationIncludingGravity;
-        tiltX = acceleration.x || 0;
+        const acceleration = event.acceleration;
+        tiltX = acceleration.x || 0; // Используем только акселерометр
 
-        // Обновляем горизонтальные позиции снежинок в зависимости от наклона устройства
+        // Обновляем горизонтальные позиции снежинок
         snowflakes.forEach((snowflakeObj) => {
             const { element, currentLeft } = snowflakeObj;
 
             // Смещение снежинки в зависимости от наклона устройства
-            const newLeft = currentLeft + tiltX * -0.01;
+            const newLeft = currentLeft + tiltX * -0.5; // Уменьшил множитель для более мягкого эффекта
 
             // Обновляем текущую позицию и стиль
-            snowflakeObj.currentLeft = Math.min(Math.max(newLeft, 0), 100); // Ограничиваем в пределах от 0% до 98%
-
+            snowflakeObj.currentLeft = Math.min(Math.max(newLeft, 0), 100); // Ограничиваем в пределах 0-100%
             element.style.left = `${snowflakeObj.currentLeft}%`;
-
-            // Если снежинка выходит за экран по бокам, добавляем анимацию исчезновения
-            if (snowflakeObj.currentLeft <= 1 || snowflakeObj.currentLeft >= 99) {
-                // Добавляем анимацию исчезновения
-                snowflakeObj.element.classList.add("fade-out");
-
-                // Удаляем снежинку после завершения анимации
-                setTimeout(() => {
-                    snowflakeObj.element.remove();
-                    snowflakes.splice(snowflakes.indexOf(snowflakeObj), 1);
-                }, 1000); // Задержка для анимации исчезновения
-            }
         });
     });
 });
