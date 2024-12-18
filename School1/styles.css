@@ -494,7 +494,7 @@ h4 {
     top: 0;
     left: 50%;
     width: 100vw;
-    height: 100vh;
+    height: 105vh;
     pointer-events: none;
     z-index: -1000;
     display: flex;
@@ -521,7 +521,7 @@ h4 {
         transform: translateX(0);
     }
     100% {
-        top: 97vh; /* Конечная точка — низ экрана */
+        top: 102vh; /* Конечная точка — низ экрана */
         transform: translateX(calc(-300% + 7vw));
         
     }

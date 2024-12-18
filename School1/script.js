@@ -290,6 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const snowflakesContainer = document.getElementById("snowflakes");
     const snowflakes = [];
     let tiltX = 0;
+    let lastUpdateTime = 0;
 
     function createSnowflake() {
         const snowflake = document.createElement("div");
@@ -305,13 +306,38 @@ document.addEventListener("DOMContentLoaded", () => {
         snowflake.style.animationDuration = `${animationDuration}s`;
         snowflake.style.top = `-10px`; // Начальная позиция над экраном
 
+        snowflakes.push({ element: snowflake, currentLeft: leftPosition, animationDuration });
         snowflakesContainer.appendChild(snowflake);
-        snowflakes.push({ element: snowflake, currentLeft: leftPosition });
+    }
 
-        setTimeout(() => {
-            snowflake.remove();
-            snowflakes.splice(snowflakes.findIndex((sf) => sf.element === snowflake), 1);
-        }, animationDuration * 1000);
+    function updateSnowflakes() {
+        const currentTime = Date.now();
+        const deltaTime = currentTime - lastUpdateTime;
+        lastUpdateTime = currentTime;
+
+        snowflakes.forEach((snowflakeObj) => {
+            const { element, currentLeft, animationDuration } = snowflakeObj;
+
+            // Смещение снежинки в зависимости от наклона устройства
+            const newLeft = currentLeft + tiltX * -0.016;
+
+            // Обновляем текущую позицию и стиль
+            snowflakeObj.currentLeft = Math.min(Math.max(newLeft, -45), 145); // Ограничиваем в пределах -45% до 145%
+            element.style.left = `${snowflakeObj.currentLeft}%`;
+
+            // Обновляем позицию по вертикали, с плавным переходом
+            const topPosition = parseFloat(element.style.top);
+            if (topPosition >= 100) {
+                // Перемещаем снежинку в верхнюю позицию, с небольшим эффектом плавного перехода
+                element.style.transition = 'top 1s ease';
+                element.style.top = `-10px`;
+            } else {
+                element.style.transition = ''; // Сбрасываем плавность
+                element.style.top = `${topPosition + (100 / animationDuration) * (deltaTime / 1000)}%`;
+            }
+        });
+
+        requestAnimationFrame(updateSnowflakes);
     }
 
     setInterval(createSnowflake, 175);
@@ -319,17 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("devicemotion", (event) => {
         const acceleration = event.accelerationIncludingGravity;
         tiltX = acceleration.x || 0;
-
-        // Обновляем горизонтальные позиции снежинок
-        snowflakes.forEach((snowflakeObj) => {
-            const { element, currentLeft } = snowflakeObj;
-
-            // Смещение снежинки в зависимости от наклона устройства
-            const newLeft = currentLeft + tiltX * -0.016;
-
-            // Обновляем текущую позицию и стиль
-            snowflakeObj.currentLeft = Math.min(Math.max(newLeft, -45), 145); // Ограничиваем в пределах 0-100%
-            element.style.left = `${snowflakeObj.currentLeft}%`;
-        });
     });
+
+    updateSnowflakes();
 });
