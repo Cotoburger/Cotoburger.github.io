@@ -71,6 +71,7 @@ header {
     border-radius: 3.125rem;
     margin-left: 1.25rem;
     margin-right: 1.25rem;
+
 }
 
 
@@ -214,7 +215,6 @@ h4 {
     margin-left: 0.5125rem; /* 25px */
     border-radius: 1.875rem; /* 30px */
     box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.1);
-    transform: translateY(1.875rem);
 
     width: 100%;  /* Позволяет элементу сжиматься */
     max-width: 100%; /* Ограничивает максимальную ширину */
