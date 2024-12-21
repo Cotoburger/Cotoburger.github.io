@@ -3,43 +3,14 @@ const images = document.querySelectorAll('img');
 const avatar = document.querySelector('.avatar');
 const socialIcons = document.querySelectorAll('.social-icon');
 
-const swiper = new Swiper('.swiper-container', {
-    spaceBetween: parseFloat(pxToRem(20)),
-    slidesPerView: 'auto',
-    loop: true,
-    autoplay: {
-        delay: 3500,
-        disableOnInteraction: false,
-    },
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-    },
-    pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-    },
-});
 
 function pxToRem(px) {
     return px / 16 + 'rem';
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const swiper = new Swiper('.swiper-container', {
-        slidesPerView: 1,
-        spaceBetween: 10,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        loop: true,
-    });
-});
-
 
 AOS.init({
-    duration: 500,
+    duration: 200,
     once: true
     
 }); 

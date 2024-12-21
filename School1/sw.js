@@ -11,6 +11,8 @@ const filesToCache = [
     "snowflake.svg",
     "styles.css",
     "images/image-26.png",
+    "aos.js",
+    "aos.css",
 ];
 
 self.addEventListener('install', (event) => {
