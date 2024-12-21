@@ -4,6 +4,7 @@ const filesToCache = [
     'DebugInfo.txt',
     "index.html",
     "script.js",
+    "script2.js",
     "images/icon.png",
 ];
 
@@ -33,8 +34,19 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        caches.match(event.request).then((response) => {
-            return response || fetch(event.request);
+        caches.match(event.request).then((cachedResponse) => {
+            const fetchPromise = fetch(event.request).then((networkResponse) => {
+                // Обновление кэша с новой версией
+                if (networkResponse && event.request.url.includes('script.js')) {
+                    caches.open(cacheName).then((cache) => {
+                        cache.put(event.request, networkResponse.clone());
+                    });
+                }
+                return networkResponse;
+            });
+
+            // Вернуть либо кэш, либо новый ресурс
+            return cachedResponse || fetchPromise;
         })
     );
 });
