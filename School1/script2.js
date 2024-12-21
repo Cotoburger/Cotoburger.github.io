@@ -47,10 +47,26 @@ AOS.init({
 document.addEventListener("DOMContentLoaded", () => {
     const menuIcon = document.getElementById("menuIcon");
     const toolsPanel = document.getElementById("toolsPanel");
+    const links = toolsPanel.querySelectorAll('a'); // Получаем все ссылки внутри панели
 
     menuIcon.addEventListener("mousedown", (event) => {
         event.stopPropagation();
         toolsPanel.classList.toggle("active");
+
+        // Имитация интенсивной вибрации при открытии панели
+        if (navigator.vibrate) {
+            navigator.vibrate([10]);  // Вибрация 50ms, пауза 20ms, снова 50ms, и так далее
+        }
+    });
+
+    // Добавляем обработчик нажатия на каждую ссылку
+    links.forEach(link => {
+        link.addEventListener("click", (event) => {
+            // Вибрация при клике на ссылку
+            if (navigator.vibrate) {
+                navigator.vibrate(10); // Вибрация длительностью 50 миллисекунд
+            }
+        });
     });
 
     document.addEventListener("mousedown", (event) => {
