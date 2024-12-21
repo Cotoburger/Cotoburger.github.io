@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Имитация интенсивной вибрации при открытии панели
         if (navigator.vibrate) {
-            navigator.vibrate([5]);  // Вибрация 50ms, пауза 20ms, снова 50ms, и так далее
+            navigator.vibrate([10]);  // Вибрация 50ms, пауза 20ms, снова 50ms, и так далее
         }
     });
 
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
         link.addEventListener("click", (event) => {
             // Вибрация при клике на ссылку
             if (navigator.vibrate) {
-                navigator.vibrate(5); // Вибрация длительностью 50 миллисекунд
+                navigator.vibrate(10); // Вибрация длительностью 50 миллисекунд
             }
         });
     });
