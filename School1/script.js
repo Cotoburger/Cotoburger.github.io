@@ -7,18 +7,6 @@ function pxToRem(px) {
     return px / 16 + 'rem';
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const swiper = new Swiper('.swiper-container', {
-        slidesPerView: 1,
-        spaceBetween: 10,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        loop: true,
-    });
-});
-
 
 
 const schedule = {
@@ -247,7 +235,7 @@ setInterval(updateCurrentLessons, 1000);
 
 
 AOS.init({
-    duration: 500,
+    duration: 200,
     once: true
     
 }); 

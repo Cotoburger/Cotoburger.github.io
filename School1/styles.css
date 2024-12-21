@@ -82,6 +82,7 @@ header {
     margin-left: 0.25rem;
     flex-wrap: wrap;
     padding: 0.6375rem;
+    
 }
 /* Секция с уроками */
 #schedule1 {
@@ -155,7 +156,7 @@ h4 {
     height: 4.25rem;
     margin-top: 1rem;
     border-radius: 3.125rem; /* 50px */
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease;
     display: inline-block;
     object-fit: cover;
 }
@@ -329,7 +330,6 @@ h4 {
 
 /* Применение анимации к #schedule1 */
 #schedule1 {
-    animation: fadeInZoom 0.4s ease-out forwards;
     margin-bottom: 2rem;
 }
 .socials-container {
