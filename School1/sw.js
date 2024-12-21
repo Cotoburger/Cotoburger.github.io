@@ -2,6 +2,8 @@ const cacheName = 'txt-cache-v1';
 const filesToCache = [
     'Arabic.txt',
     'DebugInfo.txt',
+    "arabic.html",
+    "about.html",
     "index.html",
     "script.js",
     "script2.js",
