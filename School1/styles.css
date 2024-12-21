@@ -493,7 +493,7 @@ h4 {
     position: absolute; /* Меняем fixed на absolute */
     top: 0;
     left: 50%;
-    width: 94vw;
+    width: 93vw;
     height: 100vh;
     pointer-events: none;
     z-index: -1000;
