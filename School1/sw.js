@@ -18,53 +18,41 @@ const filesToCache = [
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(cacheName).then((cache) => {
+            return cache.addAll(filesToCache); // Сразу кэшируем всё
+        })
+    );
+    self.skipWaiting(); // Немедленно активируем новый Service Worker
+});
+
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
             return Promise.all(
-                filesToCache.map((url) => {
-                    return fetch(url).then((response) => {
-                        if (!response.ok) {
-                            throw new Error(`Ошибка загрузки: ${url}`);
-                        }
-                        return cache.put(url, response);
-                    }).catch((err) => {
-                        console.error(err); // Здесь выводится какая ошибка и для какого файла
-                    });
+                cacheNames.map((oldCacheName) => {
+                    if (oldCacheName !== cacheName) {
+                        return caches.delete(oldCacheName); // Удаляем старый кэш
+                    }
                 })
             );
         })
     );
+    self.clients.claim(); // Активируем обновления сразу
 });
 
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
-            // Если файл в кэше, возвращаем его
             const fetchPromise = fetch(event.request).then((networkResponse) => {
-                if (networkResponse && event.request.url.includes('snowflake.svg')) {
+                // Проверяем, что ответ успешен
+                if (networkResponse && networkResponse.ok) {
+                    const clonedResponse = networkResponse.clone(); // Клонируем ответ до использования
                     caches.open(cacheName).then((cache) => {
-                        cache.put(event.request, networkResponse.clone()); // Клонируем ответ
+                        cache.put(event.request, clonedResponse); // Кэшируем клон
                     });
                 }
-                return networkResponse.clone(); // Клонируем для возврата
-            });
-
-            // Если файл есть в кэше, возвращаем его, иначе загружаем с сети
-            return cachedResponse || fetchPromise;
-        })
-    );
-});
-
-// Обработка запросов и обновление кэша при необходимости
-self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            // Если файл в кэше, возвращаем его
-            const fetchPromise = fetch(event.request).then((networkResponse) => {
-                if (networkResponse && event.request.url.indexOf('snowflake.svg') !== -1) {
-                    caches.open(cacheName).then((cache) => {
-                        cache.put(event.request, networkResponse.clone());  // Обновляем кэш
-                    });
-                }
-                return networkResponse;
+                return networkResponse; // Возвращаем оригинальный ответ
+            }).catch((err) => {
+                console.error('Ошибка при запросе:', err); // Логируем ошибки сети
             });
 
             // Если файл есть в кэше, возвращаем его, иначе загружаем с сети
