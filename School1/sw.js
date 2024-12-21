@@ -4,6 +4,7 @@ const filesToCache = [
     'DebugInfo.txt',
     "index.html",
     "script.js",
+    "images/icon.png",
 ];
 
 self.addEventListener('install', (event) => {
