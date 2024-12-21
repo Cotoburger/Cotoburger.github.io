@@ -2,6 +2,8 @@ const cacheName = 'txt-cache-v1';
 const filesToCache = [
     'Arabic.txt',
     'DebugInfo.txt',
+    "index.html",
+    "script.js",
 ];
 
 self.addEventListener('install', (event) => {
