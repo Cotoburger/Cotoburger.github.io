@@ -3,24 +3,6 @@ const images = document.querySelectorAll('img');
 const avatar = document.querySelector('.avatar');
 const socialIcons = document.querySelectorAll('.social-icon');
 
-const swiper = new Swiper('.swiper-container', {
-    spaceBetween: parseFloat(pxToRem(20)),
-    slidesPerView: 'auto',
-    loop: true,
-    autoplay: {
-        delay: 3500,
-        disableOnInteraction: false,
-    },
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-    },
-    pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-    },
-});
-
 function pxToRem(px) {
     return px / 16 + 'rem';
 }

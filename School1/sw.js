@@ -10,6 +10,7 @@ const filesToCache = [
     "images/icon.png",
     "snowflake.svg",
     "styles.css",
+    "images/image-26.png",
 ];
 
 self.addEventListener('install', (event) => {
@@ -31,18 +32,21 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// Удаление старых кэшей при активации нового сервис-воркера
-self.addEventListener('activate', (event) => {
-    const cacheWhitelist = [cacheName];  // Новый кэш
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cache) => {
-                    if (!cacheWhitelist.includes(cache)) {
-                        return caches.delete(cache);  // Удаление старых кэшей
-                    }
-                })
-            );
+self.addEventListener('fetch', (event) => {
+    event.respondWith(
+        caches.match(event.request).then((cachedResponse) => {
+            // Если файл в кэше, возвращаем его
+            const fetchPromise = fetch(event.request).then((networkResponse) => {
+                if (networkResponse && event.request.url.includes('snowflake.svg')) {
+                    caches.open(cacheName).then((cache) => {
+                        cache.put(event.request, networkResponse.clone()); // Клонируем ответ
+                    });
+                }
+                return networkResponse.clone(); // Клонируем для возврата
+            });
+
+            // Если файл есть в кэше, возвращаем его, иначе загружаем с сети
+            return cachedResponse || fetchPromise;
         })
     );
 });
