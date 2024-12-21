@@ -286,7 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     const snowflakesContainer = document.getElementById("snowflakes");
-    const maxSnowflakes = 150; // Максимальное количество снежинок на экране
+    const maxSnowflakes = 100; // Максимальное количество снежинок на экране
 
     function createSnowflake() {
         if (snowflakesContainer.children.length >= maxSnowflakes) {
@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
         createSnowflake();
         setTimeout(() => {
             requestAnimationFrame(snowflakesLoop);
-        }, 125); // Увеличенный интервал между созданием снежинок
+        }, 200); // Увеличенный интервал между созданием снежинок
     }
 
     // Запуск анимации снежинок
