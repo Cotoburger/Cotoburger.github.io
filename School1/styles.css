@@ -506,8 +506,11 @@ h4 {
 .snowflake {
     position: absolute;
     top: -10px; /* Начинаем с верхней части экрана */
-    background-color: rgba(255, 255, 255, 0.749);
-    border-radius: 50%;
+    width: 30px; /* Размер снежинки */
+    height: 30px; /* Размер снежинки */
+    background-image: url('snowflake.svg'); /* Путь к изображению снежинки */
+    background-size: contain;
+    background-repeat: no-repeat;
     opacity: 0.8;
     pointer-events: none;
     animation: fall linear infinite, fadeOut ease forwards;
@@ -523,7 +526,7 @@ h4 {
         opacity: 0.8;
     }
     100% {
-        top: 98vh;
+        top: 97vh;
         opacity: 0;
     }
 }
