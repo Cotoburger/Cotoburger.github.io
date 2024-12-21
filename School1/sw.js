@@ -1,4 +1,4 @@
-const cacheName = 'txt-cache-v1';
+const cacheName = 'Cache';
 const filesToCache = [
     'Arabic.txt',
     'DebugInfo.txt',
