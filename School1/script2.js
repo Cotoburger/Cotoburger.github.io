@@ -1,4 +1,3 @@
-
 const images = document.querySelectorAll('img');
 const avatar = document.querySelector('.avatar');
 const socialIcons = document.querySelectorAll('.social-icon');
@@ -90,4 +89,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Запуск анимации снежинок
     snowflakesLoop();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const themeToggle = document.getElementById("themeToggle");
+
+    // Добавляем плавный переход для изменения темы
+    document.body.style.transition = "background-color 0.5s, color 0.9s";
+
+    // Функция для установки темы
+    function setTheme(theme) {
+        if (theme === "light") {
+            document.body.classList.add("light-theme");
+            themeToggle.style.backgroundImage = "url('images/sun.svg')";
+        } else {
+            document.body.classList.remove("light-theme");
+            themeToggle.style.backgroundImage = "url('images/moon.svg')";
+        }
+    }
+
+    // Проверяем, есть ли сохраненная тема в localStorage
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+        setTheme(savedTheme);
+    } else {
+        // Устанавливаем начальную тему на основе предпочтений пользователя
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            setTheme("light");
+        } else {
+            setTheme("dark");
+        }
+    }
+
+    // Обработчик клика для переключения темы
+    themeToggle.addEventListener("click", () => {
+        if (document.body.classList.contains("light-theme")) {
+            setTheme("dark");
+            localStorage.setItem("theme", "dark");
+        } else {
+            setTheme("light");
+            localStorage.setItem("theme", "light");
+        }
+    });
 });
