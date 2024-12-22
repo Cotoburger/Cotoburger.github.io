@@ -102,53 +102,50 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.getElementById("themeToggle");
 
-    // Добавляем плавный переход для изменения темы и иконки
-    document.body.style.transition = "background-color 0.5s, color 0.5s";
-    themeToggle.style.transition = "transform 0.3s, opacity 0.3s";
-    document.documentElement.style.transition = "background-color 0.5s";
+    // Add smooth transitions
+    document.body.style.transition = "background-color 0.3s, color 0.3s";
+    themeToggle.style.transition = "transform 0.4s ease-in-out, opacity 0.2s ease-in-out";
+    document.documentElement.style.transition = "background-color 0.3s";
 
-    // Функция для установки темы
+    // Initially hide the button and rotate it
+    themeToggle.style.opacity = "0";
+    themeToggle.style.transform = "rotate(180deg)";
+
     function setTheme(theme) {
-        themeToggle.style.opacity = "0"; // Начинаем исчезновение иконки
-        setTimeout(() => {
-            if (theme === "light") {
-                document.documentElement.setAttribute("data-theme", "light");
-                document.documentElement.style.backgroundColor = "#ffffff"; // Меняем фон для html
-                themeToggle.style.backgroundImage = "url('images/sun.svg')";
-            } else {
-                document.documentElement.setAttribute("data-theme", "dark");
-                document.documentElement.style.backgroundColor = "#0e1213"; // Устанавливаем темный фон
-                themeToggle.style.backgroundImage = "url('images/moon.svg')";
-            }
-            themeToggle.style.transform = "rotate(360deg)";
-            themeToggle.style.opacity = "1"; // Плавное появление новой иконки
-            setTimeout(() => {
-                themeToggle.style.transform = "rotate(0deg)";
-            }, 500);
-        }, 500);
-    }
-
-    // Проверяем, есть ли сохраненная тема в localStorage
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-        setTheme(savedTheme);
-    } else {
-        // Устанавливаем начальную тему на основе предпочтений пользователя
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-            setTheme("light");
+        if (theme === "light") {
+            document.documentElement.setAttribute("data-theme", "light");
+            document.documentElement.style.backgroundColor = "#ffffff";
+            themeToggle.style.backgroundImage = "url('images/sun.svg')";
         } else {
-            setTheme("dark");
+            document.documentElement.setAttribute("data-theme", "dark");
+            document.documentElement.style.backgroundColor = "#0e1213";
+            themeToggle.style.backgroundImage = "url('images/moon.svg')";
         }
     }
 
-    // Обработчик клика для переключения темы
+    // Set initial theme without animation
+    const savedTheme = localStorage.getItem("theme") || 
+                      (window.matchMedia('(prefers-color-scheme: light)').matches ? "light" : "dark");
+    setTheme(savedTheme);
+
+    // Show button with animation on initial page load
+    requestAnimationFrame(() => {
+        themeToggle.style.opacity = "1";
+        themeToggle.style.transform = "rotate(0deg)";
+    });
+
+    // Theme toggle with animation
     themeToggle.addEventListener("click", () => {
-        if (document.documentElement.getAttribute("data-theme") === "light") {
-            setTheme("dark");
-            localStorage.setItem("theme", "dark");
-        } else {
-            setTheme("light");
-            localStorage.setItem("theme", "light");
-        }
+        themeToggle.style.transform = "rotate(180deg)";
+        themeToggle.style.opacity = "0";
+        
+        setTimeout(() => {
+            const newTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+            setTheme(newTheme);
+            localStorage.setItem("theme", newTheme);
+            
+            themeToggle.style.opacity = "1";
+            themeToggle.style.transform = "rotate(0deg)";
+        }, 200);
     });
 });
