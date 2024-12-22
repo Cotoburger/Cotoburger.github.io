@@ -243,7 +243,7 @@ setInterval(updateCurrentLessons, 1000);
 
 window.simulateTime = simulateTime;
 
-const parseAndSimulateTime = (input) => {
+const sim = (input) => {
     const [day, time] = input.split("-");
     if (day && time) {
         simulateTime(parseInt(day), time);
@@ -253,7 +253,7 @@ const parseAndSimulateTime = (input) => {
     }
 };
 
-window.parseAndSimulateTime = parseAndSimulateTime;
+window.sim = sim;
 
 const logCurrentTime = () => {
     const now = simulatedTime || new Date();
