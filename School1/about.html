@@ -23,6 +23,20 @@
             visibility: hidden;
         }
     </style>
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme) {
+                document.documentElement.setAttribute("data-theme", savedTheme);
+                if (savedTheme === "light") {
+                    document.documentElement.style.backgroundColor = "#ffffff";
+                }
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+                document.documentElement.setAttribute("data-theme", "light");
+                document.documentElement.style.backgroundColor = "#ffffff";
+            }
+        })();
+    </script>
 </head>
 <script>
     if ('serviceWorker' in navigator) {

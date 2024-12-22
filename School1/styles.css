@@ -612,3 +612,45 @@ body.light-theme .lesson2 {
 body.light-theme .social-icon {
     filter: none;
 }
+
+[data-theme="light"] {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+[data-theme="light"] .header-container {
+    background-color: #c7daf1;
+}
+
+[data-theme="light"] .tools-panel {
+    background-color: rgba(140, 189, 232, 0.833);
+}
+
+[data-theme="light"] .tile {
+    background-color: rgba(255, 255, 255, 0.313);
+    color: #000000;
+}
+
+[data-theme="light"] .sectionz {
+    background-color: rgba(200, 200, 200, 0.215);
+    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .sectionles,
+[data-theme="light"] .sectionles2 {
+    background-color: rgba(255, 255, 255, 0.313);
+    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] #currentLessonShift1,
+[data-theme="light"] #currentLessonShift2 {
+    color: rgba(49, 67, 70, 0.509);
+}
+
+[data-theme="light"] .lesson2 {
+    color: rgb(81, 81, 81);
+}
+
+[data-theme="light"] .social-icon {
+    filter: none;
+}

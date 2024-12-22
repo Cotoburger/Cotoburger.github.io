@@ -304,6 +304,14 @@ document.addEventListener("DOMContentLoaded", () => {
             toolsPanel.classList.remove("active");
         }
     });
+    
+    const themeToggle = document.getElementById("themeToggle");
+    themeToggle.addEventListener("click", () => {
+        // Вибрация при клике на кнопку смены темы
+        if (navigator.vibrate) {
+            navigator.vibrate(5); // Вибрация длительностью 50 миллисекунд
+        }
+    });
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -355,39 +363,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.getElementById("themeToggle");
 
     // Добавляем плавный переход для изменения темы и иконки
-    document.body.style.transition = "background-color 0.5s, color 0.5s";
-    themeToggle.style.transition = "transform 0.3s, opacity 0.3s";
-    document.documentElement.style.transition = "background-color 0.5s";
+    document.body.style.transition = "background-color 0.3s, color 0.3s";
+    themeToggle.style.transition = "transform 0.4s ease-in-out, opacity 0.4s ease-in-out";
+    document.documentElement.style.transition = "background-color 0.3s";
 
     // Функция для установки темы
     function setTheme(theme) {
-        if (theme === "light") {
-            document.documentElement.style.backgroundColor = "#ffffff"; // Меняем фон для html
-            document.body.classList.add("light-theme");
-            themeToggle.style.transform = "translateY(-70%)";
-            themeToggle.style.opacity = "0";
-            setTimeout(() => {
+        themeToggle.style.opacity = "0"; // Начинаем исчезновение иконки
+        setTimeout(() => {
+            if (theme === "light") {
+                document.documentElement.setAttribute("data-theme", "light");
+                document.documentElement.style.backgroundColor = "#ffffff"; // Меняем фон для html
                 themeToggle.style.backgroundImage = "url('images/sun.svg')";
-                themeToggle.style.transform = "translateY(70%)";
-                themeToggle.style.opacity = "1";
-                setTimeout(() => {
-                    themeToggle.style.transform = "translateX(0)";
-                }, 50);
-            }, 500);
-        } else {
-            document.documentElement.style.backgroundColor = ""; // Возвращаем стандартный фон
-            document.body.classList.remove("light-theme");
-            themeToggle.style.transform = "translateY(70%)";
-            themeToggle.style.opacity = "0";
-            setTimeout(() => {
+            } else {
+                document.documentElement.setAttribute("data-theme", "dark");
+                document.documentElement.style.backgroundColor = "#0e1213"; // Устанавливаем темный фон
                 themeToggle.style.backgroundImage = "url('images/moon.svg')";
-                themeToggle.style.transform = "translateY(-70%)";
-                themeToggle.style.opacity = "1";
-                setTimeout(() => {
-                    themeToggle.style.transform = "translateX(0)";
-                }, 50);
+            }
+            themeToggle.style.transform = "rotate(360deg)";
+            themeToggle.style.opacity = "1"; // Плавное появление новой иконки
+            setTimeout(() => {
+                themeToggle.style.transform = "rotate(0deg)";
             }, 500);
-        }
+        }, 500);
     }
 
     // Проверяем, есть ли сохраненная тема в localStorage
@@ -405,7 +403,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Обработчик клика для переключения темы
     themeToggle.addEventListener("click", () => {
-        if (document.body.classList.contains("light-theme")) {
+        if (document.documentElement.getAttribute("data-theme") === "light") {
             setTheme("dark");
             localStorage.setItem("theme", "dark");
         } else {
