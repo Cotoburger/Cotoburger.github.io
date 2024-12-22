@@ -94,17 +94,39 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.getElementById("themeToggle");
 
-    // Добавляем плавный переход для изменения темы
-    document.body.style.transition = "background-color 0.5s, color 0.9s";
+    // Добавляем плавный переход для изменения темы и иконки
+    document.body.style.transition = "background-color 0.5s, color 0.5s";
+    themeToggle.style.transition = "transform 0.3s, opacity 0.3s";
+    document.documentElement.style.transition = "background-color 0.5s";
 
     // Функция для установки темы
     function setTheme(theme) {
         if (theme === "light") {
+            document.documentElement.style.backgroundColor = "#ffffff"; // Меняем фон для html
             document.body.classList.add("light-theme");
-            themeToggle.style.backgroundImage = "url('images/sun.svg')";
+            themeToggle.style.transform = "translateY(-70%)";
+            themeToggle.style.opacity = "0";
+            setTimeout(() => {
+                themeToggle.style.backgroundImage = "url('images/sun.svg')";
+                themeToggle.style.transform = "translateY(70%)";
+                themeToggle.style.opacity = "1";
+                setTimeout(() => {
+                    themeToggle.style.transform = "translateX(0)";
+                }, 50);
+            }, 500);
         } else {
+            document.documentElement.style.backgroundColor = ""; // Возвращаем стандартный фон
             document.body.classList.remove("light-theme");
-            themeToggle.style.backgroundImage = "url('images/moon.svg')";
+            themeToggle.style.transform = "translateY(70%)";
+            themeToggle.style.opacity = "0";
+            setTimeout(() => {
+                themeToggle.style.backgroundImage = "url('images/moon.svg')";
+                themeToggle.style.transform = "translateY(-70%)";
+                themeToggle.style.opacity = "1";
+                setTimeout(() => {
+                    themeToggle.style.transform = "translateX(0)";
+                }, 50);
+            }, 500);
         }
     }
 
