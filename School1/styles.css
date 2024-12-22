@@ -9,7 +9,7 @@ html, body {
     box-sizing: border-box;
     line-height: 1.6;
     background-color: #0e1213;
-    color: #ffffff;
+    color: #ffffff00;
     
     justify-content: center; /* Центрируем по горизонтали */
     align-items: center; /* Центрируем по вертикали */
@@ -149,7 +149,7 @@ h4 {
         
 }
 .lesson2 {
-        color: rgb(187, 232, 248);
+        color: rgb(132, 247, 255);
         
 }
 .social-icon {
@@ -178,7 +178,7 @@ h4 {
 }
 
 .sectionles {
-    background-color: rgba(5, 5, 5, 0.313);
+    background-color: rgba(17, 17, 17, 0.397);
     min-width: 14rem;
     min-width: 95%;
     padding: 0.7375rem; /* 7px */
@@ -190,7 +190,7 @@ h4 {
     border-bottom: 4px solid #00000042; /* Серый цвет для линии */
 }
 .sectionles2 {
-    background-color: rgba(5, 5, 5, 0.313);
+    background-color: rgba(17, 17, 17, 0.397);
     min-width: 14rem;
     min-width: 95%;
     padding: 0.7375rem; /* 7px */
@@ -236,7 +236,7 @@ h4 {
     margin-bottom: 0.3rem;
     font-size: 1.75rem; /* 60px */
     padding-bottom: 0px; /* Добавить немного отступа от текста до линии */
-    border-bottom: 4px solid #00000019; /* Серый цвет для линии */
+    border-bottom: 4px солид #00000019; /* Серый цвет для линии */
 }
 #currentLessonShift2 {
     margin-bottom: 0.3rem;
@@ -314,6 +314,9 @@ h4 {
         background-color: #00000000;
         appearance: none;
     }
+    #schedule1 h2 {
+        font-size: 1.0625rem; /* 25px */
+    }
 }
 
 /* Определение анимации fadeInZoom */
@@ -345,7 +348,9 @@ h4 {
     border-radius: 3.125rem; /* 50px */
 }
 
-
+#schedule1 h2 {
+    font-size: 1.1625rem; /* 25px */
+}
 
 .time-left {
     color: #198819; /* Белый цвет для текста */
@@ -405,6 +410,11 @@ h4 {
         appearance: none;
     }
 }
+
+.transition {
+    transition: background-color 0.5s, color 0.5s;
+}
+
 .header-container {
     display: flex; /* Устанавливаем Flexbox */
     height: 5rem;
@@ -538,4 +548,67 @@ h4 {
     100% {
         opacity: 0;
     }
+}
+
+.theme-toggle {
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-left: auto; /* Move to the right side */
+    margin-right: 1.5rem; /* Add right margin */
+    background-image: url('images/moon.svg'); /* Default to moon image */
+}
+
+body.light-theme .theme-toggle {
+    background-image: url('images/sun.svg'); /* Change to sun image in light theme */
+}
+
+body.light-theme .social-icon {
+    filter: none;
+}
+
+body.light-theme .header-container {
+    background-color: #c7daf1;
+}
+
+body.light-theme .tools-panel {
+    background-color: rgba(140, 189, 232, 0.833);
+}
+
+
+body.light-theme .tile {
+    background-color: rgba(255, 255, 255, 0.313);
+    color: #000000;
+}
+
+body.light-theme .sectionz {
+    background-color: rgba(200, 200, 200, 0.215);
+    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .sectionles {
+    background-color: rgba(255, 255, 255, 0.313);
+    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
+}
+body.light-theme .sectionles2 {
+    background-color: rgba(255, 255, 255, 0.313);
+    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
+}
+body.light-theme #currentLessonShift1 {
+    color: rgba(49, 67, 70, 0.509);
+}
+body.light-theme #currentLessonShift2 {
+    color: rgba(49, 67, 70, 0.509);
+}
+
+body.light-theme .lesson2 {
+    color: rgb(81, 81, 81);
+    
+}
+
+
+body.light-theme .social-icon {
+    filter: none;
 }

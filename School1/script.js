@@ -1,4 +1,3 @@
-
 const images = document.querySelectorAll('img');
 const avatar = document.querySelector('.avatar');
 const socialIcons = document.querySelectorAll('.social-icon');
@@ -136,14 +135,23 @@ const convertScheduleToSeconds = (schedule) => {
 
 convertScheduleToSeconds(schedule);
 
-const getCurrentTimeInSeconds = () => {
-    const nowUTC = new Date().toISOString();
-    const kamchatkaTime = new Date(nowUTC).toLocaleString('en-US', { timeZone: 'Asia/Kamchatka' });
-    const kamchatkaDate = new Date(kamchatkaTime);
-    return kamchatkaDate.getHours() * 3600 + kamchatkaDate.getMinutes() * 60 + kamchatkaDate.getSeconds();
+let simulatedTime = null;
+
+const simulateTime = (day, time) => {
+    const [hours, minutes] = time.split(":").map(Number);
+    simulatedTime = new Date();
+    simulatedTime.setHours(hours, minutes, 0, 0);
+    simulatedTime.setDate(simulatedTime.getDate() - simulatedTime.getDay() + day);
 };
 
-const currentDay = new Date().getDay();
+const getCurrentTimeInSeconds = () => {
+    const now = simulatedTime || new Date();
+    return now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+};
+
+const currentDay = () => {
+    return simulatedTime ? simulatedTime.getDay() : new Date().getDay();
+};
 
 const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -155,7 +163,7 @@ const formatTime = (seconds) => {
 
 const getCurrentLesson = (shift) => {
     const currentTime = getCurrentTimeInSeconds();
-    const lessons = schedule[currentDay]?.[shift] || [];
+    const lessons = schedule[currentDay()]?.[shift] || [];
 
     for (let i = 0; i < lessons.length; i++) {
         const lesson = lessons[i];
@@ -233,6 +241,32 @@ updateCurrentLessons();
 
 setInterval(updateCurrentLessons, 1000);
 
+window.simulateTime = simulateTime;
+
+const parseAndSimulateTime = (input) => {
+    const [day, time] = input.split("-");
+    if (day && time) {
+        simulateTime(parseInt(day), time);
+        console.log(`Simulated time set to day ${day} at ${time}`);
+    } else {
+        console.error("Invalid input format. Use 'day-time' format, e.g., '1-10:30'.");
+    }
+};
+
+window.parseAndSimulateTime = parseAndSimulateTime;
+
+const logCurrentTime = () => {
+    const now = simulatedTime || new Date();
+    console.log(`Current time is: ${now.toLocaleTimeString()}`);
+};
+
+window.logCurrentTime = logCurrentTime;
+const logCurrentDay = () => {
+    const now = simulatedTime || new Date();
+    console.log(`Current day is: ${now.getDay()}`);
+};
+
+window.logCurrentDay = logCurrentDay;
 
 AOS.init({
     duration: 200,
@@ -315,4 +349,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Запуск анимации снежинок
     snowflakesLoop();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const themeToggle = document.getElementById("themeToggle");
+
+    // Добавляем плавный переход для изменения темы и иконки
+    document.body.style.transition = "background-color 0.5s, color 0.5s";
+    themeToggle.style.transition = "transform 0.3s, opacity 0.3s";
+    document.documentElement.style.transition = "background-color 0.5s";
+
+    // Функция для установки темы
+    function setTheme(theme) {
+        if (theme === "light") {
+            document.documentElement.style.backgroundColor = "#ffffff"; // Меняем фон для html
+            document.body.classList.add("light-theme");
+            themeToggle.style.transform = "translateY(-70%)";
+            themeToggle.style.opacity = "0";
+            setTimeout(() => {
+                themeToggle.style.backgroundImage = "url('images/sun.svg')";
+                themeToggle.style.transform = "translateY(70%)";
+                themeToggle.style.opacity = "1";
+                setTimeout(() => {
+                    themeToggle.style.transform = "translateX(0)";
+                }, 50);
+            }, 500);
+        } else {
+            document.documentElement.style.backgroundColor = ""; // Возвращаем стандартный фон
+            document.body.classList.remove("light-theme");
+            themeToggle.style.transform = "translateY(70%)";
+            themeToggle.style.opacity = "0";
+            setTimeout(() => {
+                themeToggle.style.backgroundImage = "url('images/moon.svg')";
+                themeToggle.style.transform = "translateY(-70%)";
+                themeToggle.style.opacity = "1";
+                setTimeout(() => {
+                    themeToggle.style.transform = "translateX(0)";
+                }, 50);
+            }, 500);
+        }
+    }
+
+    // Проверяем, есть ли сохраненная тема в localStorage
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+        setTheme(savedTheme);
+    } else {
+        // Устанавливаем начальную тему на основе предпочтений пользователя
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            setTheme("light");
+        } else {
+            setTheme("dark");
+        }
+    }
+
+    // Обработчик клика для переключения темы
+    themeToggle.addEventListener("click", () => {
+        if (document.body.classList.contains("light-theme")) {
+            setTheme("dark");
+            localStorage.setItem("theme", "dark");
+        } else {
+            setTheme("light");
+            localStorage.setItem("theme", "light");
+        }
+    });
 });
