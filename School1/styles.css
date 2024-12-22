@@ -54,12 +54,12 @@ body {
 }
 
 .time-progress::-webkit-progress-bar {
-    background-color: #00000052;
+    background-color: #4b4b4b52;
     border-radius: 15px;
 }
 
 .time-progress::-webkit-progress-value {
-    background-color: #4caf50;  /* Зеленый цвет для прогресса */
+    background-color: #46ca4a;  /* Зеленый цвет для прогресса */
     border-radius: 0.875rem; /* Закруглённые углы */
 }
 header {
@@ -353,7 +353,7 @@ h4 {
 }
 
 .time-left {
-    color: #198819; /* Белый цвет для текста */
+    color: #1eab1e; /* Белый цвет для текста */
 }
 @media (min-width: 60rem) {
     #schedule1 {
@@ -378,7 +378,7 @@ h4 {
         height: 4rem;
         margin-top: 5px;
         border-radius: 5rem;
-        background-color: #00000000;
+        background-color: #e6080800;
         appearance: none;
     }
 }
@@ -422,7 +422,7 @@ h4 {
     justify-content: space-between; /* Размещаем элементы по краям */
     padding: 1px 20px; /* Добавляем отступы для удобства */
     background-color: rgba(34, 77, 118, 0.822); /* (Опционально) Фон для заголовка */
-    border-bottom: 1px solid #004586; /* (Опционально) Разделительная линия */
+    border-bottom: 2px solid #00000023; /* (Опционально) Разделительная линия */
     backdrop-filter: blur(10px); /* Применяем блюр к фону */
 }
 
@@ -580,7 +580,7 @@ body.light-theme .tools-panel {
 
 body.light-theme .tile {
     background-color: rgba(255, 255, 255, 0.313);
-    color: #000000;
+    color: #ff0000;
 }
 
 body.light-theme .sectionz {
