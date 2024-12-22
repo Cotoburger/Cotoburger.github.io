@@ -13,6 +13,8 @@ const filesToCache = [
     "images/image-26.png",
     "aos.js",
     "aos.css",
+    "sun.svg",
+    "moon.svg",
 ];
 
 self.addEventListener('install', (event) => {
