@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
         snowflake.classList.add("snowflake");
 
         const size = Math.random() * 19 + 5;
-        const leftPosition = Math.random() * 97;
+        const leftPosition = Math.random() * 96;
         const animationDuration = Math.random() * 15 + 5;
 
         snowflake.style.width = `${size}px`;
