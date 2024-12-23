@@ -13,15 +13,10 @@
     <meta name="twitter:description" content="Расписание звонков в МАОУ Средняя школа №1">
     <meta name="twitter:image" content="https://cotoburger.github.io/School1//images/icon.png">
     <meta name="twitter:url" content="https://cotoburger.github.io/School1/">
-    <title>Словарь</title>
+    <title>Конструктор</title>
     <link rel="icon" href="images/icon.png" type="image/png">
     <link href="aos.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <style>
-        body.hidden {
-            visibility: hidden;
-        }
-    </style>
     <script>
         (function() {
             const savedTheme = localStorage.getItem("theme");
@@ -37,24 +32,18 @@
         })();
     </script>
 </head>
-<script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-            .then(() => console.log('Service Worker зарегистрирован!'))
-            .catch((error) => console.error('Ошибка регистрации Service Worker:', error));
-    }
-</script>
+
 <body class="hidden">
     <div id="snowflakes"></div>
 
     <div id="toolsPanel" class="tools-panel">
         <a href="index.html">Расписание</a>
-        <c href="#">Арабские слова</a>
+        <c href="#">Конструктор</a>
         <a href="about.html">Сведения</a>
     </div>
 
     <div class="header-container" style="text-align: center;">
-        <h2 data-aos="fade-right" data-aos-duration="500" data-aos-delay="0">Арабские слова</h2>
+        <h2 data-aos="fade-right" data-aos-duration="500" data-aos-delay="0">Конструктор</h2>
         <div id="themeToggle" class="theme-toggle"></div>
         <div class="menu-icon" id="menuIcon">
             <div></div>
@@ -62,48 +51,37 @@
             <div></div>
         </div>
     </div>
+    <h2 style="color: rgb(211, 33, 33);">Не работает</h2>
+        <h2 style="color: rgb(211, 33, 33);">В разработке</h2>
+    <div class="container-flex">
+        <div class="select-container">
+            <select id="daySelect" class="custom-select">
+                <option value="1">Понедельник</option>
+                <option value="2">Вторник</option>
+                <option value="3">Среда</option>
+                <option value="4">Четверг</option>
+                <option value="5">Пятница</option>
+            </select>
+            <select id="shiftSelect">
+                <option value="1">1 смена</option>
+                <option value="2">2 смена</option>
+            </select>
+        </div>
+    </div>
+    
     <div class="container-flex">
         <section id="schedule" class="sectionz" data-aos="zoom-in">
-            <div class="currenles">Словарь</div>
-            <div id="aboutinfo" class="aboutinfo">
+            <div class="lesson-container">
+                <input type="text" class="lesson-input" placeholder="1 урок">
+                <input type="text" class="lesson-input" placeholder="2 урок">
+                <input type="text" class="lesson-input" placeholder="3 урок">
+                <input type="text" class="lesson-input" placeholder="4 урок">
+                <input type="text" class="lesson-input" placeholder="5 урок">
+                <input type="text" class="lesson-input" placeholder="6 урок">
+                <input type="text" class="lesson-input" placeholder="7 урок">
             </div>
         </section>
     </div>
-
-    <script>
-        fetch('Arabic.txt')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Сетевой ответ не ok');
-                }
-                return response.text();
-            })
-            .then(text => {
-                console.log('Текст из файла:', text);
-                
-                if (text.trim() === "") {
-                    console.error("Файл пуст!");
-                } else {
-                    const lines = text.split('\n');
-                    const aboutInfoDiv = document.getElementById('aboutinfo');
-                    
-                    lines.forEach((line, index) => {
-                        const tile = document.createElement('div');
-                        tile.classList.add('tile');
-                        tile.textContent = `${index + 1}. ${line}`;
-                        aboutInfoDiv.appendChild(tile);
-                    });
-
-                    document.body.classList.remove('hidden');
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка при загрузке файла:', error);
-                const aboutInfoDiv = document.getElementById('aboutinfo');
-                aboutInfoDiv.textContent = "Ошибка при загрузке данных!";
-                document.body.classList.remove('hidden');
-            });
-    </script>
 
     <script src="aos.js"></script>
     <script src="script2.js"></script>

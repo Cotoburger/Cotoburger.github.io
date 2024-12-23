@@ -1,6 +1,5 @@
 const cacheName = 'Cache';
 const filesToCache = [
-    'Arabic.txt',
     'DebugInfo.txt',
     "arabic.html",
     "about.html",
