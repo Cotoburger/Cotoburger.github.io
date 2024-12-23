@@ -1,4 +1,3 @@
-/* Убираем горизонтальную прокрутку и задаем базовые стили */
 html, body {
     margin: 0;
     padding: 0;
@@ -11,27 +10,25 @@ html, body {
     background-color: #0e1213;
     color: #ffffff00;
     
-    justify-content: center; /* Центрируем по горизонтали */
-    align-items: center; /* Центрируем по вертикали */
+    justify-content: center;
+    align-items: center;
 }
 
-/* Наследование box-sizing для всех элементов */
 *, *::before, *::after {
     box-sizing: inherit;
 }
 
 body {
-    overflow-y: hidden; /* Отключаем горизонтальную прокрутку */
-    overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
+    overflow-y: hidden;
+    overflow-x: hidden;
     align-items: center;
     font-family: Consolas, sans-serif;
     background-color: #0e121300;
     color: #00000000;
-    font-size: 1.25rem; /* Размер шрифта 20px */
+    font-size: 1.25rem;
     box-sizing: border-box;
 }
 
-/* Добавляем стиль для плиток */
 .tile {
     color: #b0b4b5;
     background-color: rgba(1, 1, 1, 0.313);
@@ -39,34 +36,34 @@ body {
     min-width: 10%;
     margin: 10px;
     padding: 15px;
-    border-radius: 1.175rem; /* 30px */
-    padding-bottom: 10px; /* Добавить немного отступа от текста до линии */
-    border-bottom: 4px solid #00000042; /* Серый цвет для линии */
+    border-radius: 1.175rem;
+    padding-bottom: 10px;
+    border-bottom: 4px solid #00000042;
 }
 .time-progress {
     width: 100%;
     height: 2rem;
     margin-top: 5px;
     margin-bottom: -0.7rem;
-    border-radius: 1.875rem; /* Закруглённые углы */
+    border-radius: 1.875rem;
     background-color: #00000000;
     appearance: none;
 }
 
 .time-progress::-webkit-progress-bar {
-    background-color: #4b4b4b52;
+    background-color: #0000003b;
     border-radius: 15px;
 }
 
 .time-progress::-webkit-progress-value {
-    background-color: #46ca4a;  /* Зеленый цвет для прогресса */
-    border-radius: 0.875rem; /* Закруглённые углы */
+    background-color: #46ca4a;
+    border-radius: 0.875rem;
 }
 header {
     text-align: center;
     color: #1875d8;
     padding-left: 0.25rem;
-    font-size: 2.7625rem; /* 25px */
+    font-size: 2.7625rem;
     margin-top: 1.25rem;
     border-radius: 3.125rem;
     margin-left: 1.25rem;
@@ -76,44 +73,44 @@ header {
 
 
 .container-flex, .container-flex1 {
-    display: flex; /* Добавлено для flex-расположения */
-    justify-content: center; /* Центрирование по горизонтали */
-    align-items: center; /* Центрирование по вертикали */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 0.5rem;
     margin-left: 0.25rem;
     flex-wrap: wrap;
     padding: 0.6375rem;
     
 }
-/* Секция с уроками */
+
 #schedule1 {
-    flex: 1; /* Занимает доступное пространство */
-    min-width: 1rem; /* Минимальная ширина секции */
-    background-color: rgba(44, 100, 143, 0.226); /* Цвет фона */
+    flex: 1;
+    min-width: 1rem;
+    background-color: rgba(44, 100, 143, 0.226);
     padding: 1rem;
-    border-radius: 1.875rem; /* Закруглённые углы */
+    border-radius: 1.875rem;
     color: rgba(139, 191, 254, 0.614);
     text-align-last: left;
-    backdrop-filter: blur(8px); /* Применяем блюр к фону */
+    backdrop-filter: blur(8px);
 }
 .priority {
     color:rgb(45, 82, 185);
-    font-size: 1.7625rem; /* 25px */
+    font-size: 1.7625rem;
     text-align-last: center;
-    padding-bottom: 10px; /* Добавить немного отступа от текста до линии */
-    border-bottom: 4px solid #00000042; /* Серый цвет для линии */
+    padding-bottom: 10px;
+    border-bottom: 4px solid #00000042;
 }
-/* Секция с уроками */
+
 #schedule {
-    flex: 1; /* Не растягивается */
-    width: 100%; /* Ширина блока */
-    background-color: rgba(43, 144, 220, 0.226); /* Цвет фона */
+    flex: 1;
+    width: 100%;
+    background-color: rgba(43, 144, 220, 0.226);
     padding: 1rem;
-    border-radius: 1.875rem; /* Закруглённые углы */
+    border-radius: 1.875rem;
     color: rgb(187, 187, 187);
-    text-align: left; /* Выравнивание текста */
-    backdrop-filter: blur(8px); /* Применяем блюр к фону */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Тень для красоты */
+    text-align: left;
+    backdrop-filter: blur(1rem);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 nav a:hover,
@@ -122,30 +119,30 @@ nav a:focus {
 }
 
 h1, h2 {
-    font-size: 3rem; /* 40px */
+    font-size: 3rem;
     color: #3c8cce;
     text-align-last: center;
 }
 
 h3 {
     margin-left: 1.25rem;
-    font-size: 1.875rem; /* 30px */
+    font-size: 1.875rem;
 }
 h4 {
     margin-left: 1.25rem;
-    font-size: 0.875rem; /* 30px */
+    font-size: 0.875rem;
     color: #3c8cce48;
     text-align-last: center;
 }
 .currenles {
     color:rgb(15, 140, 186);
-    font-size: 1.7625rem; /* 25px */
+    font-size: 1.7625rem;
     text-align-last: center;
-    padding-bottom:  0.1rem; /* Добавить немного отступа от текста до линии */
-    border-bottom: 4px solid #00000042; /* Серый цвет для линии */
+    padding-bottom:  0.1rem;
+    border-bottom: 4px solid #00000042;
 }
 .lesson-info {
-        font-size: 2.8125rem; /* 45px */
+        font-size: 2.8125rem;
         
 }
 .lesson2 {
@@ -153,10 +150,10 @@ h4 {
         
 }
 .social-icon {
-    width: 4.25rem; /* 100px */
+    width: 4.25rem;
     height: 4.25rem;
     margin-top: 1rem;
-    border-radius: 3.125rem; /* 50px */
+    border-radius: 3.125rem;
     transition: transform 0.1s ease;
     display: inline-block;
     object-fit: cover;
@@ -164,9 +161,9 @@ h4 {
 
 .section {
     background-color: rgba(99, 100, 100, 0.215);
-    padding: 0.4375rem; /* 7px */
-    margin: 1.5625rem; /* 25px */
-    border-radius: 1.875rem; /* 30px */
+    padding: 0.4375rem;
+    margin: 1.5625rem;
+    border-radius: 1.875rem;
     box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.1);
     transform: translateY(1.875rem);
 }
@@ -178,48 +175,48 @@ h4 {
 }
 
 .sectionles {
-    background-color: rgba(17, 17, 17, 0.397);
+    background-color: rgba(12, 12, 12, 0.587);
     min-width: 14rem;
     min-width: 95%;
-    padding: 0.7375rem; /* 7px */
-    margin-top: -1.0625rem; /* 25px */
-    margin-bottom: 0.5625rem; /* 25px */
-    border-radius: 1.175rem; /* 30px */
+    padding: 0.7375rem;
+    margin-top: -1.0625rem;
+    margin-bottom: 0.5625rem;
+    border-radius: 1.175rem;
     transform: translateY(1.175rem);
-    padding-bottom: 10px; /* Добавить немного отступа от текста до линии */
-    border-bottom: 4px solid #00000042; /* Серый цвет для линии */
+    padding-bottom: 10px;
+    border-bottom: 4px solid #00000042;
 }
 .sectionles2 {
-    background-color: rgba(17, 17, 17, 0.397);
+    background-color: rgba(12, 12, 12, 0.587);
     min-width: 14rem;
     min-width: 95%;
-    padding: 0.7375rem; /* 7px */
-    margin-top: -1.0625rem; /* 25px */
-    margin-bottom: 1.6625rem; /* 25px */
-    border-radius: 1.175rem; /* 30px */
+    padding: 0.7375rem;
+    margin-top: -1.0625rem;
+    margin-bottom: 1.6625rem;
+    border-radius: 1.175rem;
     transform: translateY(1.175rem);
-    padding-bottom: 10px; /* Добавить немного отступа от текста до линии */
-    border-bottom: 4px solid #00000042; /* Серый цвет для линии */
+    padding-bottom: 10px;
+    border-bottom: 4px solid #00000042;
 }
 
 
 .les2 {
-    margin-bottom: 1.5625rem; /* 25px */
+    margin-bottom: 1.5625rem;
 }
 
 .sectionz {
     background-color: rgba(99, 100, 100, 0.215);
-    padding: 0.4375rem; /* 7px */
+    padding: 0.4375rem;
     align-items: center;
-    margin-right: 0.9125rem; /* 25px */
-    margin-left: 0.5125rem; /* 25px */
-    border-radius: 1.875rem; /* 30px */
+    margin-right: 0.9125rem;
+    margin-left: 0.5125rem;
+    border-radius: 1.875rem;
     box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.1);
 
-    width: 100%;  /* Позволяет элементу сжиматься */
-    max-width: 100%; /* Ограничивает максимальную ширину */
-    height: auto;  /* Позволяет элементу сжиматься по высоте */
-    display: inline-block;  /* Позволяет элементу сжиматься по содержимому */
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
 }
 
 @keyframes fadeInZoom {
@@ -234,16 +231,16 @@ h4 {
 }
 #currentLessonShift1 {
     margin-bottom: 0.3rem;
-    font-size: 1.75rem; /* 60px */
-    padding-bottom: 0px; /* Добавить немного отступа от текста до линии */
-    border-bottom: 4px solid #00000019; /* Серый цвет для линии */
+    font-size: 1.75rem;
+    padding-bottom: 0px;
+    border-bottom: 4px solid #00000019;
     color: rgb(83, 103, 130);
 }
 #currentLessonShift2 {
     margin-bottom: 0.3rem;
-    font-size: 1.75rem; /* 60px */
-    padding-bottom: 0px; /* Добавить немного отступа от текста до линии */
-    border-bottom: 4px solid #00000019; /* Серый цвет для линии */
+    font-size: 1.75rem;
+    padding-bottom: 0px;
+    border-bottom: 4px solid #00000019;
     color: rgb(83, 103, 130);
 }
 
@@ -267,41 +264,41 @@ h4 {
 }
 
 .shift-title {
-    background-color: #4CAF50; /* тот же цвет, что и для заголовка */
+    background-color: #4CAF50;
     color: white;
     padding: 10px;
     border-radius: 5px;
     width: 100%;
-    text-align: center; /* название смены по центру */
+    text-align: center;
     font-weight: bold;
 }
 
 .shift-lesson {
     font-size: 18px;
-    text-align: left; /* урок выравнивается слева */
+    text-align: left;
     width: 100%;
     margin-top: 5px;
-    padding-left: 20px; /* немного отступаем от края */
+    padding-left: 20px;
 }
 
 
-@media (max-width: 46.875rem) { /* 750px */
+@media (max-width: 46.875rem) {
     .menu-icon {
-        touch-action: manipulation; /* Убирает задержку на мобильных устройствах */
+        touch-action: manipulation;
     }
 
     h1, h2 {
-        font-size: 1.6875rem; /* 35px */
+        font-size: 1.6875rem;
     }
     h3 {
-        font-size: 1.5625rem; /* 25px */
+        font-size: 1.5625rem;
     }
     .lesson-info {
-        font-size: 1.5625rem; /* 25px */
+        font-size: 1.5625rem;
     }
     header {
         padding-left: 0rem;
-        font-size: 2.0625rem; /* 25px */
+        font-size: 2.0625rem;
         margin-top: 1.25rem;
         border-radius: 3.125rem;
         margin-left: 1.25rem;
@@ -317,59 +314,58 @@ h4 {
         appearance: none;
     }
     #schedule1 h2 {
-        font-size: 1.0625rem; /* 25px */
+        font-size: 1.0625rem;
     }
 }
 
-/* Определение анимации fadeInZoom */
+
 @keyframes fadeInZoom {
     0% {
-        opacity: 0; /* Элемент невидим в начале */
-        transform: scale(0.8); /* Элемент уменьшен */
+        opacity: 0;
+        transform: scale(0.8);
     }
     100% {
-        opacity: 1; /* Элемент полностью видим */
-        transform: scale(1); /* Элемент в нормальном масштабе */
+        opacity: 1;
+        transform: scale(1);
     }
 }
 
-/* Применение анимации к #schedule1 */
 #schedule1 {
     margin-bottom: 2rem;
 }
 .socials-container {
     display: flex;
     justify-content: center;
-    gap: 1.875rem; /* 30px */
-    border-radius: 3.125rem; /* 50px */
+    gap: 1.875rem;
+    border-radius: 3.125rem;
     animation: fadeInZoom 0.4s ease-out forwards;
 }
 
 .social-icon:hover {
     transform: scale(1.1);
-    border-radius: 3.125rem; /* 50px */
+    border-radius: 3.125rem;
 }
 
 #schedule1 h2 {
-    font-size: 1.1625rem; /* 25px */
+    font-size: 1.1625rem;
 }
 
 .time-left {
-    color: #1eab1e; /* Белый цвет для текста */
+    color: #1eab1e;
 }
 @media (min-width: 60rem) {
     #schedule1 {
-        flex: 0.5; /* Занимает доступное пространство */
-        transform: scale(1.0) translateY(1rem); /* Масштаб в 150% и смещение по оси Y */
-        transform-origin: top center; /* Масштабирование начинается от верхней центральной точки */
+        flex: 0.5;
+        transform: scale(1.0) translateY(1rem);
+        transform-origin: top center;
         min-width: 32rem;
         margin-bottom: 10rem;
     }
     #schedule {
-        flex: 0.5; /* Занимает доступное пространство */
-        transform: scale(1.1); /* Масштаб в 150% */
-        transform-origin: top center; /* Масштабирование начинается от верхней центральной точки */
-        margin-bottom: 5rem; /* Увеличенный отступ снизу от #schedule1 */
+        flex: 0.5;
+        transform: scale(1.1);
+        transform-origin: top center;
+        margin-bottom: 5rem;
         max-height: 30%;
     }
     .socials-container {
@@ -387,16 +383,16 @@ h4 {
 
 @media (min-width: 90rem) {
     #schedule1 {
-        flex: 0.2; /* Занимает доступное пространство */
-        transform: scale(1.4) translateY(1rem); /* Масштаб в 150% и смещение по оси Y */
-        transform-origin: top center; /* Масштабирование начинается от верхней центральной точки */
+        flex: 0.2;
+        transform: scale(1.4) translateY(1rem);
+        transform-origin: top center;
         min-width: 45rem;
     }
     #schedule {
-        flex: 0.5; /* Занимает доступное пространство */
-        transform: scale(1.5); /* Масштаб в 150% */
-        transform-origin: top center; /* Масштабирование начинается от верхней центральной точки */
-        margin-bottom: 25rem; /* Увеличенный отступ снизу от #schedule1 */
+        flex: 0.5;
+        transform: scale(1.5);
+        transform-origin: top center;
+        margin-bottom: 25rem;
         max-height: 30%;
     }
     .socials-container {
@@ -418,14 +414,14 @@ h4 {
 }
 
 .header-container {
-    display: flex; /* Устанавливаем Flexbox */
+    display: flex;
     height: 5rem;
-    align-items: center; /* Выравниваем элементы по вертикали */
-    justify-content: space-between; /* Размещаем элементы по краям */
-    padding: 1px 20px; /* Добавляем отступы для удобства */
-    background-color: rgba(34, 77, 118, 0.822); /* (Опционально) Фон для заголовка */
-    border-bottom: 2px solid #00000023; /* (Опционально) Разделительная линия */
-    backdrop-filter: blur(10px); /* Применяем блюр к фону */
+    align-items: center;
+    justify-content: space-between;
+    padding: 1px 20px;
+    background-color: rgba(34, 77, 118, 0.822);
+    border-bottom: 2px solid #00000023;
+    backdrop-filter: blur(10px);
 }
 
 .menu-icon {
@@ -443,11 +439,10 @@ h4 {
     border-radius: 2px;
 }
 
-/* Стили для панели инструментов */
 .tools-panel {
     position: absolute;
     top: 0.6rem;
-    right: 5px; /* Панель скрыта за пределами экрана */
+    right: 5px;
     width: 15rem;
     height: 10rem;
     background-color: rgba(22, 51, 67, 0.833);
@@ -457,55 +452,51 @@ h4 {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     z-index: 9999;
     border-radius: 1.125rem;
-    visibility: hidden; /* Панель скрыта по умолчанию */
-    opacity: 0; /* Прозрачность 0 при скрытой панели */
-    pointer-events: none; /* Запрещаем взаимодействие, когда панель скрыта */
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
     transition: right 0.25s ease, opacity 0.25s ease, visibility 0s ease 0.1s;
-    backdrop-filter: blur(5px); /* Применяем блюр к фону */
+    backdrop-filter: blur(5px);
 }
 
-/* Когда панель активна, она появляется */
 .tools-panel.active {
     visibility: visible;
     opacity: 1;
     pointer-events: auto;
-    right: 15px; /* Панель появляется справа от кнопки */
+    right: 15px;
     transition: right 0.15s ease, opacity 0.15s ease, visibility 0s ease 0s;
 }
 
-/* Скрыть кнопку, когда панель активна */
 .tools-panel.active + .menu-icon {
-    display: none; /* Кнопка скрывается, когда панель активна */
+    display: none;
 }
-/* Стили для ссылок на панели */
+
 .tools-panel c {
     color: #2c557c;
-    padding-bottom: 1px; /* Добавить немного отступа от текста до линии */
-    border-bottom: 4px solid #00000060; /* Серый цвет для линии */
+    padding-bottom: 1px;
+    border-bottom: 4px solid #00000060;
     text-decoration: none;
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
-    font-size: 1.5625rem; /* 25px */
+    font-size: 1.5625rem;
 }
-/* Стили для ссылок на панели */
+
 .tools-panel a {
     color: rgb(40, 107, 183);
-    padding-bottom: 1px; /* Добавить немного отступа от текста до линии */
-    border-bottom: 4px solid #00000017; /* Серый цвет для линии */
+    padding-bottom: 1px;
+    border-bottom: 4px solid #00000017;
     display: block;
     text-decoration: none;
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
-    font-size: 1.5625rem; /* 25px */
+    font-size: 1.5625rem;
 }
 
-
-/* Стили для снежинок */
 #snowflakes {
-    position: absolute; /* Меняем fixed на absolute */
+    position: absolute;
     top: 0;
     left: 50%;
-    width: 93vw;
+    width: 92vw;
     height: 100vh;
     pointer-events: none;
     z-index: -1000;
@@ -517,10 +508,10 @@ h4 {
 
 .snowflake {
     position: absolute;
-    top: -10px; /* Начинаем с верхней части экрана */
-    width: 30px; /* Размер снежинки */
-    height: 30px; /* Размер снежинки */
-    background-image: url('snowflake.svg'); /* Путь к изображению снежинки */
+    top: -10px;
+    width: 30px;
+    height: 30px;
+    background-image: url('snowflake.svg');
     background-size: contain;
     background-repeat: no-repeat;
     opacity: 0.8;
@@ -558,62 +549,15 @@ h4 {
     height: 2rem;
     background-size: cover;
     background-repeat: no-repeat;
-    margin-left: auto; /* Move to the right side */
-    margin-right: 1.5rem; /* Add right margin */
-    background-image: url('images/moon.svg'); /* Default to moon image */
+    margin-left: auto;
+    margin-right: 1.5rem;
+    background-image: url('images/moon.svg');
 }
 
 body.light-theme .theme-toggle {
-    background-image: url('images/sun.svg'); /* Change to sun image in light theme */
+    background-image: url('images/sun.svg');
 }
 
-body.light-theme .social-icon {
-    filter: none;
-}
-
-body.light-theme .header-container {
-    background-color: #c7daf1;
-}
-
-body.light-theme .tools-panel {
-    background-color: rgba(140, 189, 232, 0.833);
-}
-
-
-body.light-theme .tile {
-    background-color: rgba(255, 255, 255, 0.313);
-    color: #ff0000;
-}
-
-body.light-theme .sectionz {
-    background-color: rgba(200, 200, 200, 0.215);
-    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
-}
-
-body.light-theme .sectionles {
-    background-color: rgba(255, 255, 255, 0.313);
-    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
-}
-body.light-theme .sectionles2 {
-    background-color: rgba(255, 255, 255, 0.313);
-    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
-}
-body.light-theme #currentLessonShift1 {
-    color: rgba(49, 67, 70, 0.509);
-}
-body.light-theme #currentLessonShift2 {
-    color: rgba(49, 67, 70, 0.509);
-}
-
-body.light-theme .lesson2 {
-    color: rgb(81, 81, 81);
-    
-}
-
-
-body.light-theme .social-icon {
-    filter: none;
-}
 
 [data-theme="light"] {
     background-color: #ffffff;
@@ -655,4 +599,19 @@ body.light-theme .social-icon {
 
 [data-theme="light"] .social-icon {
     filter: none;
+}
+
+[data-theme="light"] .time-left {
+    color: #66df6a;
+}
+
+[data-theme="light"] .time-progress::-webkit-progress-value {
+    background-color: #66df6a;
+}
+
+[data-theme="light"] .time-progress::-webkit-progress-bar {
+    background-color: #00000014;
+}
+[data-theme="light"] #schedule {
+    backdrop-filter: blur(0.35rem);
 }

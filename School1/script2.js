@@ -17,24 +17,21 @@ AOS.init({
 document.addEventListener("DOMContentLoaded", () => {
     const menuIcon = document.getElementById("menuIcon");
     const toolsPanel = document.getElementById("toolsPanel");
-    const links = toolsPanel.querySelectorAll('a'); // Получаем все ссылки внутри панели
+    const links = toolsPanel.querySelectorAll('a');
 
     menuIcon.addEventListener("mousedown", (event) => {
         event.stopPropagation();
         toolsPanel.classList.toggle("active");
 
-        // Имитация интенсивной вибрации при открытии панели
         if (navigator.vibrate) {
-            navigator.vibrate([5]);  // Вибрация 50ms, пауза 20ms, снова 50ms, и так далее
+            navigator.vibrate([5]);
         }
     });
 
-    // Добавляем обработчик нажатия на каждую ссылку
     links.forEach(link => {
         link.addEventListener("click", (event) => {
-            // Вибрация при клике на ссылку
             if (navigator.vibrate) {
-                navigator.vibrate(5); // Вибрация длительностью 50 миллисекунд
+                navigator.vibrate(5);
             }
         });
     });
@@ -47,16 +44,16 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const themeToggle = document.getElementById("themeToggle");
     themeToggle.addEventListener("click", () => {
-        // Вибрация при клике на кнопку смены темы
+
         if (navigator.vibrate) {
-            navigator.vibrate(5); // Вибрация длительностью 50 миллисекунд
+            navigator.vibrate(5);
         }
     });
 });
 
 document.addEventListener("DOMContentLoaded", () => {
     const snowflakesContainer = document.getElementById("snowflakes");
-    const maxSnowflakes = 45; // Максимальное количество снежинок на экране
+    const maxSnowflakes = 45;
 
     function createSnowflake() {
         if (snowflakesContainer.children.length >= maxSnowflakes) {
@@ -66,23 +63,20 @@ document.addEventListener("DOMContentLoaded", () => {
         const snowflake = document.createElement("div");
         snowflake.classList.add("snowflake");
 
-        // Задаем случайные параметры для снежинок
-        const size = Math.random() * 19 + 5; // Размер снежинки
-        const leftPosition = Math.random() * 97; // Позиция по горизонтали
-        const animationDuration = Math.random() * 15 + 5; // Длительность падения
+        const size = Math.random() * 19 + 5;
+        const leftPosition = Math.random() * 97;
+        const animationDuration = Math.random() * 15 + 5;
 
         snowflake.style.width = `${size}px`;
         snowflake.style.height = `${size}px`;
         snowflake.style.left = `${leftPosition}%`;
         snowflake.style.animationDuration = `${animationDuration}s`;
 
-        // Генерация случайных углов наклона для снежинок
         const rotation = Math.random() * 360;
         snowflake.style.transform = `rotate(${rotation}deg)`;
 
         snowflakesContainer.appendChild(snowflake);
 
-        // Удаление снежинки после завершения анимации
         snowflake.addEventListener('animationend', () => {
             snowflake.remove();
         });
@@ -92,22 +86,19 @@ document.addEventListener("DOMContentLoaded", () => {
         createSnowflake();
         setTimeout(() => {
             requestAnimationFrame(snowflakesLoop);
-        }, 300); // Увеличенный интервал между созданием снежинок
+        }, 300);
     }
 
-    // Запуск анимации снежинок
     snowflakesLoop();
 });
 
 document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.getElementById("themeToggle");
 
-    // Add smooth transitions
     document.body.style.transition = "background-color 0.3s, color 0.3s";
     themeToggle.style.transition = "transform 0.4s ease-in-out, opacity 0.2s ease-in-out";
     document.documentElement.style.transition = "background-color 0.3s";
 
-    // Initially hide the button and rotate it
     themeToggle.style.opacity = "0";
     themeToggle.style.transform = "rotate(180deg)";
 
@@ -123,18 +114,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Set initial theme without animation
     const savedTheme = localStorage.getItem("theme") || 
                       (window.matchMedia('(prefers-color-scheme: light)').matches ? "light" : "dark");
     setTheme(savedTheme);
 
-    // Show button with animation on initial page load
     requestAnimationFrame(() => {
         themeToggle.style.opacity = "1";
         themeToggle.style.transform = "rotate(0deg)";
     });
 
-    // Theme toggle with animation
     themeToggle.addEventListener("click", () => {
         themeToggle.style.transform = "rotate(180deg)";
         themeToggle.style.opacity = "0";

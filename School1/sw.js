@@ -20,10 +20,10 @@ const filesToCache = [
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(cacheName).then((cache) => {
-            return cache.addAll(filesToCache); // Сразу кэшируем всё
+            return cache.addAll(filesToCache);
         })
     );
-    self.skipWaiting(); // Немедленно активируем новый Service Worker
+    self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
@@ -32,32 +32,31 @@ self.addEventListener('activate', (event) => {
             return Promise.all(
                 cacheNames.map((oldCacheName) => {
                     if (oldCacheName !== cacheName) {
-                        return caches.delete(oldCacheName); // Удаляем старый кэш
+                        return caches.delete(oldCacheName);
                     }
                 })
             );
         })
     );
-    self.clients.claim(); // Активируем обновления сразу
+    self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
             const fetchPromise = fetch(event.request).then((networkResponse) => {
-                // Проверяем, что ответ успешен
+
                 if (networkResponse && networkResponse.ok) {
-                    const clonedResponse = networkResponse.clone(); // Клонируем ответ до использования
+                    const clonedResponse = networkResponse.clone();
                     caches.open(cacheName).then((cache) => {
-                        cache.put(event.request, clonedResponse); // Кэшируем клон
+                        cache.put(event.request, clonedResponse);
                     });
                 }
-                return networkResponse; // Возвращаем оригинальный ответ
+                return networkResponse;
             }).catch((err) => {
-                console.error('Ошибка при запросе:', err); // Логируем ошибки сети
+                console.error('Ошибка при запросе:', err);
             });
 
-            // Если файл есть в кэше, возвращаем его, иначе загружаем с сети
             return cachedResponse || fetchPromise;
         })
     );

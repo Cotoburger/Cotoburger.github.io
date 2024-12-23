@@ -18,7 +18,6 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link href="aos.css" rel="stylesheet">
     <style>
-        /* Скрываем страницу до загрузки файла */
         body.hidden {
             visibility: hidden;
         }
@@ -46,17 +45,14 @@
     }
 </script>
 <body class="hidden">
-    <!-- Контейнер для снежинок -->
     <div id="snowflakes"></div>
 
-    <!-- Панель с инструментами -->
     <div id="toolsPanel" class="tools-panel">
         <a href="index.html">Расписание</a>
         <a href="arabic.html">Арабские слова</a>
         <c href="#">Сведения</a>
     </div>
 
-    <!-- Контент страницы -->
     <div class="header-container" style="text-align: center;">
         <h2 data-aos="fade-right" data-aos-duration="500" data-aos-delay="0">Сведения</h2>
         <div id="themeToggle" class="theme-toggle"></div>
@@ -71,13 +67,11 @@
         <section id="schedule" class="sectionz" data-aos="zoom-in">
             <div class="currenles">DebugInfo.txt</div>
             <div id="aboutinfo" class="aboutinfo">
-                <!-- Текст из DebugInfo.txt будет вставлен сюда -->
             </div>
         </section>
     </div>
 
     <script>
-        // Загрузка текста из файла
         fetch('DebugInfo.txt')
         .then(response => {
             if (!response.ok) {
@@ -86,31 +80,29 @@
             return response.text();
         })
         .then(text => {
-            console.log('Текст из файла:', text);  // Печать текста в консоль для отладки
+            console.log('Текст из файла:', text);
             
             if (text.trim() === "") {
                 console.error("Файл пуст!");
             } else {
-                const lines = text.split('\n'); // Разделяем текст на строки
-                const aboutInfoDiv = document.getElementById('aboutinfo'); // Родительский контейнер
+                const lines = text.split('\n');
+                const aboutInfoDiv = document.getElementById('aboutinfo');
                 
                 lines.forEach((line, index) => {
                     const tile = document.createElement('div');
                     tile.classList.add('tile');
-                    tile.textContent = `${index + 1}. ${line}`; // Добавляем номер строки
+                    tile.textContent = `${index + 1}. ${line}`;
                     aboutInfoDiv.appendChild(tile);
                 });
 
-                // Показываем страницу после успешной загрузки
                 document.body.classList.remove('hidden');
             }
         })
         .catch(error => {
             console.error('Ошибка при загрузке файла:', error);
-            // В случае ошибки отображаем сообщение об ошибке
             const aboutInfoDiv = document.getElementById('aboutinfo');
             aboutInfoDiv.textContent = "Ошибка при загрузке данных!";
-            document.body.classList.remove('hidden'); // Показываем страницу
+            document.body.classList.remove('hidden');
         });
     </script>
 
