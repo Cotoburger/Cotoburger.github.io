@@ -191,47 +191,80 @@ const getCurrentLesson = (shift) => {
     return { lessonName: null, timeLeft: 0, isBreak: false, totalTime: 0 };
 };
 
+// Массив с датами каникул
+const holidays = [
+    { start: '2024-12-28', end: '2025-01-12' }, // Зимние каникулы
+    { start: '2025-03-22', end: '2025-03-31' } // Весенние каникулы
+];
+
+// Функция для преобразования даты в строку формата 'YYYY-MM-DD'
+const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
+
+// Функция для получения разницы в днях между двумя датами
+const getDaysLeft = (endDate) => {
+    const currentDate = new Date();
+    const end = new Date(endDate);
+    const timeDiff = end - currentDate;
+    return Math.ceil(timeDiff / (1000 * 3600 * 24)); // Возвращаем количество дней
+};
+
+// Функция для проверки, находится ли текущая дата в периоде каникул
+const isHoliday = () => {
+    const currentDate = formatDate(new Date());
+    return holidays.some(holiday => currentDate >= holiday.start && currentDate <= holiday.end);
+};
+
 const updateCurrentLessons = () => {
     const currentLessonShift1 = getCurrentLesson('shift1');
     const currentLessonShift2 = getCurrentLesson('shift2');
 
-    document.getElementById("currentLessonShift1").innerHTML = `Первая смена`;
-    if (currentLessonShift1.lessonName) {
-        if (currentLessonShift1.isBreak) {
-            document.getElementById("lessonShift1").innerHTML = "Перемена";
-            document.getElementById("timeLeftShift1").innerHTML = formatTime(currentLessonShift1.timeLeft);
-            document.getElementById("progressShift1").style.display = 'none';
-        } else {
-            document.getElementById("lessonShift1").innerHTML = `${currentLessonShift1.lessonName}`;
-            document.getElementById("timeLeftShift1").innerHTML = formatTime(currentLessonShift1.timeLeft);
-            const progress = ((currentLessonShift1.totalTime - currentLessonShift1.timeLeft) / currentLessonShift1.totalTime) * 100;
-            document.getElementById("progressShift1").style.display = 'inline-block';
-            document.getElementById("progressShift1").value = progress;
-        }
-    } else {
-        document.getElementById("lessonShift1").innerHTML = "Нет уроков";
-        document.getElementById("timeLeftShift1").innerHTML = "";
-        document.getElementById("progressShift1").style.display = 'none';
-    }
+    const isHolidayPeriod = isHoliday(); // Проверяем, каникулы ли сейчас
 
-    document.getElementById("currentLessonShift2").innerHTML = `Вторая смена`;
-    if (currentLessonShift2.lessonName) {
-        if (currentLessonShift2.isBreak) {
-            document.getElementById("lessonShift2").innerHTML = "Перемена";
-            document.getElementById("timeLeftShift2").innerHTML = formatTime(currentLessonShift2.timeLeft);
-            document.getElementById("progressShift2").style.display = 'none';
+    const updateShift = (shiftId, currentLesson) => {
+        document.getElementById(`currentLesson${shiftId}`).innerHTML = shiftId === "Shift1" ? `Первая смена` : `Вторая смена`;
+
+        if (isHolidayPeriod) {
+            const holiday = holidays.find(h => formatDate(new Date()) >= h.start && formatDate(new Date()) <= h.end);
+            const start = new Date(holiday.start);
+            const end = new Date(holiday.end);
+            const totalDays = Math.ceil((end - start) / (1000 * 3600 * 24));
+            const daysPassed = Math.ceil((new Date() - start) / (1000 * 3600 * 24));
+            const daysLeft = totalDays - daysPassed;
+
+            document.getElementById(`lesson${shiftId}`).innerHTML = `Каникулы `;
+            document.getElementById(`timeLeft${shiftId}`).innerHTML = `осталось ~${daysLeft} дней`;
+
+            const progress = (daysPassed / totalDays) * 100;
+            document.getElementById(`progress${shiftId}`).style.display = 'inline-block';
+            document.getElementById(`progress${shiftId}`).value = progress;
+            const progressBar = document.getElementById("progressShift2");
+        } else if (currentLesson.lessonName) {
+            if (currentLesson.isBreak) {
+                document.getElementById(`lesson${shiftId}`).innerHTML = "Перемена";
+                document.getElementById(`timeLeft${shiftId}`).innerHTML = formatTime(currentLesson.timeLeft);
+                document.getElementById(`progress${shiftId}`).style.display = 'none';
+            } else {
+                document.getElementById(`lesson${shiftId}`).innerHTML = `${currentLesson.lessonName}`;
+                document.getElementById(`timeLeft${shiftId}`).innerHTML = formatTime(currentLesson.timeLeft);
+
+                const progress = ((currentLesson.totalTime - currentLesson.timeLeft) / currentLesson.totalTime) * 100;
+                document.getElementById(`progress${shiftId}`).style.display = 'inline-block';
+                document.getElementById(`progress${shiftId}`).value = progress;
+            }
         } else {
-            document.getElementById("lessonShift2").innerHTML = `${currentLessonShift2.lessonName}`;
-            document.getElementById("timeLeftShift2").innerHTML = formatTime(currentLessonShift2.timeLeft);
-            const progress = ((currentLessonShift2.totalTime - currentLessonShift2.timeLeft) / currentLessonShift2.totalTime) * 100;
-            document.getElementById("progressShift2").style.display = 'inline-block';
-            document.getElementById("progressShift2").value = progress;
+            document.getElementById(`lesson${shiftId}`).innerHTML = "Нет уроков";
+            document.getElementById(`timeLeft${shiftId}`).innerHTML = "";
+            document.getElementById(`progress${shiftId}`).style.display = 'none';
         }
-    } else {
-        document.getElementById("lessonShift2").innerHTML = "Нет уроков";
-        document.getElementById("timeLeftShift2").innerHTML = "";
-        document.getElementById("progressShift2").style.display = 'none';
-    }
+    };
+
+    updateShift("Shift1", currentLessonShift1);
+    updateShift("Shift2", currentLessonShift2);
 };
 
 updateCurrentLessons();
