@@ -56,7 +56,7 @@ body {
 }
 
 .time-progress::-webkit-progress-value {
-    background-color: #ffc400;
+    background-color: #46ca4a;
     border-radius: 0.875rem;
 }
 
