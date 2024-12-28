@@ -42,25 +42,25 @@ self.addEventListener('activate', (event) => {
     self.clients.claim(); // Активируем Service Worker немедленно
 });
 
-// Обработчик fetch с использованием стратегии Stale-While-Revalidate
+// Обработчик fetch с принудительным обновлением кэша
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            const fetchPromise = fetch(event.request).then((networkResponse) => {
-                if (networkResponse && networkResponse.ok) {
-                    caches.open(cacheName).then((cache) => {
-                        cache.put(event.request, networkResponse.clone()); // Обновляем кэш
-                    });
+        fetch(event.request).then((networkResponse) => {
+            if (networkResponse && networkResponse.ok) {
+                // Клонируем сетевой ответ до того, как его тело будет использовано
+                const networkResponseClone = networkResponse.clone();
 
-                    console.log(`Файл ${event.request.url} подгружен с интернета`);
-                }
-                return networkResponse; // Возвращаем сетевой ответ
-            }).catch((err) => {
-                console.error('Ошибка при запросе:', err);
-                return cachedResponse; // Возвращаем кэш, если сеть недоступна
-            });
+                // Открываем кэш и обновляем его
+                caches.open(cacheName).then((cache) => {
+                    cache.put(event.request, networkResponseClone); // Обновляем кэш
+                });
 
-            return cachedResponse || fetchPromise; // Возвращаем кэш сразу, сеть параллельно
+                console.log(`Файл ${event.request.url} подгружен с интернета и обновлен в кэше`);
+            }
+            return networkResponse; // Возвращаем сетевой ответ
+        }).catch((err) => {
+            console.error('Ошибка при запросе:', err);
+            return caches.match(event.request); // Возвращаем кэш, если сеть недоступна
         })
     );
 });
