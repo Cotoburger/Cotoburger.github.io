@@ -16,51 +16,54 @@ const filesToCache = [
     'images/moon.svg',
 ];
 
-// Установка Service Worker и добавление файлов в кэш
+// Событие установки Service Worker
 self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open(cacheName).then((cache) => {
-            return cache.addAll(filesToCache);
-        })
+        caches.open(cacheName)
+            .then((cache) => {
+                console.log('Caching files...');
+                return cache.addAll(filesToCache);
+            })
     );
-    self.skipWaiting(); // Пропускаем стадию ожидания
 });
 
-// Активация Service Worker и очистка старого кэша
+// Событие активации Service Worker
 self.addEventListener('activate', (event) => {
+    const cacheWhitelist = [cacheName];
+
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
-                cacheNames.map((oldCacheName) => {
-                    if (oldCacheName !== cacheName) {
-                        return caches.delete(oldCacheName); // Удаляем старый кэш
+                cacheNames.map((cache) => {
+                    if (!cacheWhitelist.includes(cache)) {
+                        console.log('Deleting old cache:', cache);
+                        return caches.delete(cache); // Удаляем старые кэши
                     }
                 })
             );
         })
     );
-    self.clients.claim(); // Активируем Service Worker немедленно
 });
 
-// Обработчик fetch с принудительным обновлением кэша
+// Событие запроса ресурсов (fetch)
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        fetch(event.request).then((networkResponse) => {
-            if (networkResponse && networkResponse.ok) {
-                // Клонируем сетевой ответ до того, как его тело будет использовано
-                const networkResponseClone = networkResponse.clone();
+        caches.match(event.request)
+            .then((cachedResponse) => {
+                if (cachedResponse) {
+                    return cachedResponse; // Возвращаем ресурс из кэша
+                }
 
-                // Открываем кэш и обновляем его
-                caches.open(cacheName).then((cache) => {
-                    cache.put(event.request, networkResponseClone); // Обновляем кэш
+                // Если ресурса нет в кэше, запрашиваем его из сети
+                return fetch(event.request).then((networkResponse) => {
+                    // Кэшируем ответ на новый запрос, если нужно
+                    if (event.request.url.startsWith(self.location.origin)) {
+                        caches.open(cacheName).then((cache) => {
+                            cache.put(event.request, networkResponse.clone());
+                        });
+                    }
+                    return networkResponse;
                 });
-
-                console.log(`Файл ${event.request.url} подгружен с интернета и обновлен в кэше`);
-            }
-            return networkResponse; // Возвращаем сетевой ответ
-        }).catch((err) => {
-            console.error('Ошибка при запросе:', err);
-            return caches.match(event.request); // Возвращаем кэш, если сеть недоступна
-        })
+            })
     );
 });
