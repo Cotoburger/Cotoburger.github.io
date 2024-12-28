@@ -51,6 +51,8 @@ self.addEventListener('fetch', (event) => {
                     caches.open(cacheName).then((cache) => {
                         cache.put(event.request, networkResponse.clone()); // Обновляем кэш
                     });
+
+                    console.log(`Файл ${event.request.url} подгружен с интернета`);
                 }
                 return networkResponse; // Возвращаем сетевой ответ
             }).catch((err) => {
