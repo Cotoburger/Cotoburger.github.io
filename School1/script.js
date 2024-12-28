@@ -219,6 +219,16 @@ const isHoliday = () => {
     return holidays.some(holiday => currentDate >= holiday.start && currentDate <= holiday.end);
 };
 
+const getDaysLabel = (daysLeft) => {
+    if (daysLeft % 10 === 1 && daysLeft % 100 !== 11) {
+        return 'день';
+    } else if (daysLeft % 10 >= 2 && daysLeft % 10 <= 4 && (daysLeft % 100 < 10 || daysLeft % 100 >= 20)) {
+        return 'дня';
+    } else {
+        return 'дней';
+    }
+};
+
 const updateCurrentLessons = () => {
     const currentLessonShift1 = getCurrentLesson('shift1');
     const currentLessonShift2 = getCurrentLesson('shift2');
@@ -237,12 +247,11 @@ const updateCurrentLessons = () => {
             const daysLeft = totalDays - daysPassed;
 
             document.getElementById(`lesson${shiftId}`).innerHTML = `Каникулы `;
-            document.getElementById(`timeLeft${shiftId}`).innerHTML = `осталось ~${daysLeft} дней`;
+            document.getElementById(`timeLeft${shiftId}`).innerHTML = `осталось ~${daysLeft} ${getDaysLabel(daysLeft)}`;
 
             const progress = (daysPassed / totalDays) * 100;
             document.getElementById(`progress${shiftId}`).style.display = 'inline-block';
             document.getElementById(`progress${shiftId}`).value = progress;
-            const progressBar = document.getElementById("progressShift2");
         } else if (currentLesson.lessonName) {
             if (currentLesson.isBreak) {
                 document.getElementById(`lesson${shiftId}`).innerHTML = "Перемена";
