@@ -42,21 +42,18 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            const fetchPromise = fetch(event.request).then((networkResponse) => {
-
-                if (networkResponse && networkResponse.ok) {
-                    const clonedResponse = networkResponse.clone();
-                    caches.open(cacheName).then((cache) => {
-                        cache.put(event.request, clonedResponse);
-                    });
-                }
-                return networkResponse;
-            }).catch((err) => {
-                console.error('Ошибка при запросе:', err);
-            });
-
-            return cachedResponse || fetchPromise;
+        fetch(event.request).then((networkResponse) => {
+            // Проверяем, что запрос успешен
+            if (networkResponse && networkResponse.ok) {
+                const clonedResponse = networkResponse.clone();
+                caches.open(cacheName).then((cache) => {
+                    cache.put(event.request, clonedResponse);  // Обновляем кэш
+                });
+            }
+            return networkResponse;
+        }).catch(() => {
+            // Если сеть недоступна, возвращаем кэшированные данные
+            return caches.match(event.request);
         })
     );
 });
