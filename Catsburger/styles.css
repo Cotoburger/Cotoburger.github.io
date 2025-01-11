@@ -326,10 +326,15 @@ body.light-theme .theme-toggle {
 }
 
 [data-theme="light"] .header-container {
-    background-color: #c7daf1;
+    background-color: #a5c1e3;
 }
 
 [data-theme="light"] .tools-panel {
     background-color: rgba(140, 189, 232, 0.833);
 }
+
+[data-theme="light"] body {
+ background-color: #afbfdf;
+}
+
 
