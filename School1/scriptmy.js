@@ -1,23 +1,11 @@
 const schedule = {
     1: {
         shift1: [
-            {lesson: "Классный час", start: "08:15", end: "08:45"},
-            {lesson: "1-й урок", start: "08:55", end: "09:35"},
-            {lesson: "2-й урок", start: "09:50", end: "10:30"},
-            {lesson: "3-й урок", start: "10:45", end: "11:25"},
-            {lesson: "4-й урок", start: "11:30", end: "12:10"},
-            {lesson: "5-й урок", start: "12:20", end: "13:00"},
-            {lesson: "6-й урок", start: "13:20", end: "14:00"},
-            {lesson: "7-й урок", start: "14:15", end: "14:55"},
+            {lesson: "Сплю", start: "23:15", end: "8:30"},
         ],
         shift2: [
-            {lesson: "0-й урок", start: "12:20", end: "13:00"},
-            {lesson: "1-й урок", start: "13:20", end: "14:00"},
-            {lesson: "2-й урок", start: "14:15", end: "14:55"},
-            {lesson: "3-й урок", start: "15:10", end: "15:50"},
-            {lesson: "Классный час", start: "16:05", end: "16:35"},
-            {lesson: "4-й урок", start: "16:40", end: "17:20"},
-            {lesson: "5-й урок", start: "17:30", end: "18:10"},
+            {lesson: "0-й урок", start: "00:00", end: "13:00"},
+
             {lesson: "6-й урок", start: "18:20", end: "19:00"},
         ]
     },
@@ -87,25 +75,17 @@ const schedule = {
     },
     5: {
         shift1: [
-            {lesson: "1-й урок", start: "08:15", end: "08:55"},
-            {lesson: "2-й урок", start: "09:05", end: "09:45"},
-            {lesson: "3-й урок", start: "10:00", end: "10:40"},
-            {lesson: "4-й урок", start: "11:00", end: "11:40"},
-            {lesson: "5-й урок", start: "11:50", end: "12:30"},
-            {lesson: "6-й урок", start: "12:50", end: "13:30"},
-            {lesson: "7-й урок", start: "13:50", end: "14:30"},
+            {lesson: "Сплю", start: "00:00", end: "7:10"},
+            {lesson: "В школе", start: "8:10", end: "15:30"},
+            {lesson: "Иду со школы", start: "15:30", end: "15:50"},
+            {lesson: "Пью чай", start: "15:50", end: "16:00"},
         ],
         shift2: [
-            {lesson: "0-й урок", start: "11:50", end: "12:30"},
-            {lesson: "1-й урок", start: "12:50", end: "13:30"},
-            {lesson: "2-й урок", start: "13:50", end: "14:30"},
-            {lesson: "3-й урок", start: "14:45", end: "15:25"},
-            {lesson: "4-й урок", start: "15:40", end: "16:20"},
-            {lesson: "5-й урок", start: "16:30", end: "17:10"},
-            {lesson: "6-й урок", start: "17:20", end: "18:00"},
-           // {lesson: "ДЕБАГ", start: "00:00", end: "24:00"},
+            {lesson: "Буду свободен через", start: "00:00", end: "16:00"},
+
         ]
-    }
+        
+    },
 };
 const timeToSeconds = (time) => {
     const [hours, minutes] = time.split(":").map(Number);
@@ -143,12 +123,16 @@ const currentDay = () => {
     return simulatedTime ? simulatedTime.getDay() : new Date().getDay();
 };
 
-const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-    const formattedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`;
-    return `${formattedMinutes}:${formattedSeconds}`;
+const formatTime = (time) => {
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = time % 60;
+
+    if (hours === 0) {
+        return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    } else {
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
 };
 
 const getCurrentLesson = (shift) => {
@@ -226,7 +210,7 @@ const updateCurrentLessons = () => {
     const isHolidayPeriod = isHoliday(); // Проверяем, каникулы ли сейчас
 
     const updateShift = (shiftId, currentLesson) => {
-        document.getElementById(`currentLesson${shiftId}`).innerHTML = shiftId === "Shift1" ? `Первая смена` : `Вторая смена`;
+        document.getElementById(`currentLesson${shiftId}`).innerHTML = shiftId === "Shift1" ? `Что я делаю` : `Осталось`;
 
         if (isHolidayPeriod) {
             const holiday = holidays.find(h => formatDate(new Date()) >= h.start && formatDate(new Date()) <= h.end);
@@ -260,6 +244,19 @@ const updateCurrentLessons = () => {
             document.getElementById(`timeLeft${shiftId}`).innerHTML = "";
             document.getElementById(`progress${shiftId}`).style.display = 'none';
         }
+
+        // Проверяем, есть ли уроки в смене
+        if (currentLesson.lessonName) {
+            const timeElement = document.getElementById(`timeLeft${shiftId}`);
+            if (timeElement) {
+                timeElement.style.display = 'inline-block'; // Отображаем время только если оно существует
+            }
+        } else {
+            const timeElement = document.getElementById(`timeLeft${shiftId}`);
+            if (timeElement) {
+                timeElement.style.display = 'none'; // Скрываем время, если уроков нет
+            }
+        }
     };
 
     updateShift("Shift1", currentLessonShift1);
@@ -284,7 +281,6 @@ const sim = (input) => {
 
 window.sim = sim;
 
-
 const debug = () => {
     simulateTime(1, "12:50");
     console.log("Debug time set to day 1 at 12:50");
@@ -299,7 +295,7 @@ const logCurrentTime = () => {
 
 window.logCurrentTime = logCurrentTime;
 const logCurrentDay = () => {
-    const now = simulatedTime || new Date();
+    const now = simulatedTime ? simulatedTime : new Date();
     console.log(`Current day is: ${now.getDay()}`);
 };
 
