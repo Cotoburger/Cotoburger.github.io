@@ -5,6 +5,7 @@ const filesToCache = [
     "about.html",
     "index.html",
     "script.js",
+    "scriptmy.js",
     "script2.js",
     "images/icon.png",
     "snowflake.svg",
