@@ -7,12 +7,22 @@ body {
     color: #b9b4b4;
 }
 header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 7.5%;
+    min-height: 3rem;
     background-color: #070707;
     color: #ffffff;
-    padding: 1px 1px;
-    text-align: left;
-    padding-left: 20px;
+    display: flex; /* Включаем флекс-контейнер */
+    align-items: center; /* Центрирование содержимого по вертикали */
+    padding-left: 20px; /* Отступ слева для текста */
+    font-family: 'Josefin Sans', sans-serif; /* Используем подключенный шрифт */
+    font-size: 1em; /* Размер текста */
+    z-index: 1000;
 }
+
 nav {
     background-color: #48ff6d;
     padding: 10px 0px;
@@ -34,24 +44,7 @@ nav a:hover, nav a:focus {
 h1, h2 {
     color: #48ff6d;
 }
-.section {
-    background-color: rgba(20, 20, 20, 0.215);
-    padding: 7px;
-    margin: 25px;
-    border-radius: 30px;
-    box-shadow: 0 0 10px rgba(184, 184, 184, 0.1);
-    transform: translateY(30px);
-    animation: fadeInZoom 0.4s ease-out forwards;
-}
-.section2 {
-    background-color: rgb(13, 113, 16);
-    padding: 20px;
-    margin: 20px 20px;
-    border-radius: 30px;
-    box-shadow: 0 0 10px rgba(197, 197, 197, 0.1);
-    transform: translateY(30px);
-    animation: fadeInZoom 0.4s ease-out forwards;
-}
+
 
 /* Анимация появления */
 @keyframes fadeInZoom {
@@ -71,17 +64,6 @@ opacity: 0; /* Начальное состояние - невидимый */
 100% {
 opacity: 1; /* Конечное состояние - полностью видимый */
 }
-}
-
-.large-image {
-    width: 80%;
-    height: auto;
-    margin: 10px auto;
-    display: block;
-    border-radius: 2%;
-    opacity: 0;
-    transform: scale(0.8);
-    animation: fadeInZoom 0.4s ease-out forwards;
 }
 
 /* Изменение кнопок на полоске сверху*/
@@ -160,6 +142,18 @@ opacity: 1; /* Конечное состояние - полностью види
     border-radius: 30px;
     margin: 25px 20px;
     animation: fadeInZoom 0.4s ease-out forwards;
+    height: 100%; /* Контейнер занимает 70% высоты родителя */
+    display: flex;
+    justify-content: center; /* Центрируем видео по горизонтали */
+    align-items: center; /* Центрируем видео по вертикали */
+    overflow: hidden; /* Скрываем выходящее за границы содержимое */
+}
+
+#background-video {
+    width: 100%; /* Видео заполняет ширину контейнера */
+    height: 100%; /* Видео заполняет высоту контейнера */
+    object-fit: cover; /* Масштабируем видео так, чтобы оно заполняло контейнер */
+    border-radius: 30px; /* Закругленные углы остаются для видео */
 }
 @media (min-width: 2000px) {
     .section {

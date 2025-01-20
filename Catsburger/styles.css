@@ -177,8 +177,8 @@ h4 {
     align-items: center;
     justify-content: space-between;
     padding: 1px 20px;
-    background-color: rgba(83, 220, 111, 0.628);
-    border-bottom: 2px solid #00000023;
+    background-color: rgba(176, 174, 174, 0.164);
+    border-bottom: 0.2rem solid #38383823;
     backdrop-filter: blur(10px);
 }
 .header-container h2{
@@ -253,32 +253,6 @@ h4 {
     font-size: 1.5625rem;
 }
 
-#snowflakes {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 92vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 0;
-    display: flex;
-    justify-content: top;
-    align-items: top;
-    transform: translateX(-50%);
-}
-
-.snowflake {
-    position: absolute;
-    top: -10px;
-    width: 30px;
-    height: 30px;
-    background-image: url('snowflake.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 0.8;
-    pointer-events: none;
-    animation: fall linear infinite, fadeOut ease forwards;
-}
 
 @keyframes fall {
     0% {
@@ -317,6 +291,7 @@ h4 {
 
 body.light-theme .theme-toggle {
     background-image: url('images/sun.svg');
+    color: #ffffff;
 }
 
 
@@ -326,7 +301,7 @@ body.light-theme .theme-toggle {
 }
 
 [data-theme="light"] .header-container {
-    background-color: #a5c1e3;
+    background-color: #000000;
 }
 
 [data-theme="light"] .tools-panel {
