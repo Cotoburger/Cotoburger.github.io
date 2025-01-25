@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const CACHE_NAME = 'school-app-v1';
+=======
+const CACHE_NAME = 'school-app-v1.12';
+>>>>>>> parent of 95839b9 (control panel update)
 const STATIC_ASSETS = [
   '/index.html',
   '/script.js',
