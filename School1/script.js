@@ -443,3 +443,118 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 200);
     });
 });
+
+let isFetchingFact = false;
+let isTranslated = false;  // Добавляем переменную для отслеживания языка
+
+function getFact() {
+    if (isFetchingFact) return; // Prevent multiple simultaneous executions
+    isFetchingFact = true;
+
+    fetch('https://uselessfacts.jsph.pl/random.json?language=en')
+        .then(response => response.json())
+        .then(data => {
+            const factContent = document.querySelector('.fact-content');
+            const factText = document.getElementById('fact-text');
+
+            factContent.style.opacity = '1';
+            factText.innerHTML = '';
+            factText.style.opacity = '1';
+
+            const typingSpan = document.createElement('span');
+            typingSpan.className = 'typing-effect';
+            factText.appendChild(typingSpan);
+
+            let i = 0;
+            const txt = data.text;
+            function typeWriter() {
+                if (i < txt.length) {
+                    typingSpan.textContent += txt.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 10); // Adjust the speed of typing if needed
+                } else {
+                    isFetchingFact = false; // Reset the flag once typing is complete
+                }
+            }
+            // Ensure the text is ready before starting the animation
+            if (txt) {
+                typeWriter();
+            }
+
+            // Add click listener for translation
+            factText.onclick = () => {
+                if (isTranslated) {
+                    // Fade-out animation before switching back to English
+                    factText.style.transition = 'opacity 0.2s';
+                    factText.style.opacity = '0';
+
+                    setTimeout(() => {
+                        factText.textContent = txt;  // Возвращаем английский текст
+                        factText.style.opacity = '1';  // Fade-in animation
+                    }, 500); // Wait for the fade-out to complete before updating text
+
+                    isTranslated = false;  // Сбрасываем флаг
+                } else {
+                    translateFactWithAnimation(txt);
+                }
+            };
+        })
+        .catch(error => {
+            console.error('Ошибка при получении факта:', error);
+            document.getElementById('fact-text').textContent = 'Не удалось загрузить факт дня.';
+            isFetchingFact = false; // Reset the flag in case of error
+        });
+}
+
+function translateFactWithAnimation(text) {
+    fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ru`)
+        .then(response => response.json())
+        .then(data => {
+            const translatedText = data.responseData.translatedText;
+            const factText = document.getElementById('fact-text');
+
+            factText.style.transition = 'opacity 0.2s';
+            factText.style.opacity = '0';
+
+            setTimeout(() => {
+                factText.textContent = translatedText;
+                factText.style.opacity = '1';
+                isTranslated = true;  // Устанавливаем флаг, что текст переведен
+            }, 500); // Wait for the fade-out to complete before updating text
+        })
+        .catch(error => {
+            console.error('Ошибка при переводе:', error);
+            const factText = document.getElementById('fact-text');
+            factText.style.transition = 'opacity 0.2s';
+            factText.style.opacity = '0';
+
+            setTimeout(() => {
+                factText.textContent = 'Не удалось перевести факт.';
+                factText.style.opacity = '1';
+            }, 500);
+        });
+}
+
+window.addEventListener('load', getFact);
+
+/* Styles */
+const style = document.createElement('style');
+style.textContent = `
+    .sectionz {
+        transition: transform 0.3s, background-color 0.3s;
+        display: inline-block;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    #fact-text:hover {
+        background-color: rgba(0, 0, 0, 0.06);
+    }
+    #fact-text:active {
+        transform: scale(0.95);
+        background-color:rgba(102, 178, 249, 0.26);
+    }
+`;
+document.head.appendChild(style);
+
+
+

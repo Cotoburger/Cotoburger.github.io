@@ -34,17 +34,23 @@
 </head>
 <script>
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-            .then(() => console.log('Service Worker зарегистрирован!'))
-            .catch((error) => console.error('Ошибка регистрации Service Worker:', error));
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('Service Worker зарегистрирован:', registration);
+          })
+          .catch(error => {
+            console.log('Ошибка регистрации Service Worker:', error);
+          });
+      });
     }
-</script>
+  </script>
 <body>
     <div id="snowflakes"></div>
     
     <div id="toolsPanel" class="tools-panel">
         <c href="#">Расписание</a>
-        <a href="arabic.html">Мой день</a>
+        <a href="arabic.html">Интересно</a>
         <a href="about.html">Сведения</a>
     </div>
 
@@ -75,6 +81,16 @@
                     <div id="timeLeftShift2" class="time-left"></div>
                     <progress id="progressShift2" class="time-progress" value="0" max="100"></progress>
                 </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="container-flex">
+        <section id="schedule" class="sectionz" data-aos="zoom-in">
+            <div id="fact-content" class="fact-content">
+                <p id="fact-text">
+                    <span></span>
+                </p>
             </div>
         </section>
     </div>
