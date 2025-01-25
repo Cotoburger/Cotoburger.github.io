@@ -423,17 +423,47 @@ h4 {
     transition: background-color 0.5s, color 0.5s;
 }
 
+/* Панель с инструментами */
+#toolsPanel {
+    position: fixed;
+    top: 4.6rem; /* Задаем отступ сверху, чтобы панель не перекрывала шапку */
+    left: 0;
+    width: 100%;
+    background-color: rgba(22, 51, 67, 0.833);
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    backdrop-filter: blur(5px);
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+/* Для активного состояния панели */
+#toolsPanel.active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Шапка с меню */
 .header-container {
     display: flex;
-    height: 5rem;
+    position: fixed;
+    width: 100%;
+    top: 0; /* Привязываем шапку к верхней части */
+    height: 4.6rem;
     align-items: center;
     justify-content: space-between;
-    padding: 1px 20px;
+    padding: 1rem 1rem;
     background-color: rgba(34, 77, 118, 0.822);
     border-bottom: 2px solid #00000023;
     backdrop-filter: blur(10px);
+    z-index: 1001; /* Обеспечиваем, чтобы шапка была поверх панели */
 }
 
+/* Стиль для иконки меню */
 .menu-icon {
     display: flex;
     flex-direction: column;
@@ -449,49 +479,8 @@ h4 {
     border-radius: 2px;
 }
 
-.tools-panel {
-    position: absolute;
-    top: 0.6rem;
-    right: 5px;
-    width: 15rem;
-    height: 10rem;
-    background-color: rgba(22, 51, 67, 0.833);
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-top: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    z-index: 9999;
-    border-radius: 1.125rem;
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none;
-    transition: right 0.25s ease, opacity 0.25s ease, visibility 0s ease 0.1s;
-    backdrop-filter: blur(5px);
-}
-
-.tools-panel.active {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-    right: 15px;
-    transition: right 0.15s ease, opacity 0.15s ease, visibility 0s ease 0s;
-}
-
-.tools-panel.active + .menu-icon {
-    display: none;
-}
-
-.tools-panel c {
-    color: #2c557c;
-    padding-bottom: 1px;
-    border-bottom: 4px solid #00000060;
-    text-decoration: none;
-    margin-top: 0.2rem;
-    margin-bottom: 0.2rem;
-    font-size: 1.5625rem;
-}
-
-.tools-panel a {
+/* Вспомогательные стили для ссылок в панели */
+#toolsPanel a {
     color: rgb(40, 107, 183);
     padding-bottom: 1px;
     border-bottom: 4px solid #00000017;
