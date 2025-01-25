@@ -317,9 +317,6 @@ h4 {
     #schedule1 h2 {
         font-size: 1.0625rem;
     }
-    #fact-text {
-        font-size: 1.0rem;
-    }
 }
 
 
@@ -414,9 +411,7 @@ h4 {
         background-color: #00000000;
         appearance: none;
     }
-    #fact-text {
-        font-size: 2rem;
-    }
+    
 }
 
 .transition {
@@ -631,6 +626,78 @@ body.light-theme .theme-toggle {
     backdrop-filter: blur(0.35rem);
 }
 
+[data-theme="light"] .lesson-input {
+    background-color: #ebf2fdce; /* Цвет фона */
+    color: #ffffff; /* Цвет текста */
+    border: 0.1rem solid #9bd4ff8f; /* Цвет рамки */
+    padding: 10px; /* Внутренние отступы */
+    border-radius: 1rem; /* Скругление углов */
+    width: 50%; /* Ширина */
+}
+
+[data-theme="light"] select {
+    padding: 0.6rem; /* Внутренний отступ */
+    font-size: 0.9rem; /* Размер шрифта */
+    border: 2px solid #7dccfd; /* Граница */
+    border-radius: 5rem; /* Скругление углов */
+    background-color: #e8f6ff; /* Цвет фона */
+    color: #8f8b8b; /* Цвет текста */
+    outline: none; /* Убирает подсветку при фокусе */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Анимация */
+}
+
+/* Контейнер для центровки и отступов */
+.select-container {
+    display: flex;
+    flex-direction: row; /* Рядом друг с другом */
+    justify-content: space-around; /* Равномерное распределение */
+    align-items: left; /* Выравнивание по центру */
+    gap: 10px; /* Отступы между селектами */
+}
+.lesson-container {
+    display: flex;
+    flex-direction: column; /* Устанавливаем направление элементов вертикально */
+    gap: 1rem; /* Добавляем промежуток между элементами */
+}
+.lesson-input {
+    background-color: #141415ce; /* Цвет фона */
+    color: #ffffff; /* Цвет текста */
+    border: 0.1rem solid #9bd4ff8f; /* Цвет рамки */
+    padding: 10px; /* Внутренние отступы */
+    border-radius: 1rem; /* Скругление углов */
+    width: 50%; /* Ширина */
+}
+/* Общий стиль для всех select */
+select {
+    padding: 0.6rem; /* Внутренний отступ */
+    font-size: 0.9rem; /* Размер шрифта */
+    border: 2px solid #406982; /* Граница */
+    border-radius: 5rem; /* Скругление углов */
+    background-color: #1f2224; /* Цвет фона */
+    color: #8f8b8b; /* Цвет текста */
+    outline: none; /* Убирает подсветку при фокусе */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Анимация */
+}
+
+/* Эффект при наведении */
+select:hover {
+    border-color: #007BFF; /* Синий цвет при наведении */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Легкая тень */
+}
+
+/* Эффект при фокусе */
+select:focus {
+    border-color: #0056b3; /* Более насыщенный цвет */
+    box-shadow: 0 0 5px rgba(0, 86, 179, 0.5); /* Тень */
+}
+
+.info-tile {
+    background-color: var(--tile-background-color);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
 .fact-content {
     color: rgb(128, 190, 255);
@@ -648,12 +715,16 @@ body.light-theme .theme-toggle {
 }
 #fact-text {
     cursor: pointer;
+    font-size: 1.5em;
     text-align: left;
     margin: 1rem;
-    font-size: 1.4rem;
+
     border-radius: 8px;
     transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
 }
 
-
+#fact-text span {
+    display: inline-block;
+    position: relative;
+}
 
