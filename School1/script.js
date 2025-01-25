@@ -1,5 +1,6 @@
 const images = document.querySelectorAll('img');
 const avatar = document.querySelector('.avatar');
+const socialIcons = document.querySelectorAll('.social-icon');
 
 function pxToRem(px) {
     return px / 16 + 'rem';
@@ -321,6 +322,42 @@ AOS.init({
 }); 
 
 document.addEventListener("DOMContentLoaded", () => {
+    const menuIcon = document.getElementById("menuIcon");
+    const toolsPanel = document.getElementById("toolsPanel");
+    const links = toolsPanel.querySelectorAll('a');
+
+    menuIcon.addEventListener("mousedown", (event) => {
+        event.stopPropagation();
+        toolsPanel.classList.toggle("active");
+
+        if (navigator.vibrate) {
+            navigator.vibrate([5]);
+        }
+    });
+
+    links.forEach(link => {
+        link.addEventListener("click", (event) => {
+            if (navigator.vibrate) {
+                navigator.vibrate(5);
+            }
+        });
+    });
+
+    document.addEventListener("mousedown", (event) => {
+        if (!toolsPanel.contains(event.target) && !menuIcon.contains(event.target)) {
+            toolsPanel.classList.remove("active");
+        }
+    });
+    
+    const themeToggle = document.getElementById("themeToggle");
+    themeToggle.addEventListener("click", () => {
+        if (navigator.vibrate) {
+            navigator.vibrate(5);
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
     const snowflakesContainer = document.getElementById("snowflakes");
     const maxSnowflakes = 45;
 
@@ -381,11 +418,6 @@ document.addEventListener("DOMContentLoaded", () => {
             document.documentElement.style.backgroundColor = "#0e1213";
             themeToggle.style.backgroundImage = "url('images/moon.svg')";
         }
-        
-        // Добавляем вибрацию при смене темы
-        if (navigator.vibrate) {
-            navigator.vibrate(5); // Вибрация на 200 миллисекунд
-        }
     }
 
     const savedTheme = localStorage.getItem("theme") || 
@@ -415,6 +447,13 @@ document.addEventListener("DOMContentLoaded", () => {
 let isFetchingFact = false;
 let isTranslated = false;  // Добавляем переменную для отслеживания языка
 
+// Проверяем в localStorage, был ли последний раз перевод
+const lastTranslated = localStorage.getItem('lastTranslated');
+
+if (lastTranslated === 'true') {
+    isTranslated = true;  // Если было переведено, сразу ставим флаг
+}
+
 function getFact() {
     if (isFetchingFact) return; // Prevent multiple simultaneous executions
     isFetchingFact = true;
@@ -433,20 +472,14 @@ function getFact() {
             typingSpan.className = 'typing-effect';
             factText.appendChild(typingSpan);
 
-            let i = 0;
             const txt = data.text;
-            function typeWriter() {
-                if (i < txt.length) {
-                    typingSpan.textContent += txt.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 10); // Adjust the speed of typing if needed
-                } else {
-                    isFetchingFact = false; // Reset the flag once typing is complete
-                }
-            }
-            // Ensure the text is ready before starting the animation
-            if (txt) {
-                typeWriter();
+            
+            // Сначала перевести текст, а потом отображать
+            if (isTranslated) {
+                translateFactWithAnimation(txt);  // Если перевод, сразу переводим и показываем
+            } else {
+                // Если не нужно переводить, сразу показываем факт на английском
+                displayFactWithTyping(txt);
             }
 
             // Add click listener for translation
@@ -459,9 +492,11 @@ function getFact() {
                     setTimeout(() => {
                         factText.textContent = txt;  // Возвращаем английский текст
                         factText.style.opacity = '1';  // Fade-in animation
+                        displayFactWithTyping(txt); // Применяем анимацию печатания
                     }, 500); // Wait for the fade-out to complete before updating text
 
                     isTranslated = false;  // Сбрасываем флаг
+                    localStorage.setItem('lastTranslated', 'false');  // Сохраняем в localStorage, что текст на английском
                 } else {
                     translateFactWithAnimation(txt);
                 }
@@ -478,16 +513,39 @@ function translateFactWithAnimation(text) {
     fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ru`)
         .then(response => response.json())
         .then(data => {
-            const translatedText = data.responseData.translatedText;
+            // Проверяем на наличие ошибки в API, если лимит исчерпан
+            if (data.responseStatus && data.responseStatus === 429) {
+                const factText = document.getElementById('fact-text');
+                factText.style.transition = 'opacity 0.2s';
+                factText.style.opacity = '0';
+
+                setTimeout(() => {
+                    factText.textContent = 'API переводчика выдаёт ошибку о лимите запросов. Попробуйте позже.';
+                    factText.style.opacity = '1';
+                }, 500);
+                return;  // Прерываем выполнение, если лимит исчерпан
+            }
+
+            // Если ошибок нет, продолжаем с переводом
+            const translatedText = data.responseData ? data.responseData.translatedText : 'Не удалось перевести факт.';
             const factText = document.getElementById('fact-text');
 
+            // Сначала скрываем текст
             factText.style.transition = 'opacity 0.2s';
             factText.style.opacity = '0';
 
             setTimeout(() => {
-                factText.textContent = translatedText;
+                // После перевода показываем новый текст с анимацией печатания
+                factText.innerHTML = ''; // Очищаем текст, чтобы применить анимацию
+                const typingSpan = document.createElement('span');
+                typingSpan.className = 'typing-effect';
+                factText.appendChild(typingSpan);
+
+                displayFactWithTyping(translatedText); // Запускаем анимацию печатания переведенного текста
+
                 factText.style.opacity = '1';
                 isTranslated = true;  // Устанавливаем флаг, что текст переведен
+                localStorage.setItem('lastTranslated', 'true');  // Сохраняем в localStorage, что текст переведен
             }, 500); // Wait for the fade-out to complete before updating text
         })
         .catch(error => {
@@ -501,6 +559,24 @@ function translateFactWithAnimation(text) {
                 factText.style.opacity = '1';
             }, 500);
         });
+}
+
+function displayFactWithTyping(text) {
+    const factText = document.getElementById('fact-text');
+    const typingSpan = document.querySelector('.typing-effect');
+
+    let i = 0;
+    function typeWriter() {
+        if (i < text.length) {
+            typingSpan.textContent += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, 10); // Adjust the speed of typing if needed
+        } else {
+            isFetchingFact = false; // Reset the flag once typing is complete
+        }
+    }
+
+    typeWriter(); // Start typing effect
 }
 
 window.addEventListener('load', getFact);
@@ -519,22 +595,7 @@ style.textContent = `
     }
     #fact-text:active {
         transform: scale(0.95);
-        background-color:rgba(102, 178, 249, 0.26);
+        background-color: rgba(102, 178, 249, 0.26);
     }
 `;
 document.head.appendChild(style);
-<<<<<<< HEAD
-=======
-
-
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of 93976ca (api error warning)
-=======
->>>>>>> parent of 93976ca (api error warning)
-=======
->>>>>>> parent of 93976ca (api error warning)
-=======
->>>>>>> parent of 93976ca (api error warning)

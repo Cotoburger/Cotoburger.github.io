@@ -34,18 +34,34 @@
 </head>
 <script>
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-            .then(() => console.log('Service Worker зарегистрирован!'))
-            .catch((error) => console.error('Ошибка регистрации Service Worker:', error));
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('Service Worker зарегистрирован:', registration);
+          })
+          .catch(error => {
+            console.log('Ошибка регистрации Service Worker:', error);
+          });
+      });
     }
-</script>
+  </script>
 <body>
     <div id="snowflakes"></div>
     
+    <div id="toolsPanel" class="tools-panel">
+        <c href="#">Расписание</a>
+        <a href="arabic.html">Интересно</a>
+        <a href="about.html">Сведения</a>
+    </div>
+
     <div class="header-container">
         <h2 data-aos="fade-right" data-aos-duration="500" data-aos-delay="0">Расписание</h2>
         <div id="themeToggle" class="theme-toggle"></div>
-
+        <div class="menu-icon" id="menuIcon">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </div>
 
     <div class="container-flex">
@@ -69,19 +85,15 @@
         </section>
     </div>
 
-<<<<<<< HEAD
-=======
     <div class="container-flex">
         <section id="schedule" class="sectionz" data-aos="zoom-in">
             <div id="fact-content" class="fact-content">
                 <p id="fact-text">
-                    <span></span>
                 </p>
             </div>
         </section>
     </div>
 
->>>>>>> parent of 93976ca (api error warning)
 
     <script src="aos.js"></script>
     <script src="script.js"></script>
