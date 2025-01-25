@@ -445,10 +445,16 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 let isFetchingFact = false;
-let isTranslated = false;  // Добавляем переменную для отслеживания языка
+let isTranslated = false;  // Флаг для отслеживания перевода
+
+// При загрузке страницы проверяем состояние перевода в localStorage
+const lastTranslated = localStorage.getItem('lastTranslated');
+if (lastTranslated === 'true') {
+    isTranslated = true;  // Если перевод был, ставим флаг
+}
 
 function getFact() {
-    if (isFetchingFact) return; // Prevent multiple simultaneous executions
+    if (isFetchingFact) return; // Предотвращаем одновременные запросы
     isFetchingFact = true;
 
     fetch('https://uselessfacts.jsph.pl/random.json?language=en')
@@ -466,43 +472,46 @@ function getFact() {
             factText.appendChild(typingSpan);
 
             let i = 0;
-            const txt = data.text;
+            const txt = data.text; // Сохраняем текст факта на английском
+
+            // Функция для анимации печати текста
             function typeWriter() {
                 if (i < txt.length) {
                     typingSpan.textContent += txt.charAt(i);
                     i++;
-                    setTimeout(typeWriter, 10); // Adjust the speed of typing if needed
+                    setTimeout(typeWriter, 10); // Скорость печати
                 } else {
-                    isFetchingFact = false; // Reset the flag once typing is complete
+                    isFetchingFact = false; // Завершаем запрос
                 }
             }
-            // Ensure the text is ready before starting the animation
+
             if (txt) {
-                typeWriter();
+                typeWriter(); // Запускаем анимацию печати
             }
 
-            // Add click listener for translation
+            // Обработчик клика для переключения между языками
             factText.onclick = () => {
                 if (isTranslated) {
-                    // Fade-out animation before switching back to English
+                    // Если текст уже переведен, возвращаем на английский
                     factText.style.transition = 'opacity 0.2s';
                     factText.style.opacity = '0';
 
                     setTimeout(() => {
                         factText.textContent = txt;  // Возвращаем английский текст
-                        factText.style.opacity = '1';  // Fade-in animation
-                    }, 500); // Wait for the fade-out to complete before updating text
+                        factText.style.opacity = '1';  // Плавно показываем его
+                    }, 500); // Ждем окончания анимации перед обновлением текста
 
-                    isTranslated = false;  // Сбрасываем флаг
+                    isTranslated = false;  // Сбрасываем флаг перевода
+                    localStorage.setItem('lastTranslated', 'false');  // Сохраняем в localStorage
                 } else {
-                    translateFactWithAnimation(txt);
+                    translateFactWithAnimation(txt);  // Переводим факт
                 }
             };
         })
         .catch(error => {
             console.error('Ошибка при получении факта:', error);
             document.getElementById('fact-text').textContent = 'Не удалось загрузить факт дня.';
-            isFetchingFact = false; // Reset the flag in case of error
+            isFetchingFact = false; // Сбрасываем флаг в случае ошибки
         });
 }
 
@@ -510,16 +519,39 @@ function translateFactWithAnimation(text) {
     fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ru`)
         .then(response => response.json())
         .then(data => {
-            const translatedText = data.responseData.translatedText;
+            // Проверяем на наличие ошибки в API, если лимит исчерпан
+            if (data.responseStatus && data.responseStatus === 429) {
+                const factText = document.getElementById('fact-text');
+                factText.style.transition = 'opacity 0.2s';
+                factText.style.opacity = '0';
+
+                setTimeout(() => {
+                    factText.textContent = 'Лимит бесплатных переводов исчерпан. Попробуйте позже.';
+                    factText.style.opacity = '1';
+                }, 500);
+                return;  // Прерываем выполнение, если лимит исчерпан
+            }
+
+            // Если ошибок нет, продолжаем с переводом
+            const translatedText = data.responseData ? data.responseData.translatedText : 'Не удалось перевести факт.';
             const factText = document.getElementById('fact-text');
 
+            // Сначала скрываем текст
             factText.style.transition = 'opacity 0.2s';
             factText.style.opacity = '0';
 
             setTimeout(() => {
-                factText.textContent = translatedText;
+                // После перевода показываем новый текст с анимацией печатания
+                factText.innerHTML = ''; // Очищаем текст, чтобы применить анимацию
+                const typingSpan = document.createElement('span');
+                typingSpan.className = 'typing-effect';
+                factText.appendChild(typingSpan);
+
+                displayFactWithTyping(translatedText); // Запускаем анимацию печатания переведенного текста
+
                 factText.style.opacity = '1';
                 isTranslated = true;  // Устанавливаем флаг, что текст переведен
+                localStorage.setItem('lastTranslated', 'true');  // Сохраняем в localStorage, что текст переведен
             }, 500); // Wait for the fade-out to complete before updating text
         })
         .catch(error => {
@@ -535,9 +567,9 @@ function translateFactWithAnimation(text) {
         });
 }
 
-window.addEventListener('load', getFact);
+window.addEventListener('load', getFact); // Запуск при загрузке страницы
 
-/* Styles */
+/* Стили */
 const style = document.createElement('style');
 style.textContent = `
     .sectionz {
@@ -551,10 +583,9 @@ style.textContent = `
     }
     #fact-text:active {
         transform: scale(0.95);
-        background-color:rgba(102, 178, 249, 0.26);
+        background-color: rgba(102, 178, 249, 0.26);
     }
 `;
 document.head.appendChild(style);
-
 
 

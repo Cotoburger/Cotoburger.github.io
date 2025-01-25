@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-const CACHE_NAME = 'school-app-v1';
-=======
+
 const CACHE_NAME = 'school-app-v1.12';
->>>>>>> parent of 95839b9 (control panel update)
 const STATIC_ASSETS = [
   '/index.html',
   '/script.js',
@@ -15,7 +12,10 @@ const STATIC_ASSETS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(STATIC_ASSETS))
+      .then((cache) => {
+        // Удаляем все старые файлы, чтобы пересоздать кэш
+        return cache.addAll(STATIC_ASSETS);
+      })
   );
 });
 
