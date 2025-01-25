@@ -1,11 +1,7 @@
-const CACHE_NAME = 'school-app-v1.131';
+const CACHE_NAME = 'school-app-v1';
 const STATIC_ASSETS = [
-  '/',
   '/index.html',
-  '/arabic.html',
-  '/about.html',
   '/script.js',
-  '/scriptmy.js',
   '/script2.js',
   '/aos.js',
   '/styles.css',
