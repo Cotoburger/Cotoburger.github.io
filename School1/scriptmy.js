@@ -1,32 +1,11 @@
-const images = document.querySelectorAll('img');
-const avatar = document.querySelector('.avatar');
-
-function pxToRem(px) {
-    return px / 16 + 'rem';
-}
-
-
-
 const schedule = {
     1: {
         shift1: [
-            {lesson: "Классный час", start: "08:15", end: "08:45"},
-            {lesson: "1-й урок", start: "08:55", end: "09:35"},
-            {lesson: "2-й урок", start: "09:50", end: "10:30"},
-            {lesson: "3-й урок", start: "10:45", end: "11:25"},
-            {lesson: "4-й урок", start: "11:30", end: "12:10"},
-            {lesson: "5-й урок", start: "12:20", end: "13:00"},
-            {lesson: "6-й урок", start: "13:20", end: "14:00"},
-            {lesson: "7-й урок", start: "14:15", end: "14:55"},
+            {lesson: "Сплю", start: "23:15", end: "8:30"},
         ],
         shift2: [
-            {lesson: "0-й урок", start: "12:20", end: "13:00"},
-            {lesson: "1-й урок", start: "13:20", end: "14:00"},
-            {lesson: "2-й урок", start: "14:15", end: "14:55"},
-            {lesson: "3-й урок", start: "15:10", end: "15:50"},
-            {lesson: "Классный час", start: "16:05", end: "16:35"},
-            {lesson: "4-й урок", start: "16:40", end: "17:20"},
-            {lesson: "5-й урок", start: "17:30", end: "18:10"},
+            {lesson: "0-й урок", start: "00:00", end: "13:00"},
+
             {lesson: "6-й урок", start: "18:20", end: "19:00"},
         ]
     },
@@ -96,25 +75,17 @@ const schedule = {
     },
     5: {
         shift1: [
-            {lesson: "1-й урок", start: "08:15", end: "08:55"},
-            {lesson: "2-й урок", start: "09:05", end: "09:45"},
-            {lesson: "3-й урок", start: "10:00", end: "10:40"},
-            {lesson: "4-й урок", start: "11:00", end: "11:40"},
-            {lesson: "5-й урок", start: "11:50", end: "12:30"},
-            {lesson: "6-й урок", start: "12:50", end: "13:30"},
-            {lesson: "7-й урок", start: "13:50", end: "14:30"},
+            {lesson: "Сплю", start: "00:00", end: "7:10"},
+            {lesson: "В школе", start: "8:10", end: "15:30"},
+            {lesson: "Иду со школы", start: "15:30", end: "15:50"},
+            {lesson: "Пью чай", start: "15:50", end: "16:00"},
         ],
         shift2: [
-            {lesson: "0-й урок", start: "11:50", end: "12:30"},
-            {lesson: "1-й урок", start: "12:50", end: "13:30"},
-            {lesson: "2-й урок", start: "13:50", end: "14:30"},
-            {lesson: "3-й урок", start: "14:45", end: "15:25"},
-            {lesson: "4-й урок", start: "15:40", end: "16:20"},
-            {lesson: "5-й урок", start: "16:30", end: "17:10"},
-            {lesson: "6-й урок", start: "17:20", end: "18:00"},
-           // {lesson: "ДЕБАГ", start: "00:00", end: "24:00"},
+            {lesson: "Буду свободен через", start: "00:00", end: "16:00"},
+
         ]
-    }
+        
+    },
 };
 const timeToSeconds = (time) => {
     const [hours, minutes] = time.split(":").map(Number);
@@ -152,12 +123,16 @@ const currentDay = () => {
     return simulatedTime ? simulatedTime.getDay() : new Date().getDay();
 };
 
-const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-    const formattedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`;
-    return `${formattedMinutes}:${formattedSeconds}`;
+const formatTime = (time) => {
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = time % 60;
+
+    if (hours === 0) {
+        return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    } else {
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
 };
 
 const getCurrentLesson = (shift) => {
@@ -235,7 +210,7 @@ const updateCurrentLessons = () => {
     const isHolidayPeriod = isHoliday(); // Проверяем, каникулы ли сейчас
 
     const updateShift = (shiftId, currentLesson) => {
-        document.getElementById(`currentLesson${shiftId}`).innerHTML = shiftId === "Shift1" ? `Первая смена` : `Вторая смена`;
+        document.getElementById(`currentLesson${shiftId}`).innerHTML = shiftId === "Shift1" ? `Что я делаю` : `Осталось`;
 
         if (isHolidayPeriod) {
             const holiday = holidays.find(h => formatDate(new Date()) >= h.start && formatDate(new Date()) <= h.end);
@@ -269,6 +244,19 @@ const updateCurrentLessons = () => {
             document.getElementById(`timeLeft${shiftId}`).innerHTML = "";
             document.getElementById(`progress${shiftId}`).style.display = 'none';
         }
+
+        // Проверяем, есть ли уроки в смене
+        if (currentLesson.lessonName) {
+            const timeElement = document.getElementById(`timeLeft${shiftId}`);
+            if (timeElement) {
+                timeElement.style.display = 'inline-block'; // Отображаем время только если оно существует
+            }
+        } else {
+            const timeElement = document.getElementById(`timeLeft${shiftId}`);
+            if (timeElement) {
+                timeElement.style.display = 'none'; // Скрываем время, если уроков нет
+            }
+        }
     };
 
     updateShift("Shift1", currentLessonShift1);
@@ -293,7 +281,6 @@ const sim = (input) => {
 
 window.sim = sim;
 
-
 const debug = () => {
     simulateTime(1, "12:50");
     console.log("Debug time set to day 1 at 12:50");
@@ -308,7 +295,7 @@ const logCurrentTime = () => {
 
 window.logCurrentTime = logCurrentTime;
 const logCurrentDay = () => {
-    const now = simulatedTime || new Date();
+    const now = simulatedTime ? simulatedTime : new Date();
     console.log(`Current day is: ${now.getDay()}`);
 };
 
@@ -319,6 +306,43 @@ AOS.init({
     once: true
     
 }); 
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const menuIcon = document.getElementById("menuIcon");
+    const toolsPanel = document.getElementById("toolsPanel");
+    const links = toolsPanel.querySelectorAll('a');
+
+    menuIcon.addEventListener("mousedown", (event) => {
+        event.stopPropagation();
+        toolsPanel.classList.toggle("active");
+
+        if (navigator.vibrate) {
+            navigator.vibrate([5]);
+        }
+    });
+
+    links.forEach(link => {
+        link.addEventListener("click", (event) => {
+            if (navigator.vibrate) {
+                navigator.vibrate(5);
+            }
+        });
+    });
+
+    document.addEventListener("mousedown", (event) => {
+        if (!toolsPanel.contains(event.target) && !menuIcon.contains(event.target)) {
+            toolsPanel.classList.remove("active");
+        }
+    });
+    
+    const themeToggle = document.getElementById("themeToggle");
+    themeToggle.addEventListener("click", () => {
+        if (navigator.vibrate) {
+            navigator.vibrate(5);
+        }
+    });
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     const snowflakesContainer = document.getElementById("snowflakes");
@@ -381,11 +405,6 @@ document.addEventListener("DOMContentLoaded", () => {
             document.documentElement.style.backgroundColor = "#0e1213";
             themeToggle.style.backgroundImage = "url('images/moon.svg')";
         }
-        
-        // Добавляем вибрацию при смене темы
-        if (navigator.vibrate) {
-            navigator.vibrate(5); // Вибрация на 200 миллисекунд
-        }
     }
 
     const savedTheme = localStorage.getItem("theme") || 
@@ -411,178 +430,3 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 200);
     });
 });
-<<<<<<< HEAD
-
-let isFetchingFact = false;
-let isTranslated = false;  // Флаг для отслеживания перевода
-
-// При загрузке страницы проверяем состояние перевода в localStorage
-const lastTranslated = localStorage.getItem('lastTranslated');
-if (lastTranslated === 'true') {
-    isTranslated = true;  // Если перевод был, ставим флаг
-}
-
-function displayFactWithTyping(text) {
-    const typingSpan = document.querySelector('.typing-effect');
-    if (!typingSpan) return;
-
-    let i = 0;
-    typingSpan.textContent = ''; // Очищаем текст перед началом анимации
-
-    function typeWriter() {
-        if (i < text.length) {
-            typingSpan.textContent += text.charAt(i);
-            i++;
-            setTimeout(typeWriter, 50); // Скорость печати
-        }
-    }
-
-    typeWriter(); // Запускаем анимацию печатания
-}
-
-function getFact() {
-    if (isFetchingFact) return; // Предотвращаем одновременные запросы
-    isFetchingFact = true;
-
-    fetch('https://uselessfacts.jsph.pl/random.json?language=en')
-        .then(response => response.json())
-        .then(data => {
-            const factContent = document.querySelector('.fact-content');
-            const factText = document.getElementById('fact-text');
-
-            if (!factText) {
-                console.error('Element #fact-text not found');
-                return;
-            }
-
-            factContent.style.opacity = '1';
-            factText.innerHTML = '';
-            factText.style.opacity = '1';
-
-            const typingSpan = document.createElement('span');
-            typingSpan.className = 'typing-effect';
-            factText.appendChild(typingSpan);
-
-            let i = 0;
-            const txt = data.text; // Сохраняем текст факта на английском
-
-            // Функция для анимации печати текста
-            function typeWriter() {
-                if (i < txt.length) {
-                    typingSpan.textContent += txt.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 10); // Скорость печати
-                } else {
-                    isFetchingFact = false; // Завершаем запрос
-                }
-            }
-
-            if (txt) {
-                typeWriter(); // Запускаем анимацию печатания
-            }
-
-            // Обработчик клика для переключения между языками
-            factText.onclick = () => {
-                console.log('Fact clicked. Current translation state:', isTranslated);
-                if (isTranslated) {
-                    // Если текст уже переведен, возвращаем на английский
-                    factText.style.transition = 'opacity 0.2s';
-                    factText.style.opacity = '0';
-
-                    setTimeout(() => {
-                        factText.textContent = txt;  // Возвращаем английский текст
-                        factText.style.opacity = '1';  // Плавно показываем его
-                    }, 500); // Ждем окончания анимации перед обновлением текста
-
-                    isTranslated = false;  // Сбрасываем флаг перевода
-                    localStorage.setItem('lastTranslated', 'false');  // Сохраняем в localStorage
-                } else {
-                    console.log('Translating fact...');
-                    translateFactWithAnimation(txt);  // Переводим факт
-                }
-
-                // Вибрация устройства (если поддерживается)
-                if (navigator.vibrate) {
-                    navigator.vibrate(5);  // Вибрация длится 100 миллисекунд
-                }
-            };
-        })
-        .catch(error => {
-            console.error('Ошибка при получении факта:', error);
-            document.getElementById('fact-text').textContent = 'Не удалось загрузить факт дня.';
-            isFetchingFact = false; // Сбрасываем флаг в случае ошибки
-        });
-}
-
-function translateFactWithAnimation(text) {
-    console.log('Requesting translation for:', text);
-    fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ru`)
-        .then(response => response.json())
-        .then(data => {
-            console.log('Translation response:', data);
-            if (data.responseStatus && data.responseStatus === 429) {
-                const factText = document.getElementById('fact-text');
-                factText.style.transition = 'opacity 0.2s';
-                factText.style.opacity = '0';
-
-                setTimeout(() => {
-                    factText.textContent = 'Лимит бесплатных переводов исчерпан. Попробуйте позже.';
-                    factText.style.opacity = '1';
-                }, 500);
-                return;  // Прерываем выполнение, если лимит исчерпан
-            }
-
-            const translatedText = data.responseData ? data.responseData.translatedText : 'Не удалось перевести факт.';
-            const factText = document.getElementById('fact-text');
-
-            factText.style.transition = 'opacity 0.2s';
-            factText.style.opacity = '0';
-
-            setTimeout(() => {
-                factText.innerHTML = ''; // Очищаем текст, чтобы применить анимацию
-                const typingSpan = document.createElement('span');
-                typingSpan.className = 'typing-effect';
-                factText.appendChild(typingSpan);
-
-                displayFactWithTyping(translatedText); // Запускаем анимацию печатания переведенного текста
-
-                factText.style.opacity = '1';
-                isTranslated = true;
-                localStorage.setItem('lastTranslated', 'true');
-            }, 500);
-        })
-        .catch(error => {
-            console.error('Ошибка при переводе:', error);
-            const factText = document.getElementById('fact-text');
-            factText.style.transition = 'opacity 0.2s';
-            factText.style.opacity = '0';
-
-            setTimeout(() => {
-                factText.textContent = 'Не удалось перевести факт.';
-                factText.style.opacity = '1';
-            }, 500);
-        });
-}
-
-window.addEventListener('load', getFact); // Запуск при загрузке страницы
-
-/* Стили */
-const style = document.createElement('style');
-style.textContent = `
-    .sectionz {
-        transition: transform 0.3s, background-color 0.3s;
-        display: inline-block;
-        padding: 10px;
-        border-radius: 5px;
-    }
-    #fact-text:hover {
-        background-color: rgba(0, 0, 0, 0.06);
-    }
-    #fact-text:active {
-        transform: scale(0.95);
-        background-color: rgba(102, 178, 249, 0.26);
-    }
-`;
-document.head.appendChild(style);
-=======
->>>>>>> parent of 34e9d9e (randomfact update)

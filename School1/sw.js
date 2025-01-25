@@ -5,6 +5,10 @@ const filesToCache = [
     "about.html",
     "index.html",
     "script.js",
+<<<<<<< HEAD
+=======
+    "scriptmy.js",
+>>>>>>> parent of 34e9d9e (randomfact update)
     "script2.js",
     "images/icon.png",
     "snowflake.svg",

@@ -39,23 +39,17 @@
 </head>
 <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(registration => {
-            console.log('Service Worker зарегистрирован:', registration);
-          })
-          .catch(error => {
-            console.log('Ошибка регистрации Service Worker:', error);
-          });
-      });
+        navigator.serviceWorker.register('sw.js')
+            .then(() => console.log('Service Worker зарегистрирован!'))
+            .catch((error) => console.error('Ошибка регистрации Service Worker:', error));
     }
-  </script>
+</script>
 <body class="hidden">
     <div id="snowflakes"></div>
 
     <div id="toolsPanel" class="tools-panel">
         <a href="index.html">Расписание</a>
-        <a href="arabic.html">Интересно</a>
+        <a href="arabic.html">Мой день</a>
         <c href="#">Сведения</a>
     </div>
 
