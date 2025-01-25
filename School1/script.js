@@ -323,17 +323,8 @@ AOS.init({
 
 document.addEventListener("DOMContentLoaded", () => {
     const menuIcon = document.getElementById("menuIcon");
-    const toolsPanel = document.getElementById("toolsPanel");
     const links = toolsPanel.querySelectorAll('a');
 
-    menuIcon.addEventListener("mousedown", (event) => {
-        event.stopPropagation();
-        toolsPanel.classList.toggle("active");
-
-        if (navigator.vibrate) {
-            navigator.vibrate([5]);
-        }
-    });
 
     links.forEach(link => {
         link.addEventListener("click", (event) => {
@@ -341,12 +332,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 navigator.vibrate(5);
             }
         });
-    });
-
-    document.addEventListener("mousedown", (event) => {
-        if (!toolsPanel.contains(event.target) && !menuIcon.contains(event.target)) {
-            toolsPanel.classList.remove("active");
-        }
     });
     
     const themeToggle = document.getElementById("themeToggle");
