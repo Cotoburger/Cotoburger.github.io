@@ -322,27 +322,6 @@ AOS.init({
 }); 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const menuIcon = document.getElementById("menuIcon");
-    const links = toolsPanel.querySelectorAll('a');
-
-
-    links.forEach(link => {
-        link.addEventListener("click", (event) => {
-            if (navigator.vibrate) {
-                navigator.vibrate(5);
-            }
-        });
-    });
-    
-    const themeToggle = document.getElementById("themeToggle");
-    themeToggle.addEventListener("click", () => {
-        if (navigator.vibrate) {
-            navigator.vibrate(5);
-        }
-    });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
     const snowflakesContainer = document.getElementById("snowflakes");
     const maxSnowflakes = 45;
 
@@ -402,6 +381,11 @@ document.addEventListener("DOMContentLoaded", () => {
             document.documentElement.setAttribute("data-theme", "dark");
             document.documentElement.style.backgroundColor = "#0e1213";
             themeToggle.style.backgroundImage = "url('images/moon.svg')";
+        }
+        
+        // Добавляем вибрацию при смене темы
+        if (navigator.vibrate) {
+            navigator.vibrate(5); // Вибрация на 200 миллисекунд
         }
     }
 
@@ -475,23 +459,29 @@ function getFact() {
             }
 
             // Обработчик клика для переключения между языками
-            factText.onclick = () => {
-                if (isTranslated) {
-                    // Если текст уже переведен, возвращаем на английский
-                    factText.style.transition = 'opacity 0.2s';
-                    factText.style.opacity = '0';
+// Обработчик клика для переключения между языками
+factText.onclick = () => {
+    if (isTranslated) {
+        // Если текст уже переведен, возвращаем на английский
+        factText.style.transition = 'opacity 0.2s';
+        factText.style.opacity = '0';
 
-                    setTimeout(() => {
-                        factText.textContent = txt;  // Возвращаем английский текст
-                        factText.style.opacity = '1';  // Плавно показываем его
-                    }, 500); // Ждем окончания анимации перед обновлением текста
+        setTimeout(() => {
+            factText.textContent = txt;  // Возвращаем английский текст
+            factText.style.opacity = '1';  // Плавно показываем его
+        }, 500); // Ждем окончания анимации перед обновлением текста
 
-                    isTranslated = false;  // Сбрасываем флаг перевода
-                    localStorage.setItem('lastTranslated', 'false');  // Сохраняем в localStorage
-                } else {
-                    translateFactWithAnimation(txt);  // Переводим факт
-                }
-            };
+        isTranslated = false;  // Сбрасываем флаг перевода
+        localStorage.setItem('lastTranslated', 'false');  // Сохраняем в localStorage
+    } else {
+        translateFactWithAnimation(txt);  // Переводим факт
+    }
+
+    // Вибрация устройства (если поддерживается)
+    if (navigator.vibrate) {
+        navigator.vibrate(5);  // Вибрация длится 100 миллисекунд
+    }
+};
         })
         .catch(error => {
             console.error('Ошибка при получении факта:', error);
