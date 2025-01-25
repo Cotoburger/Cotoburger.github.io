@@ -409,6 +409,10 @@ h4 {
         appearance: none;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    
+>>>>>>> parent of 93976ca (api error warning)
 =======
     
 >>>>>>> parent of 93976ca (api error warning)
@@ -629,6 +633,7 @@ body.light-theme .theme-toggle {
     border-radius: 1rem; /* Скругление углов */
     width: 50%; /* Ширина */
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 
 [data-theme="light"] select {
@@ -674,6 +679,8 @@ select {
     outline: none; /* Убирает подсветку при фокусе */
     transition: border-color 0.3s, box-shadow 0.3s; /* Анимация */
 =======
+=======
+>>>>>>> parent of 93976ca (api error warning)
 }
 
 [data-theme="light"] select {
@@ -767,6 +774,7 @@ select:focus {
 #fact-text span {
     display: inline-block;
     position: relative;
+<<<<<<< HEAD
 >>>>>>> parent of 93976ca (api error warning)
 }
 
@@ -774,6 +782,8 @@ select:focus {
 select:hover {
     border-color: #007BFF; /* Синий цвет при наведении */
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Легкая тень */
+=======
+>>>>>>> parent of 93976ca (api error warning)
 }
 
 /* Эффект при фокусе */
