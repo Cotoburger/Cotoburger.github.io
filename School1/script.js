@@ -1,6 +1,5 @@
 const images = document.querySelectorAll('img');
 const avatar = document.querySelector('.avatar');
-const socialIcons = document.querySelectorAll('.social-icon');
 
 function pxToRem(px) {
     return px / 16 + 'rem';
@@ -422,6 +421,24 @@ if (lastTranslated === 'true') {
     isTranslated = true;  // Если перевод был, ставим флаг
 }
 
+function displayFactWithTyping(text) {
+    const typingSpan = document.querySelector('.typing-effect');
+    if (!typingSpan) return;
+
+    let i = 0;
+    typingSpan.textContent = ''; // Очищаем текст перед началом анимации
+
+    function typeWriter() {
+        if (i < text.length) {
+            typingSpan.textContent += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, 50); // Скорость печати
+        }
+    }
+
+    typeWriter(); // Запускаем анимацию печатания
+}
+
 function getFact() {
     if (isFetchingFact) return; // Предотвращаем одновременные запросы
     isFetchingFact = true;
@@ -431,6 +448,11 @@ function getFact() {
         .then(data => {
             const factContent = document.querySelector('.fact-content');
             const factText = document.getElementById('fact-text');
+
+            if (!factText) {
+                console.error('Element #fact-text not found');
+                return;
+            }
 
             factContent.style.opacity = '1';
             factText.innerHTML = '';
@@ -455,33 +477,34 @@ function getFact() {
             }
 
             if (txt) {
-                typeWriter(); // Запускаем анимацию печати
+                typeWriter(); // Запускаем анимацию печатания
             }
 
             // Обработчик клика для переключения между языками
-// Обработчик клика для переключения между языками
-factText.onclick = () => {
-    if (isTranslated) {
-        // Если текст уже переведен, возвращаем на английский
-        factText.style.transition = 'opacity 0.2s';
-        factText.style.opacity = '0';
+            factText.onclick = () => {
+                console.log('Fact clicked. Current translation state:', isTranslated);
+                if (isTranslated) {
+                    // Если текст уже переведен, возвращаем на английский
+                    factText.style.transition = 'opacity 0.2s';
+                    factText.style.opacity = '0';
 
-        setTimeout(() => {
-            factText.textContent = txt;  // Возвращаем английский текст
-            factText.style.opacity = '1';  // Плавно показываем его
-        }, 500); // Ждем окончания анимации перед обновлением текста
+                    setTimeout(() => {
+                        factText.textContent = txt;  // Возвращаем английский текст
+                        factText.style.opacity = '1';  // Плавно показываем его
+                    }, 500); // Ждем окончания анимации перед обновлением текста
 
-        isTranslated = false;  // Сбрасываем флаг перевода
-        localStorage.setItem('lastTranslated', 'false');  // Сохраняем в localStorage
-    } else {
-        translateFactWithAnimation(txt);  // Переводим факт
-    }
+                    isTranslated = false;  // Сбрасываем флаг перевода
+                    localStorage.setItem('lastTranslated', 'false');  // Сохраняем в localStorage
+                } else {
+                    console.log('Translating fact...');
+                    translateFactWithAnimation(txt);  // Переводим факт
+                }
 
-    // Вибрация устройства (если поддерживается)
-    if (navigator.vibrate) {
-        navigator.vibrate(5);  // Вибрация длится 100 миллисекунд
-    }
-};
+                // Вибрация устройства (если поддерживается)
+                if (navigator.vibrate) {
+                    navigator.vibrate(5);  // Вибрация длится 100 миллисекунд
+                }
+            };
         })
         .catch(error => {
             console.error('Ошибка при получении факта:', error);
@@ -491,10 +514,11 @@ factText.onclick = () => {
 }
 
 function translateFactWithAnimation(text) {
+    console.log('Requesting translation for:', text);
     fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ru`)
         .then(response => response.json())
         .then(data => {
-            // Проверяем на наличие ошибки в API, если лимит исчерпан
+            console.log('Translation response:', data);
             if (data.responseStatus && data.responseStatus === 429) {
                 const factText = document.getElementById('fact-text');
                 factText.style.transition = 'opacity 0.2s';
@@ -507,16 +531,13 @@ function translateFactWithAnimation(text) {
                 return;  // Прерываем выполнение, если лимит исчерпан
             }
 
-            // Если ошибок нет, продолжаем с переводом
             const translatedText = data.responseData ? data.responseData.translatedText : 'Не удалось перевести факт.';
             const factText = document.getElementById('fact-text');
 
-            // Сначала скрываем текст
             factText.style.transition = 'opacity 0.2s';
             factText.style.opacity = '0';
 
             setTimeout(() => {
-                // После перевода показываем новый текст с анимацией печатания
                 factText.innerHTML = ''; // Очищаем текст, чтобы применить анимацию
                 const typingSpan = document.createElement('span');
                 typingSpan.className = 'typing-effect';
@@ -525,9 +546,9 @@ function translateFactWithAnimation(text) {
                 displayFactWithTyping(translatedText); // Запускаем анимацию печатания переведенного текста
 
                 factText.style.opacity = '1';
-                isTranslated = true;  // Устанавливаем флаг, что текст переведен
-                localStorage.setItem('lastTranslated', 'true');  // Сохраняем в localStorage, что текст переведен
-            }, 500); // Wait for the fade-out to complete before updating text
+                isTranslated = true;
+                localStorage.setItem('lastTranslated', 'true');
+            }, 500);
         })
         .catch(error => {
             console.error('Ошибка при переводе:', error);
@@ -562,5 +583,3 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-
-
