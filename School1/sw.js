@@ -1,4 +1,4 @@
-const CACHE_NAME = 'school-app-v1.12';
+const CACHE_NAME = 'school-app-v1.131';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
