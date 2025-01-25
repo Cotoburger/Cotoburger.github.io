@@ -142,7 +142,7 @@ opacity: 1; /* Конечное состояние - полностью види
     border-radius: 30px;
     margin: 25px 20px;
     animation: fadeInZoom 0.4s ease-out forwards;
-    height: 100%; /* Контейнер занимает 70% высоты родителя */
+    height: 50%; /* Контейнер занимает 70% высоты родителя */
     display: flex;
     justify-content: center; /* Центрируем видео по горизонтали */
     align-items: center; /* Центрируем видео по вертикали */
@@ -151,7 +151,7 @@ opacity: 1; /* Конечное состояние - полностью види
 
 #background-video {
     width: 100%; /* Видео заполняет ширину контейнера */
-    height: 100%; /* Видео заполняет высоту контейнера */
+    height: 50; /* Видео заполняет высоту контейнера */
     object-fit: cover; /* Масштабируем видео так, чтобы оно заполняло контейнер */
     border-radius: 30px; /* Закругленные углы остаются для видео */
 }
@@ -169,4 +169,92 @@ opacity: 1; /* Конечное состояние - полностью види
         margin-right: 300px;
     }
     }
-    
+.software-carousel {
+    padding: 20px;
+    background-color: #1d1d1d;
+    margin-top: 20px;
+}
+
+.software-carousel h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #48ff6d;
+}
+
+.carousel-container {
+    padding: 20px 0;
+}
+
+.carousel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.card {
+    flex: 0 0 auto;
+    width: calc(25% - 20px);
+    min-width: 200px;
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+
+.card h3 {
+    margin-bottom: 10px;
+    color: #48ff6d;
+}
+
+.card p {
+    font-size: 14px;
+    color: #b9b4b4;
+    margin-bottom: 15px;
+}
+
+.download-btn {
+    display: inline-block;
+    background-color: #48ff6d;
+    color: #000000;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+    background-color: #05c53f;
+}
+
+@media (max-width: 1200px) {
+    .card {
+        width: calc(33.33% - 20px);
+    }
+}
+
+@media (max-width: 900px) {
+    .card {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 600px) {
+    .card {
+        width: 100%;
+    }
+}
