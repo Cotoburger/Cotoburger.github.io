@@ -411,37 +411,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 200);
     });
 });
-<<<<<<< HEAD
 
 let isFetchingFact = false;
-let isTranslated = false;  // Флаг для отслеживания перевода
-
-// При загрузке страницы проверяем состояние перевода в localStorage
-const lastTranslated = localStorage.getItem('lastTranslated');
-if (lastTranslated === 'true') {
-    isTranslated = true;  // Если перевод был, ставим флаг
-}
-
-function displayFactWithTyping(text) {
-    const typingSpan = document.querySelector('.typing-effect');
-    if (!typingSpan) return;
-
-    let i = 0;
-    typingSpan.textContent = ''; // Очищаем текст перед началом анимации
-
-    function typeWriter() {
-        if (i < text.length) {
-            typingSpan.textContent += text.charAt(i);
-            i++;
-            setTimeout(typeWriter, 50); // Скорость печати
-        }
-    }
-
-    typeWriter(); // Запускаем анимацию печатания
-}
+let isTranslated = false;  // Добавляем переменную для отслеживания языка
 
 function getFact() {
-    if (isFetchingFact) return; // Предотвращаем одновременные запросы
+    if (isFetchingFact) return; // Prevent multiple simultaneous executions
     isFetchingFact = true;
 
     fetch('https://uselessfacts.jsph.pl/random.json?language=en')
@@ -449,11 +424,6 @@ function getFact() {
         .then(data => {
             const factContent = document.querySelector('.fact-content');
             const factText = document.getElementById('fact-text');
-
-            if (!factText) {
-                console.error('Element #fact-text not found');
-                return;
-            }
 
             factContent.style.opacity = '1';
             factText.innerHTML = '';
@@ -464,92 +434,61 @@ function getFact() {
             factText.appendChild(typingSpan);
 
             let i = 0;
-            const txt = data.text; // Сохраняем текст факта на английском
-
-            // Функция для анимации печати текста
+            const txt = data.text;
             function typeWriter() {
                 if (i < txt.length) {
                     typingSpan.textContent += txt.charAt(i);
                     i++;
-                    setTimeout(typeWriter, 10); // Скорость печати
+                    setTimeout(typeWriter, 10); // Adjust the speed of typing if needed
                 } else {
-                    isFetchingFact = false; // Завершаем запрос
+                    isFetchingFact = false; // Reset the flag once typing is complete
                 }
             }
-
+            // Ensure the text is ready before starting the animation
             if (txt) {
-                typeWriter(); // Запускаем анимацию печатания
+                typeWriter();
             }
 
-            // Обработчик клика для переключения между языками
+            // Add click listener for translation
             factText.onclick = () => {
-                console.log('Fact clicked. Current translation state:', isTranslated);
                 if (isTranslated) {
-                    // Если текст уже переведен, возвращаем на английский
+                    // Fade-out animation before switching back to English
                     factText.style.transition = 'opacity 0.2s';
                     factText.style.opacity = '0';
 
                     setTimeout(() => {
                         factText.textContent = txt;  // Возвращаем английский текст
-                        factText.style.opacity = '1';  // Плавно показываем его
-                    }, 500); // Ждем окончания анимации перед обновлением текста
+                        factText.style.opacity = '1';  // Fade-in animation
+                    }, 500); // Wait for the fade-out to complete before updating text
 
-                    isTranslated = false;  // Сбрасываем флаг перевода
-                    localStorage.setItem('lastTranslated', 'false');  // Сохраняем в localStorage
+                    isTranslated = false;  // Сбрасываем флаг
                 } else {
-                    console.log('Translating fact...');
-                    translateFactWithAnimation(txt);  // Переводим факт
-                }
-
-                // Вибрация устройства (если поддерживается)
-                if (navigator.vibrate) {
-                    navigator.vibrate(5);  // Вибрация длится 100 миллисекунд
+                    translateFactWithAnimation(txt);
                 }
             };
         })
         .catch(error => {
             console.error('Ошибка при получении факта:', error);
             document.getElementById('fact-text').textContent = 'Не удалось загрузить факт дня.';
-            isFetchingFact = false; // Сбрасываем флаг в случае ошибки
+            isFetchingFact = false; // Reset the flag in case of error
         });
 }
 
 function translateFactWithAnimation(text) {
-    console.log('Requesting translation for:', text);
     fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ru`)
         .then(response => response.json())
         .then(data => {
-            console.log('Translation response:', data);
-            if (data.responseStatus && data.responseStatus === 429) {
-                const factText = document.getElementById('fact-text');
-                factText.style.transition = 'opacity 0.2s';
-                factText.style.opacity = '0';
-
-                setTimeout(() => {
-                    factText.textContent = 'Лимит бесплатных переводов исчерпан. Попробуйте позже.';
-                    factText.style.opacity = '1';
-                }, 500);
-                return;  // Прерываем выполнение, если лимит исчерпан
-            }
-
-            const translatedText = data.responseData ? data.responseData.translatedText : 'Не удалось перевести факт.';
+            const translatedText = data.responseData.translatedText;
             const factText = document.getElementById('fact-text');
 
             factText.style.transition = 'opacity 0.2s';
             factText.style.opacity = '0';
 
             setTimeout(() => {
-                factText.innerHTML = ''; // Очищаем текст, чтобы применить анимацию
-                const typingSpan = document.createElement('span');
-                typingSpan.className = 'typing-effect';
-                factText.appendChild(typingSpan);
-
-                displayFactWithTyping(translatedText); // Запускаем анимацию печатания переведенного текста
-
+                factText.textContent = translatedText;
                 factText.style.opacity = '1';
-                isTranslated = true;
-                localStorage.setItem('lastTranslated', 'true');
-            }, 500);
+                isTranslated = true;  // Устанавливаем флаг, что текст переведен
+            }, 500); // Wait for the fade-out to complete before updating text
         })
         .catch(error => {
             console.error('Ошибка при переводе:', error);
@@ -564,9 +503,9 @@ function translateFactWithAnimation(text) {
         });
 }
 
-window.addEventListener('load', getFact); // Запуск при загрузке страницы
+window.addEventListener('load', getFact);
 
-/* Стили */
+/* Styles */
 const style = document.createElement('style');
 style.textContent = `
     .sectionz {
@@ -580,9 +519,7 @@ style.textContent = `
     }
     #fact-text:active {
         transform: scale(0.95);
-        background-color: rgba(102, 178, 249, 0.26);
+        background-color:rgba(102, 178, 249, 0.26);
     }
 `;
 document.head.appendChild(style);
-=======
->>>>>>> parent of 34e9d9e (randomfact update)
