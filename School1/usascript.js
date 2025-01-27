@@ -220,23 +220,26 @@ let currentScheduleIndex = 0;
 // Массив с именами, которые будут отображаться вместо чисел
 const names = ['Oleg', 'Arseniy']; // Здесь можно добавить больше имён, если нужно
 
+// Чтение индекса из localStorage при загрузке страницы
+if (localStorage.getItem('currentScheduleIndex')) {
+    currentScheduleIndex = parseInt(localStorage.getItem('currentScheduleIndex'), 10);
+}
+
 document.getElementById('prevSchedule').addEventListener('click', () => {
     if (currentScheduleIndex > 0) {
         currentScheduleIndex--;
-        console.log('Prev clicked. Current index after change:', currentScheduleIndex); // Для отладки
+        localStorage.setItem('currentScheduleIndex', currentScheduleIndex); // Сохраняем индекс
         updateSchedule(); // Обновить расписание с анимацией
     } else {
-        console.log('Already at the first schedule');
     }
 });
 
 document.getElementById('nextSchedule').addEventListener('click', () => {
     if (currentScheduleIndex < schedules.length - 1) {
         currentScheduleIndex++;
-        console.log('Next clicked. Current index after change:', currentScheduleIndex); // Для отладки
+        localStorage.setItem('currentScheduleIndex', currentScheduleIndex); // Сохраняем индекс
         updateSchedule(); // Обновить расписание с анимацией
     } else {
-        console.log('Already at the last schedule');
     }
 });
 
@@ -250,11 +253,11 @@ const updateSchedule = () => {
     // Удаляем класс shake после завершения анимации (чтобы можно было повторно использовать)
     setTimeout(() => {
         lessonInfo.classList.remove('shake');
-    }, 500); // Длительность анимации (500 мс)
+    }, 300); // Длительность анимации (500 мс)
     
     // Обновляем текущее расписание
+    
     currentSchedule = schedules[currentScheduleIndex];
-    console.log('Current schedule:', currentSchedule); // Для отладки
     convertScheduleToSeconds(currentSchedule); // Переводим в секунды
     updateCurrentLessons(); // Обновляем текущие уроки
     updateScheduleDisplay(); // Обновляем отображение текущего расписания
@@ -270,7 +273,6 @@ if (localStorage.getItem('currentScheduleIndex')) {
 
 // Функция для обновления текста текущего расписания
 const updateScheduleDisplay = () => {
-    console.log('Updating display. Current index:', currentScheduleIndex); // Для отладки
     const scheduleDisplay = document.getElementById('currentScheduleDisplay');
     
     // Отображаем имя вместо числа
@@ -278,11 +280,20 @@ const updateScheduleDisplay = () => {
     scheduleDisplay.innerHTML = `${displayName}`;
 };
 
-// Инициализация и периодическое обновление
+// Сразу обновляем расписание при загрузке страницы
+updateCurrentLessons();
+updateScheduleDisplay();
+
+// Устанавливаем периодическое обновление расписания
+const updateDisplayInterval = setInterval(() => {
+    updateScheduleDisplay(); // Чтобы обновление дисплея происходило в цикле
+}, 75);
+
+// Устанавливаем периодическое обновление расписания
 const updateLessonsInterval = setInterval(() => {
     updateCurrentLessons();
     updateScheduleDisplay(); // Чтобы обновление дисплея происходило в цикле
-}, 100);
+}, 1000);
 
 window.simulateTime = simulateTime;
 
