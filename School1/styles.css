@@ -141,6 +141,8 @@ h4 {
     text-align-last: center;
     padding-bottom:  0.1rem;
     border-bottom: 4px solid #00000042;
+    
+    
 }
 .lesson-info {
         font-size: 2.8125rem;
@@ -148,6 +150,7 @@ h4 {
 }
 .lesson2 {
         color: rgb(168, 217, 247);
+        
         
 }
 .social-icon {
@@ -254,7 +257,14 @@ h4 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    min-width: 10rem;
+    min-width: 19%;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding: 0.7375rem;
+    margin-top: -1.0625rem;
+    margin-bottom: 0rem;
+    
 }
 
 .shift {
@@ -654,3 +664,68 @@ body.light-theme .theme-toggle {
     border-radius: 8px;
     transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
 }
+
+.arrow-button {
+    background: none; /* Убираем фон */
+    border: none; /* Убираем границу */
+    color: #0000006d; /* Цвет текста */
+    font-size: 4rem; /* Размер шрифта */
+    cursor: pointer; /* Изменение курсора при наведении */
+    padding: 0.1rem; /* Отступы внутри кнопки */
+    outline: none; /* Убираем контур при фокусе */
+}
+
+.arrow-button:hover {
+    color: #3997fa; /* Цвет текста при наведении */
+}
+.schedule-name {
+    text-align: center;
+    min-width: 6rem; /* Минимальная ширина имени */
+}
+/* Стили для контейнера с кнопками и именем */
+.schedule-controls {
+    display: flex;
+    margin-bottom: -2rem;
+    margin-top: -1rem;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem; /* Отступы между стрелками и именем */
+    font-size: 2rem; /* Размер шрифта для имени */
+}
+
+/* Стили для текста текущего расписания */
+.schedule-name {
+    font-size: 1.9rem;
+    min-width: 5rem;
+    max-width: 80%;
+    font-weight: bold;
+    opacity: 1; /* Начальная непрозрачность */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Плавное исчезновение и сдвиг */
+}
+
+@keyframes shake {
+    0% { 
+        transform: scale(1); 
+        opacity: 1; /* Начальная непрозрачность */
+    }
+
+    50% { 
+        transform: scale(0.95); /* Уменьшаем до 95% */
+        opacity: 0.6; /* Прозрачность еще меньше */
+    }
+
+    100% { 
+        transform: scale(1); /* Возвращаем к нормальному размеру */
+        opacity: 1; /* Возвращаем нормальную непрозрачность */
+    }
+}
+
+#lesson-info {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Класс для эффекта потряхивания */
+.shake {
+    animation: shake 0.3s ease;
+}
+
