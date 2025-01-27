@@ -8,7 +8,7 @@ function pxToRem(px) {
 
 
 
-const schedule = {
+const schedule1 = {
     1: {
         shift1: [
             {lesson: "BIOL 0002 Botany (S112)", start: "08:00", end: "10:35"},
@@ -48,7 +48,60 @@ const schedule = {
 
     }
 };
-// Получить время в часовом поясе Сакраменто
+
+const schedule2 = {
+    1: {
+        shift1: [
+            {lesson: "Period 1", start: "08:30", end: "10:00"},
+            {lesson: "Period 2", start: "10:06", end: "11:36"},
+            {lesson: "Period 3", start: "11:42", end: "13:13"},
+            {lesson: "Lunch", start: "13:13", end: "13:43"},
+            {lesson: "Period 4", start: "13:49", end: "15:20"},
+        ],
+
+    },
+    2: {
+        shift1: [
+            {lesson: "Period 1", start: "08:30", end: "10:00"},
+            {lesson: "Period 2", start: "10:06", end: "11:36"},
+            {lesson: "Period 3", start: "11:42", end: "13:13"},
+            {lesson: "Lunch", start: "13:13", end: "13:43"},
+            {lesson: "Period 4", start: "13:49", end: "15:20"},
+        ],
+
+    },
+    3: {
+        shift1: [
+            {lesson: "BIOL 0002 Botany (S112)", start: "08:00", end: "10:35"},
+            {lesson: "BIOL 0002 Botany (S112)", start: "11:00", end: "13:25"},
+            {lesson: "CHEM 0001X Problem Solving for Chem 1A (AT-2 002)", start: "14:00", end: "15:05"},
+        ],
+
+    },
+    4: {
+        shift1: [
+            {lesson: "Period 1", start: "08:30", end: "10:00"},
+            {lesson: "Period 2", start: "10:06", end: "11:36"},
+            {lesson: "Period 3", start: "11:42", end: "13:13"},
+            {lesson: "Lunch", start: "13:13", end: "13:43"},
+            {lesson: "Period 4", start: "13:49", end: "15:20"},
+        ],
+
+    },
+    5: {
+        shift1: [
+            {lesson: "Period 1", start: "08:30", end: "10:00"},
+            {lesson: "Period 2", start: "10:06", end: "11:36"},
+            {lesson: "Period 3", start: "11:42", end: "13:13"},
+            {lesson: "Lunch", start: "13:13", end: "13:43"},
+            {lesson: "Period 4", start: "13:49", end: "15:20"},
+        ],
+
+    }
+};
+
+let currentSchedule = schedule1;
+
 const getSacramentoTime = () => {
     return new Date(new Date().toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
 };
@@ -69,7 +122,7 @@ const convertScheduleToSeconds = (schedule) => {
     }
 };
 
-convertScheduleToSeconds(schedule);
+convertScheduleToSeconds(currentSchedule);
 
 let simulatedTime = null;
 
@@ -97,13 +150,25 @@ const formatTime = (seconds) => {
     return `${formattedMinutes}:${formattedSeconds}`;
 };
 
+const getCurrentShift = () => {
+    const currentTime = getCurrentTimeInSeconds();
+    const shifts = ['shift1', 'shift2']; // Предполагаем, что у вас есть две смены: shift1 и shift2
+    for (let shift of shifts) {
+        const lessons = currentSchedule[currentDay()]?.[shift] || [];
+        for (let lesson of lessons) {
+            if (currentTime >= lesson.start && currentTime < lesson.end) {
+                return shift;
+            }
+        }
+    }
+    return null;
+};
+
 const getCurrentLesson = (shift) => {
     const currentTime = getCurrentTimeInSeconds();
-    const lessons = schedule[currentDay()]?.[shift] || [];
-
+    const lessons = currentSchedule[currentDay()]?.[shift] || [];
     for (let i = 0; i < lessons.length; i++) {
         const lesson = lessons[i];
-
         if (currentTime >= lesson.start && currentTime < lesson.end) {
             const timeLeft = lesson.end - currentTime;
             return {
@@ -113,7 +178,6 @@ const getCurrentLesson = (shift) => {
                 totalTime: lesson.end - lesson.start
             };
         }
-
         if (i < lessons.length - 1 && currentTime >= lesson.end && currentTime < lessons[i + 1].start) {
             const timeLeft = lessons[i + 1].start - currentTime;
             return {
@@ -123,22 +187,12 @@ const getCurrentLesson = (shift) => {
             };
         }
     }
-
     return { lessonName: null, timeLeft: 0, isBreak: false, totalTime: 0 };
-};
-
-const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
 };
 
 const updateCurrentLessons = () => {
     const currentLessonShift1 = getCurrentLesson('shift1');
-
     const updateShift = (shiftId, currentLesson) => {
-
         if (currentLesson.lessonName) {
             if (currentLesson.isBreak) {
                 document.getElementById(`lesson${shiftId}`).innerHTML = "Cooldown";
@@ -147,7 +201,6 @@ const updateCurrentLessons = () => {
             } else {
                 document.getElementById(`lesson${shiftId}`).innerHTML = `${currentLesson.lessonName}`;
                 document.getElementById(`timeLeft${shiftId}`).innerHTML = formatTime(currentLesson.timeLeft);
-
                 const progress = ((currentLesson.totalTime - currentLesson.timeLeft) / currentLesson.totalTime) * 100;
                 document.getElementById(`progress${shiftId}`).style.display = 'inline-block';
                 document.getElementById(`progress${shiftId}`).value = progress;
@@ -158,13 +211,78 @@ const updateCurrentLessons = () => {
             document.getElementById(`progress${shiftId}`).style.display = 'none';
         }
     };
-
     updateShift("Shift1", currentLessonShift1);
 };
 
-updateCurrentLessons();
+const schedules = [schedule1, schedule2];
+let currentScheduleIndex = 0;
 
-setInterval(updateCurrentLessons, 1000);
+// Массив с именами, которые будут отображаться вместо чисел
+const names = ['Oleg', 'Arseniy']; // Здесь можно добавить больше имён, если нужно
+
+document.getElementById('prevSchedule').addEventListener('click', () => {
+    if (currentScheduleIndex > 0) {
+        currentScheduleIndex--;
+        console.log('Prev clicked. Current index after change:', currentScheduleIndex); // Для отладки
+        updateSchedule(); // Обновить расписание с анимацией
+    } else {
+        console.log('Already at the first schedule');
+    }
+});
+
+document.getElementById('nextSchedule').addEventListener('click', () => {
+    if (currentScheduleIndex < schedules.length - 1) {
+        currentScheduleIndex++;
+        console.log('Next clicked. Current index after change:', currentScheduleIndex); // Для отладки
+        updateSchedule(); // Обновить расписание с анимацией
+    } else {
+        console.log('Already at the last schedule');
+    }
+});
+
+// Функция для обновления расписания и дисплея
+const updateSchedule = () => {
+    const lessonInfo = document.getElementById('lesson-info'); // Получаем элемент для анимации
+
+    // Добавляем класс shake для эффекта потряхивания
+    lessonInfo.classList.add('shake');
+    
+    // Удаляем класс shake после завершения анимации (чтобы можно было повторно использовать)
+    setTimeout(() => {
+        lessonInfo.classList.remove('shake');
+    }, 500); // Длительность анимации (500 мс)
+    
+    // Обновляем текущее расписание
+    currentSchedule = schedules[currentScheduleIndex];
+    console.log('Current schedule:', currentSchedule); // Для отладки
+    convertScheduleToSeconds(currentSchedule); // Переводим в секунды
+    updateCurrentLessons(); // Обновляем текущие уроки
+    updateScheduleDisplay(); // Обновляем отображение текущего расписания
+    resetShift(); // Сбросить смену
+
+    // Сохраняем текущий индекс расписания в localStorage
+    localStorage.setItem('currentScheduleIndex', currentScheduleIndex);
+};
+
+if (localStorage.getItem('currentScheduleIndex')) {
+    currentScheduleIndex = parseInt(localStorage.getItem('currentScheduleIndex'));
+}
+
+// Функция для обновления текста текущего расписания
+const updateScheduleDisplay = () => {
+    console.log('Updating display. Current index:', currentScheduleIndex); // Для отладки
+    const scheduleDisplay = document.getElementById('currentScheduleDisplay');
+    
+    // Отображаем имя вместо числа
+    const displayName = names[currentScheduleIndex] || 'Неизвестный'; // На всякий случай, если индекс выходит за пределы массива
+    scheduleDisplay.innerHTML = `${displayName}`;
+};
+
+// Инициализация и периодическое обновление
+const updateLessonsInterval = setInterval(() => {
+    updateCurrentLessons();
+    updateScheduleDisplay(); // Чтобы обновление дисплея происходило в цикле
+}, 100);
 
 window.simulateTime = simulateTime;
 
