@@ -29,7 +29,6 @@ const schedule = {
             {lesson: "4-й урок", start: "16:40", end: "17:20"},
             {lesson: "5-й урок", start: "17:30", end: "18:10"},
             {lesson: "6-й урок", start: "18:20", end: "19:00"},
-            {lesson: "ДЕБАГ", start: "00:00", end: "24:00"}
         ]
     },
     2: {
@@ -324,8 +323,11 @@ const logCurrentDay = () => {
 window.logCurrentDay = logCurrentDay;
 
 AOS.init({
-    duration: 200,
-    once: true
+    duration: 200,          // Продолжительность анимации
+    once: false,            // Анимация будет повторяться каждый раз при видимости элемента
+    startEvent: 'load',     // Запуск анимации после загрузки страницы
+    offset: 0,              // Анимация начинается сразу, как только элемент попадает в область видимости
+    delay: 0,               // Задержка до начала анимации
 });
 
 document.addEventListener("DOMContentLoaded", () => {
