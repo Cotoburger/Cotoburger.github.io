@@ -283,7 +283,9 @@ const updateSchedule = () => {
     setTimeout(() => {
         lessonInfo.classList.remove('shake');
     }, 300); // Длительность анимации (500 мс)
-    
+    if (navigator.vibrate) {
+        navigator.vibrate([5]);
+    }
     // Обновляем текущее расписание
     
     currentSchedule = schedules[currentScheduleIndex];
@@ -650,3 +652,39 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+document.addEventListener("DOMContentLoaded", () => {
+    const menuIcon = document.getElementById("menuIcon");
+    const toolsPanel = document.getElementById("toolsPanel");
+    const links = toolsPanel.querySelectorAll('a');
+
+    menuIcon.addEventListener("mousedown", (event) => {
+        event.stopPropagation();
+        toolsPanel.classList.toggle("active");
+
+        if (navigator.vibrate) {
+            navigator.vibrate([5]);
+        }
+    });
+
+    links.forEach(link => {
+        link.addEventListener("click", (event) => {
+            if (navigator.vibrate) {
+                navigator.vibrate(5);
+            }
+        });
+    });
+
+    document.addEventListener("mousedown", (event) => {
+        if (!toolsPanel.contains(event.target) && !menuIcon.contains(event.target)) {
+            toolsPanel.classList.remove("active");
+        }
+    });
+    
+    const themeToggle = document.getElementById("themeToggle");
+    themeToggle.addEventListener("click", () => {
+        if (navigator.vibrate) {
+            navigator.vibrate(5);
+        }
+    });
+});
