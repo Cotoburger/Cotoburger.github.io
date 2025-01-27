@@ -158,11 +158,15 @@ const currentDay = () => {
 };
 
 const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-    const formattedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`;
-    return `${formattedMinutes}:${formattedSeconds}`;
+    const hours = Math.floor(seconds / 3600); // Получаем количество часов
+    const minutes = Math.floor((seconds % 3600) / 60); // Получаем количество минут
+    const remainingSeconds = seconds % 60; // Получаем оставшиеся секунды
+
+    const formattedHours = hours > 0 ? `${hours}:` : ''; // Форматируем часы, если их есть
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`; // Форматируем минуты
+    const formattedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`; // Форматируем секунды
+
+    return `${formattedHours}${formattedMinutes}:${formattedSeconds}`;
 };
 
 const getCurrentShift = () => {
@@ -284,8 +288,8 @@ const updateSchedule = () => {
         lessonInfo.classList.remove('shake');
     }, 300); // Длительность анимации (500 мс)
     if (navigator.vibrate) {
-        navigator.vibrate([5]);
-    }
+            navigator.vibrate([5]);
+        }
     // Обновляем текущее расписание
     
     currentSchedule = schedules[currentScheduleIndex];
@@ -652,39 +656,3 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-
-document.addEventListener("DOMContentLoaded", () => {
-    const menuIcon = document.getElementById("menuIcon");
-    const toolsPanel = document.getElementById("toolsPanel");
-    const links = toolsPanel.querySelectorAll('a');
-
-    menuIcon.addEventListener("mousedown", (event) => {
-        event.stopPropagation();
-        toolsPanel.classList.toggle("active");
-
-        if (navigator.vibrate) {
-            navigator.vibrate([5]);
-        }
-    });
-
-    links.forEach(link => {
-        link.addEventListener("click", (event) => {
-            if (navigator.vibrate) {
-                navigator.vibrate(5);
-            }
-        });
-    });
-
-    document.addEventListener("mousedown", (event) => {
-        if (!toolsPanel.contains(event.target) && !menuIcon.contains(event.target)) {
-            toolsPanel.classList.remove("active");
-        }
-    });
-    
-    const themeToggle = document.getElementById("themeToggle");
-    themeToggle.addEventListener("click", () => {
-        if (navigator.vibrate) {
-            navigator.vibrate(5);
-        }
-    });
-});
