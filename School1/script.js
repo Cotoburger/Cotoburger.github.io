@@ -120,6 +120,11 @@ const schedule = {
 };
 
 
+// Получить время в часовом поясе Сакраменто
+const getSacramentoTime = () => {
+    return new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kamchatka" }));
+};
+
 const timeToSeconds = (time) => {
     const [hours, minutes] = time.split(":").map(Number);
     return hours * 3600 + minutes * 60;
@@ -142,27 +147,18 @@ let simulatedTime = null;
 
 const simulateTime = (day, time) => {
     const [hours, minutes] = time.split(":").map(Number);
-    simulatedTime = new Date();
+    simulatedTime = getSacramentoTime();
     simulatedTime.setHours(hours, minutes, 0, 0);
     simulatedTime.setDate(simulatedTime.getDate() - simulatedTime.getDay() + day);
 };
 
 const getCurrentTimeInSeconds = () => {
-    const now = simulatedTime || new Date();
-
-    // Коррекция времени на Камчатский часовой пояс (UTC+12)
-    const kamchatkaOffset = 12 * 60 * 60; // В секундах
-    const utcTime = now.getUTCHours() * 3600 + now.getUTCMinutes() * 60 + now.getUTCSeconds();
-
-    return (utcTime + kamchatkaOffset) % (24 * 3600);
+    const now = simulatedTime || getSacramentoTime();
+    return now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
 };
 
 const currentDay = () => {
-    const now = simulatedTime || new Date();
-
-    // Возвращаем день недели с учетом Камчатского времени
-    const kamchatkaDate = new Date(now.getTime() + 12 * 60 * 60 * 1000);
-    return kamchatkaDate.getUTCDay();
+    return simulatedTime ? simulatedTime.getDay() : getSacramentoTime().getDay();
 };
 
 const formatTime = (seconds) => {
@@ -214,7 +210,7 @@ const formatDate = (date) => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return `${year}-${month}-${day}`; // Используем обратные кавычки для шаблонной строки
 };
 
 // Функция для получения разницы в днях между двумя датами
@@ -248,7 +244,7 @@ const updateCurrentLessons = () => {
     const isHolidayPeriod = isHoliday(); // Проверяем, каникулы ли сейчас
 
     const updateShift = (shiftId, currentLesson) => {
-        document.getElementById(`currentLesson${shiftId}`).innerHTML = shiftId === "Shift1" ? `Первая смена` : `Вторая смена`;
+        document.getElementById(`currentLesson${shiftId}`).innerHTML = shiftId === "Shift1" ? "Первая смена" : "Вторая смена";
 
         if (isHolidayPeriod) {
             const holiday = holidays.find(h => formatDate(new Date()) >= h.start && formatDate(new Date()) <= h.end);
@@ -258,8 +254,8 @@ const updateCurrentLessons = () => {
             const daysPassed = Math.ceil((new Date() - start) / (1000 * 3600 * 24));
             const daysLeft = totalDays - daysPassed;
 
-            document.getElementById(`lesson${shiftId}`).innerHTML = `Каникулы `;
-            document.getElementById(`timeLeft${shiftId}`).innerHTML = `осталось ~${daysLeft} ${getDaysLabel(daysLeft)}`;
+            document.getElementById(`lesson${shiftId}`).innerHTML = "Каникулы";
+            document.getElementById(`timeLeft${shiftId}`).innerHTML = `Осталось ~${daysLeft} ${getDaysLabel(daysLeft)}`;
 
             const progress = (daysPassed / totalDays) * 100;
             document.getElementById(`progress${shiftId}`).style.display = 'inline-block';
@@ -314,13 +310,14 @@ const debug = () => {
 window.debug = debug;
 
 const logCurrentTime = () => {
-    const now = simulatedTime || new Date();
+    const now = simulatedTime || getSacramentoTime();
     console.log(`Current time is: ${now.toLocaleTimeString()}`);
 };
 
 window.logCurrentTime = logCurrentTime;
+
 const logCurrentDay = () => {
-    const now = simulatedTime || new Date();
+    const now = simulatedTime || getSacramentoTime();
     console.log(`Current day is: ${now.getDay()}`);
 };
 
