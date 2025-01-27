@@ -30,14 +30,15 @@ body {
 }
 
 .tile {
-    color: #b0b4b5;
-    background-color: rgba(1, 1, 1, 0.313);
+    color: #c0cacd;
+    background-color: rgba(2, 5, 7, 0.425);
     align-self: center;
+    height: 100%;
     min-width: 10%;
-    margin: 1rem;
+    margin-top: 1rem;
     padding: 1rem;
+    font-size: 1.4rem;
     border-radius: 1.175rem;
-    padding-bottom: 10px;
     border-bottom: 4px solid #00000042;
 }
 .time-progress {
@@ -136,11 +137,12 @@ h4 {
     text-align-last: center;
 }
 .currenles {
-    color:rgb(15, 140, 186);
+    color: rgb(176, 196, 217);
+    font-weight: 700;
     font-size: 1.7625rem;
     text-align-last: center;
-
-    border-bottom: 4px solid #00000042;
+    margin-bottom: 0.6rem;
+    border-bottom: 0.3rem solid #00000042;
     
     
 }
@@ -222,12 +224,14 @@ h4 {
     font-size: 1.75rem;
     border-bottom: 4px solid #00000019;
     color: rgb(83, 103, 130);
+    margin-bottom: 0.5rem;
 }
 #currentLessonShift2 {
 
     font-size: 1.75rem;
     border-bottom: 4px solid #00000019;
     color: rgb(83, 103, 130);
+    margin-bottom: 0.5rem;
 }
 
 #schedule h2 {
@@ -254,7 +258,7 @@ h4 {
 .shift-title {
     background-color: #4CAF50;
     color: white;
-    padding: 10px;
+    padding: 0.7rem;
     border-radius: 5px;
     width: 100%;
     text-align: center;
@@ -262,7 +266,7 @@ h4 {
 }
 
 .shift-lesson {
-    font-size: 18px;
+    font-size: 1rem;
     text-align: left;
     width: 100%;
     margin-top: 5px;
@@ -617,7 +621,10 @@ body.light-theme .theme-toggle {
     backdrop-filter: blur(0.35rem);
 }
 
-
+/* Стили для текста текущего расписания */
+[data-theme="light"] .schedule-name {
+    color: #000000;
+}
 .fact-content {
     color: rgb(128, 190, 255);
     background-color: rgba(12, 12, 12, 0.587);
@@ -631,6 +638,9 @@ body.light-theme .theme-toggle {
     transform: translateY(1.175rem);
     padding-bottom: 10px;
     border-bottom: 0.25rem solid #00000042;
+}
+.aboutinfo {
+    font-size: 1rem;
 }
 #fact-text {
     cursor: pointer;
@@ -657,6 +667,7 @@ body.light-theme .theme-toggle {
 .schedule-name {
     text-align: center;
     min-width: 6rem; /* Минимальная ширина имени */
+    color: rgb(176, 196, 217);
 }
 /* Стили для контейнера с кнопками и именем */
 .schedule-controls {
@@ -708,5 +719,10 @@ body.light-theme .theme-toggle {
     opacity: 0.45;
     transform: scale(0.90);
     pointer-events: none; /* Запрещает взаимодействие */
+}
+
+#about-info {
+   margin: -1rem;     
+   color: #000000;
 }
 
