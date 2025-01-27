@@ -34,8 +34,8 @@ body {
     background-color: rgba(1, 1, 1, 0.313);
     align-self: center;
     min-width: 10%;
-    margin: 10px;
-    padding: 15px;
+    margin: 1rem;
+    padding: 1rem;
     border-radius: 1.175rem;
     padding-bottom: 10px;
     border-bottom: 4px solid #00000042;
@@ -77,10 +77,9 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 0.5rem;
-    margin-left: 0.25rem;
+    margin: 1.3rem;
     flex-wrap: wrap;
-    padding: 0.6375rem;
+
     
 }
 
@@ -88,7 +87,7 @@ header {
     flex: 1;
     min-width: 1rem;
     background-color: rgba(44, 100, 143, 0.226);
-    padding: 1rem;
+
     border-radius: 1.875rem;
     color: rgba(139, 191, 254, 0.614);
     text-align-last: left;
@@ -106,12 +105,13 @@ header {
     flex: 1;
     width: 100%;
     background-color: rgba(43, 144, 220, 0.226);
-    padding: 1rem;
+
     border-radius: 1.875rem;
     color: rgb(187, 187, 187);
     text-align: left;
     backdrop-filter: blur(1rem);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    padding: 1rem;
 }
 
 nav a:hover,
@@ -139,7 +139,7 @@ h4 {
     color:rgb(15, 140, 186);
     font-size: 1.7625rem;
     text-align-last: center;
-    padding-bottom:  0.1rem;
+
     border-bottom: 4px solid #00000042;
     
     
@@ -165,11 +165,8 @@ h4 {
 
 .section {
     background-color: rgba(99, 100, 100, 0.215);
-    padding: 0.4375rem;
-    margin: 1.5625rem;
     border-radius: 1.875rem;
     box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.1);
-    transform: translateY(1.875rem);
 }
 
 .lol {
@@ -180,25 +177,17 @@ h4 {
 
 .sectionles {
     background-color: rgba(12, 12, 12, 0.587);
-    min-width: 14rem;
-    min-width: 95%;
+    min-width: 100%;
     padding: 0.7375rem;
-    margin-top: -1.0625rem;
-    margin-bottom: 0.5625rem;
     border-radius: 1.175rem;
-    transform: translateY(1.175rem);
-    padding-bottom: 10px;
     border-bottom: 0.25rem solid #00000042;
 }
 .sectionles2 {
     background-color: rgba(12, 12, 12, 0.587);
     min-width: 14rem;
-    min-width: 95%;
+    min-width: 100%;
     padding: 0.7375rem;
-    margin-top: -1.0625rem;
-    margin-bottom: 1.6625rem;
     border-radius: 1.175rem;
-    transform: translateY(1.175rem);
     padding-bottom: 10px;
     border-bottom: 0.25rem solid #00000042;
 }
@@ -210,13 +199,9 @@ h4 {
 
 .sectionz {
     background-color: rgba(99, 100, 100, 0.215);
-    padding: 0.4375rem;
     align-items: center;
-    margin-right: 0.9125rem;
-    margin-left: 0.5125rem;
     border-radius: 1.875rem;
     box-shadow: 0 0 0.625rem rgba(243, 0, 0, 0.1);
-
     width: 100%;
     max-width: 100%;
     height: auto;
@@ -234,16 +219,13 @@ h4 {
     }
 }
 #currentLessonShift1 {
-    margin-bottom: 0.3rem;
     font-size: 1.75rem;
-    padding-bottom: 0px;
     border-bottom: 4px solid #00000019;
     color: rgb(83, 103, 130);
 }
 #currentLessonShift2 {
-    margin-bottom: 0.3rem;
+
     font-size: 1.75rem;
-    padding-bottom: 0px;
     border-bottom: 4px solid #00000019;
     color: rgb(83, 103, 130);
 }
@@ -257,13 +239,8 @@ h4 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 10rem;
-    min-width: 19%;
-    margin-left: -1.5rem;
-    margin-right: -1.5rem;
-    padding: 0.7375rem;
-    margin-top: -1.0625rem;
-    margin-bottom: 0rem;
+    border-radius: 1.175rem;
+
     
 }
 
@@ -438,7 +415,7 @@ h4 {
     height: 5rem;
     align-items: center;
     justify-content: space-between;
-    padding: 1px 20px;
+    padding: 1.3rem;
     background-color: rgba(34, 77, 118, 0.822);
     border-bottom: 2px solid #00000023;
     backdrop-filter: blur(10px);
@@ -486,7 +463,6 @@ h4 {
     right: 15px;
     transition: right 0.15s ease, opacity 0.15s ease, visibility 0s ease 0s;
 }
-
 .tools-panel.active + .menu-icon {
     display: none;
 }
@@ -685,19 +661,18 @@ body.light-theme .theme-toggle {
 /* Стили для контейнера с кнопками и именем */
 .schedule-controls {
     display: flex;
-    margin-bottom: -2rem;
+    margin-bottom: -1rem;
     margin-top: -1rem;
     align-items: center;
     justify-content: center;
-    gap: 1rem; /* Отступы между стрелками и именем */
     font-size: 2rem; /* Размер шрифта для имени */
 }
 
 /* Стили для текста текущего расписания */
 .schedule-name {
     font-size: 1.9rem;
-    min-width: 5rem;
-    max-width: 80%;
+    min-width: 8rem;
+    max-width: 100%;
     font-weight: bold;
     opacity: 1; /* Начальная непрозрачность */
     transition: opacity 0.5s ease, transform 0.5s ease; /* Плавное исчезновение и сдвиг */
@@ -727,5 +702,11 @@ body.light-theme .theme-toggle {
 /* Класс для эффекта потряхивания */
 .shake {
     animation: shake 0.3s ease;
+}
+
+.arrow-disabled {
+    opacity: 0.45;
+    transform: scale(0.90);
+    pointer-events: none; /* Запрещает взаимодействие */
 }
 
