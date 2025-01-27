@@ -29,6 +29,7 @@ const schedule = {
             {lesson: "4-й урок", start: "16:40", end: "17:20"},
             {lesson: "5-й урок", start: "17:30", end: "18:10"},
             {lesson: "6-й урок", start: "18:20", end: "19:00"},
+            {lesson: "ДЕБАГ", start: "00:00", end: "24:00"}
         ]
     },
     2: {
@@ -117,6 +118,8 @@ const schedule = {
         ]
     }
 };
+
+
 const timeToSeconds = (time) => {
     const [hours, minutes] = time.split(":").map(Number);
     return hours * 3600 + minutes * 60;
@@ -146,11 +149,20 @@ const simulateTime = (day, time) => {
 
 const getCurrentTimeInSeconds = () => {
     const now = simulatedTime || new Date();
-    return now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+
+    // Коррекция времени на Камчатский часовой пояс (UTC+12)
+    const kamchatkaOffset = 12 * 60 * 60; // В секундах
+    const utcTime = now.getUTCHours() * 3600 + now.getUTCMinutes() * 60 + now.getUTCSeconds();
+
+    return (utcTime + kamchatkaOffset) % (24 * 3600);
 };
 
 const currentDay = () => {
-    return simulatedTime ? simulatedTime.getDay() : new Date().getDay();
+    const now = simulatedTime || new Date();
+
+    // Возвращаем день недели с учетом Камчатского времени
+    const kamchatkaDate = new Date(now.getTime() + 12 * 60 * 60 * 1000);
+    return kamchatkaDate.getUTCDay();
 };
 
 const formatTime = (seconds) => {
@@ -294,7 +306,6 @@ const sim = (input) => {
 
 window.sim = sim;
 
-
 const debug = () => {
     simulateTime(1, "12:50");
     console.log("Debug time set to day 1 at 12:50");
@@ -318,8 +329,7 @@ window.logCurrentDay = logCurrentDay;
 AOS.init({
     duration: 200,
     once: true
-    
-}); 
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     const menuIcon = document.getElementById("menuIcon");
