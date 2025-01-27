@@ -107,19 +107,34 @@ const getSacramentoTime = () => {
 };
 
 const timeToSeconds = (time) => {
-    const [hours, minutes] = time.split(":").map(Number);
-    return hours * 3600 + minutes * 60;
-};
+    if (typeof time === "number") {
+        // Если это уже число (секунды), возвращаем как есть
+        return time;
+    }
 
+    if (typeof time === "string") {
+        const [hours, minutes] = time.split(":").map(Number);
+        return hours * 3600 + minutes * 60;
+    }
+
+    console.error("timeToSeconds: Некорректный формат времени:", time);
+    return 0; // Значение по умолчанию при ошибке
+};
 const convertScheduleToSeconds = (schedule) => {
-    for (let day in schedule) {
-        for (let shift in schedule[day]) {
-            schedule[day][shift].forEach(lesson => {
+    if (typeof schedule !== "object" || schedule === null) {
+        console.error("convertScheduleToSeconds: Ожидается объект расписания, но получено:", schedule);
+        return;
+    }
+
+    // Перебираем дни недели в расписании
+    Object.entries(schedule).forEach(([day, shifts]) => {
+        Object.keys(shifts).forEach((shift) => {
+            shifts[shift].forEach((lesson, lessonIndex) => {
                 lesson.start = timeToSeconds(lesson.start);
                 lesson.end = timeToSeconds(lesson.end);
             });
-        }
-    }
+        });
+    });
 };
 
 convertScheduleToSeconds(currentSchedule);
@@ -219,27 +234,41 @@ let currentScheduleIndex = 0;
 
 // Массив с именами, которые будут отображаться вместо чисел
 const names = ['Oleg', 'Arseniy']; // Здесь можно добавить больше имён, если нужно
+const prevButton = document.getElementById('prevSchedule');
+const nextButton = document.getElementById('nextSchedule');
 
-// Чтение индекса из localStorage при загрузке страницы
-if (localStorage.getItem('currentScheduleIndex')) {
-    currentScheduleIndex = parseInt(localStorage.getItem('currentScheduleIndex'), 10);
-}
 
-document.getElementById('prevSchedule').addEventListener('click', () => {
+const updateButtonsState = () => {
+    // Если на первом расписании, делаем кнопку "назад" полупрозрачной
+    if (currentScheduleIndex === 0) {
+        prevButton.classList.add('arrow-disabled');
+    } else {
+        prevButton.classList.remove('arrow-disabled');
+    }
+
+    // Если на последнем расписании, делаем кнопку "вперед" полупрозрачной
+    if (currentScheduleIndex === schedules.length - 1) {
+        nextButton.classList.add('arrow-disabled');
+    } else {
+        nextButton.classList.remove('arrow-disabled');
+    }
+};
+
+prevButton.addEventListener('click', () => {
     if (currentScheduleIndex > 0) {
         currentScheduleIndex--;
         localStorage.setItem('currentScheduleIndex', currentScheduleIndex); // Сохраняем индекс
         updateSchedule(); // Обновить расписание с анимацией
-    } else {
+        updateButtonsState(); // Обновить состояние кнопок
     }
 });
 
-document.getElementById('nextSchedule').addEventListener('click', () => {
+nextButton.addEventListener('click', () => {
     if (currentScheduleIndex < schedules.length - 1) {
         currentScheduleIndex++;
         localStorage.setItem('currentScheduleIndex', currentScheduleIndex); // Сохраняем индекс
         updateSchedule(); // Обновить расписание с анимацией
-    } else {
+        updateButtonsState(); // Обновить состояние кнопок
     }
 });
 
@@ -268,7 +297,11 @@ const updateSchedule = () => {
 };
 
 if (localStorage.getItem('currentScheduleIndex')) {
-    currentScheduleIndex = parseInt(localStorage.getItem('currentScheduleIndex'));
+    currentScheduleIndex = parseInt(localStorage.getItem('currentScheduleIndex'), 10);
+    currentSchedule = schedules[currentScheduleIndex];
+    convertScheduleToSeconds(currentSchedule); // Переводим в секунды
+    updateCurrentLessons(); // Обновляем текущие уроки
+
 }
 
 // Функция для обновления текста текущего расписания
@@ -283,16 +316,20 @@ const updateScheduleDisplay = () => {
 // Сразу обновляем расписание при загрузке страницы
 updateCurrentLessons();
 updateScheduleDisplay();
+// Инициализация состояния кнопок при загрузке страницы
+updateButtonsState();
 
 // Устанавливаем периодическое обновление расписания
 const updateDisplayInterval = setInterval(() => {
     updateScheduleDisplay(); // Чтобы обновление дисплея происходило в цикле
+    // Инициализация состояния кнопок при загрузке страницы
+updateButtonsState();
 }, 75);
 
 // Устанавливаем периодическое обновление расписания
 const updateLessonsInterval = setInterval(() => {
+    //console.log('Current schedule:', currentScheduleIndex); // Для отладки
     updateCurrentLessons();
-    updateScheduleDisplay(); // Чтобы обновление дисплея происходило в цикле
 }, 1000);
 
 window.simulateTime = simulateTime;
