@@ -16,6 +16,7 @@ const filesToCache = [
     "images/sun.svg",
     "images/moon.svg",
     "usascript.js",
+    "accelerometer.js",
 ];
 
 self.addEventListener('install', (event) => {

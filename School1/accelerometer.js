@@ -49,11 +49,11 @@ function showPopup() {
     popup.style.opacity = '1'; // Делаем окно полностью видимым
 
     // Добавляем класс с анимацией
-    popup.classList.add('shake');
+    popup.classList.add('shake2');
 
     // Убираем класс анимации после завершения
     setTimeout(() => {
-        popup.classList.remove('shake');
+        popup.classList.remove('shake2');
     }, 500); // Длительность анимации
 
     // Плавно скрываем окно

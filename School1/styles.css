@@ -778,7 +778,7 @@ body.light-theme .theme-toggle {
     font-size: 18px;
     opacity: 0; /* Изначально окно полностью прозрачно */
 }
-@keyframes shake {
+@keyframes shake2 {
     0% { transform: translate(-35%, -50%) translateX(0) rotate(0deg); opacity: 0; }
     25% { transform: translate(-35%, -50%) translateX(-1rem) rotate(-5deg); opacity: 1; }
     50% { transform: translate(-35%, -50%) translateX(-2rem) rotate(3deg); opacity: 1; }
@@ -786,8 +786,8 @@ body.light-theme .theme-toggle {
     100% { transform: translate(-35%, -50%) translateX(0) rotate(0deg); opacity: 1; }
 }
 /* Класс для применения анимации */
-.shake {
-    animation: shake 0.5s ;
+.shake2 {
+    animation: shake2 0.5s ;
 }
 
 /* Стиль для кнопки */
@@ -812,7 +812,6 @@ body.light-theme .theme-toggle {
 
 .picture {
     width: 100%;
-    max-width: 16rem;
     height: 100%;
     object-fit: cover;
     border-radius: 0.3rem;
