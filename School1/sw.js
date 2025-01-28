@@ -1,4 +1,5 @@
 const cacheName = 'Cache';
+
 const filesToCache = [
     'DebugInfo.txt',
     "arabic.html",
@@ -18,20 +19,29 @@ const filesToCache = [
 ];
 
 self.addEventListener('install', (event) => {
+    console.log('[ServiceWorker] Install Event');
     event.waitUntil(
         caches.open(cacheName).then((cache) => {
-            return cache.addAll(filesToCache);
+            return cache.addAll(filesToCache)
+                .then(() => {
+                    console.log('[ServiceWorker] Cached all files successfully');
+                })
+                .catch((error) => {
+                    console.error('[ServiceWorker] Failed to cache files:', error);
+                });
         })
     );
     self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
+    console.log('[ServiceWorker] Activate Event');
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((oldCacheName) => {
                     if (oldCacheName !== cacheName) {
+                        console.log('[ServiceWorker] Deleting old cache:', oldCacheName);
                         return caches.delete(oldCacheName);
                     }
                 })
@@ -43,18 +53,42 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        fetch(event.request).then((networkResponse) => {
-            // Проверяем, что запрос успешен
-            if (networkResponse && networkResponse.ok) {
-                const clonedResponse = networkResponse.clone();
-                caches.open(cacheName).then((cache) => {
-                    cache.put(event.request, clonedResponse);  // Обновляем кэш
-                });
+        caches.match(event.request).then((cachedResponse) => {
+            if (cachedResponse) {
+                console.log('[ServiceWorker] Serving from cache:', event.request.url);
+                // Запускаем фоновый запрос для обновления кеша
+                fetchAndUpdateCache(event.request);
+                return cachedResponse;
             }
-            return networkResponse;
-        }).catch(() => {
-            // Если сеть недоступна, возвращаем кэшированные данные
-            return caches.match(event.request);
+
+            // Если нет кэшированного ответа, делаем сетевой запрос
+            return fetch(event.request).then((networkResponse) => {
+                if (networkResponse && networkResponse.ok) {
+                    const clonedResponse = networkResponse.clone();
+                    caches.open(cacheName).then((cache) => {
+                        cache.put(event.request, clonedResponse);
+                        console.log('[ServiceWorker] Cached new response for:', event.request.url);
+                    });
+                }
+                return networkResponse;
+            }).catch((error) => {
+                console.error('[ServiceWorker] Fetch failed:', error);
+                return Response.error();
+            });
         })
     );
 });
+
+function fetchAndUpdateCache(request) {
+    fetch(request).then((response) => {
+        if (response && response.ok) {
+            const clonedResponse = response.clone();
+            caches.open(cacheName).then((cache) => {
+                cache.put(request, clonedResponse);
+                console.log('[ServiceWorker] Updated cache for:', request.url);
+            });
+        }
+    }).catch((error) => {
+        console.error('[ServiceWorker] Failed to update cache:', error);
+    });
+}
