@@ -615,23 +615,26 @@ function handleDeviceMotion(event) {
 
         x = acceleration.x;
         y = acceleration.y;
-        z = acceleration.z;
+        // Игнорируем вертикальное ускорение (ось Z)
+        // z = acceleration.z; 
 
         const deltaX = Math.abs(x - lastX);
         const deltaY = Math.abs(y - lastY);
-        const deltaZ = Math.abs(z - lastZ);
+        // Вертикальная скорость (z) не учитывается
+        // const deltaZ = Math.abs(z - lastZ);
 
-        if (deltaX < 0.2 && deltaY < 0.2 && deltaZ < 0.2) {
+        if (deltaX < 0.2 && deltaY < 0.2) {
             // Игнорируем малые изменения
             return;
         }
 
-        const speed = Math.abs(x + y + z - lastX - lastY - lastZ) / timeDifference;
+        // Рассчитываем скорость только по осям X и Y
+        const speed = (Math.abs(x - lastX) + Math.abs(y - lastY)) / timeDifference;
 
         // Обновляем отображение скорости
         document.getElementById('speedDisplay').textContent = speed.toFixed(2);
 
-        if (speed > 600 && (currentTime - lastVibration) > vibrationDelay) { 
+        if (speed > 700 && (currentTime - lastVibration) > vibrationDelay) { 
             // Увеличенный порог чувствительности + задержка
             vibratePhone();
             lastVibration = currentTime; // Обновляем время последней вибрации
@@ -640,7 +643,7 @@ function handleDeviceMotion(event) {
 
         lastX = x;
         lastY = y;
-        lastZ = z;
+        // lastZ = z;  // Не обновляем Z
     }
 }
 
