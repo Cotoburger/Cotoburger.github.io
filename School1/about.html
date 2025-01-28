@@ -10,6 +10,7 @@
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Schedule">
+    <meta http-equiv="Permissions-Policy" content="accelerometer=(self)">
     <meta name="twitter:description" content="Расписание звонков в МАОУ Средняя школа №1">
     <meta name="twitter:image" content="https://cotoburger.github.io/School1//images/icon.png">
     <meta name="twitter:url" content="https://cotoburger.github.io/School1/">
@@ -62,18 +63,6 @@
             <div></div>
         </div>
     </div>
-    
-    <div class="container-flex">
-        <section id="schedule" class="sectionz" data-aos="zoom-in">
-            <label for="vibrationToggle">Enable Vibration</label>
-            <input type="checkbox" id="vibrationToggle" onclick="toggleVibration()">
-        </section>
-    </div>
-    <div class="container-flex">
-        <section id="schedule" class="sectionz" data-aos="zoom-in">
-            <button id="shakeButton">shake emu</button>
-        </section>
-    </div>
 
     <div class="container-flex">
         <section id="schedule" class="sectionz" data-aos="zoom-in">
@@ -81,6 +70,9 @@
                 <div id="aboutinfo" class="aboutinfo">
         </section>
     </div>
+    <div class="container-flex">
+        <button id="shakeButton">shake emu</button>
+</div>
     <script>
         fetch('DebugInfo.txt')
         .then(response => {
