@@ -778,29 +778,30 @@ body.light-theme .theme-toggle {
     font-size: 18px;
     opacity: 0; /* Изначально окно полностью прозрачно */
 }
-/* Анимация тряски */
 @keyframes shake {
-    0% { transform: translate(-50%, -50%) translateX(0); opacity: 0; }
-    50% { transform: translate(-50%, -50%) translateX(-10px); opacity: 1; }
-    75% { transform: translate(-50%, -50%) translateX(10px); opacity: 1; }
-    100% { transform: translate(-50%, -50%) translateX(0); opacity: 1; }
+    0% { transform: translate(-35%, -50%) translateX(0) rotate(0deg); opacity: 0; }
+    25% { transform: translate(-35%, -50%) translateX(-1rem) rotate(-5deg); opacity: 1; }
+    50% { transform: translate(-35%, -50%) translateX(-2rem) rotate(3deg); opacity: 1; }
+    75% { transform: translate(-35%, -50%) translateX(2rem) rotate(-3deg); opacity: 1; }
+    100% { transform: translate(-35%, -50%) translateX(0) rotate(0deg); opacity: 1; }
 }
-
 /* Класс для применения анимации */
 .shake {
-    animation: shake 0.5s ease-in-out;
+    animation: shake 0.5s ;
 }
 
 /* Стиль для кнопки */
 #shakeButton {
-    width: 4rem;
-    justify-self: right;
-    align-self: right;
+    width: 20rem;
+    height: 3rem;
+    justify-self: center;
+    align-self: center;
     margin-left: 1rem;
+    margin-right: 1rem;
     background-color: #3c8ee466;
     color: rgba(109, 192, 255, 0.546);
     border: none;
-    border-radius: 5px;
+    border-radius: 2rem;
     font-size: 16px;
     cursor: pointer;
 }
