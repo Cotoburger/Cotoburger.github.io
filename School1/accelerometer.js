@@ -45,15 +45,22 @@ let lastUpdate = 0;
             const popup = document.getElementById('vibrationPopup');
             popup.style.display = 'block';
 
+            // Добавляем класс с анимацией
+            popup.classList.add('shake')
+
+            // Убираем класс анимации после завершения
             setTimeout(() => {
-                popup.style.display = 'none'; // Скрываем окно через 2 секунды
+                popup.classList.remove('shake');
+            }, 500);  // Длительность анимации
+
+            setTimeout(() => {
+                popup.style.display = 'none'; // Скрываем окно через 3 секунды
             }, 3000);
         }
 
+
         window.addEventListener('devicemotion', handleDeviceMotion);
 
-// Проверка, поддерживает ли браузер вибрацию
-checkVibrationSupport();
 
 
 
