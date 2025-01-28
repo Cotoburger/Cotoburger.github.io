@@ -626,7 +626,7 @@ function handleDeviceMotion(event) {
 
         const speed = Math.abs(x + y + z - lastX - lastY - lastZ) / timeDifference;
 
-        if (speed > 20) { // Увеличенный порог чувствительности
+        if (speed > 25) { // Увеличенный порог чувствительности
             vibratePhone();
             console.log('Device shaken! Vibrating...');
         }
