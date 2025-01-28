@@ -1,19 +1,3 @@
-const images = document.querySelectorAll('img');
-const avatar = document.querySelector('.avatar');
-const socialIcons = document.querySelectorAll('.social-icon');
-
-
-function pxToRem(px) {
-    return px / 16 + 'rem';
-}
-
-
-AOS.init({
-    duration: 200,
-    once: true
-    
-}); 
-
 document.addEventListener("DOMContentLoaded", () => {
     const menuIcon = document.getElementById("menuIcon");
     const toolsPanel = document.getElementById("toolsPanel");
@@ -44,52 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const themeToggle = document.getElementById("themeToggle");
     themeToggle.addEventListener("click", () => {
-
         if (navigator.vibrate) {
             navigator.vibrate(5);
         }
     });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    const snowflakesContainer = document.getElementById("snowflakes");
-    const maxSnowflakes = 45;
-
-    function createSnowflake() {
-        if (snowflakesContainer.children.length >= maxSnowflakes) {
-            return;
-        }
-
-        const snowflake = document.createElement("div");
-        snowflake.classList.add("snowflake");
-
-        const size = Math.random() * 19 + 5;
-        const leftPosition = Math.random() * 96;
-        const animationDuration = Math.random() * 15 + 5;
-
-        snowflake.style.width = `${size}px`;
-        snowflake.style.height = `${size}px`;
-        snowflake.style.left = `${leftPosition}%`;
-        snowflake.style.animationDuration = `${animationDuration}s`;
-
-        const rotation = Math.random() * 360;
-        snowflake.style.transform = `rotate(${rotation}deg)`;
-
-        snowflakesContainer.appendChild(snowflake);
-
-        snowflake.addEventListener('animationend', () => {
-            snowflake.remove();
-        });
-    }
-
-    function snowflakesLoop() {
-        createSnowflake();
-        setTimeout(() => {
-            requestAnimationFrame(snowflakesLoop);
-        }, 300);
-    }
-
-    snowflakesLoop();
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -137,21 +79,3 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 200);
     });
 });
-
-// Функция для имитации тряски
-function simulateShake() {
-    const event = {
-        accelerationIncludingGravity: {
-            x: Math.random() * 500 - 1, // случайное значение для имитации
-            y: Math.random() * 500 - 1,
-            z: 0 // z оставим как 0
-        }
-    };
-
-    handleDeviceMotion(event); // Вызываем обработчик как при реальной тряске
-}
-
-        // Привязываем функцию имитации тряски к кнопке
-        document.getElementById('shakeButton').addEventListener('click', simulateShake)
-
-

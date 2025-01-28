@@ -92,13 +92,14 @@ header {
 
     border-radius: 1.875rem;
     color: rgba(139, 191, 254, 0.614);
-    text-align-last: left;
-    backdrop-filter: blur(8px);
+    text-align: center;
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
 }
 .priority {
     color:rgb(45, 82, 185);
     font-size: 1.7625rem;
-    text-align-last: center;
+    text-align: center;
     padding-bottom: 10px;
     border-bottom: 4px solid #00000042;
 }
@@ -111,6 +112,7 @@ header {
     border-radius: 1.875rem;
     color: rgb(187, 187, 187);
     text-align: left;
+    -webkit-backdrop-filter: blur(1rem);
     backdrop-filter: blur(1rem);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     padding: 1rem;
@@ -127,7 +129,7 @@ h1, h2 {
     color: #3c8cce;
     margin-top: 1.75rem;
     font-family: 'Josefin Sans', sans-serif; /* Используем подключенный шрифт */
-    text-align-last: center;
+    text-align: center;
 }
 
 h3 {
@@ -139,14 +141,14 @@ h4 {
     margin-left: 1.25rem;
     font-size: 0.875rem;
     color: #008cff48;
-    text-align-last: center;
+    text-align: center;
     font-family: 'Josefin Sans', sans-serif; /* Используем подключенный шрифт */
 }
 .currenles {
     color: rgb(176, 196, 217);
     font-weight: 700;
     font-size: 1.7625rem;
-    text-align-last: center;
+    text-align: center;
     margin-bottom: 0.6rem;
     border-bottom: 0.3rem solid #00000042;
     
@@ -439,7 +441,8 @@ h4 {
     padding: 1.3rem;
     background-color: rgba(28, 71, 111, 0.822);
     border-bottom: 0.2rem solid #0000000a;
-    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
 }
 
@@ -478,7 +481,8 @@ h4 {
     opacity: 0;
     pointer-events: none;
     transition: right 0.25s ease, opacity 0.25s ease, visibility 0s ease 0.1s;
-    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
     outline: none;
 }
 
@@ -650,7 +654,8 @@ body.light-theme .theme-toggle {
     background-color: #00000014;
 }
 [data-theme="light"] #schedule {
-    backdrop-filter: blur(0.35rem);
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
 }
 
 /* Стили для текста текущего расписания */
@@ -791,7 +796,8 @@ body.light-theme .theme-toggle {
     border-radius: 8px;
     font-size: 1.7rem;
     opacity: 0; /* Изначально окно полностью прозрачно */
-    backdrop-filter: blur(2rem);
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
     box-shadow: 0 0 100rem rgb(0, 0, 0);
     transition: opacity 0.3s ease, transform 0.3s ease; /* Плавное изменение opacity и transform */
 }
