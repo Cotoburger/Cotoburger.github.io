@@ -89,10 +89,10 @@ function monitorPopupMotion() {
         console.log('Acceleration data during popup:', { x: acceleration.x, y: acceleration.y, z }); // Логируем данные акселерометра
 
         // Проверяем направление движения
-        if (z > 60) { // Телефон поднимается вверх
+        if (z > 80) { // Телефон поднимается вверх
             console.log('Phone moved up');
             window.location.href = 'https://isaacdeve.github.io/';
-        } else if (z < -60) { // Телефон опускается вниз
+        } else if (z < -70) { // Телефон опускается вниз
             console.log('Phone moved down');
             window.location.href = 'https://h2o0o0o.github.io/#home';
         }
