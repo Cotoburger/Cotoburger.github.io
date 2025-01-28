@@ -765,7 +765,7 @@ body.light-theme .theme-toggle {
 }
 
 #vibrationPopup {
-    display: block; /* Изначально окно скрыто */
+    display: none; /* Изначально окно скрыто */
     position: fixed;
     top: 50%;
     left: 50%;
