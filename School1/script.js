@@ -119,16 +119,18 @@ const schedule = {
 };
 
 
-// Получить время в часовом поясе Сакраменто
+// Получаем время в часовом поясе Сакраменто
 const getSacramentoTime = () => {
     return new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kamchatka" }));
 };
 
+// Преобразование времени в секунды
 const timeToSeconds = (time) => {
     const [hours, minutes] = time.split(":").map(Number);
     return hours * 3600 + minutes * 60;
 };
 
+// Преобразование расписания в секунды
 const convertScheduleToSeconds = (schedule) => {
     for (let day in schedule) {
         for (let shift in schedule[day]) {
@@ -144,6 +146,7 @@ convertScheduleToSeconds(schedule);
 
 let simulatedTime = null;
 
+// Симуляция времени
 const simulateTime = (day, time) => {
     const [hours, minutes] = time.split(":").map(Number);
     simulatedTime = getSacramentoTime();
@@ -151,27 +154,31 @@ const simulateTime = (day, time) => {
     simulatedTime.setDate(simulatedTime.getDate() - simulatedTime.getDay() + day);
 };
 
+// Получение времени в секундах
 const getCurrentTimeInSeconds = () => {
     const now = simulatedTime || getSacramentoTime();
     return now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
 };
 
+// Получение текущего дня
 const currentDay = () => {
     return simulatedTime ? simulatedTime.getDay() : getSacramentoTime().getDay();
 };
 
+// Форматирование времени
 const formatTime = (seconds) => {
-    const hours = Math.floor(seconds / 3600); // Получаем количество часов
-    const minutes = Math.floor((seconds % 3600) / 60); // Получаем количество минут
-    const remainingSeconds = seconds % 60; // Получаем оставшиеся секунды
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
 
-    const formattedHours = hours > 0 ? `${hours}:` : ''; // Форматируем часы, если их есть
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`; // Форматируем минуты
-    const formattedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`; // Форматируем секунды
+    const formattedHours = hours > 0 ? `${hours}:` : '';
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+    const formattedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`;
 
     return `${formattedHours}${formattedMinutes}:${formattedSeconds}`;
 };
 
+// Получение текущего урока
 const getCurrentLesson = (shift) => {
     const currentTime = getCurrentTimeInSeconds();
     const lessons = schedule[currentDay()]?.[shift] || [];
@@ -179,6 +186,7 @@ const getCurrentLesson = (shift) => {
     for (let i = 0; i < lessons.length; i++) {
         const lesson = lessons[i];
 
+        // Проверяем, попадает ли текущее время в этот урок
         if (currentTime >= lesson.start && currentTime < lesson.end) {
             const timeLeft = lesson.end - currentTime;
             return {
@@ -189,6 +197,7 @@ const getCurrentLesson = (shift) => {
             };
         }
 
+        // Проверяем перемену
         if (i < lessons.length - 1 && currentTime >= lesson.end && currentTime < lessons[i + 1].start) {
             const timeLeft = lessons[i + 1].start - currentTime;
             return {
@@ -213,7 +222,7 @@ const formatDate = (date) => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`; // Используем обратные кавычки для шаблонной строки
+    return `${year}-${month}-${day}`;
 };
 
 // Функция для получения разницы в днях между двумя датами
@@ -225,26 +234,19 @@ const getDaysLeft = (endDate) => {
 };
 
 // Функция для проверки, находится ли текущая дата в периоде каникул
-const isHoliday = () => {
+let isHolidayPeriod = false; // Переменная для отслеживания каникул
+const checkHolidayStatus = () => {
     const currentDate = formatDate(new Date());
-    return holidays.some(holiday => currentDate >= holiday.start && currentDate <= holiday.end);
+    isHolidayPeriod = holidays.some(holiday => currentDate >= holiday.start && currentDate <= holiday.end);
 };
 
-const getDaysLabel = (daysLeft) => {
-    if (daysLeft % 10 === 1 && daysLeft % 100 !== 11) {
-        return 'день';
-    } else if (daysLeft % 10 >= 2 && daysLeft % 10 <= 4 && (daysLeft % 100 < 10 || daysLeft % 100 >= 20)) {
-        return 'дня';
-    } else {
-        return 'дней';
-    }
-};
+// Проверка каникул каждые 10 секунд
+setInterval(checkHolidayStatus, 10000);
 
+// Функция для обновления информации о текущих уроках
 const updateCurrentLessons = () => {
     const currentLessonShift1 = getCurrentLesson('shift1');
     const currentLessonShift2 = getCurrentLesson('shift2');
-
-    const isHolidayPeriod = isHoliday(); // Проверяем, каникулы ли сейчас
 
     const updateShift = (shiftId, currentLesson) => {
         document.getElementById(`currentLesson${shiftId}`).innerHTML = shiftId === "Shift1" ? "Первая смена" : "Вторая смена";
@@ -289,7 +291,9 @@ const updateCurrentLessons = () => {
 
 updateCurrentLessons();
 
+// Обновляем данные каждые 1 секунду
 setInterval(updateCurrentLessons, 1000);
+
 
 window.simulateTime = simulateTime;
 
@@ -372,11 +376,11 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const snowflakesContainer = document.getElementById("snowflakes");
     const maxSnowflakes = 45;
+    const snowflakes = [];
 
+    // Функция создания снежинки
     function createSnowflake() {
-        if (snowflakesContainer.children.length >= maxSnowflakes) {
-            return;
-        }
+        if (snowflakes.length >= maxSnowflakes) return; // Ограничиваем максимальное количество снежинок
 
         const snowflake = document.createElement("div");
         snowflake.classList.add("snowflake");
@@ -384,27 +388,30 @@ document.addEventListener("DOMContentLoaded", () => {
         const size = Math.random() * 19 + 5;
         const leftPosition = Math.random() * 96;
         const animationDuration = Math.random() * 15 + 5;
+        const rotation = Math.random() * 360;
 
         snowflake.style.width = `${size}px`;
         snowflake.style.height = `${size}px`;
         snowflake.style.left = `${leftPosition}%`;
         snowflake.style.animationDuration = `${animationDuration}s`;
-
-        const rotation = Math.random() * 360;
         snowflake.style.transform = `rotate(${rotation}deg)`;
 
         snowflakesContainer.appendChild(snowflake);
+        snowflakes.push(snowflake); // Добавляем снежинку в массив
 
+        // Удаляем снежинку после анимации
         snowflake.addEventListener('animationend', () => {
             snowflake.remove();
+            snowflakes.splice(snowflakes.indexOf(snowflake), 1); // Убираем снежинку из массива
         });
     }
 
+    // Функция, которая будет вызываться регулярно для создания снежинок
     function snowflakesLoop() {
         createSnowflake();
         setTimeout(() => {
-            requestAnimationFrame(snowflakesLoop);
-        }, 300);
+            requestAnimationFrame(snowflakesLoop); // Используем requestAnimationFrame для синхронизации с кадрами
+        }, 300); // Пауза между созданием снежинок (можно настроить)
     }
 
     snowflakesLoop();
@@ -457,66 +464,43 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 let isFetchingFact = false;
-let isTranslated = false;  // Добавляем переменную для отслеживания языка
+let isTranslated = false;
 
-// Проверяем в localStorage, был ли последний раз перевод
+// Проверка наличия сохранённого состояния
 const lastTranslated = localStorage.getItem('lastTranslated');
-
-if (lastTranslated === 'true') {
-    isTranslated = true;  // Если было переведено, сразу ставим флаг
+if (lastTranslated) {
+    isTranslated = lastTranslated === 'true';
 }
 
 function getFact() {
     if (isFetchingFact) return; // Prevent multiple simultaneous executions
     isFetchingFact = true;
 
+    const factText = document.getElementById('fact-text');
+    factText.textContent = '...'; // Показываем сообщение о загрузке
+
     fetch('https://uselessfacts.jsph.pl/random.json?language=en')
         .then(response => response.json())
         .then(data => {
             const factContent = document.querySelector('.fact-content');
-            const factText = document.getElementById('fact-text');
-
             factContent.style.opacity = '1';
-            factText.innerHTML = '';
-            factText.style.opacity = '1';
-
-            const typingSpan = document.createElement('span');
-            typingSpan.className = 'typing-effect';
-            factText.appendChild(typingSpan);
 
             const txt = data.text;
-            
-            // Сначала перевести текст, а потом отображать
+            // Сначала проверяем, нужно ли переводить
             if (isTranslated) {
-                translateFactWithAnimation(txt);  // Если перевод, сразу переводим и показываем
+                translateFactWithAnimation(txt);  // Если нужно, сразу переводим и показываем
             } else {
-                // Если не нужно переводить, сразу показываем факт на английском
-                displayFactWithTyping(txt);
+                displayFactWithTyping(txt); // Если не нужно переводить, сразу показываем факт
             }
 
-            // Add click listener for translation
+            // Добавляем обработчик на клик для перевода
             factText.onclick = () => {
-                if (isTranslated) {
-                    // Fade-out animation before switching back to English
-                    factText.style.transition = 'opacity 0.2s';
-                    factText.style.opacity = '0';
-
-                    setTimeout(() => {
-                        factText.textContent = txt;  // Возвращаем английский текст
-                        factText.style.opacity = '1';  // Fade-in animation
-                        displayFactWithTyping(txt); // Применяем анимацию печатания
-                    }, 500); // Wait for the fade-out to complete before updating text
-
-                    isTranslated = false;  // Сбрасываем флаг
-                    localStorage.setItem('lastTranslated', 'false');  // Сохраняем в localStorage, что текст на английском
-                } else {
-                    translateFactWithAnimation(txt);
-                }
+                toggleTranslation(txt);
             };
         })
         .catch(error => {
             console.error('Ошибка при получении факта:', error);
-            document.getElementById('fact-text').textContent = 'Не удалось загрузить факт дня.';
+            factText.textContent = 'Не удалось загрузить факт дня.';
             isFetchingFact = false; // Reset the flag in case of error
         });
 }
@@ -525,75 +509,71 @@ function translateFactWithAnimation(text) {
     fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ru`)
         .then(response => response.json())
         .then(data => {
-            // Проверяем на наличие ошибки в API, если лимит исчерпан
             if (data.responseStatus && data.responseStatus === 429) {
                 const factText = document.getElementById('fact-text');
-                factText.style.transition = 'opacity 0.2s';
-                factText.style.opacity = '0';
-
-                setTimeout(() => {
-                    factText.textContent = 'API переводчика выдаёт ошибку о лимите запросов. Попробуйте позже.';
-                    factText.style.opacity = '1';
-                }, 500);
-                return;  // Прерываем выполнение, если лимит исчерпан
+                factText.textContent = 'Ошибка лимита запросов. Попробуйте позже.';
+                return;
             }
 
-            // Если ошибок нет, продолжаем с переводом
             const translatedText = data.responseData ? data.responseData.translatedText : 'Не удалось перевести факт.';
-            const factText = document.getElementById('fact-text');
+            displayFactWithTyping(translatedText); // Запускаем анимацию печатания переведенного текста
 
-            // Сначала скрываем текст
-            factText.style.transition = 'opacity 0.2s';
-            factText.style.opacity = '0';
-
-            setTimeout(() => {
-                // После перевода показываем новый текст с анимацией печатания
-                factText.innerHTML = ''; // Очищаем текст, чтобы применить анимацию
-                const typingSpan = document.createElement('span');
-                typingSpan.className = 'typing-effect';
-                factText.appendChild(typingSpan);
-
-                displayFactWithTyping(translatedText); // Запускаем анимацию печатания переведенного текста
-
-                factText.style.opacity = '1';
-                isTranslated = true;  // Устанавливаем флаг, что текст переведен
-                localStorage.setItem('lastTranslated', 'true');  // Сохраняем в localStorage, что текст переведен
-            }, 500); // Wait for the fade-out to complete before updating text
+            isTranslated = true;
+            localStorage.setItem('lastTranslated', 'true');
         })
         .catch(error => {
             console.error('Ошибка при переводе:', error);
             const factText = document.getElementById('fact-text');
-            factText.style.transition = 'opacity 0.2s';
-            factText.style.opacity = '0';
-
-            setTimeout(() => {
-                factText.textContent = 'Не удалось перевести факт.';
-                factText.style.opacity = '1';
-            }, 500);
+            factText.textContent = 'Не удалось перевести факт.';
         });
 }
 
 function displayFactWithTyping(text) {
     const factText = document.getElementById('fact-text');
-    const typingSpan = document.querySelector('.typing-effect');
+    factText.innerHTML = ''; // Очищаем текущий текст
+
+    const typingSpan = document.createElement('span');
+    typingSpan.className = 'typing-effect';
+    factText.appendChild(typingSpan);
 
     let i = 0;
     function typeWriter() {
         if (i < text.length) {
             typingSpan.textContent += text.charAt(i);
             i++;
-            setTimeout(typeWriter, 10); // Adjust the speed of typing if needed
+            setTimeout(typeWriter, 15); // Увеличил задержку для медленного набора текста
         } else {
-            isFetchingFact = false; // Reset the flag once typing is complete
+            isFetchingFact = false; // Сбрасываем флаг после завершения печати
         }
     }
 
-    typeWriter(); // Start typing effect
+    typeWriter(); // Начинаем анимацию печатания
+}
+
+function toggleTranslation(txt) {
+    const factText = document.getElementById('fact-text');
+
+    if (isTranslated) {
+        // Fade-out before switching to English
+        factText.style.transition = 'opacity 0.3s';
+        factText.style.opacity = '0';
+
+        setTimeout(() => {
+            factText.textContent = txt;
+            factText.style.opacity = '1';
+            displayFactWithTyping(txt); // Применяем анимацию печатания
+        }, 300); // Ждём окончания анимации перед заменой текста
+
+        isTranslated = false;
+        localStorage.setItem('lastTranslated', 'false');
+    } else {
+        translateFactWithAnimation(txt); // Переводим и показываем
+    }
 }
 
 window.addEventListener('load', getFact);
 
-/* Styles */
+/* Стили */
 const style = document.createElement('style');
 style.textContent = `
     .sectionz {
