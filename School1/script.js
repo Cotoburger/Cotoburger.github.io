@@ -601,7 +601,7 @@ if ('ondevicemotion' in window) {
 
 let lastUpdate = 0;
 let lastVibration = 0; // Последнее время вибрации
-let vibrationDelay = 1000; // Задержка между вибрациями (мс)
+let vibrationDelay = 400; // Задержка между вибрациями (мс)
 let x = y = z = lastX = lastY = lastZ = 0;
 
 function handleDeviceMotion(event) {
@@ -634,7 +634,7 @@ function handleDeviceMotion(event) {
         // Обновляем отображение скорости
         document.getElementById('speedDisplay').textContent = speed.toFixed(2);
 
-        if (speed > 700 && (currentTime - lastVibration) > vibrationDelay) { 
+        if (speed > 600 && (currentTime - lastVibration) > vibrationDelay) { 
             // Увеличенный порог чувствительности + задержка
             vibratePhone();
             lastVibration = currentTime; // Обновляем время последней вибрации
