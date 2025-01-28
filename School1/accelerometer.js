@@ -39,8 +39,6 @@ let lastUpdate = 0;
 
                 const speed = (Math.abs(x - lastX) + Math.abs(y - lastY)) / timeDifference;
 
-                document.getElementById('speedDisplay').textContent = speed.toFixed(2);
-
                 if (speed > 500 && (currentTime - lastVibration) > vibrationDelay) {
                     vibratePhone();
                     showPopup();  // Показываем окно при тряске
