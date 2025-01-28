@@ -616,8 +616,9 @@ function handleDeviceMotion(event) {
 
         const speed = Math.abs(x + y + z - lastX - lastY - lastZ) / timeDifference;
 
-        if (speed > 15) { // Порог чувствительности
+        if (speed > 4) { // Порог чувствительности
             vibratePhone();
+            console.log('Vibration API not supported on this device.');
         }
 
         lastX = x;
@@ -633,3 +634,24 @@ function vibratePhone() {
         console.log('Vibration API not supported on this device.');
     }
 }
+
+function emitShakeEvent(x, y, z) {
+    const event = new Event("devicemotion");
+    event.accelerationIncludingGravity = { x, y, z };
+    event.interval = 100; // Задаем интервал между событиями
+
+    // Добавляем в событие свойства, которые ожидает обработчик
+    Object.defineProperty(event, "accelerationIncludingGravity", {
+        value: { x, y, z },
+        writable: true,
+    });
+
+    window.dispatchEvent(event);
+}
+
+// Пример использования:
+emitShakeEvent(15, 15, 15); // Эмитируем тряску
+
+document.getElementById("simulateShake").addEventListener("click", () => {
+    emitShakeEvent(20, 10, 5); // Эмитируем тряску
+});
