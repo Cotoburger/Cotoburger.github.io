@@ -776,7 +776,7 @@ body.light-theme .theme-toggle {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Центрируем окно */
+    transform: translate(-50%, -50%) scale(1.4); /* Центрируем окно */
     background-color: rgba(18, 32, 45, 0.819);
     color: white;
     padding: 0.3rem;
@@ -790,11 +790,12 @@ body.light-theme .theme-toggle {
 
 /* Анимация тряски */
 @keyframes shake2 {
-    0% { transform: translate(-50%, -50%) rotate(0deg); opacity: 0; }
-    25% { transform: translate(-50%, -50%) translateX(-1rem) rotate(-5deg); opacity: 1; }
+    0% { transform: translate(-50%, -50%) rotate(0deg) scale(1.0); opacity: 0; }
+    25% { transform: translate(-50%, -50%) translateX(-1rem) rotate(-5deg) ; opacity: 1; }
     50% { transform: translate(-50%, -50%) translateX(-2rem) rotate(3deg); opacity: 1; }
     75% { transform: translate(-50%, -50%) translateX(2rem) rotate(-3deg); opacity: 1; }
-    100% { transform: translate(-50%, -50%) translateX(0) rotate(0deg); opacity: 1; }
+    99% { transform: translate(-50%, -50%) translateX(0) rotate(0deg); opacity: 1; }
+    99% { transform: translate(-50%, -50%) translateX(0) rotate(0deg) scale(1.4); opacity: 1; }
 }
 
 /* Класс для анимации тряски */
