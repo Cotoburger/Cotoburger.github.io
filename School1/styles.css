@@ -320,6 +320,12 @@ h4 {
     #fact-text {
         font-size: 1.0rem;
     }
+    #shakeButton {
+    display: none !important;
+    }
+    #vibrationPopup {
+    font-size: 1.2rem !important;
+    }
 }
 
 
@@ -775,7 +781,7 @@ body.light-theme .theme-toggle {
     color: white;
     padding: 0.3rem;
     border-radius: 8px;
-    font-size: 18px;
+    font-size: 1.7rem;
     opacity: 0; /* Изначально окно полностью прозрачно */
     backdrop-filter: blur(0.3rem);
     box-shadow: 0 0 100rem rgb(0, 0, 0);
@@ -803,6 +809,7 @@ body.light-theme .theme-toggle {
 }
 /* Стиль для кнопки */
 #shakeButton {
+    display: block;
     min-width: 9rem;
     height: 4rem;
     justify-self: center;
