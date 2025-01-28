@@ -603,7 +603,7 @@ let lastUpdate = 0;
 let x = y = z = lastX = lastY = lastZ = 0;
 
 function handleDeviceMotion(event) {
-    const acceleration = event.accelerationIncludingGravity;
+    const acceleration = event.accelerationIncludingGravity || { x: 0, y: 0, z: 0 };
     const currentTime = new Date().getTime();
 
     if ((currentTime - lastUpdate) > 100) {
@@ -614,11 +614,21 @@ function handleDeviceMotion(event) {
         y = acceleration.y;
         z = acceleration.z;
 
+        // Учитываем только значительные изменения ускорения
+        const deltaX = Math.abs(x - lastX);
+        const deltaY = Math.abs(y - lastY);
+        const deltaZ = Math.abs(z - lastZ);
+
+        if (deltaX < 0.2 && deltaY < 0.2 && deltaZ < 0.2) {
+            // Игнорируем малые изменения
+            return;
+        }
+
         const speed = Math.abs(x + y + z - lastX - lastY - lastZ) / timeDifference;
 
-        if (speed > 13) { // Порог чувствительности
+        if (speed > 20) { // Увеличенный порог чувствительности
             vibratePhone();
-            console.log('Vibration API not supported on this device.');
+            console.log('Device shaken! Vibrating...');
         }
 
         lastX = x;
@@ -629,29 +639,8 @@ function handleDeviceMotion(event) {
 
 function vibratePhone() {
     if (navigator.vibrate) {
-        navigator.vibrate(200); // Вибрация на 200 мс
+        navigator.vibrate(125); // Вибрация на 200 мс
     } else {
         console.log('Vibration API not supported on this device.');
     }
 }
-
-function emitShakeEvent(x, y, z) {
-    const event = new Event("devicemotion");
-    event.accelerationIncludingGravity = { x, y, z };
-    event.interval = 100; // Задаем интервал между событиями
-
-    // Добавляем в событие свойства, которые ожидает обработчик
-    Object.defineProperty(event, "accelerationIncludingGravity", {
-        value: { x, y, z },
-        writable: true,
-    });
-
-    window.dispatchEvent(event);
-}
-
-// Пример использования:
-emitShakeEvent(15, 15, 15); // Эмитируем тряску
-
-document.getElementById("simulateShake").addEventListener("click", () => {
-    emitShakeEvent(20, 10, 5); // Эмитируем тряску
-});
