@@ -137,3 +137,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 200);
     });
 });
+
+// Функция для имитации тряски
+function simulateShake() {
+    const event = {
+        accelerationIncludingGravity: {
+            x: Math.random() * 500 - 1, // случайное значение для имитации
+            y: Math.random() * 500 - 1,
+            z: 0 // z оставим как 0
+        }
+    };
+
+    handleDeviceMotion(event); // Вызываем обработчик как при реальной тряске
+}
+
+        // Привязываем функцию имитации тряски к кнопке
+        document.getElementById('shakeButton').addEventListener('click', simulateShake)
+
+

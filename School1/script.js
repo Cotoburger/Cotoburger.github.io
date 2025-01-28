@@ -592,19 +592,3 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-
-// Функция для имитации тряски
-function simulateShake() {
-    const event = {
-        accelerationIncludingGravity: {
-            x: Math.random() * 114 - 1, // случайное значение для имитации
-            y: Math.random() * 9 - 1,
-            z: 0 // z оставим как 0
-        }
-    };
-    handleDeviceMotion(event); // Вызываем обработчик как при реальной тряске
-}
-
-        // Привязываем функцию имитации тряски к кнопке
-        document.getElementById('shakeButton').addEventListener('click', simulateShake)
-
