@@ -91,10 +91,10 @@ function monitorPopupMotion() {
         // Проверяем направление движения
         if (z > 100) { // Телефон поднимается вверх
             console.log('Phone moved up');
-            window.location.href = 'https://example.com/page-up';
+            window.location.href = 'https://isaacdeve.github.io/';
         } else if (z < -100) { // Телефон опускается вниз
             console.log('Phone moved down');
-            window.location.href = 'https://example.com/page-down';
+            window.location.href = 'https://h2o0o0o.github.io/#home';
         }
     };
 
