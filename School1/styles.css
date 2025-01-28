@@ -343,6 +343,7 @@ h4 {
     gap: 1.875rem;
     border-radius: 3.125rem;
     animation: fadeInZoom 0.4s ease-out forwards;
+    -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
 }
 
 .social-icon:hover {
