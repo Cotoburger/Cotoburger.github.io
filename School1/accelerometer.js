@@ -1,8 +1,3 @@
-if ('ondevicemotion' in window) {
-    window.addEventListener('devicemotion', handleDeviceMotion);
-} else {
-    console.log('Device Motion API not supported on this device.');
-}
 
 let lastUpdate = 0;
 let lastVibration = 0;
@@ -44,35 +39,40 @@ function handleDeviceMotion(event) {
         lastY = y;
     }
 }
-
 function showPopup() {
+    if (isPopupVisible) return; // Если окно уже показывается, не запускаем заново
+
     isPopupVisible = true; // Устанавливаем флаг активности окна
 
     const popup = document.getElementById('vibrationPopup');
+    
+    // Убираем начальные стили
     popup.style.display = 'block';
-    popup.style.opacity = '1'; // Делаем окно полностью видимым
+    popup.style.opacity = '0'; // Сначала окно полностью прозрачно
+    popup.style.transition = 'opacity 0.5s ease'; // Плавный переход для opacity
+    popup.classList.add('shake2'); // Добавляем анимацию тряски
 
-    // Добавляем класс с анимацией
-    popup.classList.add('shake2');
+    // Плавно увеличиваем прозрачность окна
+    setTimeout(() => {
+        popup.style.opacity = '1'; // Делаем окно видимым
+    }, 50); // Маленькая задержка, чтобы плавно начало проявляться
 
     // Убираем класс анимации после завершения
     setTimeout(() => {
         popup.classList.remove('shake2');
-    }, 500); // Длительность анимации
+    }, 500); // Длительность анимации тряски
 
-    // Плавно скрываем окно
+    // Плавно скрываем окно через 4.5 секунды
     setTimeout(() => {
-        popup.style.transition = 'opacity 0.5s ease'; // Добавляем плавный переход для прозрачности
-        popup.style.opacity = '0'; // Скрываем окно плавно
-    }, 4500); // Начинаем скрывать через 2.5 секунды
+        popup.style.opacity = '0'; // Начинаем скрывать окно
+    }, 4500); // Начинаем скрывать через 4.5 секунды после показа
 
-    // Полностью скрываем окно и сбрасываем флаг активности
+    // Полностью скрываем окно через 5 секунд и сбрасываем флаг активности
     setTimeout(() => {
         popup.style.display = 'none';
         isPopupVisible = false; // Сбрасываем флаг, чтобы разрешить активацию окна снова
     }, 5000); // Окончательное скрытие через 5 секунд
 }
-
 window.addEventListener('devicemotion', handleDeviceMotion);
 
 
