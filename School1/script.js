@@ -598,7 +598,10 @@ if ('ondevicemotion' in window) {
 } else {
     console.log('Device Motion API not supported on this device.');
 }
+
 let lastUpdate = 0;
+let lastVibration = 0; // Последнее время вибрации
+let vibrationDelay = 1000; // Задержка между вибрациями (мс)
 let x = y = z = lastX = lastY = lastZ = 0;
 
 function handleDeviceMotion(event) {
@@ -613,16 +616,25 @@ function handleDeviceMotion(event) {
         y = acceleration.y;
         z = acceleration.z;
 
-        // Учитываем только значительные изменения ускорения
         const deltaX = Math.abs(x - lastX);
         const deltaY = Math.abs(y - lastY);
         const deltaZ = Math.abs(z - lastZ);
 
+        if (deltaX < 0.2 && deltaY < 0.2 && deltaZ < 0.2) {
+            // Игнорируем малые изменения
+            return;
+        }
+
         const speed = Math.abs(x + y + z - lastX - lastY - lastZ) / timeDifference;
 
-        if (speed > 350) { // Увеличенный порог чувствительности
+        // Обновляем отображение скорости
+        document.getElementById('speedDisplay').textContent = speed.toFixed(2);
+
+        if (speed > 400 && (currentTime - lastVibration) > vibrationDelay) { 
+            // Увеличенный порог чувствительности + задержка
             vibratePhone();
-            console.log('Device shaken! Vibrating...');
+            lastVibration = currentTime; // Обновляем время последней вибрации
+            console.log('Device shaken! Speed:', speed);
         }
 
         lastX = x;
@@ -633,9 +645,7 @@ function handleDeviceMotion(event) {
 
 function vibratePhone() {
     if (navigator.vibrate) {
-        navigator.vibrate(5); // Вибрация на 200 мс
-        // Обновляем отображение скорости
-        document.getElementById('speedDisplay').textContent = speed.toFixed(2);
+        navigator.vibrate(200); // Вибрация на 200 мс
     } else {
         console.log('Vibration API not supported on this device.');
     }
