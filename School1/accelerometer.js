@@ -17,6 +17,8 @@ function handleDeviceMotion(event) {
         y = acceleration.y;
         z = acceleration.z;
 
+        console.log('Acceleration data:', { x, y, z }); // Логируем все данные акселерометра
+
         const deltaX = Math.abs(x - lastX);
         const deltaY = Math.abs(y - lastY);
 
@@ -84,12 +86,13 @@ function monitorPopupMotion() {
         const acceleration = event.accelerationIncludingGravity || { x: 0, y: 0, z: 0 };
         const z = acceleration.z;
 
-        console.log('Z-axis acceleration:', z);
+        console.log('Acceleration data during popup:', { x: acceleration.x, y: acceleration.y, z }); // Логируем данные акселерометра
 
-        if (z > 5) {
+        // Проверяем направление движения
+        if (z > 5) { // Телефон поднимается вверх
             console.log('Phone moved up');
             window.location.href = 'https://example.com/page-up';
-        } else if (z < -5) {
+        } else if (z < -5) { // Телефон опускается вниз
             console.log('Phone moved down');
             window.location.href = 'https://example.com/page-down';
         }
@@ -97,16 +100,11 @@ function monitorPopupMotion() {
 
     window.addEventListener('devicemotion', motionListener);
 
+    // Убираем слушатель после закрытия попапа
     setTimeout(() => {
         window.removeEventListener('devicemotion', motionListener);
         console.log('Motion listener removed');
-    }, 5000);
+    }, 5000); // Длительность проверки совпадает с показом попапа
 }
 
-
 window.addEventListener('devicemotion', handleDeviceMotion);
-
-
-
-
-
