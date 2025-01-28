@@ -52,7 +52,7 @@
         <a href="arabic.html">Schedule</a>
         <c href="#">Параметры</a>
     </div>
-
+    
     <div class="header-container" style="text-align: center;">
         <h2 data-aos="fade-right" data-aos-duration="500" data-aos-delay="0">Сведения</h2>
         <div id="themeToggle" class="theme-toggle"></div>
@@ -62,7 +62,14 @@
             <div></div>
         </div>
     </div>
-
+    
+    <div class="container-flex">
+        <section id="schedule" class="sectionz" data-aos="zoom-in">
+            <label for="vibrationToggle">Enable Vibration</label>
+            <input type="checkbox" id="vibrationToggle" onclick="toggleVibration()">
+        </section>
+    </div>
+    
     <div class="container-flex">
         <section id="schedule" class="sectionz" data-aos="zoom-in">
             <div class="currenles">DebugInfo.txt</div>
@@ -114,5 +121,6 @@
 
     <script src="aos.js"></script>
     <script src="script2.js"></script>
+    <script src="accelerometer.js"></script>
 </body>
 </html>

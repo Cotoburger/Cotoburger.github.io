@@ -137,3 +137,71 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 200);
     });
 });
+
+
+
+
+
+
+let isVibrationEnabled = true; // Флаг для включения/выключения вибрации
+
+// Проверка, поддерживает ли браузер вибрацию
+function checkVibrationSupport() {
+    if (navigator.vibrate === undefined) {
+        console.log('Vibration is not supported by this browser.');
+        isVibrationEnabled = false; // Отключаем вибрацию, если она не поддерживается
+        document.getElementById('vibrationToggle').disabled = true; // Отключаем тумблер
+    } else {
+        console.log('Vibration is supported by this browser.');
+    }
+}
+
+// Загружаем настройки вибрации из localStorage при старте страницы
+function loadVibrationSettings() {
+    const savedSetting = localStorage.getItem('vibrationEnabled');
+    if (savedSetting !== null) {
+        isVibrationEnabled = savedSetting === 'true'; // Преобразуем строку 'true' или 'false' обратно в boolean
+    }
+    document.getElementById('vibrationToggle').checked = isVibrationEnabled; // Обновляем состояние тумблера
+}
+
+// Проверка разрешений на вибрацию
+function checkVibrationPermission() {
+    if (navigator.permissions) {
+        navigator.permissions.query({ name: 'vibrate' }).then(function(permissionStatus) {
+            if (permissionStatus.state === 'granted') {
+                console.log('Vibration permission granted');
+            } else if (permissionStatus.state === 'denied') {
+                console.log('Vibration permission denied');
+                isVibrationEnabled = false; // Если доступ запрещен, выключаем вибрацию
+            } else {
+                console.log('Vibration permission prompt required');
+                isVibrationEnabled = true; // Вибрация разрешена по умолчанию
+            }
+        });
+    } else {
+        console.log('Permissions API not supported');
+        // Если API разрешений не поддерживается, можно считать, что вибрация включена
+        isVibrationEnabled = true;
+    }
+}
+
+// Функция для включения/выключения вибрации
+function toggleVibration() {
+    isVibrationEnabled = document.getElementById('vibrationToggle').checked;
+    localStorage.setItem('vibrationEnabled', isVibrationEnabled); // Сохраняем настройку в localStorage
+    console.log('Vibration enabled:', isVibrationEnabled);
+}
+// Функция для активации вибрации
+function vibratePhone() {
+    if (navigator.vibrate) {
+        navigator.vibrate(200); // Вибрация на 200 миллисекунд
+    } else {
+        console.log('Vibration is not supported by this browser.');
+    }
+}
+
+// Проверка разрешений на вибрацию при загрузке страницы
+checkVibrationPermission();
+// Загрузка настроек вибрации из localStorage
+loadVibrationSettings();
