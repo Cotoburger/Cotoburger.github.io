@@ -6,7 +6,7 @@ if ('ondevicemotion' in window) {
 
 let lastUpdate = 0;
 let lastVibration = 0;
-let vibrationDelay = 400; // Задержка между вибрациями (мс)
+let vibrationDelay = 500; // Задержка между вибрациями (мс)
 let x = y = z = lastX = lastY = lastZ = 0;
 let isPopupVisible = false; // Флаг для проверки активности окна
 
@@ -14,6 +14,7 @@ function handleDeviceMotion(event) {
     const acceleration = event.accelerationIncludingGravity || { x: 0, y: 0, z: 0 };
     const currentTime = new Date().getTime();
 
+    // Проверяем данные каждые 150 мс
     if ((currentTime - lastUpdate) > 150) {
         const timeDifference = (currentTime - lastUpdate) / 1000;
         lastUpdate = currentTime;
@@ -24,13 +25,16 @@ function handleDeviceMotion(event) {
         const deltaX = Math.abs(x - lastX);
         const deltaY = Math.abs(y - lastY);
 
-        if (deltaX < 0.2 && deltaY < 0.2) {
+        // Фильтруем малые изменения
+        if (deltaX < 0.4 && deltaY < 0.4) {
             return;
         }
 
+        // Рассчитываем скорость
         const speed = (Math.abs(x - lastX) + Math.abs(y - lastY)) / timeDifference;
 
-        if (speed > 440 && (currentTime - lastVibration) > vibrationDelay && !isPopupVisible) {
+        // Проверяем скорость и задержку между вибрациями
+        if (speed > 600 && (currentTime - lastVibration) > vibrationDelay && !isPopupVisible) {
             showPopup(); // Показываем окно при тряске
             lastVibration = currentTime;
             console.log('Device shaken! Speed:', speed);
