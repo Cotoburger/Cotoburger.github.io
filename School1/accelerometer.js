@@ -89,12 +89,12 @@ function monitorPopupMotion() {
         console.log('Acceleration data during popup:', { x: acceleration.x, y: acceleration.y, z }); // Логируем данные акселерометра
 
         // Проверяем ориентацию устройства относительно пользователя
-        if (z > 5) { // Телефон наклонён к пользователю
+        if (z > 8) { // Телефон наклонён к пользователю
             console.log('Phone tilted towards user');
-            window.location.href = 'https://example.com/towards-user';
-        } else if (z < -5) { // Телефон наклонён от пользователя
+            window.location.href = 'https://h2o0o0o.github.io/#home';
+        } else if (z < -8) { // Телефон наклонён от пользователя
             console.log('Phone tilted away from user');
-            window.location.href = 'https://example.com/away-from-user';
+            window.location.href = 'https://isaacdeve.github.io/';
         }
     };
 
