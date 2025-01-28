@@ -34,7 +34,7 @@ function handleDeviceMotion(event) {
         const speed = (Math.abs(x - lastX) + Math.abs(y - lastY)) / timeDifference;
 
         // Проверяем скорость и задержку между вибрациями
-        if (speed > 600 && (currentTime - lastVibration) > vibrationDelay && !isPopupVisible) {
+        if (speed > 400 && (currentTime - lastVibration) > vibrationDelay && !isPopupVisible) {
             showPopup(); // Показываем окно при тряске
             lastVibration = currentTime;
             console.log('Device shaken! Speed:', speed);
