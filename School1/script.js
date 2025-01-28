@@ -616,7 +616,7 @@ function handleDeviceMotion(event) {
 
         const speed = Math.abs(x + y + z - lastX - lastY - lastZ) / timeDifference;
 
-        if (speed > 4) { // Порог чувствительности
+        if (speed > 13) { // Порог чувствительности
             vibratePhone();
             console.log('Vibration API not supported on this device.');
         }
