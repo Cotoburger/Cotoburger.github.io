@@ -771,12 +771,15 @@ body.light-theme .theme-toggle {
     left: 50%;
     scale: 1.4;
     transform: translate(-35%, -50%);
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(18, 32, 45, 0.819);
     color: white;
     padding: 0.3rem;
     border-radius: 8px;
     font-size: 18px;
     opacity: 0; /* Изначально окно полностью прозрачно */
+    backdrop-filter: blur(0.3rem);
+    box-shadow: 0 0 100rem rgb(0, 0, 0);
+    
 }
 @keyframes shake2 {
     0% { transform: translate(-35%, -50%) translateX(0) rotate(0deg); opacity: 0; }
