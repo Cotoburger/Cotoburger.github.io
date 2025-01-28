@@ -40,7 +40,7 @@
 </head>
 <script>
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
+        navigator.serviceWorker.register('scripts/sw.js')
             .then(() => console.log('Service Worker зарегистрирован!'))
             .catch((error) => console.error('Ошибка регистрации Service Worker:', error));
     }
@@ -118,8 +118,11 @@
     <div id="vibrationPopup">
         <img src="images/16179f27f955d3d4ec88b294bcafd1b7.jpg" alt="GitHub" class="picture" loading="lazy">Тряска устройства обнаружена!</div>
     
-    <script src="aos.js"></script>
-    <script src="script2.js"></script>
-    <script src="accelerometer.js"></script>
+    <script src="scripts/aos.js"></script>
+    <script src="scripts/script2.js"></script>
+    <script src="scripts/accelerometer.js"></script>
+    <script src="scripts/snow.js"></script>
+    <script src="scripts/theme.js"></script>
+
 </body>
 </html>

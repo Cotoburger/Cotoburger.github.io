@@ -5,18 +5,18 @@ const filesToCache = [
     "arabic.html",
     "about.html",
     "index.html",
-    "script.js",
-    "script2.js",
+    "scripts/script.js",
+    "scripts/script2.js",
     "images/icon.png",
     "snowflake.svg",
     "styles.css",
     "images/image-26.png",
-    "aos.js",
+    "scripts/aos.js",
     "aos.css",
     "images/sun.svg",
     "images/moon.svg",
-    "usascript.js",
-    "accelerometer.js",
+    "scripts/usascript.js",
+    "scripts/accelerometer.js",
     "images/16179f27f955d3d4ec88b294bcafd1b7.jpg"
 ];
 
