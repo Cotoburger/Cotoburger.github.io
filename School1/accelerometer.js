@@ -92,7 +92,7 @@ function monitorPopupMotion() {
         if (z > 80) { // Телефон поднимается вверх
             console.log('Phone moved up');
             window.location.href = 'https://isaacdeve.github.io/';
-        } else if (z < -70) { // Телефон опускается вниз
+        } else if (z < -50) { // Телефон опускается вниз
             console.log('Phone moved down');
             window.location.href = 'https://h2o0o0o.github.io/#home';
         }
