@@ -9,16 +9,6 @@ let lastUpdate = 0;
         let vibrationDelay = 400; // Задержка между вибрациями (мс)
         let x = y = z = lastX = lastY = lastZ = 0;
 
-        function checkVibrationSupport() {
-            if (navigator.vibrate === undefined) {
-                console.log('Vibration is not supported by this browser.');
-                isVibrationEnabled = false; // Отключаем вибрацию, если она не поддерживается
-                document.getElementById('vibrationToggle').disabled = true; // Отключаем тумблер
-            } else {
-                console.log('Vibration is supported by this browser.');
-            }
-        }
-
         function handleDeviceMotion(event) {
             const acceleration = event.accelerationIncludingGravity || { x: 0, y: 0, z: 0 };
             const currentTime = new Date().getTime();
@@ -40,7 +30,6 @@ let lastUpdate = 0;
                 const speed = (Math.abs(x - lastX) + Math.abs(y - lastY)) / timeDifference;
 
                 if (speed > 500 && (currentTime - lastVibration) > vibrationDelay) {
-                    vibratePhone();
                     showPopup();  // Показываем окно при тряске
                     lastVibration = currentTime;
                     console.log('Device shaken! Speed:', speed);
@@ -51,13 +40,6 @@ let lastUpdate = 0;
             }
         }
 
-        function vibratePhone() {
-            if (navigator.vibrate) {
-                navigator.vibrate(200); // Вибрация на 200 мс
-            } else {
-                console.log('Vibration API not supported on this device.');
-            }
-        }
 
         function showPopup() {
             const popup = document.getElementById('vibrationPopup');
@@ -65,10 +47,8 @@ let lastUpdate = 0;
 
             setTimeout(() => {
                 popup.style.display = 'none'; // Скрываем окно через 2 секунды
-            }, 2000);
+            }, 3000);
         }
-
-        checkVibrationSupport();
 
         window.addEventListener('devicemotion', handleDeviceMotion);
 
