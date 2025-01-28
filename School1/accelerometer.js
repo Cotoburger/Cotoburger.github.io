@@ -91,10 +91,10 @@ function monitorPopupMotion() {
         // Проверяем ориентацию устройства относительно пользователя
         if (z > 8) { // Телефон наклонён к пользователю
             console.log('Phone tilted towards user');
-            window.location.href = 'https://h2o0o0o.github.io/#home';
+          //  window.location.href = 'https://h2o0o0o.github.io/#home';
         } else if (z < -8) { // Телефон наклонён от пользователя
             console.log('Phone tilted away from user');
-            window.location.href = 'https://isaacdeve.github.io/';
+           // window.location.href = 'https://isaacdeve.github.io/';
         }
     };
 
