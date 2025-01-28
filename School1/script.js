@@ -618,14 +618,9 @@ function handleDeviceMotion(event) {
         const deltaY = Math.abs(y - lastY);
         const deltaZ = Math.abs(z - lastZ);
 
-        if (deltaX < 0.2 && deltaY < 0.2 && deltaZ < 0.2) {
-            // Игнорируем малые изменения
-            return;
-        }
-
         const speed = Math.abs(x + y + z - lastX - lastY - lastZ) / timeDifference;
 
-        if (speed > 200) { // Увеличенный порог чувствительности
+        if (speed > 350) { // Увеличенный порог чувствительности
             vibratePhone();
             console.log('Device shaken! Vibrating...');
         }
@@ -638,7 +633,7 @@ function handleDeviceMotion(event) {
 
 function vibratePhone() {
     if (navigator.vibrate) {
-        navigator.vibrate(125); // Вибрация на 200 мс
+        navigator.vibrate(5); // Вибрация на 200 мс
         // Обновляем отображение скорости
         document.getElementById('speedDisplay').textContent = speed.toFixed(2);
     } else {
