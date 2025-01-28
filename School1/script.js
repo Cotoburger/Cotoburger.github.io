@@ -591,3 +591,45 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+
+if ('ondevicemotion' in window) {
+    window.addEventListener('devicemotion', handleDeviceMotion);
+} else {
+    console.log('Device Motion API not supported on this device.');
+}
+
+let lastUpdate = 0;
+let x = y = z = lastX = lastY = lastZ = 0;
+
+function handleDeviceMotion(event) {
+    const acceleration = event.accelerationIncludingGravity;
+    const currentTime = new Date().getTime();
+
+    if ((currentTime - lastUpdate) > 100) {
+        const timeDifference = (currentTime - lastUpdate) / 1000;
+        lastUpdate = currentTime;
+
+        x = acceleration.x;
+        y = acceleration.y;
+        z = acceleration.z;
+
+        const speed = Math.abs(x + y + z - lastX - lastY - lastZ) / timeDifference;
+
+        if (speed > 15) { // Порог чувствительности
+            vibratePhone();
+        }
+
+        lastX = x;
+        lastY = y;
+        lastZ = z;
+    }
+}
+
+function vibratePhone() {
+    if (navigator.vibrate) {
+        navigator.vibrate(200); // Вибрация на 200 мс
+    } else {
+        console.log('Vibration API not supported on this device.');
+    }
+}
