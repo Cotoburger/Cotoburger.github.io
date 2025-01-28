@@ -630,7 +630,7 @@ function handleDeviceMotion(event) {
         // Обновляем отображение скорости
         document.getElementById('speedDisplay').textContent = speed.toFixed(2);
 
-        if (speed > 400 && (currentTime - lastVibration) > vibrationDelay) { 
+        if (speed > 600 && (currentTime - lastVibration) > vibrationDelay) { 
             // Увеличенный порог чувствительности + задержка
             vibratePhone();
             lastVibration = currentTime; // Обновляем время последней вибрации
