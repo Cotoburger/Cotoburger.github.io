@@ -84,13 +84,12 @@ function monitorPopupMotion() {
         const acceleration = event.accelerationIncludingGravity || { x: 0, y: 0, z: 0 };
         const z = acceleration.z;
 
-        console.log('Z-axis acceleration:', z); // Логируем значение оси Z
+        console.log('Z-axis acceleration:', z);
 
-        // Проверяем направление движения
-        if (z > 5) { // Телефон поднимается вверх
+        if (z > 5) {
             console.log('Phone moved up');
             window.location.href = 'https://example.com/page-up';
-        } else if (z < -5) { // Телефон опускается вниз
+        } else if (z < -5) {
             console.log('Phone moved down');
             window.location.href = 'https://example.com/page-down';
         }
@@ -98,12 +97,12 @@ function monitorPopupMotion() {
 
     window.addEventListener('devicemotion', motionListener);
 
-    // Убираем слушатель после закрытия попапа
     setTimeout(() => {
         window.removeEventListener('devicemotion', motionListener);
         console.log('Motion listener removed');
-    }, 5000); // Длительность проверки совпадает с показом попапа
+    }, 5000);
 }
+
 
 window.addEventListener('devicemotion', handleDeviceMotion);
 
