@@ -30,7 +30,7 @@ function handleDeviceMotion(event) {
 
         const speed = (Math.abs(x - lastX) + Math.abs(y - lastY)) / timeDifference;
 
-        if (speed > 500 && (currentTime - lastVibration) > vibrationDelay && !isPopupVisible) {
+        if (speed > 470 && (currentTime - lastVibration) > vibrationDelay && !isPopupVisible) {
             showPopup(); // Показываем окно при тряске
             lastVibration = currentTime;
             console.log('Device shaken! Speed:', speed);
