@@ -66,7 +66,7 @@ function showPopup() {
         popup.classList.remove('shake2');
     }, 500); // Длительность анимации тряски
 
-    // Проверяем направление движения при поднятии/опускании телефона
+    // Проверяем изменение ориентации телефона при показе попапа
     monitorPopupMotion();
 
     // Плавно скрываем окно через 4.5 секунды
@@ -88,13 +88,13 @@ function monitorPopupMotion() {
 
         console.log('Acceleration data during popup:', { x: acceleration.x, y: acceleration.y, z }); // Логируем данные акселерометра
 
-        // Проверяем направление движения
-        if (z > 80) { // Телефон поднимается вверх
-            console.log('Phone moved up');
-            window.location.href = 'https://isaacdeve.github.io/';
-        } else if (z < -50) { // Телефон опускается вниз
-            console.log('Phone moved down');
-            window.location.href = 'https://h2o0o0o.github.io/#home';
+        // Проверяем ориентацию устройства относительно пользователя
+        if (z > 5) { // Телефон наклонён к пользователю
+            console.log('Phone tilted towards user');
+            window.location.href = 'https://example.com/towards-user';
+        } else if (z < -5) { // Телефон наклонён от пользователя
+            console.log('Phone tilted away from user');
+            window.location.href = 'https://example.com/away-from-user';
         }
     };
 
