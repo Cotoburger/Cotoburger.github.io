@@ -52,6 +52,17 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+    // Исключение для определённых URL-ов
+    const excludedUrls = [
+        'https://api.mymemory.translated.net/'
+    ];
+
+    // Проверяем, не является ли запрос одним из исключённых URL-ов
+    if (excludedUrls.some(url => event.request.url.startsWith(url))) {
+        console.log('[ServiceWorker] Excluding from cache:', event.request.url);
+        return; // Пропускаем дальнейшую обработку этого запроса
+    }
+
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
             if (cachedResponse) {
@@ -60,7 +71,6 @@ self.addEventListener('fetch', (event) => {
                 fetchAndUpdateCache(event.request);
                 return cachedResponse;
             }
-
             // Если нет кэшированного ответа, делаем сетевой запрос
             return fetch(event.request).then((networkResponse) => {
                 if (networkResponse && networkResponse.ok) {
