@@ -14,7 +14,7 @@ function handleDeviceMotion(event) {
     const acceleration = event.accelerationIncludingGravity || { x: 0, y: 0, z: 0 };
     const currentTime = new Date().getTime();
 
-    if ((currentTime - lastUpdate) > 250) {
+    if ((currentTime - lastUpdate) > 275) {
         const timeDifference = (currentTime - lastUpdate) / 1000;
         lastUpdate = currentTime;
 
@@ -30,7 +30,7 @@ function handleDeviceMotion(event) {
 
         const speed = (Math.abs(x - lastX) + Math.abs(y - lastY)) / timeDifference;
 
-        if (speed > 470 && (currentTime - lastVibration) > vibrationDelay && !isPopupVisible) {
+        if (speed > 440 && (currentTime - lastVibration) > vibrationDelay && !isPopupVisible) {
             showPopup(); // Показываем окно при тряске
             lastVibration = currentTime;
             console.log('Device shaken! Speed:', speed);
