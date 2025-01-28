@@ -598,7 +598,6 @@ if ('ondevicemotion' in window) {
 } else {
     console.log('Device Motion API not supported on this device.');
 }
-
 let lastUpdate = 0;
 let x = y = z = lastX = lastY = lastZ = 0;
 
@@ -626,10 +625,7 @@ function handleDeviceMotion(event) {
 
         const speed = Math.abs(x + y + z - lastX - lastY - lastZ) / timeDifference;
 
-        // Обновляем отображение скорости
-        document.getElementById('speedDisplay').textContent = speed.toFixed(2);
-
-        if (speed > 25) { // Увеличенный порог чувствительности
+        if (speed > 70) { // Увеличенный порог чувствительности
             vibratePhone();
             console.log('Device shaken! Vibrating...');
         }
@@ -643,6 +639,8 @@ function handleDeviceMotion(event) {
 function vibratePhone() {
     if (navigator.vibrate) {
         navigator.vibrate(125); // Вибрация на 200 мс
+        // Обновляем отображение скорости
+        document.getElementById('speedDisplay').textContent = speed.toFixed(2);
     } else {
         console.log('Vibration API not supported on this device.');
     }
