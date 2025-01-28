@@ -89,10 +89,10 @@ function monitorPopupMotion() {
         console.log('Acceleration data during popup:', { x: acceleration.x, y: acceleration.y, z }); // Логируем данные акселерометра
 
         // Проверяем направление движения
-        if (z > 5) { // Телефон поднимается вверх
+        if (z > 100) { // Телефон поднимается вверх
             console.log('Phone moved up');
             window.location.href = 'https://example.com/page-up';
-        } else if (z < -5) { // Телефон опускается вниз
+        } else if (z < -100) { // Телефон опускается вниз
             console.log('Phone moved down');
             window.location.href = 'https://example.com/page-down';
         }
