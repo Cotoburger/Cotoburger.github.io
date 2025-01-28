@@ -1,4 +1,3 @@
-
 let lastUpdate = 0;
 let lastVibration = 0;
 let vibrationDelay = 500; // Задержка между вибрациями (мс)
@@ -16,6 +15,7 @@ function handleDeviceMotion(event) {
 
         x = acceleration.x;
         y = acceleration.y;
+        z = acceleration.z;
 
         const deltaX = Math.abs(x - lastX);
         const deltaY = Math.abs(y - lastY);
@@ -37,8 +37,10 @@ function handleDeviceMotion(event) {
 
         lastX = x;
         lastY = y;
+        lastZ = z;
     }
 }
+
 function showPopup() {
     if (isPopupVisible) return; // Если окно уже показывается, не запускаем заново
 
@@ -62,6 +64,9 @@ function showPopup() {
         popup.classList.remove('shake2');
     }, 500); // Длительность анимации тряски
 
+    // Проверяем направление движения при поднятии/опускании телефона
+    monitorPopupMotion();
+
     // Плавно скрываем окно через 4.5 секунды
     setTimeout(() => {
         popup.style.opacity = '0'; // Начинаем скрывать окно
@@ -73,11 +78,29 @@ function showPopup() {
         isPopupVisible = false; // Сбрасываем флаг, чтобы разрешить активацию окна снова
     }, 5000); // Окончательное скрытие через 5 секунд
 }
+
+function monitorPopupMotion() {
+    const motionListener = (event) => {
+        const acceleration = event.accelerationIncludingGravity || { x: 0, y: 0, z: 0 };
+        const z = acceleration.z;
+
+        // Проверяем направление движения
+        if (z > 100) { // Телефон поднимается вверх
+            window.location.href = 'https://example.com/page-up';
+        } else if (z < -100) { // Телефон опускается вниз
+            window.location.href = 'https://example.com/page-down';
+        }
+    };
+
+    window.addEventListener('devicemotion', motionListener);
+
+    // Убираем слушатель после закрытия попапа
+    setTimeout(() => {
+        window.removeEventListener('devicemotion', motionListener);
+    }, 5000); // Длительность проверки совпадает с показом попапа
+}
+
 window.addEventListener('devicemotion', handleDeviceMotion);
-
-
-
-
 
 
 
