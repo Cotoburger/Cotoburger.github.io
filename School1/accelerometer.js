@@ -14,7 +14,7 @@ function handleDeviceMotion(event) {
     const acceleration = event.accelerationIncludingGravity || { x: 0, y: 0, z: 0 };
     const currentTime = new Date().getTime();
 
-    if ((currentTime - lastUpdate) > 245) {
+    if ((currentTime - lastUpdate) > 150) {
         const timeDifference = (currentTime - lastUpdate) / 1000;
         lastUpdate = currentTime;
 
