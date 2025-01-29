@@ -84,23 +84,27 @@ function showPopup() {
 }
 
 function monitorPopupMotion() {
+    let hasTriggered = false; // Флаг для отслеживания, было ли уже срабатывание
     const motionListener = (event) => {
+        if (hasTriggered) return; // Если уже сработало, выходим из функции
         const acceleration = event.accelerationIncludingGravity || { x: 0, y: 0, z: 0 };
         const z = acceleration.z;
 
         console.log('Acceleration data during popup:', { x: acceleration.x, y: acceleration.y, z });
 
         // Фильтруем малые изменения
-        if (Math.abs(z) < 0.4) {
+        if (Math.abs(z) < 1) { // Увеличиваем порог чувствительности
             return;
         }
         // Проверяем движение устройства вверх или вниз относительно земли
         if (z > 7) { // Телефон движется вверх
             console.log('Phone moving upwards');
             window.open('https://isaacdeve.github.io/', '_blank'); // Открываем сайт при движении вверх
+            hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
         } else if (z < -5) { // Телефон движется вниз
             console.log('Phone moving downwards');
             window.open('https://h2o0o0o.github.io/#home', '_blank'); // Открываем сайт при движении вниз
+            hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
         }
     };
 
@@ -112,6 +116,7 @@ function monitorPopupMotion() {
         console.log('Motion listener removed');
     }, 5000); // Длительность проверки совпадает с показом попапа
 }
+
 
 
 
