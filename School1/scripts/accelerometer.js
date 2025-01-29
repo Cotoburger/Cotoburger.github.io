@@ -125,7 +125,7 @@ function monitorPopupMotion() {
         console.log('Vertical acceleration:', vertical_acceleration.toFixed(1));
 
         // Фильтруем малые изменения
-        if (Math.abs(vertical_acceleration) < 1.5) { // Чувствительность можно настроить
+        if (Math.abs(vertical_acceleration) < 3.5) { // Чувствительность можно настроить
             return;
         }
 
