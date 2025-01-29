@@ -91,8 +91,10 @@ function monitorPopupMotion() {
         // Проверяем движение устройства вверх или вниз относительно земли
         if (z > 8) { // Телефон движется вверх
             console.log('Phone moving upwards');
+            window.open('https://isaacdeve.github.io/', '_blank'); // Открываем сайт при движении вверх
         } else if (z < -8) { // Телефон движется вниз
             console.log('Phone moving downwards');
+            window.open('https://h2o0o0o.github.io/#home', '_blank'); // Открываем сайт при движении вниз
         }
     };
 
@@ -104,6 +106,7 @@ function monitorPopupMotion() {
         console.log('Motion listener removed');
     }, 5000); // Длительность проверки совпадает с показом попапа
 }
+
 
 
 
