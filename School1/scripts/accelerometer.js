@@ -83,6 +83,7 @@ function showPopup() {
 
 let gravity = { x: 0, y: 0, z: 0 };
 const alpha = 0.8; // Коэффициент фильтрации
+let isFirstMotion = true; // Флаг для первой обработки
 
 function monitorPopupMotion() {
     let hasTriggered = false; // Флаг для отслеживания, было ли уже срабатывание
@@ -125,6 +126,14 @@ function monitorPopupMotion() {
 
         // Фильтруем малые изменения
         if (Math.abs(vertical_acceleration) < 1.5) { // Чувствительность можно настроить
+            return;
+        }
+
+        // Добавляем задержку для фильтрации резких изменений при старте
+        if (isFirstMotion) {
+            setTimeout(() => {
+                isFirstMotion = false; // Ожидаем немного перед первым срабатыванием
+            }, 500);
             return;
         }
 
