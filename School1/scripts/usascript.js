@@ -288,7 +288,7 @@ const updateSchedule = () => {
         lessonInfo.classList.remove('shake');
     }, 300); // Длительность анимации (500 мс)
     if (navigator.vibrate) {
-            navigator.vibrate([50]);
+            navigator.vibrate([10]);
         }
     // Обновляем текущее расписание
     
