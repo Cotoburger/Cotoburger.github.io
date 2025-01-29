@@ -30,6 +30,9 @@ function simulateShake() {
 // Обновление данных каждую минуту (60000 миллисекунд)
 // Функция для обновления данных
 function updateData() {
+    const lastUpdateElement = document.getElementById("last-update");
+    const lastDeploymentElement = document.getElementById("last-deployment");
+    
     // Получаем дату последнего коммита
     fetch("https://api.github.com/repos/Cotoburger/Cotoburger.github.io")
         .then(response => {
@@ -39,28 +42,24 @@ function updateData() {
             return response.json();
         })
         .then(data => {
-            const lastUpdateElement = document.getElementById("last-update");
+            const date = new Date(data.pushed_at);
+            const formattedDate = date.toLocaleDateString("ru-RU");
+            const formattedTime = date.toLocaleTimeString("ru-RU");
+            
             if (lastUpdateElement) {
-                const date = new Date(data.pushed_at);
-                const formattedDate = date.toLocaleDateString("ru-RU");
-                const formattedTime = date.toLocaleTimeString("ru-RU");
-
                 lastUpdateElement.textContent = `📤Last Commit: ${formattedDate} ${formattedTime}`;
-                console.log("Last commit: " + formattedDate + " " + formattedTime);
             }
         })
         .catch(error => {
-            console.error("Ошибка:", error);
+            console.error("Ошибка получения коммита:", error);
             if (lastUpdateElement) {
-                lastUpdateElement.textContent = "Не удалось получить информацию о последнем коммите";
+                lastUpdateElement.textContent = "❌ Ошибка получения коммита";
             }
         });
-
+    
     // Получаем информацию о последнем деплое
     fetch("https://api.github.com/repos/Cotoburger/Cotoburger.github.io/deployments", {
-        headers: {
-            "Accept": "application/vnd.github.v3+json"
-        }
+        headers: { "Accept": "application/vnd.github.v3+json" }
     })
         .then(response => {
             if (!response.ok) {
@@ -72,13 +71,11 @@ function updateData() {
             if (data.length === 0) {
                 throw new Error("Нет доступных деплоев");
             }
-            const lastDeploymentElement = document.getElementById("last-deployment");
             const latestDeployment = data[0]; // Берём самый свежий деплой
             const date = new Date(latestDeployment.created_at);
             const formattedDate = date.toLocaleDateString("ru-RU");
             const formattedTime = date.toLocaleTimeString("ru-RU");
-
-            // Получаем статус деплоя
+            
             return fetch(latestDeployment.statuses_url, {
                 headers: { "Accept": "application/vnd.github.v3+json" }
             }).then(statusResponse => {
@@ -87,21 +84,19 @@ function updateData() {
                 }
                 return statusResponse.json();
             }).then(statuses => {
-                const latestStatus = statuses[0] || { state: "unknown" }; // Берём последний статус
+                const latestStatus = statuses[0] || { state: "unknown" };
                 const statusText = latestStatus.state === "success" ? "✅" :
-                    latestStatus.state === "failure" ? "❌ ERROR" :
-                    latestStatus.state === "pending" ? "⏳ Deploy" : "⏳ Deploy";
-
+                    latestStatus.state === "failure" ? "❌ ERROR" : "⏳ Deploy";
+                
                 if (lastDeploymentElement) {
                     lastDeploymentElement.textContent = `📦Last Deployment: ${formattedDate} ${formattedTime} (${statusText})`;
-                    console.log("Last deployment: " + formattedDate + " " + formattedTime + " (" + latestStatus.state + ")");
                 }
             });
         })
         .catch(error => {
-            console.error("Ошибка:", error);
+            console.error("Ошибка получения деплоя:", error);
             if (lastDeploymentElement) {
-                lastDeploymentElement.textContent = "Не удалось получить информацию о последнем деплое";
+                lastDeploymentElement.textContent = "❌ Ошибка получения деплоя";
             }
         });
 }
@@ -110,4 +105,4 @@ function updateData() {
 updateData();
 
 // Обновление данных каждую минуту (60000 миллисекунд)
-setInterval(updateData, 90000); // Обновление каждую минуту
+setInterval(updateData, 60000);
