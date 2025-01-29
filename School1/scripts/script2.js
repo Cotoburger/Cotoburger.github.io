@@ -51,9 +51,9 @@ function updateData() {
             }
         })
         .catch(error => {
-            console.error("Ошибка получения коммита:", error);
+            console.error("Commit fetch failure:", error);
             if (lastUpdateElement) {
-                lastUpdateElement.textContent = "❌ Ошибка получения коммита";
+                lastUpdateElement.textContent = "❌ Commit fetch failure";
             }
         });
     
@@ -94,9 +94,9 @@ function updateData() {
             });
         })
         .catch(error => {
-            console.error("Ошибка получения деплоя:", error);
+            console.error("Deployment fetch failure:", error);
             if (lastDeploymentElement) {
-                lastDeploymentElement.textContent = "❌ Ошибка получения деплоя";
+                lastDeploymentElement.textContent = "❌ Deployment fetch failure";
             }
         });
 }
