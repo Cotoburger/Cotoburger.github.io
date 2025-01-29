@@ -97,7 +97,7 @@ function monitorPopupMotion() {
             return;
         }
         // Проверяем движение устройства вверх или вниз относительно земли
-        if (z > 20) { // Телефон движется вверх
+        if (z > 15) { // Телефон движется вверх
             console.log('Phone moving upwards');
             popup.classList.add('phoneup'); // Добавляем анимацию для подъема телефона
 
