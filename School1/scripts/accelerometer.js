@@ -42,14 +42,13 @@ function handleDeviceMotion(event) {
         lastZ = z;
     }
 }
-
 function showPopup() {
     if (isPopupVisible) return; // Если окно уже показывается, не запускаем заново
 
     isPopupVisible = true; // Устанавливаем флаг активности окна
 
     const popup = document.getElementById('vibrationPopup');
-    
+
     // Убираем начальные стили
     popup.style.display = 'block';
     popup.style.opacity = '0'; // Сначала окно полностью прозрачно
