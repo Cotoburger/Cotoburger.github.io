@@ -96,7 +96,7 @@ function monitorPopupMotion() {
             return;
         }
         // Проверяем движение устройства вверх или вниз относительно земли
-        if (z > 14) { // Телефон движется вверх
+        if (z > 17) { // Телефон движется вверх
             console.log('Phone moving upwards');
             window.open('https://isaacdeve.github.io/', '_blank'); // Открываем сайт при движении вверх
             hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
