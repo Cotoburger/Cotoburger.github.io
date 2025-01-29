@@ -21,7 +21,7 @@ function handleDeviceMotion(event) {
         const deltaY = Math.abs(y - lastY);
 
         // Фильтруем малые изменения
-        if (deltaX < 6 && deltaY < 6) {
+        if (deltaX < 0.4 && deltaY < 0.4) {
             return;
         }
 
@@ -29,7 +29,7 @@ function handleDeviceMotion(event) {
         const speed = (Math.abs(x - lastX) + Math.abs(y - lastY)) / timeDifference;
 
         // Проверяем скорость и задержку между вибрациями
-        if (speed > 380 && (currentTime - lastVibration) > vibrationDelay && !isPopupVisible) {
+        if (speed > 400 && (currentTime - lastVibration) > vibrationDelay && !isPopupVisible) {
             showPopup(); // Показываем окно при тряске
             lastVibration = currentTime;
             console.log('Device shaken! Speed:', speed);
@@ -66,7 +66,7 @@ function showPopup() {
     // Add a delay before monitoring motion
     setTimeout(() => {
         monitorPopupMotion();
-    }, 500); // Delay of 500ms before starting to monitor motion
+    }, 600); // Delay of 600ms before starting to monitor motion
 
     // Плавно скрываем окно через 4.5 секунды
     setTimeout(() => {
@@ -81,7 +81,7 @@ function showPopup() {
 }
 
 let gravity = { x: 0, y: 0, z: 0 };
-const alpha = 0.5; // Коэффициент фильтрации
+const alpha = 0.8; // Коэффициент фильтрации
 
 function monitorPopupMotion() {
     let hasTriggered = false; // Флаг для отслеживания, было ли уже срабатывание
@@ -97,30 +97,30 @@ function monitorPopupMotion() {
         gravity.y = alpha * gravity.y + (1 - alpha) * acc.y;
         gravity.z = alpha * gravity.z + (1 - alpha) * acc.z;
 
-        // Линейное ускорение без учета гравитации
-const linear_acceleration = {
-    x: acc.x - gravity.x,
-    y: acc.y - gravity.y,
-    z: acc.z - gravity.z
-};
+        // Линейное ускорение (без гравитации)
+        const linear_acceleration = {
+            x: acc.x - gravity.x,
+            y: acc.y - gravity.y,
+            z: acc.z - gravity.z
+        };
 
-// Переводим ускорение по Z в правильное направление
-const vertical_acceleration = -linear_acceleration.z;  // Инвертируем знак для оси Z
+        // Определение вертикального ускорения
+        const vertical_acceleration = linear_acceleration.z; // Ось Z считается вертикальной
 
-console.log('Vertical acceleration:', vertical_acceleration.toFixed(1));
+        console.log('Vertical acceleration:', vertical_acceleration.toFixed(1));
 
-// Фильтруем малые изменения
-if (Math.abs(vertical_acceleration) < 0.5) { // Чувствительность можно настроить
-    return;
-}
+        // Фильтруем малые изменения
+        if (Math.abs(vertical_acceleration) < 1) { // Чувствительность можно настроить
+            return;
+        }
 
-if (vertical_acceleration > 4) { // Телефон движется вверх
-    console.log('Phone moving upwards');
-    handleMotion('phoneup', 'https://isaacdeve.github.io/');
-} else if (vertical_acceleration < -4) { // Телефон движется вниз
-    console.log('Phone moving downwards');
-    handleMotion('phonedown', 'https://h2o0o0o.github.io/#home');
-}
+        if (vertical_acceleration > 4) { // Телефон движется вверх
+            console.log('Phone moving upwards');
+            handleMotion('phoneup', 'https://isaacdeve.github.io/');
+        } else if (vertical_acceleration < -4) { // Телефон движется вниз
+            console.log('Phone moving downwards');
+            handleMotion('phonedown', 'https://h2o0o0o.github.io/#home');
+        }
     };
 
     const handleMotion = (animationClass, url) => {
