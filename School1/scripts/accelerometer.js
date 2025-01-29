@@ -93,7 +93,7 @@ function monitorPopupMotion() {
         console.log('Acceleration data during popup:', { x: acceleration.x, y: acceleration.y, z });
 
         // Фильтруем малые изменения
-        if (Math.abs(z) < 0.8) { // Увеличиваем порог чувствительности
+        if (Math.abs(z) < 0.4) { // Увеличиваем порог чувствительности
             return;
         }
         // Проверяем движение устройства вверх или вниз относительно земли
