@@ -29,7 +29,7 @@ function simulateShake() {
 
 // URL репозитория GitHub
 const repoUrl = 'https://api.github.com/repos/Cotoburger/Cotoburger.github.io';
-
+fetch(`${repoUrl}?t=${Date.now()}`, { cache: "no-store" })
 // Функция для получения даты последнего изменения из кэша
 function getCachedLastModified() {
     return localStorage.getItem('lastModified');
