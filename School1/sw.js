@@ -50,7 +50,7 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-    const excludedUrls = ['https://api.mymemory.translated.net/'];
+    const excludedUrls = ['https://api.mymemory.translated.net/', "https://api.github.com/repos/Cotoburger"];
 
     if (excludedUrls.some(url => event.request.url.startsWith(url))) {
         console.log('[ServiceWorker] Excluding from cache:', event.request.url);
