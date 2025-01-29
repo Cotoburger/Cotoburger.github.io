@@ -21,7 +21,7 @@ function handleDeviceMotion(event) {
         const deltaY = Math.abs(y - lastY);
 
         // Фильтруем малые изменения
-        if (deltaX < 0.4 && deltaY < 0.4) {
+        if (deltaX < 6 && deltaY < 6) {
             return;
         }
 
@@ -29,7 +29,7 @@ function handleDeviceMotion(event) {
         const speed = (Math.abs(x - lastX) + Math.abs(y - lastY)) / timeDifference;
 
         // Проверяем скорость и задержку между вибрациями
-        if (speed > 400 && (currentTime - lastVibration) > vibrationDelay && !isPopupVisible) {
+        if (speed > 380 && (currentTime - lastVibration) > vibrationDelay && !isPopupVisible) {
             showPopup(); // Показываем окно при тряске
             lastVibration = currentTime;
             console.log('Device shaken! Speed:', speed);
@@ -97,30 +97,30 @@ function monitorPopupMotion() {
         gravity.y = alpha * gravity.y + (1 - alpha) * acc.y;
         gravity.z = alpha * gravity.z + (1 - alpha) * acc.z;
 
-        // Линейное ускорение (без гравитации)
-        const linear_acceleration = {
-            x: acc.x - gravity.x,
-            y: acc.y - gravity.y,
-            z: acc.z - gravity.z
-        };
+        // Линейное ускорение без учета гравитации
+const linear_acceleration = {
+    x: acc.x - gravity.x,
+    y: acc.y - gravity.y,
+    z: acc.z - gravity.z
+};
 
-        // Определение вертикального ускорения
-        const vertical_acceleration = linear_acceleration.z; // Ось Z считается вертикальной
+// Переводим ускорение по Z в правильное направление
+const vertical_acceleration = -linear_acceleration.z;  // Инвертируем знак для оси Z
 
-        console.log('Vertical acceleration:', vertical_acceleration.toFixed(1));
+console.log('Vertical acceleration:', vertical_acceleration.toFixed(1));
 
-        // Фильтруем малые изменения
-        if (Math.abs(vertical_acceleration) < 0.5) { // Чувствительность можно настроить
-            return;
-        }
+// Фильтруем малые изменения
+if (Math.abs(vertical_acceleration) < 0.5) { // Чувствительность можно настроить
+    return;
+}
 
-        if (vertical_acceleration > 4) { // Телефон движется вверх
-            console.log('Phone moving upwards');
-            handleMotion('phoneup', 'https://isaacdeve.github.io/');
-        } else if (vertical_acceleration < -4) { // Телефон движется вниз
-            console.log('Phone moving downwards');
-            handleMotion('phonedown', 'https://h2o0o0o.github.io/#home');
-        }
+if (vertical_acceleration > 4) { // Телефон движется вверх
+    console.log('Phone moving upwards');
+    handleMotion('phoneup', 'https://isaacdeve.github.io/');
+} else if (vertical_acceleration < -4) { // Телефон движется вниз
+    console.log('Phone moving downwards');
+    handleMotion('phonedown', 'https://h2o0o0o.github.io/#home');
+}
     };
 
     const handleMotion = (animationClass, url) => {
