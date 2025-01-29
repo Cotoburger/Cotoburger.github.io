@@ -1,3 +1,4 @@
+const bannedWords = ['sex', 'orgasm']; // Список "банвордов"
 let isFetchingFact = false;
 let isTranslated = false;
 
@@ -7,37 +8,52 @@ if (lastTranslated) {
     isTranslated = lastTranslated === 'true';
 }
 
+function containsBannedWord(text) {
+    return bannedWords.some(word => text.toLowerCase().includes(word.toLowerCase()));
+}
+
 function getFact() {
-    if (isFetchingFact) return; // Prevent multiple simultaneous executions
+    if (isFetchingFact) return; // Предотвращение множественных запросов
     isFetchingFact = true;
 
     const factText = document.getElementById('fact-text');
     factText.textContent = '...'; // Показываем сообщение о загрузке
 
-    fetch('https://uselessfacts.jsph.pl/random.json?language=en')
-        .then(response => response.json())
-        .then(data => {
-            const factContent = document.querySelector('.fact-content');
-            factContent.style.opacity = '1';
+    fetchFact();
 
-            const txt = data.text;
-            // Сначала проверяем, нужно ли переводить
-            if (isTranslated) {
-                translateFactWithAnimation(txt);  // Если нужно, сразу переводим и показываем
-            } else {
-                displayFactWithTyping(txt); // Если не нужно переводить, сразу показываем факт
-            }
+    function fetchFact() {
+        fetch('https://uselessfacts.jsph.pl/random.json?language=en')
+            .then(response => response.json())
+            .then(data => {
+                const txt = data.text;
 
-            // Добавляем обработчик на клик для перевода
-            factText.onclick = () => {
-                toggleTranslation(txt);
-            };
-        })
-        .catch(error => {
-            console.error('Ошибка при получении факта:', error);
-            factText.textContent = 'Не удалось загрузить факт дня.';
-            isFetchingFact = false; // Reset the flag in case of error
-        });
+                if (containsBannedWord(txt)) {
+                    console.warn('Факт содержит запрещённое слово, делаем новый запрос.');
+                    fetchFact(); // Повторяем запрос
+                    return;
+                }
+
+                const factContent = document.querySelector('.fact-content');
+                factContent.style.opacity = '1';
+
+                if (isTranslated) {
+                    translateFactWithAnimation(txt); // Если нужно, переводим и показываем
+                } else {
+                    displayFactWithTyping(txt); // Если не нужно, просто показываем факт
+                }
+
+                factText.onclick = () => {
+                    toggleTranslation(txt); // Добавляем обработчик для перевода
+                };
+
+                isFetchingFact = false; // Сбрасываем флаг после успешного выполнения
+            })
+            .catch(error => {
+                console.error('Ошибка при получении факта:', error);
+                factText.textContent = 'Не удалось загрузить факт дня.';
+                isFetchingFact = false; // Сбрасываем флаг в случае ошибки
+            });
+    }
 }
 
 function translateFactWithAnimation(text) {
