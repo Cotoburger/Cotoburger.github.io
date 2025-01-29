@@ -107,7 +107,7 @@ function monitorPopupMotion() {
         // Определение вертикального ускорения
         const vertical_acceleration = linear_acceleration.z; // Ось Z считается вертикальной
 
-        console.log('Vertical acceleration:', vertical_acceleration);
+        console.log('Vertical acceleration:', vertical_acceleration.toFixed(1));
 
         // Фильтруем малые изменения
         if (Math.abs(vertical_acceleration) < 0.5) { // Чувствительность можно настроить
