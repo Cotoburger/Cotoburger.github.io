@@ -81,7 +81,7 @@ function showPopup() {
 }
 
 let gravity = { x: 0, y: 0, z: 0 };
-const alpha = 0.8; // Коэффициент фильтрации
+const alpha = 0.5; // Коэффициент фильтрации
 
 function monitorPopupMotion() {
     let hasTriggered = false; // Флаг для отслеживания, было ли уже срабатывание
