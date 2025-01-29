@@ -66,8 +66,10 @@ function showPopup() {
         popup.classList.remove('shake2');
     }, 500); // Длительность анимации тряски
 
-    // Проверяем изменение ориентации телефона при показе попапа
-    monitorPopupMotion();
+    // Add a delay before monitoring motion
+    setTimeout(() => {
+        monitorPopupMotion();
+    }, 500); // Delay of 500ms before starting to monitor motion
 
     // Плавно скрываем окно через 4.5 секунды
     setTimeout(() => {
