@@ -82,50 +82,68 @@ function showPopup() {
     }, 5000); // Окончательное скрытие через 5 секунд
 }
 
+let gravity = { x: 0, y: 0, z: 0 };
+const alpha = 0.8; // Коэффициент фильтрации
+
 function monitorPopupMotion() {
     let hasTriggered = false; // Флаг для отслеживания, было ли уже срабатывание
     const popup = document.getElementById('vibrationPopup'); // Получаем элемент popup
+
     const motionListener = (event) => {
         if (hasTriggered) return; // Если уже сработало, выходим из функции
-        const acceleration = event.acceleration || { x: 0, y: 0, z: 0 };
-        const z = acceleration.z;
 
-        console.log('Acceleration data during popup:', { x: acceleration.x, y: acceleration.y, z });
+        const acc = event.accelerationIncludingGravity || { x: 0, y: 0, z: 0 };
+
+        // Фильтрация гравитации
+        gravity.x = alpha * gravity.x + (1 - alpha) * acc.x;
+        gravity.y = alpha * gravity.y + (1 - alpha) * acc.y;
+        gravity.z = alpha * gravity.z + (1 - alpha) * acc.z;
+
+        // Линейное ускорение (без гравитации)
+        const linear_acceleration = {
+            x: acc.x - gravity.x,
+            y: acc.y - gravity.y,
+            z: acc.z - gravity.z
+        };
+
+        // Определение вертикального ускорения
+        const vertical_acceleration = linear_acceleration.z; // Ось Z считается вертикальной
+
+        console.log('Vertical acceleration:', vertical_acceleration);
 
         // Фильтруем малые изменения
-        if (Math.abs(z) < 5) { // Увеличиваем порог чувствительности
+        if (Math.abs(vertical_acceleration) < 0.5) { // Чувствительность можно настроить
             return;
         }
-        // Проверяем движение устройства вверх или вниз относительно земли
-        if (z > 8) { // Телефон движется вверх
+
+        if (vertical_acceleration > 8) { // Телефон движется вверх
             console.log('Phone moving upwards');
-            popup.classList.add('phoneup'); // Добавляем анимацию для подъема телефона
-
-            // Ожидаем завершения анимации, прежде чем открыть сайт
-            setTimeout(() => {
-                window.open('https://isaacdeve.github.io/', '_blank'); // Открываем сайт при движении вверх
-            }, 500); // Пауза в 500ms для завершения анимации
-
-            setTimeout(() => {
-                popup.classList.remove('phoneup'); // Убираем класс анимации после завершения
-            }, 500); // Убираем класс по завершению анимации
-            hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
-
-        } else if (z < -8) { // Телефон движется вниз
+            handleMotion('phoneup', 'https://isaacdeve.github.io/');
+        } else if (vertical_acceleration < -8) { // Телефон движется вниз
             console.log('Phone moving downwards');
-            popup.classList.add('phonedown'); // Добавляем анимацию для подъема телефона
-            // Ожидаем завершения анимации, прежде чем открыть сайт
-            setTimeout(() => {
-                window.open('https://h2o0o0o.github.io/#home', '_blank'); // Открываем сайт при движении вниз
-            }, 500); // Пауза в 500ms для завершения анимации
-
-            setTimeout(() => {
-                popup.classList.remove('phonedown'); // Убираем класс анимации после завершения
-            }, 500); // Убираем класс по завершению анимации
-            hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
+            handleMotion('phonedown', 'https://h2o0o0o.github.io/#home');
         }
     };
 
+    const handleMotion = (animationClass, url) => {
+        popup.classList.add(animationClass); // Добавляем класс для анимации
+
+        // Ожидаем завершения анимации, прежде чем выполнить действие
+        setTimeout(() => {
+            window.open(url, '_blank'); // Открываем сайт
+        }, 500); // Пауза в 500ms для завершения анимации
+
+        setTimeout(() => {
+            popup.classList.remove(animationClass); // Убираем класс анимации
+        }, 500); // Убираем класс после завершения анимации
+
+        hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
+
+        // Удаляем обработчик событий для оптимизации
+        window.removeEventListener('devicemotion', motionListener);
+    };
+
+    // Добавляем слушатель событий движения устройства
     window.addEventListener('devicemotion', motionListener);
 
     // Убираем слушатель после закрытия попапа
