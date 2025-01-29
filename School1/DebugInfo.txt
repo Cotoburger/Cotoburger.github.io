@@ -1,2 +1,2 @@
-Изменения: GitHub API для сведений
-Спасибо президенту Соединённых Штатов Америки за спонсирование данного проекта.
+Изменения: caching update
+thx Donald Trump for supporting this project.

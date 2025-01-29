@@ -25,12 +25,8 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(cacheName).then((cache) => {
             return cache.addAll(filesToCache)
-                .then(() => {
-                    console.log('[ServiceWorker] Cached all files successfully');
-                })
-                .catch((error) => {
-                    console.error('[ServiceWorker] Failed to cache files:', error);
-                });
+                .then(() => console.log('[ServiceWorker] Cached all files successfully'))
+                .catch((error) => console.error('[ServiceWorker] Failed to cache files:', error));
         })
     );
     self.skipWaiting();
@@ -54,52 +50,43 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-    // Исключение для определённых URL-ов
-    const excludedUrls = [
-        'https://api.mymemory.translated.net/'
-    ];
+    const excludedUrls = ['https://api.mymemory.translated.net/'];
 
-    // Проверяем, не является ли запрос одним из исключённых URL-ов
     if (excludedUrls.some(url => event.request.url.startsWith(url))) {
         console.log('[ServiceWorker] Excluding from cache:', event.request.url);
-        return; // Пропускаем дальнейшую обработку этого запроса
+        event.respondWith(fetch(event.request));
+        return;
     }
 
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
             if (cachedResponse) {
                 console.log('[ServiceWorker] Serving from cache:', event.request.url);
-                // Запускаем фоновый запрос для обновления кеша
-                fetchAndUpdateCache(event.request);
+                event.waitUntil(fetchAndUpdateCache(event.request));
                 return cachedResponse;
             }
-            // Если нет кэшированного ответа, делаем сетевой запрос
             return fetch(event.request).then((networkResponse) => {
-                if (networkResponse && networkResponse.ok) {
-                    // Проверяем, не является ли запрос HEAD запросом
-                    if (event.request.method !== 'HEAD') {
-                        const clonedResponse = networkResponse.clone();
-                        caches.open(cacheName).then((cache) => {
-                            cache.put(event.request, clonedResponse);
-                            console.log('[ServiceWorker] Cached new response for:', event.request.url);
-                        });
-                    } else {
-                        console.log('[ServiceWorker] Skipping cache for HEAD request:', event.request.url);
-                    }
+                if (networkResponse && networkResponse.ok && event.request.method !== 'HEAD') {
+                    const clonedResponse = networkResponse.clone();
+                    caches.open(cacheName).then((cache) => {
+                        cache.put(event.request, clonedResponse);
+                        console.log('[ServiceWorker] Cached new response for:', event.request.url);
+                    });
                 }
                 return networkResponse;
             }).catch((error) => {
                 console.error('[ServiceWorker] Fetch failed:', error);
-                return Response.error();
+                return caches.match(event.request).then((cachedResponse) => {
+                    return cachedResponse || new Response("Offline", { status: 503 });
+                });
             });
-
         })
     );
 });
 
 function fetchAndUpdateCache(request) {
-    fetch(request).then((response) => {
-        if (response && response.ok) {
+    return fetch(request).then((response) => {
+        if (response && response.ok && response.type !== 'opaque') {
             const clonedResponse = response.clone();
             caches.open(cacheName).then((cache) => {
                 cache.put(request, clonedResponse);
