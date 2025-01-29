@@ -133,14 +133,14 @@ function monitorPopupMotion() {
         if (isFirstMotion) {
             setTimeout(() => {
                 isFirstMotion = false; // Ожидаем немного перед первым срабатыванием
-            }, 100);
+            }, 185);
             return;
         }
 
-        if (vertical_acceleration > 4) { // Телефон движется вверх
+        if (vertical_acceleration > 5) { // Телефон движется вверх
             console.log('Phone moving upwards');
             handleMotion('phoneup', 'https://isaacdeve.github.io/');
-        } else if (vertical_acceleration < -4) { // Телефон движется вниз
+        } else if (vertical_acceleration < -5) { // Телефон движется вниз
             console.log('Phone moving downwards');
             handleMotion('phonedown', 'https://h2o0o0o.github.io/#home');
         }
@@ -171,7 +171,7 @@ function monitorPopupMotion() {
     setTimeout(() => {
         window.removeEventListener('devicemotion', motionListener);
         console.log('Motion listener removed');
-    }, 4000); // Длительность проверки совпадает с показом попапа
+    }, 3800); // Длительность проверки совпадает с показом попапа
 }
 
 window.addEventListener('devicemotion', handleDeviceMotion);

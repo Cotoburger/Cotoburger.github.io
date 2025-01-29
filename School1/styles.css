@@ -326,6 +326,9 @@ h4 {
     #vibrationPopup {
     font-size: 0.9rem !important;
     }
+    .fact-content {
+        margin-bottom: -11.0635rem;
+    }
 }
 
 
@@ -365,19 +368,17 @@ h4 {
     color: #1eab1e;
 }
 @media (min-width: 60rem) {
-    #schedule1 {
-        flex: 0.5;
-        transform: scale(1.0) translateY(1rem);
-        transform-origin: top center;
-        min-width: 32rem;
-        margin-bottom: 10rem;
+    h1, h2 {
+        font-size: 1.6875rem;
+    }
+    h3 {
+        font-size: 3.5625rem;
     }
     #schedule {
         flex: 0.5;
-        transform: scale(1.1);
         transform-origin: top center;
-        margin-bottom: 5rem;
-        max-height: 30%;
+        min-width: 60rem;
+
     }
     .socials-container {
         margin-top: 6.25rem;
@@ -391,31 +392,34 @@ h4 {
         appearance: none;
     }
     #fact-text {
-        font-size: 2rem;
+        font-size: 3rem;
     }
+    .arrow-button {
+        font-size: 9rem; /* Размер шрифта */
+    }
+    #currentLessonShift1 {
+        font-size: 2.75rem;
+    }
+    #currentLessonShift2 {
     
+        font-size: 2.75rem;
+    }
 }
 
 @media (min-width: 95rem) {
-    #schedule1 {
-        flex: 0.37;
-        transform: scale(1.4) translateY(1rem);
-        transform-origin: top center;
-        min-width: 45rem;
-    }
+
     #schedule {
         flex: 0.4;
-        transform: scale(1.5);
         transform-origin: top center;
-        margin-bottom: 15rem;
-        max-height: 40%;
+        min-width: 80rem;
+        min-height: 100%;
     }
     .socials-container {
         margin-top: 6.25rem;
     }
     .time-progress {
         width: 100%;
-        height: 4rem;
+        height: 3.5rem;
         margin-top: 5px;
         margin-bottom: -0.8rem;
         border-radius: 5rem;
@@ -423,7 +427,20 @@ h4 {
         appearance: none;
     }
     #fact-text {
-        font-size: 2rem;
+        font-size: 6.4rem;
+    }
+    .arrow-button {
+        font-size: 12rem; /* Размер шрифта */
+    }
+    #currentLessonShift1 {
+        font-size: 2.75rem;
+    }
+    .lesson2 {
+        font-size: 3.75rem;
+    }
+    #currentLessonShift2 {
+    
+        font-size: 2.75rem;
     }
 }
 
