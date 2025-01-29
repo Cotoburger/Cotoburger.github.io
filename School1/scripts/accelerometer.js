@@ -86,15 +86,13 @@ function monitorPopupMotion() {
         const acceleration = event.accelerationIncludingGravity || { x: 0, y: 0, z: 0 };
         const z = acceleration.z;
 
-        console.log('Acceleration data during popup:', { x: acceleration.x, y: acceleration.y, z }); // Логируем данные акселерометра
+        console.log('Acceleration data during popup:', { x: acceleration.x, y: acceleration.y, z });
 
-        // Проверяем ориентацию устройства относительно пользователя
-        if (z > 8) { // Телефон наклонён к пользователю
-            console.log('Phone tilted towards user');
-          //  window.location.href = 'https://h2o0o0o.github.io/#home';
-        } else if (z < -8) { // Телефон наклонён от пользователя
-            console.log('Phone tilted away from user');
-           // window.location.href = 'https://isaacdeve.github.io/';
+        // Проверяем движение устройства вверх или вниз относительно земли
+        if (z > 8) { // Телефон движется вверх
+            console.log('Phone moving upwards');
+        } else if (z < -8) { // Телефон движется вниз
+            console.log('Phone moving downwards');
         }
     };
 
@@ -106,5 +104,7 @@ function monitorPopupMotion() {
         console.log('Motion listener removed');
     }, 5000); // Длительность проверки совпадает с показом попапа
 }
+
+
 
 window.addEventListener('devicemotion', handleDeviceMotion);
