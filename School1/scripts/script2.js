@@ -45,7 +45,7 @@ function updateData() {
                 const formattedDate = date.toLocaleDateString("ru-RU");
                 const formattedTime = date.toLocaleTimeString("ru-RU");
 
-                lastUpdateElement.textContent = `Последний коммит: ${formattedDate} ${formattedTime}`;
+                lastUpdateElement.textContent = `📤Last Commit: ${formattedDate} ${formattedTime}`;
                 console.log("Last commit: " + formattedDate + " " + formattedTime);
             }
         })
@@ -89,11 +89,11 @@ function updateData() {
             }).then(statuses => {
                 const latestStatus = statuses[0] || { state: "unknown" }; // Берём последний статус
                 const statusText = latestStatus.state === "success" ? "✅" :
-                    latestStatus.state === "failure" ? "❌ Ошибка" :
-                    latestStatus.state === "pending" ? "⏳ В процессе" : "❔ Неизвестно";
+                    latestStatus.state === "failure" ? "❌ ERROR" :
+                    latestStatus.state === "pending" ? "⏳ Deploy" : "⏳ Deploy";
 
                 if (lastDeploymentElement) {
-                    lastDeploymentElement.textContent = `Последний деплой: ${formattedDate} ${formattedTime} (${statusText})`;
+                    lastDeploymentElement.textContent = `📦Last Deployment: ${formattedDate} ${formattedTime} (${statusText})`;
                     console.log("Last deployment: " + formattedDate + " " + formattedTime + " (" + latestStatus.state + ")");
                 }
             });

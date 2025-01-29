@@ -887,3 +887,13 @@ body.light-theme .theme-toggle {
 .phonedown {
     animation: phonedown 0.3s ease-out forwards;
 }
+
+#last-update {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+#last-deployment {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
