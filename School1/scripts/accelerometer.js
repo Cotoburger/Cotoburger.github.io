@@ -110,10 +110,10 @@ function monitorPopupMotion() {
                 popup.classList.remove('phoneup'); // Убираем класс анимации после завершения
             }, 500); // Убираем класс по завершению анимации
             hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
+
         } else if (z < -10) { // Телефон движется вниз
             console.log('Phone moving downwards');
-            popup.classList.add('phonedown'); // Добавляем анимацию для опускания телефона
-
+            popup.classList.add('phonedown'); // Добавляем анимацию для подъема телефона
             // Ожидаем завершения анимации, прежде чем открыть сайт
             setTimeout(() => {
                 window.open('https://h2o0o0o.github.io/#home', '_blank'); // Открываем сайт при движении вниз
@@ -134,3 +134,7 @@ function monitorPopupMotion() {
         console.log('Motion listener removed');
     }, 5000); // Длительность проверки совпадает с показом попапа
 }
+
+
+
+window.addEventListener('devicemotion', handleDeviceMotion);
