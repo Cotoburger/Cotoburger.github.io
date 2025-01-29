@@ -110,27 +110,3 @@ fetch("https://api.github.com/repos/Cotoburger/Cotoburger.github.io/deployments"
             lastDeploymentElement.textContent = "Не удалось получить информацию о последнем деплое";
         }
     });
-
-    const proxyList = [
-        "https://corsproxy.io/?",
-        "https://api.allorigins.win/raw?url=",
-        "https://thingproxy.freeboard.io/fetch/",
-        "https://cors-anywhere.herokuapp.com/"
-    ];
-    
-    // Функция выбора случайного прокси
-    function getRandomProxy() {
-        return proxyList[Math.floor(Math.random() * proxyList.length)];
-    }
-    
-    // Делаем запрос через случайный прокси
-    function fetchWithRandomProxy(url) {
-        const proxy = getRandomProxy();
-        console.log(`Используем прокси: ${proxy}`);
-    
-        fetch(proxy + encodeURIComponent(url))
-            .then(response => response.json())
-            .then(data => console.log("Данные:", data))
-            .catch(error => console.error("Ошибка запроса:", error));
-    }
-    
