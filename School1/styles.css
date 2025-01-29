@@ -854,19 +854,19 @@ body.light-theme .theme-toggle {
 /* Анимация для подъёма телефона */
 @keyframes phoneup {
     0% { transform: translate(-50%, -50%) translateY(0) scale(1.4); opacity: 1; }
-    100% { transform: translate(-50%, -50%) translateY(10rem) scale(1.2); opacity: 1; }
+    100% { transform: translate(-50%, -50%) translateY(10rem) scale(1.8); opacity: 1; }
 }
 
 .phoneup {
-    animation: phoneup 0.5s ease-out forwards;
+    animation: phoneup 0.3s ease-out forwards;
 }
 
 /* Анимация для опускания телефона */
 @keyframes phonedown {
     0% { transform: translate(-50%, -50%) translateY(0) scale(1.4); opacity: 1; }
-    100% { transform: translate(-50%, -50%) translateY(-10rem) scale(1.2); opacity: 1; }
+    100% { transform: translate(-50%, -50%) translateY(-10rem) scale(1.8); opacity: 1; }
 }
 
 .phonedown {
-    animation: phonedown 0.5s ease-out forwards;
+    animation: phonedown 0.3s ease-out forwards;
 }
