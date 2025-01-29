@@ -76,17 +76,23 @@ self.addEventListener('fetch', (event) => {
             // Если нет кэшированного ответа, делаем сетевой запрос
             return fetch(event.request).then((networkResponse) => {
                 if (networkResponse && networkResponse.ok) {
-                    const clonedResponse = networkResponse.clone();
-                    caches.open(cacheName).then((cache) => {
-                        cache.put(event.request, clonedResponse);
-                        console.log('[ServiceWorker] Cached new response for:', event.request.url);
-                    });
+                    // Проверяем, не является ли запрос HEAD запросом
+                    if (event.request.method !== 'HEAD') {
+                        const clonedResponse = networkResponse.clone();
+                        caches.open(cacheName).then((cache) => {
+                            cache.put(event.request, clonedResponse);
+                            console.log('[ServiceWorker] Cached new response for:', event.request.url);
+                        });
+                    } else {
+                        console.log('[ServiceWorker] Skipping cache for HEAD request:', event.request.url);
+                    }
                 }
                 return networkResponse;
             }).catch((error) => {
                 console.error('[ServiceWorker] Fetch failed:', error);
                 return Response.error();
             });
+
         })
     );
 });
