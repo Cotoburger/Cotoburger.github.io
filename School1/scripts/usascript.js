@@ -288,7 +288,7 @@ const updateSchedule = () => {
         lessonInfo.classList.remove('shake');
     }, 300); // Длительность анимации (500 мс)
     if (navigator.vibrate) {
-            navigator.vibrate([5]);
+            navigator.vibrate([50]);
         }
     // Обновляем текущее расписание
     
@@ -296,7 +296,6 @@ const updateSchedule = () => {
     convertScheduleToSeconds(currentSchedule); // Переводим в секунды
     updateCurrentLessons(); // Обновляем текущие уроки
     updateScheduleDisplay(); // Обновляем отображение текущего расписания
-    resetShift(); // Сбросить смену
 
     // Сохраняем текущий индекс расписания в localStorage
     localStorage.setItem('currentScheduleIndex', currentScheduleIndex);
