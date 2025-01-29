@@ -27,110 +27,110 @@ function simulateShake() {
     handleDeviceMotion(event); // Вызываем обработчик как при реальной тряске
 }
 
-// URL репозитория GitHub
-const repoUrl = 'https://api.github.com/repos/Cotoburger/Cotoburger.github.io';
-fetch(`${repoUrl}?t=${Date.now()}`, { cache: "no-store" })
-// Функция для получения даты последнего изменения из кэша
-function getCachedLastModified() {
-    return localStorage.getItem('lastModified');
+const lastUpdateElement = document.getElementById("last-update");
+const lastDeploymentElement = document.getElementById("last-deployment");
+
+if (lastUpdateElement) {
+    lastUpdateElement.textContent = "Загрузка информации о последнем коммите...";
+}
+if (lastDeploymentElement) {
+    lastDeploymentElement.textContent = "Загрузка информации о последнем деплое...";
 }
 
-// Функция для сохранения даты последнего изменения в кэш
-function saveCachedLastModified(lastModified) {
-    localStorage.setItem('lastModified', lastModified);
-}
-
-// Функция для сравнения дат
-function compareDates(serverDate, cachedDate) {
-    if (!cachedDate) {
-        console.log("Кэш пуст, данные будут загружены с сервера.");
-        return false;
-    }
-
-    const serverTime = new Date(serverDate).getTime();
-    const cachedTime = new Date(cachedDate).getTime();
-
-    if (serverTime === cachedTime) {
-        console.log("Файлы одинаковые (даты совпадают).");
-        return true;
-    } else {
-        console.log("Файлы разные (даты не совпадают).");
-        return false;
-    }
-}
-
-// Функция для форматирования даты и времени
-function formatDateTime(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
-
-// Основной запрос к серверу
-function fetchLastCommitInfo() {
-    fetch(repoUrl, {
-        method: 'HEAD' // Используем HEAD, чтобы получить только заголовки
+// Получаем дату последнего коммита
+fetch("https://api.github.com/repos/Cotoburger/Cotoburger.github.io")
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Ошибка HTTP! Статус: ${response.status}`);
+        }
+        return response.json();
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+    .then(data => {
+        if (lastUpdateElement) {
+            const date = new Date(data.pushed_at);
+            const formattedDate = date.toLocaleDateString("ru-RU");
+            const formattedTime = date.toLocaleTimeString("ru-RU");
+
+            lastUpdateElement.textContent = `Последний коммит: ${formattedDate} ${formattedTime}`;
+            console.log("Last commit: " + formattedDate + " " + formattedTime);
+        }
+    })
+    .catch(error => {
+        console.error("Ошибка:", error);
+        if (lastUpdateElement) {
+            lastUpdateElement.textContent = "Не удалось получить информацию о последнем коммите";
+        }
+    });
+
+// Получаем информацию о последнем деплое
+fetch("https://api.github.com/repos/Cotoburger/Cotoburger.github.io/deployments", {
+    headers: {
+        "Accept": "application/vnd.github.v3+json"
+    }
+})
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Ошибка HTTP! Статус: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.length === 0) {
+            throw new Error("Нет доступных деплоев");
+        }
+
+        const latestDeployment = data[0]; // Берём самый свежий деплой
+        const date = new Date(latestDeployment.created_at);
+        const formattedDate = date.toLocaleDateString("ru-RU");
+        const formattedTime = date.toLocaleTimeString("ru-RU");
+
+        // Получаем статус деплоя
+        return fetch(latestDeployment.statuses_url, {
+            headers: { "Accept": "application/vnd.github.v3+json" }
+        }).then(statusResponse => {
+            if (!statusResponse.ok) {
+                throw new Error(`Ошибка HTTP! Статус: ${statusResponse.status}`);
             }
+            return statusResponse.json();
+        }).then(statuses => {
+            const latestStatus = statuses[0] || { state: "unknown" }; // Берём последний статус
+            const statusText = latestStatus.state === "success" ? "✅" :
+                latestStatus.state === "failure" ? "❌ Ошибка" :
+                latestStatus.state === "pending" ? "⏳ В процессе" : "❔ Неизвестно";
 
-            // Получаем дату последнего изменения с сервера
-            const serverLastModified = response.headers.get('Last-Modified');
-
-            // Получаем дату последнего изменения из кэша
-            const cachedLastModified = getCachedLastModified();
-
-            // Сравниваем даты
-            const isUpToDate = compareDates(serverLastModified, cachedLastModified);
-
-            if (!isUpToDate) {
-                // Если файл изменился, делаем полный запрос и обновляем кэш
-                fetch(repoUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Форматируем дату и время
-                        const formattedDateTime = formatDateTime(data.pushed_at);
-
-                        // Обновляем содержимое элемента на странице
-                        const lastUpdateElement = document.getElementById("last-update");
-                        if (lastUpdateElement) {
-                            lastUpdateElement.textContent = `Последний коммит: ${formattedDateTime}`;
-                            console.log("last update: " + formattedDateTime);
-                        } else {
-                            console.error("Element with id 'last-update' not found");
-                        }
-
-                        // Сохраняем новую дату в кэш
-                        saveCachedLastModified(serverLastModified);
-                    })
-                    .catch(error => console.error("Ошибка при загрузке данных:", error));
-            } else {
-                // Если файл не изменился, используем данные из кэша
-                const lastUpdateElement = document.getElementById("last-update");
-                if (lastUpdateElement) {
-                    const cachedDateTime = formatDateTime(cachedLastModified);
-                    lastUpdateElement.textContent = `Последний коммит (из кэша): ${cachedDateTime}`;
-                }
-            }
-        })
-        .catch(error => {
-            console.error("Ошибка при запросе заголовков:", error);
-            const lastUpdateElement = document.getElementById("last-update");
-            if (lastUpdateElement) {
-                lastUpdateElement.textContent = "Не удалось получить информацию о последнем коммите";
+            if (lastDeploymentElement) {
+                lastDeploymentElement.textContent = `Последний деплой: ${formattedDate} ${formattedTime} (${statusText})`;
+                console.log("Last deployment: " + formattedDate + " " + formattedTime + " (" + latestStatus.state + ")");
             }
         });
-}
+    })
+    .catch(error => {
+        console.error("Ошибка:", error);
+        if (lastDeploymentElement) {
+            lastDeploymentElement.textContent = "Не удалось получить информацию о последнем деплое";
+        }
+    });
 
-// Вызываем функцию сразу при загрузке страницы
-fetchLastCommitInfo();
-
-// Устанавливаем интервал для обновления каждые 5 секунд
-setInterval(fetchLastCommitInfo, 5000);
+    const proxyList = [
+        "https://corsproxy.io/?",
+        "https://api.allorigins.win/raw?url=",
+        "https://thingproxy.freeboard.io/fetch/",
+        "https://cors-anywhere.herokuapp.com/"
+    ];
+    
+    // Функция выбора случайного прокси
+    function getRandomProxy() {
+        return proxyList[Math.floor(Math.random() * proxyList.length)];
+    }
+    
+    // Делаем запрос через случайный прокси
+    function fetchWithRandomProxy(url) {
+        const proxy = getRandomProxy();
+        console.log(`Используем прокси: ${proxy}`);
+    
+        fetch(proxy + encodeURIComponent(url))
+            .then(response => response.json())
+            .then(data => console.log("Данные:", data))
+            .catch(error => console.error("Ошибка запроса:", error));
+    }
+    
