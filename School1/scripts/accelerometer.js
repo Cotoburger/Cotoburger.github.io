@@ -40,6 +40,7 @@ function handleDeviceMotion(event) {
         lastZ = z;
     }
 }
+
 function showPopup() {
     if (isPopupVisible) return; // Если окно уже показывается, не запускаем заново
 
@@ -63,10 +64,10 @@ function showPopup() {
         popup.classList.remove('shake2');
     }, 500); // Длительность анимации тряски
 
-    // Add a delay before monitoring motion
+    // Добавляем задержку перед мониторингом движения
     setTimeout(() => {
         monitorPopupMotion();
-    }, 600); // Delay of 600ms before starting to monitor motion
+    }, 600); // Задержка 600ms перед началом мониторинга движения
 
     // Плавно скрываем окно через 4.5 секунды
     setTimeout(() => {
@@ -104,13 +105,26 @@ function monitorPopupMotion() {
             z: acc.z - gravity.z
         };
 
-        // Определение вертикального ускорения
-        const vertical_acceleration = linear_acceleration.z; // Ось Z считается вертикальной
+        // Вычисляем длину вектора гравитации
+        const gravityMagnitude = Math.sqrt(gravity.x ** 2 + gravity.y ** 2 + gravity.z ** 2);
+
+        // Нормализуем вектор гравитации
+        const normalizedGravity = {
+            x: gravity.x / gravityMagnitude,
+            y: gravity.y / gravityMagnitude,
+            z: gravity.z / gravityMagnitude
+        };
+
+        // Вычисляем вертикальное ускорение как проекцию линейного ускорения на вектор гравитации
+        const vertical_acceleration =
+            linear_acceleration.x * normalizedGravity.x +
+            linear_acceleration.y * normalizedGravity.y +
+            linear_acceleration.z * normalizedGravity.z;
 
         console.log('Vertical acceleration:', vertical_acceleration.toFixed(1));
 
         // Фильтруем малые изменения
-        if (Math.abs(vertical_acceleration) < 1) { // Чувствительность можно настроить
+        if (Math.abs(vertical_acceleration) < 1.5) { // Чувствительность можно настроить
             return;
         }
 
@@ -150,7 +164,5 @@ function monitorPopupMotion() {
         console.log('Motion listener removed');
     }, 5000); // Длительность проверки совпадает с показом попапа
 }
-
-
 
 window.addEventListener('devicemotion', handleDeviceMotion);
