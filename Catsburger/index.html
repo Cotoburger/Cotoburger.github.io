@@ -1,83 +1,126 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="Main">
-    <meta property="og:description" content="Catsburger Web">
-    <meta property="og:image" content="https://cotoburger.github.io/School1//images/avatar.png">
-    <meta property="og:url" content="https://cotoburger.github.io/Catsburger/">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7">
+    <meta property="og:title" content="Catsburger">
+    <meta property="og:description" content="Web Page">
+    <meta property="og:image" content="https://cotoburger.github.io/Catsburger/images/avatar.png">
+    <meta property="og:url" content="https://cotoburger.github.io/Catsburger">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Schedule">
-    <meta name="twitter:description" content="Catsburger Web">
-    <meta name="twitter:image" content="https://cotoburger.github.io/School1//images/avatar.png">
-    <meta name="twitter:url" content="https://cotoburger.github.io/Catsburger/">
-    <title>Главная страница</title>
+    <meta name="twitter:title" content="Catsburger">
+    <meta name="twitter:description" content="Web Page">
+    <meta name="twitter:image" content="https://cotoburger.github.io/Catsburger/images/avatar.png">
+    <meta name="twitter:url" content="https://cotoburger.github.io/Catsburger">
+    <title>Catsburger Web Page</title>
+    <link rel="icon" href="images/avatar.png" type="image/png">
+    <!-- Подключение стилей AOS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <!-- Подключение Swiper CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-    <link rel="icon" href="images/icon.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <link href="aos.css" rel="stylesheet">
-    <script>
-        (function() {
-            const savedTheme = localStorage.getItem("theme");
-            if (savedTheme) {
-                document.documentElement.setAttribute("data-theme", savedTheme);
-                if (savedTheme === "light") {
-                    document.documentElement.style.backgroundColor = "#ffffff";
-                }
-            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-                document.documentElement.setAttribute("data-theme", "light");
-                document.documentElement.style.backgroundColor = "#ffffff";
-            }
-        })();
-    </script>
 </head>
-<script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-            .then(() => console.log('Service Worker зарегистрирован!'))
-            .catch((error) => console.error('Ошибка регистрации Service Worker:', error));
-    }
-</script>
 <body>
-    <div id="snowflakes"></div>
     
-    <div id="toolsPanel" class="tools-panel">
-        <c href="#">Расписание</a>
-        <a href="arabic.html">Конуструктор</a>
-        <a href="about.html">Сведения</a>
-    </div>
-
-    <div class="header-container">
-        <h2 data-aos="fade-right" data-aos-duration="500" data-aos-delay="0">Catsburger Web</h2>
-        <div class="menu-icon" id="menuIcon">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>
+    <header class="header" data-aos="zoom-in">
+        Catsburger web
+    </header>
 
     <!-- Контейнер Swiper -->
     <div class="swiper-container" data-aos="fade-up">
-        <div class="swiper-wrapper">
-            <!-- Карточка 2 -->
-            <div class="swiper-slide">
-                <a href="https://cotoburger.github.io/NaviBook/">
-                    <img src="images/Монтажная область 1.png" alt="Project 2" loading="eager">
-                </a>
-            </div>
-            <!-- Карточка 1 -->
-            <div class="swiper-slide">
-                <a href="https://github.com/Cotoburger/TaylorSwiftTest">
-                    <img src="images/tstgitbaner4.png" alt="Project 1" loading="eager">
-                </a>
-            </div>
+    <div class="swiper-wrapper">
+        <!-- Карточка 2 -->
+        <div class="swiper-slide">
+            <a href="https://cotoburger.github.io/NaviBook/">
+                <img src="images/Монтажная область 1.png" alt="Project 2" loading="eager">
+            </a>
+        </div>
+        <!-- Карточка 1 -->
+        <div class="swiper-slide">
+            <a href="https://github.com/Cotoburger/TaylorSwiftTest">
+                <img src="images/tstgitbaner4.png" alt="Project 1" loading="eager">
+            </a>
         </div>
     </div>
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="aos.js"></script>
-    <script src="script.js"></script>
+</div>
+    
+    <div class="avatar-container" data-aos="zoom-in">
+        <img src="images/avatar.png" alt="Avatar" class="avatar">
+        <h1 class="avtext">Catsburger</h1>
+    </div>
 
+    <section id="overview" class="section" data-aos="zoom-in">
+        <h2 class="lol">Hello</h2>
+        <h3>My name is Alexey. I'm from Petropavlovsk-Kamchatsky, Russia.
+            I can write code in C++. I'm a professional player in the sandbox game Scrap Mechanic. 
+            I really enjoy listening to Taylor Swift and Olivia Rodrigo.</h3>
+    </section>
+
+    <div class="container-flex">
+        <section id="schedule" class="sectionz" data-aos="zoom-in">
+            <h2>Lessons</h2>
+            <div id="lesson-info" class="lesson-info">
+                <div id="currentLessonShift1">1st shift</div>
+                <div class="sectionles">
+                    <div id="lessonShift1" class="lesson2"></div>
+                    <div id="timeLeftShift1" class="time-left"></div> <!-- Новая строка для времени -->
+                </div>
+                <div class="les2">
+                </div>
+                <div id="currentLessonShift2">2nd shift</div>
+                <div class="sectionles">
+                    <div id="lessonShift2" class="lesson2"></div>
+                    <div id="timeLeftShift2" class="time-left"></div> <!-- Новая строка для времени -->
+                </div>
+    
+            </div>
+        </section>
+    
+        <section id="weather" class="sectionx" data-aos="zoom-in">
+            <h2>Meteodata</h2> 
+            <div class="weather-container">
+                <div id="weather-icon" class="weather-icon">🔃</div>
+                <div class="les2">
+                </div>
+                <div id="local-time" class="local-time"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Добавляем цикличное видео между overview и maintenance -->
+    <section id="video" class="videoback" data-aos="zoom-in">
+        <video width="100%" height="auto" loop controls preload="auto" playsinline id="background-video">
+            <source src="images/Josh Hutcherson __ Whistle (1).mp4" type="video/mp4">
+        </video>
+    </section>
+
+    <section id="overview" class="section" data-aos="zoom-in">
+        <h2>My playlist</h2>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/5kY91XNoqV7SUWOxbJR8JL?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>    </section>
+
+    <section id="social-links" class="section3" data-aos="zoom-in">
+        <div class="socials-container">
+            <a href="https://github.com/Cotoburger" target="_blank">
+                <img src="images/github.png" alt="GitHub" class="social-icon">
+            </a>
+            <a href="https://steamcommunity.com/id/Catsburger/" target="_blank">
+                <img src="images/steam.png" alt="Steam" class="social-icon">
+            </a>
+        </div>
+    </section>
+
+    <!-- Подключаем скрипт AOS -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 10,
+            once: true
+        });
+    </script>
+
+    <!-- Подключение Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
