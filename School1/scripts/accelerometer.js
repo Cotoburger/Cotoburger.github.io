@@ -133,7 +133,7 @@ function monitorPopupMotion() {
         if (isFirstMotion) {
             setTimeout(() => {
                 isFirstMotion = false; // Ожидаем немного перед первым срабатыванием
-            }, 500);
+            }, 100);
             return;
         }
 
