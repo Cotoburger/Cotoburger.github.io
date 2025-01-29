@@ -17,8 +17,6 @@ function handleDeviceMotion(event) {
         y = acceleration.y;
         z = acceleration.z;
 
-        console.log('Acceleration data:', { x, y, z }); // Логируем все данные акселерометра
-
         const deltaX = Math.abs(x - lastX);
         const deltaY = Math.abs(y - lastY);
 
