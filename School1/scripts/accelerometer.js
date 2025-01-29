@@ -72,13 +72,13 @@ function showPopup() {
     // Плавно скрываем окно через 4.5 секунды
     setTimeout(() => {
         popup.style.opacity = '0'; // Начинаем скрывать окно
-    }, 4500); // Начинаем скрывать через 4.5 секунды после показа
+    }, 3500); // Начинаем скрывать через 4.5 секунды после показа
 
     // Полностью скрываем окно через 5 секунд и сбрасываем флаг активности
     setTimeout(() => {
         popup.style.display = 'none';
         isPopupVisible = false; // Сбрасываем флаг, чтобы разрешить активацию окна снова
-    }, 5000); // Окончательное скрытие через 5 секунд
+    }, 4000); // Окончательное скрытие через 5 секунд
 }
 
 let gravity = { x: 0, y: 0, z: 0 };
@@ -152,7 +152,7 @@ function monitorPopupMotion() {
         // Ожидаем завершения анимации, прежде чем выполнить действие
         setTimeout(() => {
             window.open(url, '_blank'); // Открываем сайт
-        }, 500); // Пауза в 500ms для завершения анимации
+        }, 480); // Пауза в 500ms для завершения анимации
 
         setTimeout(() => {
             popup.classList.remove(animationClass); // Убираем класс анимации
@@ -171,7 +171,7 @@ function monitorPopupMotion() {
     setTimeout(() => {
         window.removeEventListener('devicemotion', motionListener);
         console.log('Motion listener removed');
-    }, 5000); // Длительность проверки совпадает с показом попапа
+    }, 4000); // Длительность проверки совпадает с показом попапа
 }
 
 window.addEventListener('devicemotion', handleDeviceMotion);
