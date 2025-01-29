@@ -853,14 +853,8 @@ body.light-theme .theme-toggle {
 
 /* Анимация для подъёма телефона */
 @keyframes phoneup {
-    0% {
-        transform: translateY(0);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(-10px);
-        opacity: 1;
-    }
+    0% { transform: translate(-50%, -50%) translateY(0) scale(1.4); opacity: 1; }
+    100% { transform: translate(-50%, -50%) translateY(10rem) scale(1.2); opacity: 1; }
 }
 
 .phoneup {
@@ -869,14 +863,8 @@ body.light-theme .theme-toggle {
 
 /* Анимация для опускания телефона */
 @keyframes phonedown {
-    0% {
-        transform: translateY(0);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(10px);
-        opacity: 1;
-    }
+    0% { transform: translate(-50%, -50%) translateY(0) scale(1.4); opacity: 1; }
+    100% { transform: translate(-50%, -50%) translateY(-10rem) scale(1.2); opacity: 1; }
 }
 
 .phonedown {

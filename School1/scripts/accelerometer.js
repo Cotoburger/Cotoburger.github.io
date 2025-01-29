@@ -100,12 +100,28 @@ function monitorPopupMotion() {
         if (z > 20) { // Телефон движется вверх
             console.log('Phone moving upwards');
             popup.classList.add('phoneup'); // Добавляем анимацию для подъема телефона
-            window.open('https://isaacdeve.github.io/', '_blank'); // Открываем сайт при движении вверх
+
+            // Ожидаем завершения анимации, прежде чем открыть сайт
+            setTimeout(() => {
+                window.open('https://isaacdeve.github.io/', '_blank'); // Открываем сайт при движении вверх
+            }, 500); // Пауза в 500ms для завершения анимации
+
+            setTimeout(() => {
+                popup.classList.remove('phoneup'); // Убираем класс анимации после завершения
+            }, 500); // Убираем класс по завершению анимации
             hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
         } else if (z < -10) { // Телефон движется вниз
             console.log('Phone moving downwards');
             popup.classList.add('phonedown'); // Добавляем анимацию для опускания телефона
-            window.open('https://h2o0o0o.github.io/#home', '_blank'); // Открываем сайт при движении вниз
+
+            // Ожидаем завершения анимации, прежде чем открыть сайт
+            setTimeout(() => {
+                window.open('https://h2o0o0o.github.io/#home', '_blank'); // Открываем сайт при движении вниз
+            }, 500); // Пауза в 500ms для завершения анимации
+
+            setTimeout(() => {
+                popup.classList.remove('phonedown'); // Убираем класс анимации после завершения
+            }, 500); // Убираем класс по завершению анимации
             hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
         }
     };
@@ -118,7 +134,3 @@ function monitorPopupMotion() {
         console.log('Motion listener removed');
     }, 5000); // Длительность проверки совпадает с показом попапа
 }
-
-
-
-window.addEventListener('devicemotion', handleDeviceMotion);
