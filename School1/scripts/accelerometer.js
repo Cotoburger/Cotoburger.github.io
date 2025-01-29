@@ -96,11 +96,11 @@ function monitorPopupMotion() {
             return;
         }
         // Проверяем движение устройства вверх или вниз относительно земли
-        if (z > 7.9) { // Телефон движется вверх
+        if (z > 10) { // Телефон движется вверх
             console.log('Phone moving upwards');
             window.open('https://isaacdeve.github.io/', '_blank'); // Открываем сайт при движении вверх
             hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
-        } else if (z < -7.5) { // Телефон движется вниз
+        } else if (z < -10) { // Телефон движется вниз
             console.log('Phone moving downwards');
             window.open('https://h2o0o0o.github.io/#home', '_blank'); // Открываем сайт при движении вниз
             hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
