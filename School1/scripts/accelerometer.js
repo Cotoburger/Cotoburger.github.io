@@ -116,10 +116,10 @@ function monitorPopupMotion() {
             return;
         }
 
-        if (vertical_acceleration > 8) { // Телефон движется вверх
+        if (vertical_acceleration > 4) { // Телефон движется вверх
             console.log('Phone moving upwards');
             handleMotion('phoneup', 'https://isaacdeve.github.io/');
-        } else if (vertical_acceleration < -8) { // Телефон движется вниз
+        } else if (vertical_acceleration < -4) { // Телефон движется вниз
             console.log('Phone moving downwards');
             handleMotion('phonedown', 'https://h2o0o0o.github.io/#home');
         }
