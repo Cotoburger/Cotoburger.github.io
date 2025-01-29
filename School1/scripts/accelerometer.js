@@ -92,15 +92,15 @@ function monitorPopupMotion() {
         console.log('Acceleration data during popup:', { x: acceleration.x, y: acceleration.y, z });
 
         // Фильтруем малые изменения
-        if (Math.abs(z) < 1) { // Увеличиваем порог чувствительности
+        if (Math.abs(z) < 0.8) { // Увеличиваем порог чувствительности
             return;
         }
         // Проверяем движение устройства вверх или вниз относительно земли
-        if (z > 10) { // Телефон движется вверх
+        if (z > 14) { // Телефон движется вверх
             console.log('Phone moving upwards');
             window.open('https://isaacdeve.github.io/', '_blank'); // Открываем сайт при движении вверх
             hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
-        } else if (z < -10) { // Телефон движется вниз
+        } else if (z < -12) { // Телефон движется вниз
             console.log('Phone moving downwards');
             window.open('https://h2o0o0o.github.io/#home', '_blank'); // Открываем сайт при движении вниз
             hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
