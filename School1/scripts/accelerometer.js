@@ -9,7 +9,7 @@ function handleDeviceMotion(event) {
     const currentTime = new Date().getTime();
 
     // Проверяем данные каждые 150 мс
-    if ((currentTime - lastUpdate) > 150) {
+    if ((currentTime - lastUpdate) > 190) {
         const timeDifference = (currentTime - lastUpdate) / 1000;
         lastUpdate = currentTime;
 
@@ -133,14 +133,14 @@ function monitorPopupMotion() {
         if (isFirstMotion) {
             setTimeout(() => {
                 isFirstMotion = false; // Ожидаем немного перед первым срабатыванием
-            }, 185);
+            }, 230);
             return;
         }
 
-        if (vertical_acceleration > 5) { // Телефон движется вверх
+        if (vertical_acceleration > 7) { // Телефон движется вверх
             console.log('Phone moving upwards');
             handleMotion('phoneup', 'https://isaacdeve.github.io/');
-        } else if (vertical_acceleration < -5) { // Телефон движется вниз
+        } else if (vertical_acceleration < -7) { // Телефон движется вниз
             console.log('Phone moving downwards');
             handleMotion('phonedown', 'https://h2o0o0o.github.io/#home');
         }
