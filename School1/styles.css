@@ -782,23 +782,25 @@ body.light-theme .theme-toggle {
 }
 
 #vibrationPopup {
-    display: none; /* Изначально окно скрыто */
+    display: none;
     position: fixed;
     top: 50%;
     text-align: center;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1.4); /* Центрируем окно */
+    transform: translate(-50%, -50%) scale(1.4);
     background-color: rgba(18, 32, 45, 0.819);
     color: white;
     padding: 0.3rem;
     border-radius: 8px;
     font-size: 1.7rem;
-    opacity: 0; /* Изначально окно полностью прозрачно */
+    opacity: 0;
     -webkit-backdrop-filter: blur(1rem);
     backdrop-filter: blur(1rem);
     box-shadow: 0 0 100rem rgb(0, 0, 0);
-    transition: opacity 0.3s ease, transform 0.3s ease; /* Плавное изменение opacity и transform */
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
+
+
 
 /* Анимация тряски */
 @keyframes shake2 {
@@ -821,6 +823,7 @@ body.light-theme .theme-toggle {
     opacity: 1; /* Делаем окно видимым */
     text-align: center;
 }
+
 /* Стиль для кнопки */
 #shakeButton {
     display: block;
