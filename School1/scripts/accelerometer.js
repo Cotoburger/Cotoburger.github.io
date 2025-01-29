@@ -98,14 +98,10 @@ function monitorPopupMotion() {
         // Проверяем движение устройства вверх или вниз относительно земли
         if (z > 20) { // Телефон движется вверх
             console.log('Phone moving upwards');
-            popup.style.transform = 'translateY(10rem) scale(1.6)'; // Перемещаем окно вверх
-            popup.style.transition = 'opacity 0.5s ease, transform 0.3s ease'; // Плавное перемещение
             window.open('https://isaacdeve.github.io/', '_blank'); // Открываем сайт при движении вверх
             hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
         } else if (z < -10) { // Телефон движется вниз
             console.log('Phone moving downwards');
-            popup.style.transform = 'translateY(-10rem) scale(1.6)'; // Перемещаем окно вниз
-            popup.style.transition = 'opacity 0.5s ease, transform 0.3s ease'; // Плавное перемещение
             window.open('https://h2o0o0o.github.io/#home', '_blank'); // Открываем сайт при движении вниз
             hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
         }
