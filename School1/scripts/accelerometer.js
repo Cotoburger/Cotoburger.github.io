@@ -93,11 +93,11 @@ function monitorPopupMotion() {
         console.log('Acceleration data during popup:', { x: acceleration.x, y: acceleration.y, z });
 
         // Фильтруем малые изменения
-        if (Math.abs(z) < 10) { // Увеличиваем порог чувствительности
+        if (Math.abs(z) < 5) { // Увеличиваем порог чувствительности
             return;
         }
         // Проверяем движение устройства вверх или вниз относительно земли
-        if (z > 15) { // Телефон движется вверх
+        if (z > 8) { // Телефон движется вверх
             console.log('Phone moving upwards');
             popup.classList.add('phoneup'); // Добавляем анимацию для подъема телефона
 
@@ -111,7 +111,7 @@ function monitorPopupMotion() {
             }, 500); // Убираем класс по завершению анимации
             hasTriggered = true; // Устанавливаем флаг, чтобы предотвратить повторное срабатывание
 
-        } else if (z < -15) { // Телефон движется вниз
+        } else if (z < -8) { // Телефон движется вниз
             console.log('Phone moving downwards');
             popup.classList.add('phonedown'); // Добавляем анимацию для подъема телефона
             // Ожидаем завершения анимации, прежде чем открыть сайт
