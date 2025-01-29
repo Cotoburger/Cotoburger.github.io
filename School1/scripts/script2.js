@@ -110,4 +110,4 @@ function updateData() {
 updateData();
 
 // Обновление данных каждую минуту (60000 миллисекунд)
-setInterval(updateData, 60000); // Обновление каждую минуту
+setInterval(updateData, 90000); // Обновление каждую минуту
