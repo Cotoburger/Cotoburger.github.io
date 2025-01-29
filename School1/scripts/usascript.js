@@ -72,9 +72,11 @@ const schedule2 = {
     },
     3: {
         shift1: [
-            {lesson: "BIOL 0002 Botany (S112)", start: "08:00", end: "10:35"},
-            {lesson: "BIOL 0002 Botany (S112)", start: "11:00", end: "13:25"},
-            {lesson: "CHEM 0001X Problem Solving for Chem 1A (AT-2 002)", start: "14:00", end: "15:05"},
+            {lesson: "Period 1", start: "08:30", end: "10:45"},
+            {lesson: "Period 2", start: "10:51", end: "12:06"},
+            {lesson: "Period 3", start: "12:12", end: "13:28"},
+            {lesson: "Lunch", start: "13:28", end: "13:58"},
+            {lesson: "Period 4", start: "14:04", end: "16:20"},
         ],
 
     },
