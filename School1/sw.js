@@ -89,11 +89,25 @@ function fetchAndUpdateCache(request) {
         if (response && response.ok && response.type !== 'opaque') {
             const clonedResponse = response.clone();
             caches.open(cacheName).then((cache) => {
-                cache.put(request, clonedResponse);
-                console.log('[ServiceWorker] Updated cache for:', request.url);
+                cache.put(request, clonedResponse).then(() => {
+                    console.log('[ServiceWorker] Updated cache for:', request.url);
+                }).catch((error) => {
+                    console.error('[ServiceWorker] Failed to cache the response:', error);
+                });
             });
         }
+        return response; // Return the response for further use
     }).catch((error) => {
-        console.error('[ServiceWorker] Failed to update cache:', error);
+        console.error('[ServiceWorker] Failed to fetch:', error);
+
+        // Fallback to cache if fetch fails
+        return caches.match(request).then((cachedResponse) => {
+            if (cachedResponse) {
+                console.log('[ServiceWorker] Serving from cache:', request.url);
+                return cachedResponse;
+            } else {
+                throw new Error(`[ServiceWorker] No cache available for: ${request.url}`);
+            }
+        });
     });
 }
