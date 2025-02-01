@@ -197,18 +197,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                 updateInfo("gyroscope-permission", "Гироскоп: ???");
             }
 
-            // Вибрация (обычно не требует разрешения)
-            let vibPermission = await navigator.permissions.query({ name: "vibration" }).catch(() => null);
-            if (vibPermission) {
-                updateInfo("vibration-permission", `Вибрация: ${vibPermission.state}`);
-            } else {
-                updateInfo("vibration-permission", "Вибрация: ???");
-            }
         } catch (e) {
             console.error("Ошибка проверки разрешений:", e);
         }
     } else {
-        updateInfo("vibration-permission", "❌ API разрешений не поддерживается");
         updateInfo("gyroscope-permission", "❌ API разрешений не поддерживается");
         updateInfo("accelerometer-permission", "❌ API разрешений не поддерживается");
     }
