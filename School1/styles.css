@@ -933,7 +933,7 @@ body.light-theme .theme-toggle {
 }
 
 #debug-content {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #929baf;
     font-weight: bold;
     
@@ -945,11 +945,13 @@ body.light-theme .theme-toggle {
 
 #accelerometer-data {
     color: #a7cb54;
+    font-size: 0.8rem;
 
 }
 
 #gyroscope-data {
     color: #a7cb54;
+    font-size: 0.8rem;
 
 }
 
