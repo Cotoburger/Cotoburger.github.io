@@ -404,6 +404,7 @@ h4 {
     
         font-size: 2.75rem;
     }
+
 }
 
 @media (min-width: 95rem) {
@@ -441,6 +442,12 @@ h4 {
     #currentLessonShift2 {
     
         font-size: 2.75rem;
+    }
+    #debug-content {
+        font-size: 4.9rem;
+        color: #929baf;
+        font-weight: bold;
+        
     }
 }
 
@@ -688,6 +695,33 @@ body.light-theme .theme-toggle {
     color: rgb(54, 59, 62);
     box-shadow: 0 0 100rem rgba(0, 0, 0, 0.655);
 }
+
+[data-theme="light"] #debug-content {
+    font-size: 0.9rem;
+    color: #696e7a;
+    font-weight: bold;
+    
+}
+
+[data-theme="light"] #error-log {
+    color: #a53434;
+}
+
+[data-theme="light"] #accelerometer-data {
+    color: #ebbc39;
+
+}
+
+[data-theme="light"] #gyroscope-data {
+    color: #ebbc39;
+
+}
+
+[data-theme="light"] #console-sensors {
+    color: #6d84a9;
+}
+
+
 .fact-content {
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
     color: rgb(128, 190, 255);
@@ -896,4 +930,29 @@ body.light-theme .theme-toggle {
 #last-deployment {
     font-size: 1.1rem;
     font-weight: bold;
+}
+
+#debug-content {
+    font-size: 0.9rem;
+    color: #929baf;
+    font-weight: bold;
+    
+}
+
+#error-log {
+    color: #f46f6f;
+}
+
+#accelerometer-data {
+    color: #a7cb54;
+
+}
+
+#gyroscope-data {
+    color: #a7cb54;
+
+}
+
+#console-sensors {
+    color: #6c8ec4;
 }

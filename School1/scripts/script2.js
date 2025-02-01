@@ -106,3 +106,143 @@ updateData();
 
 // Обновление данных каждую минуту (60000 миллисекунд)
 setInterval(updateData, 60000);
+
+
+document.addEventListener("DOMContentLoaded", async function () {
+    function updateInfo(id, text) {
+        let elem = document.getElementById(id);
+        if (elem) elem.textContent = text;
+    }
+
+    function logErrorToPage(message) {
+        let errorElem = document.getElementById("error-log");
+        if (errorElem) {
+            let newError = document.createElement("p");
+            newError.textContent = message;
+            errorElem.appendChild(newError);
+        }
+    }
+
+    // Перехват ошибок
+    window.onerror = function (message, source, lineno, colno, error) {
+        let errorText = `❌ Ошибка: ${message}`;
+        if (source) errorText += `\n📍 Файл: ${source}`;
+        if (lineno && colno) errorText += ` (строка ${lineno}, колонка ${colno})`;
+        if (error && error.stack) errorText += `\n🛠 Стек:\n${error.stack}`;
+
+        logErrorToPage(errorText);
+    };
+
+    console.error = function (...args) {
+        logErrorToPage("❌ Ошибка: " + args.join(" "));
+    };
+
+    // Проверка вибрации
+    if ("vibrate" in navigator) {
+        updateInfo("vibration-status", "✅ API Вибрация");
+    } else {
+        updateInfo("vibration-status", "❌ API Вибрация");
+    }
+
+    // Проверка акселерометра
+    if (window.DeviceMotionEvent) {
+        updateInfo("accelerometer-status", "✅ API Акселерометр");
+        window.addEventListener('devicemotion', function(event) {
+            let acceleration = event.acceleration;
+            let accelData = `
+                x: ${acceleration.x ? acceleration.x.toFixed(2) : 'N/A'} m/s²,
+                y: ${acceleration.y ? acceleration.y.toFixed(2) : 'N/A'} m/s²,
+                z: ${acceleration.z ? acceleration.z.toFixed(2) : 'N/A'} m/s²
+            `;
+            updateInfo("accelerometer-data", accelData);
+        });
+    } else {
+        updateInfo("accelerometer-status", "❌ API Акселерометр");
+        updateInfo("accelerometer-data", "❌ Нет данных API Акселерометра");
+    }
+
+    // Проверка гироскопа
+    if (window.DeviceOrientationEvent) {
+        updateInfo("gyroscope-status", "✅ API Гироскоп");
+        window.addEventListener('deviceorientation', function(event) {
+            let gyroData = `
+                alpha: ${event.alpha ? event.alpha.toFixed(2) : 'N/A'}°,
+                beta: ${event.beta ? event.beta.toFixed(2) : 'N/A'}°,
+                gamma: ${event.gamma ? event.gamma.toFixed(2) : 'N/A'}°
+            `;
+            updateInfo("gyroscope-data", gyroData);
+        });
+    } else {
+        updateInfo("gyroscope-status", "❌ API Гироскоп");
+        updateInfo("gyroscope-data", "❌ Нет данных API Гироскопа");
+    }
+    
+
+    // Проверка разрешений
+    if (navigator.permissions) {
+        try {
+            // Акселерометр
+            let accelPermission = await navigator.permissions.query({ name: "accelerometer" }).catch(() => null);
+            if (accelPermission) {
+                updateInfo("accelerometer-permission", `Акселерометр: ${accelPermission.state}`);
+            } else {
+                updateInfo("accelerometer-permission", "Акселерометр: ???");
+            }
+
+            // Гироскоп
+            let gyroPermission = await navigator.permissions.query({ name: "gyroscope" }).catch(() => null);
+            if (gyroPermission) {
+                updateInfo("gyroscope-permission", `Гироскоп: ${gyroPermission.state}`);
+            } else {
+                updateInfo("gyroscope-permission", "Гироскоп: ???");
+            }
+
+            // Вибрация (обычно не требует разрешения)
+            let vibPermission = await navigator.permissions.query({ name: "vibration" }).catch(() => null);
+            if (vibPermission) {
+                updateInfo("vibration-permission", `Вибрация: ${vibPermission.state}`);
+            } else {
+                updateInfo("vibration-permission", "Вибрация: ???");
+            }
+        } catch (e) {
+            console.error("Ошибка проверки разрешений:", e);
+        }
+    } else {
+        updateInfo("vibration-permission", "❌ API разрешений не поддерживается");
+        updateInfo("gyroscope-permission", "❌ API разрешений не поддерживается");
+        updateInfo("accelerometer-permission", "❌ API разрешений не поддерживается");
+    }
+});
+
+function logErrorToPage(message) {
+    let errorElem = document.getElementById("error-log");
+    if (errorElem) {
+        let newError = document.createElement("p");
+        newError.textContent = message;
+        errorElem.appendChild(newError);
+    }
+}
+
+// Перехват console.error и console.warn
+let originalConsoleError = console.error;
+let originalConsoleWarn = console.warn;
+
+console.error = function (...args) {
+    originalConsoleError.apply(console, args);
+    logErrorToPage("❌ Ошибка: " + args.join(" "));
+};
+
+console.warn = function (...args) {
+    originalConsoleWarn.apply(console, args);
+    logErrorToPage("⚠️ Предупреждение: " + args.join(" "));
+};
+
+// Перехват window.onerror (ошибки на странице)
+window.onerror = function (message, source, lineno, colno, error) {
+    let errorText = `❌ Ошибка: ${message}`;
+    if (source) errorText += `\n📍 Файл: ${source}`;
+    if (lineno && colno) errorText += ` (строка ${lineno}, колонка ${colno})`;
+    if (error && error.stack) errorText += `\n🛠 Стек:\n${error.stack}`;
+    
+    logErrorToPage(errorText);
+};
