@@ -521,19 +521,28 @@ h4 {
 }
 
 .tools-panel c {
-    color: #2c557c;
+    cursor: pointer;
+    color: rgb(32, 80, 134);
     padding-bottom: 1px;
-    border-bottom: 4px solid #00000060;
+    border-bottom: 4px solid #4b72ac0c;
+    display: block;
     text-decoration: none;
+    text-align: center;
+    background-color: #0000001f;
+    border-radius: 1rem;
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
     font-size: 1.5625rem;
     outline: none;
+    transition: ease 0.3s;
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
 }
 
 .tools-panel a:hover {
     color: #3996fab4; /* Цвет текста при наведении */
+    background-color: #0e121317;
+    border-radius: 1rem;
+    transition: ease 0.3s;
 }
 
 .tools-panel a {
@@ -542,10 +551,12 @@ h4 {
     border-bottom: 4px solid #00000017;
     display: block;
     text-decoration: none;
+    text-align: center;
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
     font-size: 1.5625rem;
     outline: none;
+    transition: ease 0.3s;
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
 }
 
@@ -764,10 +775,12 @@ body.light-theme .theme-toggle {
     padding: 0.1rem; /* Отступы внутри кнопки */
     outline: none;
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
+    transition: ease 0.3s;
 }
 
 .arrow-button:hover {
     color: #3996fa7b; /* Цвет текста при наведении */
+    transition: ease 0.3s;
 }
 .schedule-name {
     text-align: center;
@@ -793,6 +806,7 @@ body.light-theme .theme-toggle {
     font-weight: bold;
     opacity: 1; /* Начальная непрозрачность */
     transition: opacity 0.5s ease, transform 0.5s ease; /* Плавное исчезновение и сдвиг */
+    
 }
 
 @keyframes shake {
@@ -941,6 +955,7 @@ body.light-theme .theme-toggle {
 
 #error-log {
     color: #f46f6f;
+    
 }
 
 #accelerometer-data {
