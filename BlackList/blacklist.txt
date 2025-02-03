@@ -1,7 +1,10 @@
 [
   { "name": "ArtyomK", "reason": "Постоянно мне звонит", "avatar": "images/artyomk.webp" },
-  { "name": "Игорь Шевцов", "reason": "Мега гей", "avatar": "images/igor.png" },
+  { "name": "Игорь Шевцов", "reason": "Гей, педофил, программист.", "avatar": "images/igor.png" },
   { "name": "Полина хз", "reason": " Полина Заслуженно", "avatar": "images/polina.png" },
   { "name": "Nikita Noviko64", "reason": " Он в доту играет", "avatar": "images/Nikita.jpg" },
-  { "name": "Егор", "reason": " Кидает закладки в Москве", "avatar": "images/egor.png" }
+  { "name": "Егор", "reason": " Кидает закладки в Москве", "avatar": "images/egor.png" },
+  { "name": "Девочка Лиза", "reason": " Странная очень (на аватарке не она)", "avatar": "images/dvchka.png" },
+  { "name": "Девочка Дарина", "reason": " Ещё более странная", "avatar": "images/dvchka2.png" },
+  { "name": "Усама Ben Ладен", "reason": " Самый конченный пользователь денфолда", "avatar": "images/denfold1.png" }
 ]
