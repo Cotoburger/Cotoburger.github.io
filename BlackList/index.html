@@ -17,21 +17,7 @@
     <link rel="icon" href="images/icon.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <link href="aos.css" rel="stylesheet">
-    <script>
-        (function() {
-            const savedTheme = localStorage.getItem("theme");
-            if (savedTheme) {
-                document.documentElement.setAttribute("data-theme", savedTheme);
-                if (savedTheme === "light") {
-                    document.documentElement.style.backgroundColor = "#ffffff";
-                }
-            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-                document.documentElement.setAttribute("data-theme", "light");
-                document.documentElement.style.backgroundColor = "#ffffff";
-            }
-        })();
-    </script>
+
 </head>
 <body>
     <div class="nav" id="nav">Black List</div>
@@ -50,7 +36,13 @@
             card.classList.add('card');
             card.style.opacity = 0; // Начальное состояние скрыто
             card.style.transform = 'translateY(20px)'; // Начальное положение вниз
-            
+            card.style.position = 'relative'; // Для правильного размещения заглушки
+
+            // Заглушка (будет занимать место внутри карточки)
+            let placeholder = document.createElement('div');
+            placeholder.classList.add('placeholder');
+            card.appendChild(placeholder);
+
             let img = new Image();
             img.classList.add('avatar');
             img.src = person.avatar;
@@ -72,6 +64,10 @@
                 img.onload = () => {
                     // Даем время для обновления DOM перед анимацией
                     setTimeout(() => {
+                        // Скрываем заглушку, показываем картинку
+                        placeholder.style.display = 'none';
+                        
+                        // Применяем анимацию
                         card.style.transition = 'opacity 0.5s, transform 0.5s'; // Плавная анимация
                         card.style.opacity = 1; // Карточка становится видимой
                         card.style.transform = 'translateY(0)'; // Карточка двигается в исходное положение
@@ -87,6 +83,7 @@
 }
 
 loadBlacklist();
+
     </script>
 </body>
 </html>
