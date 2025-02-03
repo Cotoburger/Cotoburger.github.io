@@ -13,11 +13,11 @@ body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66)
             transition: opacity 0.2s ease-in, transform 0.2s ease-in;}
         .card:hover { color: #ff0000; background-color: #4d4d4d62;}
 
-        .avatar { width: 6rem; height: 6rem; border-radius: 10%; object-fit: cover; margin-bottom: 10px; }
-        .info { text-align: left; width: 100%; }
-        .name { font-weight: bold; margin: 5px 0; }
-        .reason { font-size: 14px; color: rgba(148, 47, 47, 0.769); margin-top: auto; }
-        .nav { position: fixed; z-index: 1000; width: 100%; background-color: #000; padding: 0.3rem; top: 0; left: 0; font-size: 1.97rem; border-bottom: 0.2rem solid #ff02022b;}
+        .avatar { width: 6rem; height: 6rem; border-radius: 10%; object-fit: cover; margin-bottom: 10px; user-select: none;}
+        .info { text-align: left; width: 100%; user-select: none;}
+        .name { font-weight: bold; margin: 5px 0; user-select: none;}
+        .reason { font-size: 14px; color: rgba(148, 47, 47, 0.769); margin-top: auto; user-select: none;}
+        .nav { user-select: none; position: fixed; z-index: 1000; width: 100%; background-color: #000; padding: 0.3rem; top: 0; left: 0; font-size: 1.97rem; border-bottom: 0.2rem solid #ff02022b;}
 
 
         @media (min-width: 60rem) {
@@ -28,3 +28,25 @@ body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66)
         .name { font-size: 1.5rem; font-weight: bold; margin: 5px 0; }
         .reason { font-size: 1.2rem; color: rgba(148, 47, 47, 0.769); margin-top: auto; }
         }
+
+/* Стиль для заглушки, она занимает всё пространство карточки */
+.placeholder {
+    width: 100%;
+    height: 100%; /* Заглушка будет иметь тот же размер, что и карточка */
+    background-color: #ccc; /* Цвет фона для заглушки */
+    border-radius: 10px;
+    animation: pulse 1.5s infinite ease-in-out; /* Пульсирующий эффект для заглушки */
+}
+
+/* Пульсирующий эффект для заглушки */
+@keyframes pulse {
+    0% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 0.7;
+    }
+}
