@@ -1,0 +1,7 @@
+[
+  { "name": "ArtyomK", "reason": "Постоянно мне звонит", "avatar": "images/artyomk.webp" },
+  { "name": "Игорь Шевцов", "reason": "Мега гей", "avatar": "images/igor.png" },
+  { "name": "Полина хз", "reason": " Полина Заслуженно", "avatar": "images/polina.png" },
+  { "name": "Nikita Noviko64", "reason": " Он в доту играет", "avatar": "images/Nikita.jpg" },
+  { "name": "Егор", "reason": " Кидает закладки в Москве", "avatar": "images/egor.png" }
+]
