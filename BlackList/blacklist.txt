@@ -6,5 +6,7 @@
   { "name": "Егор", "reason": " Кидает закладки в Москве", "avatar": "images/egor.png" },
   { "name": "Девочка Лиза", "reason": " Странная очень (на аватарке не она)", "avatar": "images/dvchka.png" },
   { "name": "Девочка Дарина", "reason": " Ещё более странная", "avatar": "images/dvchka2.png" },
-  { "name": "Усама Ben Ладен", "reason": " Самый конченный пользователь денфолда", "avatar": "images/denfold1.png" }
+  { "name": "Усама Ben Ладен", "reason": " Самый конченный пользователь денфолда", "avatar": "images/denfold1.png" },
+  { "name": "Qkie", "reason": " Он какой то минус вайб", "avatar": "images/qkie.png" },
+  { "name": "Illumina", "reason": " Лол гей пендос плюс вайб", "avatar": "images/illumina.png" }
 ]
