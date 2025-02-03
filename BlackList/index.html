@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta property="og:title" content="Schedule">
-    <meta property="og:description" content="Расписание звонков в МАОУ Средняя школа №1">
+    <meta property="og:description" content="My BlackList">
     <meta property="og:image" content="https://cotoburger.github.io/School1//images/icon.png">
     <meta property="og:url" content="https://cotoburger.github.io/School1/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Schedule">
-    <meta name="twitter:description" content="Расписание звонков в МАОУ Средняя школа №1">
+    <meta name="twitter:description" content="My BlackList">
     <meta name="twitter:image" content="https://cotoburger.github.io/School1//images/icon.png">
     <meta name="twitter:url" content="https://cotoburger.github.io/School1/">
     <title>Расписание звонков</title>
@@ -33,40 +33,60 @@
         })();
     </script>
 </head>
-<script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
-          .then(registration => {
-            console.log('Service Worker зарегистрирован:', registration);
-          })
-          .catch(error => {
-            console.log('Ошибка регистрации Service Worker:', error);
-          });
-      });
-    }
-  </script>
 <body>
-    <h1 style="margin-left: 1rem;">Чёрный список</h1>
+    <div class="nav" id="nav">Black List</div>
     <div class="grid" id="blacklist"></div>
     <script>
         async function loadBlacklist() {
-            try {
-                let response = await fetch('blacklist.txt');
-                let data = await response.json();
-                let container = document.getElementById('blacklist');
-                container.innerHTML = data.map(person => `
-                    <div class="card">
-                        <img class="avatar" src="${person.avatar}" alt="Аватар">
-                        <div class="name">${person.name}</div>
-                        <div class="reason">${person.reason}</div>
-                    </div>
-                `).join('');
-            } catch (error) {
-                console.error("Ошибка загрузки списка", error);
-            }
+    try {
+        let response = await fetch('blacklist.txt');
+        let data = await response.json();
+        let container = document.getElementById('blacklist');
+        container.innerHTML = '';
+        
+        for (let i = 0; i < data.length; i++) {
+            let person = data[i];
+            let card = document.createElement('div');
+            card.classList.add('card');
+            card.style.opacity = 0; // Начальное состояние скрыто
+            card.style.transform = 'translateY(20px)'; // Начальное положение вниз
+            
+            let img = new Image();
+            img.classList.add('avatar');
+            img.src = person.avatar;
+            img.alt = "Аватар";
+            
+            let info = document.createElement('div');
+            info.classList.add('info');
+            info.innerHTML = `
+                <div class="name">${person.name}</div>
+                <div class="reason">${person.reason}</div>
+            `;
+            
+            card.appendChild(img);
+            card.appendChild(info);
+            container.appendChild(card);
+            
+            // Применим анимацию ко всем карточкам после их добавления в DOM
+            await new Promise(resolve => {
+                img.onload = () => {
+                    // Даем время для обновления DOM перед анимацией
+                    setTimeout(() => {
+                        card.style.transition = 'opacity 0.5s, transform 0.5s'; // Плавная анимация
+                        card.style.opacity = 1; // Карточка становится видимой
+                        card.style.transform = 'translateY(0)'; // Карточка двигается в исходное положение
+                        resolve();
+                    }, 50); // Маленькая задержка
+                };
+                img.onerror = resolve; // В случае ошибки загрузки, продолжаем
+            });
         }
-        loadBlacklist();
+    } catch (error) {
+        console.error("Ошибка загрузки списка", error);
+    }
+}
+
+loadBlacklist();
     </script>
 </body>
 </html>
