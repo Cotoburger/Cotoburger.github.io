@@ -4,13 +4,21 @@ html {
 
 body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66);}
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: 0.4rem; padding: 0.4rem; padding-top: 3rem;}
-        .card { display: flex; align-items: center; 
-            background: #3f3f3f60; padding: 15px; 
-            opacity: 0;
-            border-radius: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); 
-            position: relative; flex-direction: column; 
-            align-items: flex-start; transform: translateY(20px); 
-            transition: opacity 0.2s ease-in, transform 0.2s ease-in;}
+        /* Стиль для карточки */
+.card {
+    display: flex;
+    align-items: center;
+    background: #3f3f3f60;
+    padding: 15px;
+    opacity: 1;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative; /* Нужно для правильного размещения заглушки */
+    flex-direction: column;
+    align-items: flex-start;
+    transform: translateY(20px);
+    transition: opacity 0.2s ease-in, transform 0.2s ease-in;
+}
         .card:hover { color: #ff0000; background-color: #4d4d4d62;}
 
         .avatar { width: 6rem; height: 6rem; border-radius: 10%; object-fit: cover; margin-bottom: 10px; user-select: none;}
@@ -29,14 +37,19 @@ body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66)
         .reason { font-size: 1.2rem; color: rgba(148, 47, 47, 0.769); margin-top: auto; }
         }
 
-/* Стиль для заглушки, она занимает всё пространство карточки */
+/* Заглушка */
 .placeholder {
+    position: absolute; /* Заглушка будет сверху на карточке */
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 100%; /* Заглушка будет иметь тот же размер, что и карточка */
-    background-color: #ccc; /* Цвет фона для заглушки */
+    height: 100%;
+    background-color: #ffffff; /* Цвет фона для заглушки */
     border-radius: 10px;
     animation: pulse 1.5s infinite ease-in-out; /* Пульсирующий эффект для заглушки */
+    z-index: 1000; /* Убедимся, что заглушка перекрывает содержимое карточки */
 }
+
 
 /* Пульсирующий эффект для заглушки */
 @keyframes pulse {
