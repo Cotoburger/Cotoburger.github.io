@@ -87,7 +87,7 @@ body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66)
         
         .popup-header button {
             position: absolute;
-            right: 0px;
+            right: -0.5rem;
             background: transparent;
             border: none;
             font-size: 3rem;
