@@ -1,31 +1,45 @@
 [
-  { "name": "ArtyomK", "reason": "Постоянно мне звонит", "avatar": "images/artyomk.webp" },
+  { "name": "ArtyomK", "reason": "Постоянно мне звонит", "avatar": "images/artyomk.webp", 
+  "description": "ХВАТИТ МНЕ ЗВОНИТЬ!!!!!!!!" },
 
-  { "name": "Игорь Шевцов", "reason": "Гей, педофил, программист.", "avatar": "images/igor.png" },
+  { "name": "Игорь Шевцов", "reason": "Гей, педофил, программист.", "avatar": "images/igor.png", 
+  "description": "Соре игор" },
 
-  { "name": "Полина хз", "reason": " Полина Заслуженно", "avatar": "images/polina.png" },
+  { "name": "Полина хз", "reason": " Полина Заслуженно", "avatar": "images/polina.png", 
+  "description": "Она меня оскорбляет наверное" },
 
-  { "name": "Nikita Noviko64", "reason": " Он в доту играет", "avatar": "images/Nikita.jpg" },
+  { "name": "Nikita Noviko64", "reason": " Он в доту играет", "avatar": "images/Nikita.jpg", 
+  "description": "НЕНАВИЖУ ДОТЕРОВ!!!" },
 
-  { "name": "Егор", "reason": " Кидает закладки в Москве", "avatar": "images/egor.png" },
+  { "name": "Егор", "reason": " Кидает закладки в Москве", "avatar": "images/egor.png", 
+  "description": "Дебил, а мог бы щас на Камчатке быть" },
 
-  { "name": "Девочка Лиза", "reason": " Странная очень (на аватарке не она)", "avatar": "images/dvchka.png" },
+  { "name": "Девочка Лиза", "reason": " Странная очень (на аватарке не она)", "avatar": "images/dvchka.png", 
+  "description": "Вроде норм но чёт не норм" },
 
-  { "name": "Девочка Дарина", "reason": " Ещё более странная", "avatar": "images/dvchka2.png" },
+  { "name": "Девочка Дарина", "reason": " Ещё более странная", "avatar": "images/dvchka2.png", 
+  "description": "У всех пятиклассниц проблемы с ментальным здоровьем." },
 
-  { "name": "Усама Ben Ладен", "reason": " Самый конченный пользователь денфолда", "avatar": "images/denfold1.png" },
+  { "name": "Усама Ben Ладен", "reason": " Самый конченный пользователь денфолда", "avatar": "images/denfold1.png", 
+  "description": "НУ ОН РЕАЛЬНО КОНЧЕННЫЙ" },
 
-  { "name": "Qkie", "reason": " Он какой то минус вайб", "avatar": "images/qkie.png" },
+  { "name": "Qkie", "reason": " Он какой то минус вайб", "avatar": "images/qkie.png", 
+  "description": "Не слишком жёстко потому что это друг Арсения" },
 
-  { "name": "Illumina", "reason": " Лол гей пендос плюс вайб", "avatar": "images/illumina.png" },
+  { "name": "Illumina", "reason": " Лол гей пендос плюс вайб", "avatar": "images/illumina.png", 
+  "description": "Это правда." },
 
-  { "name": "Ирина Степановна", "reason": " Она меня не любит очень", "avatar": "images/unknown.png" },
+  { "name": "Ирина Степановна", "reason": " Она меня не любит очень", "avatar": "images/unknown.png", 
+  "description": "Лан шучу я её обожаю :heart:" },
 
-  { "name": "Лёша Катков", "reason": " Не скидывает что задали, ссылаясь на тг ", "avatar": "images/lesha.jpg" },
+  { "name": "Лёша Катков", "reason": " Не скидывает что задали, ссылаясь на тг ", "avatar": "images/lesha.jpg", 
+  "description": "Совершает свинские поступки, ещё на геометрии с алгеброй не помогает лох" },
 
-  { "name": "Olivia Rodrigo", "reason": " Песни не про меня((", "avatar": "images/olivia.jpeg" },
+  { "name": "Olivia Rodrigo", "reason": " Песни не про меня((", "avatar": "images/olivia.jpeg", 
+  "description": "Извени пожалуста оливия родрига соре" },
 
-  { "name": "Hardonium", "reason": " Фембой без паспорта а ещё ава чушпанская ", "avatar": "images/hardonium.png", "description": "Лох" }
-  
+  { "name": "Hardonium", "reason": " Фембой без паспорта а ещё ава чушпанская ", "avatar": "images/hardonium.png", 
+  "description": "Лох" }
+
 ]
 

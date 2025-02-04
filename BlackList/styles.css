@@ -103,6 +103,13 @@ body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66)
         .popup-content p {
             word-wrap: break-word;
             white-space: normal;
+            font-size: 0.99rem;
+        }
+        .popup-content d {
+            word-wrap: break-word;
+            white-space: normal;
+            color: #ab8888;
+            font-weight: 800;
         }
 
         @keyframes fadeInZoom {
