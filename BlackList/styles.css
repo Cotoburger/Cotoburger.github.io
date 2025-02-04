@@ -32,3 +32,86 @@ body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66)
         .name { font-size: 1.5rem; font-weight: bold; margin: 5px 0; }
         .reason { font-size: 1.2rem; color: rgba(148, 47, 47, 0.769); margin-top: auto; }
         }
+
+        .popup-avatar {
+            width: 15rem; /* Максимальная ширина */
+            height: 15rem; /* Максимальная высота */
+            object-fit: cover; /* Растягивать изображение */
+            transform: translateY(-1rem);
+            border-radius: 10px; /* Скругленные углы для красоты */
+            color: #2e2e2e86;
+        }
+
+
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+        }
+        /* Анимация тряски */
+@keyframes shake2 {
+    0% { transform: translate(-0%, -0%) translateX(0); }
+    25% { transform: translate(-0%, -0%) translateX(-5px); }
+    50% { transform: translate(-0%, -0%) translateX(5px); }
+    75% { transform: translate(-0%, -0%) translateX(-5px); }
+    100% { transform: translate(-0%, -0%) translateX(0); }
+}
+
+.shake2 {
+    animation: shake2 0.5s ease; /* Применяем анимацию тряски */
+}
+        .popup-content {
+            background-color: rgba(145, 144, 144, 0.169);
+            padding: 0.6rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 15rem;
+            text-align: center;
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            transform: translateY(-1rem);
+        }
+        
+        .popup-header button {
+            position: absolute;
+            right: 0px;
+            background: transparent;
+            border: none;
+            font-size: 3rem;
+            color: #000;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .popup-header button:hover {
+            color: #ff0000;
+        }
+
+        .popup-content p {
+            word-wrap: break-word;
+            white-space: normal;
+        }
+
+        @keyframes fadeInZoom {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }

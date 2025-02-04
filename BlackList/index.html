@@ -15,7 +15,6 @@
     <meta name="twitter:url" content="https://cotoburger.github.io/School1/">
     <title>Расписание звонков</title>
     <link rel="icon" href="images/icon.png" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="styles.css">
 
 </head>
@@ -29,17 +28,20 @@
         let data = await response.json();
         let container = document.getElementById('blacklist');
         container.innerHTML = '';
-        
+
         for (let i = 0; i < data.length; i++) {
             let person = data[i];
             let card = document.createElement('div');
             card.classList.add('card');
-            card.style.opacity = 0; // Начальное состояние скрыто
-            card.style.transform = 'translateY(20px)'; // Начальное положение вниз
-            card.style.position = 'relative'; // Для правильного размещения заглушки
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(20px)';
+            card.style.position = 'relative';
 
-            // Заглушка (будет занимать место внутри карточки)
             let placeholder = document.createElement('div');
+            if (navigator.vibrate) {
+            navigator.vibrate([5]);
+        }
+        console.log("card loaded");
             placeholder.classList.add('placeholder');
             card.appendChild(placeholder);
 
@@ -58,23 +60,20 @@
             card.appendChild(img);
             card.appendChild(info);
             container.appendChild(card);
+
+            card.addEventListener('click', () => openPopup(person));
             
-            // Применим анимацию ко всем карточкам после их добавления в DOM
             await new Promise(resolve => {
                 img.onload = () => {
-                    // Даем время для обновления DOM перед анимацией
                     setTimeout(() => {
-                        // Скрываем заглушку, показываем картинку
                         placeholder.style.display = 'none';
-                        
-                        // Применяем анимацию
-                        card.style.transition = 'opacity 0.5s, transform 0.5s'; // Плавная анимация
-                        card.style.opacity = 1; // Карточка становится видимой
-                        card.style.transform = 'translateY(0)'; // Карточка двигается в исходное положение
+                        card.style.transition = 'opacity 0.5s, transform 0.5s';
+                        card.style.opacity = 1;
+                        card.style.transform = 'translateY(0)';
                         resolve();
-                    }, 50); // Маленькая задержка
+                    }, 50);
                 };
-                img.onerror = resolve; // В случае ошибки загрузки, продолжаем
+                img.onerror = resolve;
             });
         }
     } catch (error) {
@@ -82,7 +81,56 @@
     }
 }
 
-loadBlacklist();
+function openPopup(person) {
+    let popup = document.getElementById('popup');
+    let popupContent = document.getElementById('popup-content');
+    popupContent.innerHTML = `
+        <div class="popup-header">
+            <h2>${person.name}</h2>
+            <button onclick="closePopup()">×</button>
+        </div>
+        <img class="popup-avatar" src="${person.avatar}" alt="Аватар">
+        <p><strong>Причина:</strong> ${person.reason}</p>
+        <p><strong>Описание:</strong> ${person.description || 'Нет данных'}</p>
+    `;
+    popup.style.display = 'flex';
+    popup.style.justifyContent = 'center';
+    popup.classList.add('shake2'); // Добавляем анимацию тряски
+    popup.style.opacity = '0'; // Сначала окно полностью прозрачно
+    popup.style.transition = 'opacity 0.3s ease'; // Плавный переход для opacity
+// Убираем класс анимации после завершения
+// Плавно увеличиваем прозрачность окна
+setTimeout(() => {
+        popup.style.opacity = '1'; // Делаем окно видимым
+    }, 50); // Маленькая задержка, чтобы плавно начало проявляться
+    setTimeout(() => {
+        popup.classList.remove('shake2');
+    }, 300); // Длительность анимации тряски
+    popup.style.alignItems = 'center';
+}
+
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    let popup = document.createElement('div');
+    popup.id = 'popup';
+    popup.classList.add('popup');
+    
+    let popupContent = document.createElement('div');
+    popupContent.id = 'popup-content';
+    popupContent.classList.add('popup-content');
+    
+    popup.appendChild(popupContent);
+    popup.addEventListener('click', (event) => {
+        if (event.target === popup) closePopup();
+    });
+    document.body.appendChild(popup);
+
+    loadBlacklist();
+});
+
 
     </script>
 </body>
