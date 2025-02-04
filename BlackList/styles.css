@@ -40,6 +40,9 @@ body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66)
             transform: translateY(-1rem);
             border-radius: 10px; /* Скругленные углы для красоты */
             color: #2e2e2e86;
+            user-select: none;
+            outline: none;
+    -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
         }
 
 
@@ -55,6 +58,9 @@ body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66)
             backdrop-filter: blur(10px);
             justify-content: center;
             align-items: center;
+            user-select: none;
+            outline: none;
+    -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
         }
         /* Анимация тряски */
 @keyframes shake2 {
@@ -75,6 +81,8 @@ body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66)
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             max-width: 15rem;
             text-align: center;
+            outline: none;
+    -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
         }
 
         .popup-header {
@@ -94,22 +102,26 @@ body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66)
             color: #000;
             cursor: pointer;
             transition: 0.3s;
+            user-select: none;
         }
         
         .popup-header button:hover {
             color: #ff0000;
+            user-select: none;
         }
 
         .popup-content p {
             word-wrap: break-word;
             white-space: normal;
             font-size: 0.99rem;
+            user-select: none;
         }
         .popup-content d {
             word-wrap: break-word;
             white-space: normal;
             color: #ab8888;
             font-weight: 800;
+            user-select: none;
         }
 
         @keyframes fadeInZoom {
