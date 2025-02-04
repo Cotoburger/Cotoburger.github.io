@@ -40,7 +40,7 @@
             let placeholder = document.createElement('div');
             if (navigator.vibrate) {
             navigator.vibrate([5]);
-        }
+        } 
         console.log("card loaded");
             placeholder.classList.add('placeholder');
             card.appendChild(placeholder);
@@ -84,6 +84,9 @@
 function openPopup(person) {
     let popup = document.getElementById('popup');
     let popupContent = document.getElementById('popup-content');
+    if (navigator.vibrate) {
+            navigator.vibrate([14]);
+        }
     popupContent.innerHTML = `
         <div class="popup-header">
             <h2>${person.name}</h2>
@@ -111,6 +114,9 @@ setTimeout(() => {
 
 function closePopup() {
     document.getElementById('popup').style.display = 'none';
+    if (navigator.vibrate) {
+            navigator.vibrate([6]);
+        }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
