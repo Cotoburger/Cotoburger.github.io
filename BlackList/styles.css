@@ -3,7 +3,7 @@ html {
 }
 
 body { font-family: Arial, sans-serif; text-align: center;  justify-content: flex-start; color: rgb(228, 66, 66);}
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: 0.4rem; padding: 0.4rem; padding-top: 3rem;}
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: 0.4rem; padding: 0.4rem; padding-top: 3.1rem;}
         .card {
             display: flex;
             align-items: center;
