@@ -287,6 +287,9 @@ const updateCurrentLessons = () => {
 
     updateShift("Shift1", currentLessonShift1);
     updateShift("Shift2", currentLessonShift2);
+    if (navigator.vibrate) {
+        navigator.vibrate(5);
+    }
 };
 
 updateCurrentLessons();
