@@ -1,21 +1,15 @@
 {
-    "name": "Schedule School №1",
-    "short_name": "Schedule",
-    "description": "Schedule for МАОУ Средняя Школа №1",
-    "start_url": "/index.html",
-    "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#000000",
-    "icons": [
-      {
-        "src": "images/icon.png",
-        "sizes": "656x656",
-        "type": "image/png"
-      },
-      {
-        "src": "images/icon.png",
-        "sizes": "656x656",
-        "type": "image/png"
-      }
-    ]
-  }
+	"short_name": "Schedule",
+	"name": "Schedule",
+	"icons": [
+		{
+		"src": "images/icon.png",
+		"sizes": "any",
+		"type": "image/png"
+		}
+	],
+	"start_url": ".",
+	"display": "standalone",
+	"theme_color": "#000000",
+	"background_color": ""
+}
