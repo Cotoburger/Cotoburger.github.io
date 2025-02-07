@@ -1,0 +1,29 @@
+<svg width="600.000000" height="600.000000" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<desc>
+			Created with Pixso.
+	</desc>
+	<defs>
+		<filter id="filter_2_17_dd" x="300.000000" y="367.000000" width="282.000000" height="223.000000" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+			<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+			<feGaussianBlur in="BackgroundImage" stdDeviation="13.3333"/>
+			<feComposite in2="SourceAlpha" operator="in" result="effect_backgroundBlur_1"/>
+			<feBlend mode="normal" in="SourceGraphic" in2="effect_backgroundBlur_1" result="shape"/>
+		</filter>
+		<clipPath id="clip2_2">
+			<rect id="Дриббл-шот" width="600.000000" height="600.000000" fill="white" fill-opacity="0"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip2_2)">
+		<rect id="Прямоугольник 1" x="64.000000" y="19.000000" rx="46.000000" width="390.000000" height="549.000000" stroke="#464242" stroke-opacity="1.000000" stroke-width="18.000000"/>
+		<rect id="Прямоугольник 2" x="104.500000" y="58.500000" rx="20.000000" width="143.000000" height="140.000000" stroke="#DE4343" stroke-opacity="1.000000" stroke-width="7.000000"/>
+		<rect id="Прямоугольник 2" x="269.500000" y="58.500000" rx="20.000000" width="143.000000" height="140.000000" stroke="#DE4343" stroke-opacity="1.000000" stroke-width="7.000000"/>
+		<rect id="Прямоугольник 2" x="104.500000" y="388.500000" rx="20.000000" width="143.000000" height="140.000000" stroke="#DE4343" stroke-opacity="1.000000" stroke-width="7.000000"/>
+		<rect id="Прямоугольник 2" x="269.500000" y="388.500000" rx="20.000000" width="143.000000" height="140.000000" stroke="#DE4343" stroke-opacity="1.000000" stroke-width="7.000000"/>
+		<rect id="Прямоугольник 2" x="104.500000" y="223.499985" rx="20.000000" width="143.000000" height="140.000000" stroke="#DE4343" stroke-opacity="1.000000" stroke-width="7.000000"/>
+		<rect id="Прямоугольник 2" x="269.500000" y="223.499985" rx="20.000000" width="143.000000" height="140.000000" stroke="#DE4343" stroke-opacity="1.000000" stroke-width="7.000000"/>
+		<g filter="url(#filter_2_17_dd)">
+			<rect id="Прямоугольник 3" x="300.000000" y="367.000000" rx="64.000000" width="282.000000" height="223.000000" fill="#212121" fill-opacity="0.731429"/>
+		</g>
+		<path id="Z-A" d="M398.96 528L326.75 528L326.75 518.78L383.21 434.52L326.12 434.52L326.12 423.27L398.33 423.27L398.33 432.48L341.87 516.75L398.96 516.75L398.96 528ZM495.61 498.32L485.07 528L471.78 528L510.24 423.27L523.32 423.27L561.78 528L548.49 528L537.94 498.32L495.61 498.32ZM516.36 439.82L499.59 487.07L533.93 487.07L517.16 439.82L516.36 439.82ZM412.04 470.02L457.85 470.02L457.85 481.27L412.04 481.27L412.04 470.02Z" fill="#EA3939" fill-opacity="1.000000" fill-rule="evenodd"/>
+	</g>
+</svg>
