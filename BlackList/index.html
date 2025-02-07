@@ -22,10 +22,29 @@
     <div class="nav" id="nav">Black List</div>
     <div class="grid" id="blacklist"></div>
     <script>
-        async function loadBlacklist() {
+        async function loadBlacklist(sortOrder = 'asc') {
     try {
+        let ascButton = document.getElementById('sort-asc');
+        let descButton = document.getElementById('sort-desc');
+        
+        // Делаем кнопки неактивными во время загрузки
+        ascButton.disabled = true;
+        descButton.disabled = true;
+        ascButton.classList.add('loading');
+        descButton.classList.add('loading');
+
         let response = await fetch('blacklist.txt');
         let data = await response.json();
+        
+        // Сортировка по имени
+        data.sort((a, b) => {
+            if (sortOrder === 'asc') {
+                return a.name.localeCompare(b.name);
+            } else {
+                return b.name.localeCompare(a.name);
+            }
+        });
+        
         let container = document.getElementById('blacklist');
         container.innerHTML = '';
 
@@ -39,9 +58,9 @@
 
             let placeholder = document.createElement('div');
             if (navigator.vibrate) {
-            navigator.vibrate([5]);
-        } 
-        console.log("card loaded");
+                navigator.vibrate([5]);
+            } 
+            console.log("card loaded");
             placeholder.classList.add('placeholder');
             card.appendChild(placeholder);
 
@@ -76,6 +95,12 @@
                 img.onerror = resolve;
             });
         }
+        
+        // После загрузки делаем кнопки активными
+        ascButton.disabled = false;
+        descButton.disabled = false;
+        ascButton.classList.remove('loading');
+        descButton.classList.remove('loading');
     } catch (error) {
         console.error("Ошибка загрузки списка", error);
     }
@@ -85,8 +110,8 @@ function openPopup(person) {
     let popup = document.getElementById('popup');
     let popupContent = document.getElementById('popup-content');
     if (navigator.vibrate) {
-            navigator.vibrate([14]);
-        }
+        navigator.vibrate([14]);
+    }
     popupContent.innerHTML = `
         <div class="popup-header">
             <h2>${person.name}</h2>
@@ -98,25 +123,23 @@ function openPopup(person) {
     `;
     popup.style.display = 'flex';
     popup.style.justifyContent = 'center';
-    popup.classList.add('shake2'); // Добавляем анимацию тряски
-    popup.style.opacity = '0'; // Сначала окно полностью прозрачно
-    popup.style.transition = 'opacity 0.3s ease'; // Плавный переход для opacity
-// Убираем класс анимации после завершения
-// Плавно увеличиваем прозрачность окна
-setTimeout(() => {
-        popup.style.opacity = '1'; // Делаем окно видимым
-    }, 50); // Маленькая задержка, чтобы плавно начало проявляться
+    popup.classList.add('shake2');
+    popup.style.opacity = '0';
+    popup.style.transition = 'opacity 0.3s ease';
+    setTimeout(() => {
+        popup.style.opacity = '1';
+    }, 50);
     setTimeout(() => {
         popup.classList.remove('shake2');
-    }, 300); // Длительность анимации тряски
+    }, 300);
     popup.style.alignItems = 'center';
 }
 
 function closePopup() {
     document.getElementById('popup').style.display = 'none';
     if (navigator.vibrate) {
-            navigator.vibrate([6]);
-        }
+        navigator.vibrate([6]);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -133,11 +156,54 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.target === popup) closePopup();
     });
     document.body.appendChild(popup);
+    
+    let nav = document.getElementById('nav');
+let buttonContainer = document.createElement('div');
+buttonContainer.classList.add('sort-buttons');
 
+let ascButton = document.createElement('button');
+ascButton.id = 'sort-asc';
+ascButton.innerHTML = '';
+ascButton.classList.add('sort-button');
+ascButton.disabled = true;
+ascButton.addEventListener('click', () => loadBlacklist('asc'));
+
+let descButton = document.createElement('button');
+descButton.id = 'sort-desc';
+descButton.innerHTML = '';
+descButton.classList.add('sort-button');
+descButton.disabled = true;
+descButton.addEventListener('click', () => loadBlacklist('desc'));
+document.addEventListener('DOMContentLoaded', () => {
+    let ascButton = document.getElementById('sort-asc');
+    let descButton = document.getElementById('sort-desc');
+
+    // Устанавливаем первую кнопку как выбранную по умолчанию
+    ascButton.classList.add('selected');
+    
+    ascButton.addEventListener('click', () => {
+        // Снимаем класс с обеих кнопок
+        ascButton.classList.add('selected');
+        descButton.classList.remove('selected');
+        
+        // Загружаем список с сортировкой по возрастанию
+        loadBlacklist('asc');
+    });
+
+    descButton.addEventListener('click', () => {
+        // Снимаем класс с обеих кнопок
+        descButton.classList.add('selected');
+        ascButton.classList.remove('selected');
+        
+        // Загружаем список с сортировкой по убыванию
+        loadBlacklist('desc');
+    });
+});
+buttonContainer.appendChild(ascButton);
+buttonContainer.appendChild(descButton);
+nav.appendChild(buttonContainer);
     loadBlacklist();
 });
-
-
     </script>
 </body>
 </html>

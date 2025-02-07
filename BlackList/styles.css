@@ -2,7 +2,7 @@ html {
     background-color: #000;
 }
 
-body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66);}
+body { font-family: Arial, sans-serif; text-align: center;  justify-content: flex-start; color: rgb(228, 66, 66);}
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: 0.4rem; padding: 0.4rem; padding-top: 3rem;}
         .card {
             display: flex;
@@ -21,8 +21,24 @@ body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66)
         .info { text-align: left; width: 100%; user-select: none;}
         .name { font-weight: bold; margin: 5px 0; user-select: none; padding-bottom: 0.7rem;}
         .reason { font-size: 14px; color: rgba(148, 47, 47, 0.769); margin-top: auto; user-select: none; align-items: bottom;}
-        .nav { user-select: none; position: fixed; z-index: 1000; width: 100%; background-color: #000; padding: 0.3rem; top: 0; left: 0; font-size: 1.97rem; border-bottom: 0.2rem solid #ff02022b;}
+        .nav { user-select: none; position: fixed; z-index: 1000; width: 100%; background-color: #000; padding: 0.3rem; top: 0; left: 0; font-size: 1.97rem; 
+            text-align: left; /* Выровнять по вертикали по центру */  border-bottom: 0.2rem solid #ff02022b;}
 
+            #sort-asc {
+                background-image: url('images/A-B.svg'); /* Путь к твоему SVG */
+                background-size: contain;
+                background-repeat: no-repeat;
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+            
+            #sort-desc {
+                background-image: url('images/B-A.svg'); /* Путь к другому SVG */
+                background-size: contain;
+                background-repeat: no-repeat;
+                width: 2.5rem;
+                height: 2.5rem;
+            }
 
         @media (min-width: 60rem) {
             .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: 20px; padding: 20px; padding-top: 3rem;}
@@ -31,6 +47,18 @@ body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66)
         .info { text-align: left; width: 100%; }
         .name { font-size: 1.5rem; font-weight: bold; margin: 5px 0; }
         .reason { font-size: 1.2rem; color: rgba(148, 47, 47, 0.769); margin-top: auto; }
+        .nav {padding: 0.3rem; top: 0; left: 0; font-size: 2.3rem;
+            align-items: center; /* Выровнять по вертикали по центру */  border-bottom: 0.2rem solid #ff02022b;}
+            #sort-asc {
+                width: 3.0rem;
+                height: 3.0rem;
+            }
+            
+            #sort-desc {
+                width: 3.0rem;
+                height: 3.0rem;
+            }
+
         }
 
         .popup-avatar {
@@ -134,3 +162,45 @@ body { font-family: Arial, sans-serif; text-align: left; color: rgb(228, 66, 66)
                 transform: scale(1);
             }
         }
+
+        .sort-buttons {
+            display: flex;
+            justify-content: right;
+            gap: 0.7rem;
+            margin-top: -2.2rem;
+            padding-right: 0.6rem;
+        }
+        .sort-button {
+            background-color: #44444400;
+            color: rgba(255, 255, 255, 0);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            font-size: 1rem;
+        }
+        
+        .sort-button.selected {
+    opacity: 1; /* Кнопка с классом selected будет полностью непрозрачной */
+}
+
+.sort-button:hover {
+    background-color: #66666608;
+    transform: scale(1.1);
+}
+
+.sort-button:active {
+    transform: scale(0.95);
+}
+
+.sort-button:disabled {
+    background-color: #88888821;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.sort-button.loading {
+    background-color: #aaaaaa0e;
+    transform: scale(0.7);
+    cursor: wait;
+}
