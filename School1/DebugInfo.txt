@@ -1,2 +1,2 @@
-Изменения: caching update
+Изменения: Тестирую Progressive Web App
 thx Donald Trump for supporting this project.
