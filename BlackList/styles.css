@@ -39,6 +39,16 @@ body { font-family: Arial, sans-serif; text-align: center;  justify-content: fle
                 width: 2.5rem;
                 height: 2.5rem;
             }
+            .sort-buttons {
+                display: flex;
+                justify-content: right;
+                gap: 0.7rem;
+                margin-top: -2.3rem;
+                padding-right: 0.6rem;
+                user-select: none;
+                outline: none;
+        -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
+            }
 
         @media (min-width: 60rem) {
             .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: 20px; padding: 20px; padding-top: 3rem;}
@@ -50,13 +60,17 @@ body { font-family: Arial, sans-serif; text-align: center;  justify-content: fle
         .nav {padding: 0.3rem; top: 0; left: 0; font-size: 2.3rem;
             align-items: center; /* Выровнять по вертикали по центру */  border-bottom: 0.2rem solid #ff02022b;}
             #sort-asc {
-                width: 3.0rem;
-                height: 3.0rem;
+                width: 2.7rem;
+                height: 2.7rem;
             }
             
             #sort-desc {
-                width: 3.0rem;
-                height: 3.0rem;
+                width: 2.7rem;
+                height: 2.7rem;
+            }
+            .sort-buttons {
+                margin-top: -2.7rem;
+                padding-right: 0.6rem;
             }
 
         }
@@ -163,16 +177,7 @@ body { font-family: Arial, sans-serif; text-align: center;  justify-content: fle
             }
         }
 
-        .sort-buttons {
-            display: flex;
-            justify-content: right;
-            gap: 0.7rem;
-            margin-top: -2.2rem;
-            padding-right: 0.6rem;
-            user-select: none;
-            outline: none;
-    -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
-        }
+
         .sort-button {
             background-color: #44444400;
             color: rgba(255, 255, 255, 0);
