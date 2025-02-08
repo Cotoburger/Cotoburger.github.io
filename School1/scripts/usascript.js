@@ -286,6 +286,9 @@ prevButton.addEventListener('click', () => {
         localStorage.setItem('currentScheduleIndex', currentScheduleIndex); // Сохраняем индекс
         updateSchedule(); // Обновить расписание с анимацией
         updateButtonsState(); // Обновить состояние кнопок
+        if (navigator.vibrate) {
+            navigator.vibrate(8);
+        }
     }
 });
 
@@ -295,6 +298,9 @@ nextButton.addEventListener('click', () => {
         localStorage.setItem('currentScheduleIndex', currentScheduleIndex); // Сохраняем индекс
         updateSchedule(); // Обновить расписание с анимацией
         updateButtonsState(); // Обновить состояние кнопок
+        if (navigator.vibrate) {
+            navigator.vibrate(8);
+        }
     }
 });
 
