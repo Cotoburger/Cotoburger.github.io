@@ -278,7 +278,7 @@ const getCurrentLesson = (shift) => {
                 lessonName: lesson.lesson,
                 timeLeft,
                 isBreak: false,
-                totalTime: lesson.end - lesson.start
+                totalTime: lesson.end - lesson.start + 60
             };
         }
 
@@ -293,7 +293,7 @@ const getCurrentLesson = (shift) => {
         }
     }
 
-    return { lessonName: null, timeLeft: 0, isBreak: false, totalTime: 0 };
+    return { lessonName: null, timeLeft: 0, isBreak: false, totalTime: 0};
 };
 
 // Массив с датами каникул
