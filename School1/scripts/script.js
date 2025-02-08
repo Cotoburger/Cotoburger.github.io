@@ -268,11 +268,11 @@ const updateCurrentLessons = () => {
         } else if (currentLesson.lessonName) {
             if (currentLesson.isBreak) {
                 document.getElementById(`lesson${shiftId}`).innerHTML = "Перемена";
-                document.getElementById(`timeLeft${shiftId}`).innerHTML = formatTime(currentLesson.timeLeft);
+                document.getElementById(`timeLeft${shiftId}`).innerHTML = `<span style="color: green;">${formatTime(currentLesson.timeLeft)}</span><span style="color: rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.timeLeft)}</span>`;
                 document.getElementById(`progress${shiftId}`).style.display = 'none';
             } else {
                 document.getElementById(`lesson${shiftId}`).innerHTML = `${currentLesson.lessonName}`;
-                document.getElementById(`timeLeft${shiftId}`).innerHTML = formatTime(currentLesson.timeLeft);
+                document.getElementById(`timeLeft${shiftId}`).innerHTML = `<span>${formatTime(currentLesson.timeLeft)}</span><span style="color:rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.totalTime)}</span>`;
 
                 const progress = ((currentLesson.totalTime - currentLesson.timeLeft) / currentLesson.totalTime) * 100;
                 document.getElementById(`progress${shiftId}`).style.display = 'inline-block';
