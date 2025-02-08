@@ -10,6 +10,6 @@
 	],
 	"start_url": ".",
 	"display": "standalone",
-	"theme_color": "rgba(43, 144, 220, 0.226",
+	"theme_color": "#1d1d1daf",
 	"background_color": " "
 }
