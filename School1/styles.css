@@ -602,6 +602,18 @@ h4 {
     transition: ease 0.3s;
 }
 
+/* Стиль фона для schedule1 */
+.schedule1-background {
+    background-color: #8fbc8f; /* Зеленый фон */
+    transition: background-color 0.5s ease; /* Плавное изменение фона */
+}
+
+/* Стандартный фон для других расписаний */
+.schedule2-background {
+    background-color: #f0f0f0; /* Светлый фон для других расписаний */
+    transition: background-color 0.5s ease;
+}
+
 .tools-panel a {
     color: rgb(40, 107, 183);
     padding-bottom: 1px;

@@ -44,6 +44,7 @@ const schedule1 = {
     5: {
         shift1: [
             {lesson: "HED 0001 Standard First Aid/CPR (G 126)", start: "09:00", end: "10:50"},
+            {lesson: "HED 0001 Standard First Aid/CPR (G 126)", start: "23:00", end: "23:50"},
         ],
 
     }
@@ -138,6 +139,20 @@ const convertScheduleToSeconds = (schedule) => {
         });
     });
 };
+// Функция для переключения фона
+const updateBackground = () => {
+    const scheduleElement = document.getElementById('schedule');
+
+    // Если это schedule1, меняем фон на зеленый
+    if (currentScheduleIndex === 0) {
+        scheduleElement.classList.add('schedule1-background');
+        scheduleElement.classList.remove('schedule2-background');
+    } else {
+        // Если не schedule1, возвращаем фон к светлому
+        scheduleElement.classList.remove('schedule1-background');
+        scheduleElement.classList.add('schedule2-background');
+    }
+};
 
 convertScheduleToSeconds(currentSchedule);
 
@@ -214,26 +229,31 @@ const getCurrentLesson = (shift) => {
 const updateCurrentLessons = () => {
     const currentLessonShift1 = getCurrentLesson('shift1');
     const updateShift = (shiftId, currentLesson) => {
+        const lessonElement = document.getElementById(`lesson${shiftId}`);
+        const timeLeftElement = document.getElementById(`timeLeft${shiftId}`);
+        const progressElement = document.getElementById(`progress${shiftId}`);
+
         if (currentLesson.lessonName) {
             if (currentLesson.isBreak) {
-                document.getElementById(`lesson${shiftId}`).innerHTML = "Cooldown";
-                document.getElementById(`timeLeft${shiftId}`).innerHTML = formatTime(currentLesson.timeLeft);
-                document.getElementById(`progress${shiftId}`).style.display = 'none';
+                lessonElement.innerHTML = "Cooldown";
+                timeLeftElement.innerHTML = `<span style="color: green;">${formatTime(currentLesson.timeLeft)}</span><span style="color: rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.timeLeft)}</span>`;
+                progressElement.style.display = 'none';
             } else {
-                document.getElementById(`lesson${shiftId}`).innerHTML = `${currentLesson.lessonName}`;
-                document.getElementById(`timeLeft${shiftId}`).innerHTML = formatTime(currentLesson.timeLeft);
+                lessonElement.innerHTML = `${currentLesson.lessonName}`;
+                timeLeftElement.innerHTML = `<span style="color: green;">${formatTime(currentLesson.timeLeft)}</span><span style="color:rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.totalTime)}</span>`;
                 const progress = ((currentLesson.totalTime - currentLesson.timeLeft) / currentLesson.totalTime) * 100;
-                document.getElementById(`progress${shiftId}`).style.display = 'inline-block';
-                document.getElementById(`progress${shiftId}`).value = progress;
+                progressElement.style.display = 'inline-block';
+                progressElement.value = progress;
             }
         } else {
-            document.getElementById(`lesson${shiftId}`).innerHTML = "No lessons";
-            document.getElementById(`timeLeft${shiftId}`).innerHTML = "";
-            document.getElementById(`progress${shiftId}`).style.display = 'none';
+            lessonElement.innerHTML = "No lessons";
+            timeLeftElement.innerHTML = "";
+            progressElement.style.display = 'none';
         }
     };
     updateShift("Shift1", currentLessonShift1);
 };
+
 
 const schedules = [schedule1, schedule2];
 let currentScheduleIndex = 0;
@@ -278,30 +298,27 @@ nextButton.addEventListener('click', () => {
     }
 });
 
-// Функция для обновления расписания и дисплея
+// Обновляем фон при переключении расписания
 const updateSchedule = () => {
-    const lessonInfo = document.getElementById('lesson-info'); // Получаем элемент для анимации
-
-    // Добавляем класс shake для эффекта потряхивания
+    const lessonInfo = document.getElementById('lesson-info');
     lessonInfo.classList.add('shake');
-    
-    // Удаляем класс shake после завершения анимации (чтобы можно было повторно использовать)
     setTimeout(() => {
         lessonInfo.classList.remove('shake');
-    }, 300); // Длительность анимации (500 мс)
-    if (navigator.vibrate) {
-            navigator.vibrate([14]);
-        }
-    // Обновляем текущее расписание
-    
-    currentSchedule = schedules[currentScheduleIndex];
-    convertScheduleToSeconds(currentSchedule); // Переводим в секунды
-    updateCurrentLessons(); // Обновляем текущие уроки
-    updateScheduleDisplay(); // Обновляем отображение текущего расписания
+    }, 300);
 
-    // Сохраняем текущий индекс расписания в localStorage
+    currentSchedule = schedules[currentScheduleIndex];
+    convertScheduleToSeconds(currentSchedule); 
+    updateCurrentLessons();
+    updateScheduleDisplay();
+    
+    // Обновляем фон
+    updateBackground();
+
     localStorage.setItem('currentScheduleIndex', currentScheduleIndex);
 };
+
+// Вызываем при загрузке страницы, чтобы установить правильный фон
+updateBackground();
 
 if (localStorage.getItem('currentScheduleIndex')) {
     currentScheduleIndex = parseInt(localStorage.getItem('currentScheduleIndex'), 10);

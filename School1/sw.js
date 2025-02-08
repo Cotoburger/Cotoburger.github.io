@@ -7,7 +7,7 @@ const filesToCache = [
     "index.html",
     "scripts/script.js",
     "scripts/script2.js",
-    "images/icon.png",
+    "images/icon.svg",
     "snowflake.svg",
     "styles.css",
     "images/image-26.png",
