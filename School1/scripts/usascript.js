@@ -1,7 +1,3 @@
-const images = document.querySelectorAll('img');
-const avatar = document.querySelector('.avatar');
-const socialIcons = document.querySelectorAll('.social-icon');
-
 function pxToRem(px) {
     return px / 16 + 'rem';
 }
