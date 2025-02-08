@@ -606,6 +606,7 @@ h4 {
 .schedule1-background {
     background-color: #8fbc8f; /* Зеленый фон */
     transition: background-color 0.5s ease; /* Плавное изменение фона */
+
 }
 
 /* Стандартный фон для других расписаний */
