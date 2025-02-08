@@ -1,6 +1,3 @@
-const images = document.querySelectorAll('img');
-const avatar = document.querySelector('.avatar');
-const socialIcons = document.querySelectorAll('.social-icon');
 
 function pxToRem(px) {
     return px / 16 + 'rem';
@@ -115,9 +112,24 @@ const schedule = {
             {lesson: "6-й урок", start: "17:20", end: "18:00"},
            // {lesson: "ДЕБАГ", start: "00:00", end: "24:00"},
         ]
+    },
+    6: {
+        shift1: [
+            {lesson: "Суббота", start: "00:01", end: "23:59"},
+        ],
+        shift2: [
+            {lesson: "Суббота", start: "00:01", end: "23:59"},
+        ]
+    },
+    7: {
+        shift1: [
+            {lesson: "Воскресенье", start: "00:01", end: "23:59"},
+        ],
+        shift2: [
+            {lesson: "Воскресенье", start: "00:01", end: "23:59"},
+        ]
     }
 };
-
 
 // Получаем время в часовом поясе Сакраменто
 const getSacramentoTime = () => {
@@ -142,11 +154,12 @@ const convertScheduleToSeconds = (schedule) => {
     }
 };
 
+// Предполагается, что schedule уже определён где-то
 convertScheduleToSeconds(schedule);
 
 let simulatedTime = null;
 
-// Симуляция времени
+// Симуляция времени (если нужно для теста)
 const simulateTime = (day, time) => {
     const [hours, minutes] = time.split(":").map(Number);
     simulatedTime = getSacramentoTime();
@@ -165,7 +178,7 @@ const currentDay = () => {
     return simulatedTime ? simulatedTime.getDay() : getSacramentoTime().getDay();
 };
 
-// Форматирование времени
+// Форматирование времени (HH:MM:SS)
 const formatTime = (seconds) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -178,7 +191,7 @@ const formatTime = (seconds) => {
     return `${formattedHours}${formattedMinutes}:${formattedSeconds}`;
 };
 
-// Получение текущего урока
+// Получение текущего урока для указанной смены
 const getCurrentLesson = (shift) => {
     const currentTime = getCurrentTimeInSeconds();
     const lessons = schedule[currentDay()]?.[shift] || [];
@@ -186,7 +199,7 @@ const getCurrentLesson = (shift) => {
     for (let i = 0; i < lessons.length; i++) {
         const lesson = lessons[i];
 
-        // Проверяем, попадает ли текущее время в этот урок
+        // Если текущее время попадает в урок
         if (currentTime >= lesson.start && currentTime < lesson.end) {
             const timeLeft = lesson.end - currentTime;
             return {
@@ -197,7 +210,7 @@ const getCurrentLesson = (shift) => {
             };
         }
 
-        // Проверяем перемену
+        // Если между уроками (перемена)
         if (i < lessons.length - 1 && currentTime >= lesson.end && currentTime < lessons[i + 1].start) {
             const timeLeft = lessons[i + 1].start - currentTime;
             return {
@@ -214,10 +227,10 @@ const getCurrentLesson = (shift) => {
 // Массив с датами каникул
 const holidays = [
     { start: '2024-12-28', end: '2025-01-08' }, // Зимние каникулы
-    { start: '2025-03-22', end: '2025-03-31' } // Весенние каникулы
+    { start: '2025-03-22', end: '2025-03-31' }  // Весенние каникулы
 ];
 
-// Функция для преобразования даты в строку формата 'YYYY-MM-DD'
+// Преобразование даты в строку формата 'YYYY-MM-DD'
 const formatDate = (date) => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -225,32 +238,62 @@ const formatDate = (date) => {
     return `${year}-${month}-${day}`;
 };
 
-// Функция для получения разницы в днях между двумя датами
+// Получение количества дней до заданной даты
 const getDaysLeft = (endDate) => {
     const currentDate = new Date();
     const end = new Date(endDate);
     const timeDiff = end - currentDate;
-    return Math.ceil(timeDiff / (1000 * 3600 * 24)); // Возвращаем количество дней
+    return Math.ceil(timeDiff / (1000 * 3600 * 24));
 };
 
-// Функция для проверки, находится ли текущая дата в периоде каникул
-let isHolidayPeriod = false; // Переменная для отслеживания каникул
+// Функция для определения правильного окончания слова "день"
+const getDaysLabel = (days) => {
+    if (days === 1) return "день";
+    if (days >= 2 && days <= 4) return "дня";
+    return "дней";
+};
+
+// Переменная для отслеживания статуса каникул
+let isHolidayPeriod = false;
 const checkHolidayStatus = () => {
     const currentDate = formatDate(new Date());
     isHolidayPeriod = holidays.some(holiday => currentDate >= holiday.start && currentDate <= holiday.end);
 };
-
-// Проверка каникул каждые 10 секунд
+const formatToHHMM = (seconds) => {
+    const date = new Date(seconds * 1000);
+    return date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
+};
+// Проверка статуса каникул каждые 10 секунд
 setInterval(checkHolidayStatus, 10000);
 
-// Функция для обновления информации о текущих уроках
+// Функция для обновления информации о текущих уроках и прикрепления обработчиков клика
 const updateCurrentLessons = () => {
     const currentLessonShift1 = getCurrentLesson('shift1');
     const currentLessonShift2 = getCurrentLesson('shift2');
 
     const updateShift = (shiftId, currentLesson) => {
-        document.getElementById(`currentLesson${shiftId}`).innerHTML = shiftId === "Shift1" ? "Первая смена" : "Вторая смена";
-
+        const shiftElement = document.getElementById(`currentLesson${shiftId}`);
+    shiftElement.style.cursor = 'pointer';
+    shiftElement.onclick = () => {
+        const nextLesson = getNextLesson(shiftId.toLowerCase());
+        const panel = document.getElementById('nextLessonPanel');
+        
+        if (!nextLesson) {
+            panel.innerHTML = `<div class="panelContent">Нет следующих уроков</div>`;
+        } else {
+            const timeUntil = nextLesson.start - getCurrentTimeInSeconds();
+            panel.innerHTML = `
+                <div class="panelContent">
+                    <h3>${nextLesson.lesson}</h3>
+                    <p>Начало: ${formatToHHMM(nextLesson.start)}</p>
+                    <p>Конец: ${formatToHHMM(nextLesson.end)}</p>
+                    <p>До начала: ${formatTime(timeUntil)}</p>
+                </div>
+            `;
+        }
+        
+        panel.style.transform = "translateY(0)";
+    };
         if (isHolidayPeriod) {
             const holiday = holidays.find(h => formatDate(new Date()) >= h.start && formatDate(new Date()) <= h.end);
             const start = new Date(holiday.start);
@@ -268,11 +311,15 @@ const updateCurrentLessons = () => {
         } else if (currentLesson.lessonName) {
             if (currentLesson.isBreak) {
                 document.getElementById(`lesson${shiftId}`).innerHTML = "Перемена";
-                document.getElementById(`timeLeft${shiftId}`).innerHTML = `<span style="color: green;">${formatTime(currentLesson.timeLeft)}</span><span style="color: rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.timeLeft)}</span>`;
+                document.getElementById(`timeLeft${shiftId}`).innerHTML =
+                  `<span style="color: green;">${formatTime(currentLesson.timeLeft)}</span>` +
+                  `<span style="color: rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.timeLeft)}</span>`;
                 document.getElementById(`progress${shiftId}`).style.display = 'none';
             } else {
                 document.getElementById(`lesson${shiftId}`).innerHTML = `${currentLesson.lessonName}`;
-                document.getElementById(`timeLeft${shiftId}`).innerHTML = `<span>${formatTime(currentLesson.timeLeft)}</span><span style="color:rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.totalTime)}</span>`;
+                document.getElementById(`timeLeft${shiftId}`).innerHTML =
+                  `<span>${formatTime(currentLesson.timeLeft)}</span>` +
+                  `<span style="color:rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.totalTime)}</span>`;
 
                 const progress = ((currentLesson.totalTime - currentLesson.timeLeft) / currentLesson.totalTime) * 100;
                 document.getElementById(`progress${shiftId}`).style.display = 'inline-block';
@@ -283,17 +330,38 @@ const updateCurrentLessons = () => {
             document.getElementById(`timeLeft${shiftId}`).innerHTML = "";
             document.getElementById(`progress${shiftId}`).style.display = 'none';
         }
+        
+        // Прикрепляем обработчик клика для показа панели следующего урока
+        document.getElementById(`currentLesson${shiftId}`).onclick = () => {
+            showNextLessonPanel(shiftId.toLowerCase());
+        };
     };
-
+// Добавьте этот обработчик для закрытия панели
+document.addEventListener('click', (e) => {
+    const panel = document.getElementById('nextLessonPanel');
+    if (!panel.contains(e.target) && !e.target.closest('.current-lesson')) {
+        panel.style.transform = "translateY(100%)";
+    }
+});
     updateShift("Shift1", currentLessonShift1);
     updateShift("Shift2", currentLessonShift2);
-
 };
 
-updateCurrentLessons();
+updateCurrentLessons()
+
 
 // Обновляем данные каждые 1 секунду
 setInterval(updateCurrentLessons, 1000);
+
+// Обработчик клика вне панели для её скрытия
+document.addEventListener('click', (e) => {
+    const panel = document.getElementById('nextLessonPanel');
+    // Если клик не по панели и не по текущим урокам – скрываем панель
+    if (!panel.contains(e.target) && 
+        !e.target.matches('#currentLessonShift1, #currentLessonShift2')) {
+        hideNextLessonPanel();
+    }
+});
 
 
 window.simulateTime = simulateTime;

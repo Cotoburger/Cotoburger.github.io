@@ -45,6 +45,36 @@ body {
     outline: none;
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
 }
+
+.next-lesson-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    border-radius: 15px 15px 0 0;
+}
+
+.panelContent {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.panelContent h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.panelContent p {
+    margin: 5px 0;
+    color: #34495e;
+}
+
 .time-progress {
     width: 100%;
     height: 2rem;
@@ -171,6 +201,7 @@ h4 {
     text-align: center;
     margin-bottom: 0.6rem;
     border-bottom: 0.3rem solid #00000042;
+    
 }
 .lesson-info {
         font-size: 2.8125rem;
@@ -214,7 +245,7 @@ h4 {
     padding: 0.7375rem;
     border-radius: 1.175rem;
     border-bottom: 0.25rem solid #00000042;
-    user-select: none;
+    user-select:pointer;
     outline: none;
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
 }
