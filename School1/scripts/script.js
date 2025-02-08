@@ -122,7 +122,7 @@ const schedule = {
             {lesson: "Суббота", start: "00:01", end: "23:59"},
         ]
     },
-    7: {
+    0: {
         shift1: [
             {lesson: "Воскресенье", start: "00:01", end: "23:59"},
         ],
