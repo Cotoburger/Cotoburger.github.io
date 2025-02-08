@@ -116,6 +116,7 @@ const schedule = {
     6: {
         shift1: [
             {lesson: "Суббота", start: "00:01", end: "23:59"},
+            {lesson: "Суббота", start: "23:59", end: "00:00"},
         ],
         shift2: [
             {lesson: "Суббота", start: "00:01", end: "23:59"},
@@ -131,6 +132,78 @@ const schedule = {
     }
 };
 
+// Глобальные переменные для интервалов обновления следующего урока
+let nextLessonIntervalShift1 = null;
+let nextLessonIntervalShift2 = null;
+
+// Функция для получения следующего урока для указанной смены (оставляем как есть)
+const getNextLesson = (shift) => {
+    const currentTime = getCurrentTimeInSeconds();
+    const lessons = schedule[currentDay()]?.[shift] || [];
+    if (!lessons.length) return null;
+
+    for (let i = 0; i < lessons.length; i++) {
+        // Если урок ещё не начался – это следующий
+        if (currentTime < lessons[i].start) {
+            return {
+                lessonName: lessons[i].lesson,
+                start: lessons[i].start,
+                end: lessons[i].end,
+                timeUntilStart: lessons[i].start - currentTime
+            };
+        }
+        // Если сейчас идёт урок, то следующий – если он есть
+        if (currentTime >= lessons[i].start && currentTime < lessons[i].end) {
+            if (i + 1 < lessons.length) {
+                return {
+                    lessonName: lessons[i + 1].lesson,
+                    start: lessons[i + 1].start,
+                    end: lessons[i + 1].end,
+                    timeUntilStart: lessons[i + 1].start - currentTime
+                };
+            } else {
+                return null;
+            }
+        }
+    }
+    return null;
+};
+
+const hideNextLesson = () => {
+    const container = document.getElementById("nextLessonShift1");
+    
+    // Добавляем анимацию исчезновения
+    container.classList.remove('fade-in');
+    container.classList.add('fade-out');
+    
+    // После завершения анимации скрываем контейнер
+    setTimeout(() => {
+        container.classList.remove('open', 'fade-out');
+        container.style.display = 'none';
+    }, 500);
+};
+const showNextLesson = (shift) => {
+    const containerId = shift === "shift1" ? "nextLessonShift1" : "nextLessonShift2";
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.style.display = 'block';
+    container.classList.add('open');
+    container.classList.add('fade-in');
+    container.classList.remove('fade-out');
+    
+    // Остальной код остается без изменений
+    const nextLesson = getNextLesson(shift);
+    if (nextLesson) {
+        container.innerHTML = `
+            <div style="color: rgba(128, 144, 154, 0.63)">След: <strong>${nextLesson.lessonName}</strong></div>
+            <div style="color: green "><strong>${formatTime(nextLesson.start)}</strong> – <strong>${formatTime(nextLesson.end)}</strong></div>
+            <div style="color: rgba(97, 123, 141, 0.63)">Через: <strong>${formatTime(nextLesson.timeUntilStart)}</strong></div>
+        `;
+    } else {
+        container.innerHTML = `<div>Нет следующих уроков</div>`;
+    }
+};
 // Получаем время в часовом поясе Сакраменто
 const getSacramentoTime = () => {
     return new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kamchatka" }));
@@ -154,12 +227,11 @@ const convertScheduleToSeconds = (schedule) => {
     }
 };
 
-// Предполагается, что schedule уже определён где-то
 convertScheduleToSeconds(schedule);
 
 let simulatedTime = null;
 
-// Симуляция времени (если нужно для теста)
+// Симуляция времени
 const simulateTime = (day, time) => {
     const [hours, minutes] = time.split(":").map(Number);
     simulatedTime = getSacramentoTime();
@@ -178,7 +250,7 @@ const currentDay = () => {
     return simulatedTime ? simulatedTime.getDay() : getSacramentoTime().getDay();
 };
 
-// Форматирование времени (HH:MM:SS)
+// Форматирование времени
 const formatTime = (seconds) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -191,7 +263,7 @@ const formatTime = (seconds) => {
     return `${formattedHours}${formattedMinutes}:${formattedSeconds}`;
 };
 
-// Получение текущего урока для указанной смены
+// Получение текущего урока
 const getCurrentLesson = (shift) => {
     const currentTime = getCurrentTimeInSeconds();
     const lessons = schedule[currentDay()]?.[shift] || [];
@@ -199,7 +271,7 @@ const getCurrentLesson = (shift) => {
     for (let i = 0; i < lessons.length; i++) {
         const lesson = lessons[i];
 
-        // Если текущее время попадает в урок
+        // Проверяем, попадает ли текущее время в этот урок
         if (currentTime >= lesson.start && currentTime < lesson.end) {
             const timeLeft = lesson.end - currentTime;
             return {
@@ -210,7 +282,7 @@ const getCurrentLesson = (shift) => {
             };
         }
 
-        // Если между уроками (перемена)
+        // Проверяем перемену
         if (i < lessons.length - 1 && currentTime >= lesson.end && currentTime < lessons[i + 1].start) {
             const timeLeft = lessons[i + 1].start - currentTime;
             return {
@@ -227,10 +299,10 @@ const getCurrentLesson = (shift) => {
 // Массив с датами каникул
 const holidays = [
     { start: '2024-12-28', end: '2025-01-08' }, // Зимние каникулы
-    { start: '2025-03-22', end: '2025-03-31' }  // Весенние каникулы
+    { start: '2025-03-22', end: '2025-03-31' } // Весенние каникулы
 ];
 
-// Преобразование даты в строку формата 'YYYY-MM-DD'
+// Функция для преобразования даты в строку формата 'YYYY-MM-DD'
 const formatDate = (date) => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -238,63 +310,36 @@ const formatDate = (date) => {
     return `${year}-${month}-${day}`;
 };
 
-// Получение количества дней до заданной даты
+// Функция для получения разницы в днях между двумя датами
 const getDaysLeft = (endDate) => {
     const currentDate = new Date();
     const end = new Date(endDate);
     const timeDiff = end - currentDate;
-    return Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return Math.ceil(timeDiff / (1000 * 3600 * 24)); // Возвращаем количество дней
 };
 
-// Функция для определения правильного окончания слова "день"
-const getDaysLabel = (days) => {
-    if (days === 1) return "день";
-    if (days >= 2 && days <= 4) return "дня";
-    return "дней";
-};
-
-// Переменная для отслеживания статуса каникул
-let isHolidayPeriod = false;
+// Функция для проверки, находится ли текущая дата в периоде каникул
+let isHolidayPeriod = false; // Переменная для отслеживания каникул
 const checkHolidayStatus = () => {
     const currentDate = formatDate(new Date());
     isHolidayPeriod = holidays.some(holiday => currentDate >= holiday.start && currentDate <= holiday.end);
 };
-const formatToHHMM = (seconds) => {
-    const date = new Date(seconds * 1000);
-    return date.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
-};
-// Проверка статуса каникул каждые 10 секунд
+
+// Проверка каникул каждые 10 секунд
 setInterval(checkHolidayStatus, 10000);
 
-// Функция для обновления информации о текущих уроках и прикрепления обработчиков клика
+// Функция для обновления информации о текущих уроках
+// Обновление информации о текущих уроках для обеих смен
+// Функция обновления информации о текущих уроках для обеих смен
 const updateCurrentLessons = () => {
     const currentLessonShift1 = getCurrentLesson('shift1');
     const currentLessonShift2 = getCurrentLesson('shift2');
 
     const updateShift = (shiftId, currentLesson) => {
-        const shiftElement = document.getElementById(`currentLesson${shiftId}`);
-    shiftElement.style.cursor = 'pointer';
-    shiftElement.onclick = () => {
-        const nextLesson = getNextLesson(shiftId.toLowerCase());
-        const panel = document.getElementById('nextLessonPanel');
-        
-        if (!nextLesson) {
-            panel.innerHTML = `<div class="panelContent">Нет следующих уроков</div>`;
-        } else {
-            const timeUntil = nextLesson.start - getCurrentTimeInSeconds();
-            panel.innerHTML = `
-                <div class="panelContent">
-                    <h3>${nextLesson.lesson}</h3>
-                    <p>Начало: ${formatToHHMM(nextLesson.start)}</p>
-                    <p>Конец: ${formatToHHMM(nextLesson.end)}</p>
-                    <p>До начала: ${formatTime(timeUntil)}</p>
-                </div>
-            `;
-        }
-        
-        panel.style.transform = "translateY(0)";
-    };
+        document.getElementById(`currentLesson${shiftId}`).innerHTML = shiftId === "Shift1" ? "Первая смена" : "Вторая смена";
+
         if (isHolidayPeriod) {
+            // Если каникулы – оставляем как есть
             const holiday = holidays.find(h => formatDate(new Date()) >= h.start && formatDate(new Date()) <= h.end);
             const start = new Date(holiday.start);
             const end = new Date(holiday.end);
@@ -304,64 +349,79 @@ const updateCurrentLessons = () => {
 
             document.getElementById(`lesson${shiftId}`).innerHTML = "Каникулы";
             document.getElementById(`timeLeft${shiftId}`).innerHTML = `Осталось ~${daysLeft} ${getDaysLabel(daysLeft)}`;
-
-            const progress = (daysPassed / totalDays) * 100;
             document.getElementById(`progress${shiftId}`).style.display = 'inline-block';
-            document.getElementById(`progress${shiftId}`).value = progress;
+            document.getElementById(`progress${shiftId}`).value = (daysPassed / totalDays) * 100;
         } else if (currentLesson.lessonName) {
             if (currentLesson.isBreak) {
+                // Если перемена – кнопки не добавляем
                 document.getElementById(`lesson${shiftId}`).innerHTML = "Перемена";
-                document.getElementById(`timeLeft${shiftId}`).innerHTML =
-                  `<span style="color: green;">${formatTime(currentLesson.timeLeft)}</span>` +
-                  `<span style="color: rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.timeLeft)}</span>`;
+                document.getElementById(`timeLeft${shiftId}`).innerHTML = `<span style="color: green;">${formatTime(currentLesson.timeLeft)}</span><span style="color: rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.timeLeft)}</span>`;
                 document.getElementById(`progress${shiftId}`).style.display = 'none';
             } else {
-                document.getElementById(`lesson${shiftId}`).innerHTML = `${currentLesson.lessonName}`;
-                document.getElementById(`timeLeft${shiftId}`).innerHTML =
-                  `<span>${formatTime(currentLesson.timeLeft)}</span>` +
-                  `<span style="color:rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.totalTime)}</span>`;
-
+                // Выводим название урока с кнопкой для развёртки справа
+                document.getElementById(`lesson${shiftId}`).innerHTML = `
+                    <span class="lesson-name">${currentLesson.lessonName}</span>
+                    <button class="toggle-btn" id="toggleBtn${shiftId}" style="margin-left: 10px;">▼</button>
+                `;
+                document.getElementById(`timeLeft${shiftId}`).innerHTML = `<span>${formatTime(currentLesson.timeLeft)}</span><span style="color:rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.totalTime)}</span>`;
                 const progress = ((currentLesson.totalTime - currentLesson.timeLeft) / currentLesson.totalTime) * 100;
                 document.getElementById(`progress${shiftId}`).style.display = 'inline-block';
                 document.getElementById(`progress${shiftId}`).value = progress;
+
+                // Прикрепляем обработчик на кнопку для развёртки
+                document.getElementById(`toggleBtn${shiftId}`).addEventListener('click', () => {
+                    const container = document.getElementById(`nextLesson${shiftId}`);
+                    // Если блок с информацией уже виден, то скрываем его и очищаем интервал обновления
+                    if (container.style.display === 'block') {
+                        if (navigator.vibrate) {
+                            navigator.vibrate(4);
+                        }
+                        container.style.display = 'none';
+                        container.classList.remove('fade-in');
+                        if (shiftId === "Shift1" && nextLessonIntervalShift1) {
+                            clearInterval(nextLessonIntervalShift1);
+                            nextLessonIntervalShift1 = null;
+                        } else if (shiftId === "Shift2" && nextLessonIntervalShift2) {
+                            clearInterval(nextLessonIntervalShift2);
+                            nextLessonIntervalShift2 = null;
+                        }
+                    } else {
+                        // Показываем блок с рамкой и анимацией
+                        container.style.display = 'block';
+                        if (navigator.vibrate) {
+                            navigator.vibrate(13);
+                        }
+                        container.classList.add('next-lesson-frame');
+                        container.classList.add('fade-in');
+                        // Обновляем сразу и запускаем обновление каждую секунду
+                        showNextLesson(shiftId.toLowerCase());
+                        if (shiftId === "Shift1") {
+                            nextLessonIntervalShift1 = setInterval(() => {
+                                showNextLesson('shift1');
+                            }, 1000);
+                        } else if (shiftId === "Shift2") {
+                            nextLessonIntervalShift2 = setInterval(() => {
+                                showNextLesson('shift2');
+                            }, 1000);
+                        }
+                    }
+                });
             }
         } else {
             document.getElementById(`lesson${shiftId}`).innerHTML = "Нет уроков";
             document.getElementById(`timeLeft${shiftId}`).innerHTML = "";
             document.getElementById(`progress${shiftId}`).style.display = 'none';
         }
-        
-        // Прикрепляем обработчик клика для показа панели следующего урока
-        document.getElementById(`currentLesson${shiftId}`).onclick = () => {
-            showNextLessonPanel(shiftId.toLowerCase());
-        };
     };
-// Добавьте этот обработчик для закрытия панели
-document.addEventListener('click', (e) => {
-    const panel = document.getElementById('nextLessonPanel');
-    if (!panel.contains(e.target) && !e.target.closest('.current-lesson')) {
-        panel.style.transform = "translateY(100%)";
-    }
-});
+
     updateShift("Shift1", currentLessonShift1);
     updateShift("Shift2", currentLessonShift2);
 };
 
-updateCurrentLessons()
-
-
+updateCurrentLessons();
+getNextLesson();
 // Обновляем данные каждые 1 секунду
 setInterval(updateCurrentLessons, 1000);
-
-// Обработчик клика вне панели для её скрытия
-document.addEventListener('click', (e) => {
-    const panel = document.getElementById('nextLessonPanel');
-    // Если клик не по панели и не по текущим урокам – скрываем панель
-    if (!panel.contains(e.target) && 
-        !e.target.matches('#currentLessonShift1, #currentLessonShift2')) {
-        hideNextLessonPanel();
-    }
-});
 
 
 window.simulateTime = simulateTime;
