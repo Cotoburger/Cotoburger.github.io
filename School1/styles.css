@@ -53,6 +53,7 @@ body {
         scale: 0.8;
         transform: translateY(2rem);
         filter: blur(0.5rem);
+        border-radius: 1.875rem;
     }
     to {
         opacity: 1;
