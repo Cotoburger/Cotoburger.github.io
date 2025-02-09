@@ -203,7 +203,7 @@ const showNextLesson = (shift) => {
             <div style="color: rgba(97, 123, 141, 0.63)">Через: <strong>${formatTime(nextLesson.timeUntilStart)}</strong></div>
         `;
     } else {
-        container.innerHTML = `<div>Нет следующих уроков</div>`;
+        container.innerHTML = `<div style="color:rgba(97, 123, 141, 0.63)">Нет следующих уроков</div>`;
     }
 };
 // Получаем время в часовом поясе Сакраменто
