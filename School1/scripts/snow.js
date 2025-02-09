@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Получаем текущий месяц
     const currentMonth = new Date().getMonth() + 1; // Январь - 1, Декабрь - 12
     
-    if (currentMonth === 12 || currentMonth === 1) {
+    if (currentMonth === 12 || currentMonth === 2) {
         // Функция создания снежинки
         function createSnowflake() {
             if (snowflakes.length >= maxSnowflakes) return;
