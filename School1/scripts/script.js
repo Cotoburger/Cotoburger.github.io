@@ -353,7 +353,7 @@ const updateCurrentLessons = () => {
             document.getElementById(`timeLeft${shiftId}`).innerHTML = `Осталось ~${daysLeft} ${getDaysLabel(daysLeft)}`;
             document.getElementById(`progress${shiftId}`).style.display = 'inline-block';
             document.getElementById(`progress${shiftId}`).value = (daysPassed / totalDays) * 100;
-        } else if (currentLesson.lessonName) {
+        } else if (currentLesson && currentLesson.lessonName) {
             if (currentLesson.isBreak) {
                 // Если перемена – кнопки не добавляем
                 document.getElementById(`lesson${shiftId}`).innerHTML = "Перемена";
@@ -363,51 +363,60 @@ const updateCurrentLessons = () => {
                 // Выводим название урока с кнопкой для развёртки справа
                 document.getElementById(`lesson${shiftId}`).innerHTML = `
                     <span class="lesson-name">${currentLesson.lessonName}</span>
-                    <button class="toggle-btn" id="toggleBtn${shiftId}" style="margin-left: 10px;">▼</button>
+                    <button class="toggle-btn" id="toggleBtn${shiftId}" style="margin-left: 10px; text-allign: right;>▼</button>
                 `;
                 document.getElementById(`timeLeft${shiftId}`).innerHTML = `<span>${formatTime(currentLesson.timeLeft)}</span><span style="color:rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.totalTime)}</span>`;
                 const progress = ((currentLesson.totalTime - currentLesson.timeLeft) / currentLesson.totalTime) * 100;
                 document.getElementById(`progress${shiftId}`).style.display = 'inline-block';
                 document.getElementById(`progress${shiftId}`).value = progress;
 
-                // Прикрепляем обработчик на кнопку для развёртки
-                document.getElementById(`toggleBtn${shiftId}`).addEventListener('click', () => {
-                    const container = document.getElementById(`nextLesson${shiftId}`);
-                    // Если блок с информацией уже виден, то скрываем его и очищаем интервал обновления
-                    if (container.style.display === 'block') {
-                        if (navigator.vibrate) {
-                            navigator.vibrate(4);
+                // Прикрепляем обработчик для кнопки toggle, используя свойство onclick, чтобы избежать повторного добавления
+                const toggleBtn = document.getElementById(`toggleBtn${shiftId}`);
+                if (toggleBtn) {
+                    toggleBtn.onclick = () => {
+                        const container = document.getElementById(`nextLesson${shiftId}`);
+                        // Если блок уже виден – запускаем анимацию fade-out и ждём завершения анимации
+                        if (container.style.display === 'block') {
+                            if (navigator.vibrate) {
+                                navigator.vibrate(4);
+                            }
+                            container.classList.remove('fade-in');
+                            container.classList.add('fade-out2');
+                            container.addEventListener('animationend', function handler() {
+                                container.style.display = 'none';
+                                container.classList.remove('fade-out', 'next-lesson-frame');
+                                container.removeEventListener('animationend', handler);
+                            });
+                            if (shiftId === "Shift1" && nextLessonIntervalShift1) {
+                                clearInterval(nextLessonIntervalShift1);
+                                nextLessonIntervalShift1 = null;
+                            } else if (shiftId === "Shift2" && nextLessonIntervalShift2) {
+                                clearInterval(nextLessonIntervalShift2);
+                                nextLessonIntervalShift2 = null;
+                            }
+                        } else {
+                            // Если блок скрыт – показываем его с анимацией fade-in
+                            const lowerShift = shiftId.toLowerCase();
+                            container.style.display = 'block';
+                            if (navigator.vibrate) {
+                                navigator.vibrate(13);
+                            }
+                            container.classList.remove('fade-out2'); // если был применён fade-out
+                            container.classList.add('next-lesson-frame');
+                            container.classList.add('fade-in');
+                            showNextLesson(lowerShift);
+                            if (shiftId === "Shift1") {
+                                nextLessonIntervalShift1 = setInterval(() => {
+                                    showNextLesson('shift1');
+                                }, 1000);
+                            } else if (shiftId === "Shift2") {
+                                nextLessonIntervalShift2 = setInterval(() => {
+                                    showNextLesson('shift2');
+                                }, 1000);
+                            }
                         }
-                        container.style.display = 'none';
-                        container.classList.remove('fade-in');
-                        if (shiftId === "Shift1" && nextLessonIntervalShift1) {
-                            clearInterval(nextLessonIntervalShift1);
-                            nextLessonIntervalShift1 = null;
-                        } else if (shiftId === "Shift2" && nextLessonIntervalShift2) {
-                            clearInterval(nextLessonIntervalShift2);
-                            nextLessonIntervalShift2 = null;
-                        }
-                    } else {
-                        // Показываем блок с рамкой и анимацией
-                        container.style.display = 'block';
-                        if (navigator.vibrate) {
-                            navigator.vibrate(13);
-                        }
-                        container.classList.add('next-lesson-frame');
-                        container.classList.add('fade-in');
-                        // Обновляем сразу и запускаем обновление каждую секунду
-                        showNextLesson(shiftId.toLowerCase());
-                        if (shiftId === "Shift1") {
-                            nextLessonIntervalShift1 = setInterval(() => {
-                                showNextLesson('shift1');
-                            }, 1000);
-                        } else if (shiftId === "Shift2") {
-                            nextLessonIntervalShift2 = setInterval(() => {
-                                showNextLesson('shift2');
-                            }, 1000);
-                        }
-                    }
-                });
+                    };
+                }
             }
         } else {
             document.getElementById(`lesson${shiftId}`).innerHTML = "Нет уроков";
