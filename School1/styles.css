@@ -47,6 +47,19 @@ body {
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
 }
 
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        scale: 0.8;
+        transform: translateY(2rem);
+    }
+    to {
+        opacity: 1;
+        scale: 1;
+        transform: translateY(0);
+    }
+}
+
 .next-lesson-frame {
     padding: 1rem;
     display: none;
@@ -152,7 +165,7 @@ header {
     user-select: none;
     outline: none;
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
-    
+    animation: fadeInUp 0.3s ease forwards;
 }
 
 #schedule1 {

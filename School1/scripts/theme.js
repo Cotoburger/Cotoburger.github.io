@@ -41,9 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
     themeToggle.style.transition = "transform 0.4s ease-in-out, opacity 0.2s ease-in-out";
     document.documentElement.style.transition = "background-color 0.3s";
 
-    themeToggle.style.opacity = "0";
-    themeToggle.style.transform = "rotate(180deg)";
-
     function setTheme(theme) {
         if (theme === "light") {
             document.documentElement.setAttribute("data-theme", "light");
@@ -60,10 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
                       (window.matchMedia('(prefers-color-scheme: light)').matches ? "light" : "dark");
     setTheme(savedTheme);
 
-    requestAnimationFrame(() => {
-        themeToggle.style.opacity = "1";
-        themeToggle.style.transform = "rotate(0deg)";
-    });
+    // Убираем анимацию при загрузке, просто устанавливаем финальное состояние
+    themeToggle.style.opacity = "1";
+    themeToggle.style.transform = "rotate(0deg)";
 
     themeToggle.addEventListener("click", () => {
         themeToggle.style.transform = "rotate(180deg)";
