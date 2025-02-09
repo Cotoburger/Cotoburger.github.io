@@ -363,7 +363,7 @@ const updateCurrentLessons = () => {
                 // Выводим название урока с кнопкой для развёртки справа
                 document.getElementById(`lesson${shiftId}`).innerHTML = `
                     <span class="lesson-name">${currentLesson.lessonName}</span>
-                    <button class="toggle-btn" id="toggleBtn${shiftId}" style="margin-left: 10px; text-allign: right;>▼</button>
+                    <button class="toggle-btn" id="toggleBtn${shiftId}" style="margin-left: 10px;">▼</button>
                 `;
                 document.getElementById(`timeLeft${shiftId}`).innerHTML = `<span>${formatTime(currentLesson.timeLeft)}</span><span style="color:rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.totalTime)}</span>`;
                 const progress = ((currentLesson.totalTime - currentLesson.timeLeft) / currentLesson.totalTime) * 100;
