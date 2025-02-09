@@ -78,6 +78,7 @@ body {
     outline: none;
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
     transition: ease 0.3s;
+    transition: background-image 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
     
 }
 .toggle-btn:hover {
@@ -793,6 +794,7 @@ body.light-theme .theme-toggle {
 }
 [data-theme="light"] .toggle-btn {
     background-image: url('images/nextwhite.svg'); 
+    transition: background-image 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
 }
 [data-theme="light"] .sectionles,
 [data-theme="light"] .fact-content,
