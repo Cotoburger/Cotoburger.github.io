@@ -175,12 +175,12 @@ const hideNextLesson = () => {
     const container = document.getElementById("nextLessonShift1");
     
     // Добавляем анимацию исчезновения
-    container.classList.remove('fade-in');
-    container.classList.add('fade-out');
+    container.classList.remove('fade-in2');
+    container.classList.add('fade-out2');
     
     // После завершения анимации скрываем контейнер
     setTimeout(() => {
-        container.classList.remove('open', 'fade-out');
+        container.classList.remove('open', 'fade-out2');
         container.style.display = 'none';
     }, 500);
 };
@@ -191,8 +191,8 @@ const showNextLesson = (shift) => {
 
     container.style.display = 'block';
     container.classList.add('open');
-    container.classList.add('fade-in');
-    container.classList.remove('fade-out');
+    container.classList.add('fade-in2');
+    container.classList.remove('fade-out2');
     
     // Остальной код остается без изменений
     const nextLesson = getNextLesson(shift);
