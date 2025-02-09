@@ -328,7 +328,7 @@ const checkHolidayStatus = () => {
 };
 
 // Проверка каникул каждые 10 секунд
-setInterval(checkHolidayStatus, 10000);
+setInterval(checkHolidayStatus, 2000);
 
 // Функция для обновления информации о текущих уроках
 // Обновление информации о текущих уроках для обеих смен
@@ -375,11 +375,11 @@ const updateCurrentLessons = () => {
                         const container = document.getElementById(`nextLesson${shiftId}`);
                         if (container.style.display === 'block') {
                             if (navigator.vibrate) navigator.vibrate(4);
-                            container.classList.remove('fade-in');
+                            container.classList.remove('fade-in2');
                             container.classList.add('fade-out2');
                             container.addEventListener('animationend', function handler() {
                                 container.style.display = 'none';
-                                container.classList.remove('fade-out', 'next-lesson-frame');
+                                container.classList.remove('fade-out2', 'next-lesson-frame');
                                 container.removeEventListener('animationend', handler);
                             });
                             if (shiftId === "Shift1" && nextLessonIntervalShift1) {

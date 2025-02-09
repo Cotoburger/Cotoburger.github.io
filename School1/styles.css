@@ -51,7 +51,7 @@ body {
     padding: 1rem;
     display: none;
     margin-top: 1rem;
-    border-radius: 1.1rem;
+    border-radius: 1.0rem;
     background-color: #00000046;
     transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Плавное изменение высоты и прозрачности */
   }
@@ -71,13 +71,11 @@ body {
     background-color: transparent; /* Убираем фон */
     background-size: contain;
     vertical-align: middle; /* Или bottom */
-    background-repeat: no-repeat;
     text-align: right;
     border: none; /* Убираем границу */
     cursor: pointer; /* Изменение курсора при наведении */
     outline: none;
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
-    transition: ease 0.3s;
     transition: background-image 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
     
 }
@@ -148,6 +146,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: auto;
     margin: 1.3rem;
     flex-wrap: wrap;
     user-select: none;
@@ -372,6 +371,7 @@ h4 {
     background-color: #4CAF50;
     color: white;
     padding: 0.7rem;
+    position: absolute;
     border-radius: 5px;
     width: 100%;
     text-align: center;
@@ -387,6 +387,7 @@ h4 {
     width: 100%;
     margin-top: 5px;
     padding-left: 20px;
+    position: absolute;
     user-select: none;
     outline: none;
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
