@@ -15,6 +15,8 @@ const filesToCache = [
     "aos.css",
     "images/sun.svg",
     "images/moon.svg",
+    "images/next.svg",
+    "images/white.svg",
     "scripts/usascript.js",
     "scripts/accelerometer.js",
     "images/16179f27f955d3d4ec88b294bcafd1b7.jpg",
