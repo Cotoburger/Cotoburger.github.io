@@ -129,7 +129,7 @@ const schedule = {
         ],
         shift2: [
             {lesson: "Воскресенье", start: "00:01", end: "23:59"},
-            {lesson: "Воскресенье", start: "23:59", end: "00:00"},
+
         ]
     }
 };
@@ -341,7 +341,6 @@ const updateCurrentLessons = () => {
         document.getElementById(`currentLesson${shiftId}`).innerHTML = shiftId === "Shift1" ? "Первая смена" : "Вторая смена";
 
         if (isHolidayPeriod) {
-            // Если каникулы – оставляем как есть
             const holiday = holidays.find(h => formatDate(new Date()) >= h.start && formatDate(new Date()) <= h.end);
             const start = new Date(holiday.start);
             const end = new Date(holiday.end);
@@ -355,31 +354,27 @@ const updateCurrentLessons = () => {
             document.getElementById(`progress${shiftId}`).value = (daysPassed / totalDays) * 100;
         } else if (currentLesson && currentLesson.lessonName) {
             if (currentLesson.isBreak) {
-                // Если перемена – кнопки не добавляем
                 document.getElementById(`lesson${shiftId}`).innerHTML = "Перемена";
                 document.getElementById(`timeLeft${shiftId}`).innerHTML = `<span style="color: green;">${formatTime(currentLesson.timeLeft)}</span><span style="color: rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.timeLeft)}</span>`;
                 document.getElementById(`progress${shiftId}`).style.display = 'none';
             } else {
-                // Выводим название урока с кнопкой для развёртки справа
                 document.getElementById(`lesson${shiftId}`).innerHTML = `
-                    <span class="lesson-name">${currentLesson.lessonName}</span>
-                    <button class="toggle-btn" id="toggleBtn${shiftId}" style="margin-left: 10px;">▼</button>
-                `;
+    <div class="lesson-container">
+        <span class="lesson-name">${currentLesson.lessonName}</span>
+        <button class="toggle-btn" id="toggleBtn${shiftId}"></button>
+    </div>
+`;
                 document.getElementById(`timeLeft${shiftId}`).innerHTML = `<span>${formatTime(currentLesson.timeLeft)}</span><span style="color:rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.totalTime)}</span>`;
                 const progress = ((currentLesson.totalTime - currentLesson.timeLeft) / currentLesson.totalTime) * 100;
                 document.getElementById(`progress${shiftId}`).style.display = 'inline-block';
                 document.getElementById(`progress${shiftId}`).value = progress;
 
-                // Прикрепляем обработчик для кнопки toggle, используя свойство onclick, чтобы избежать повторного добавления
                 const toggleBtn = document.getElementById(`toggleBtn${shiftId}`);
                 if (toggleBtn) {
                     toggleBtn.onclick = () => {
                         const container = document.getElementById(`nextLesson${shiftId}`);
-                        // Если блок уже виден – запускаем анимацию fade-out и ждём завершения анимации
                         if (container.style.display === 'block') {
-                            if (navigator.vibrate) {
-                                navigator.vibrate(4);
-                            }
+                            if (navigator.vibrate) navigator.vibrate(4);
                             container.classList.remove('fade-in');
                             container.classList.add('fade-out2');
                             container.addEventListener('animationend', function handler() {
@@ -395,13 +390,10 @@ const updateCurrentLessons = () => {
                                 nextLessonIntervalShift2 = null;
                             }
                         } else {
-                            // Если блок скрыт – показываем его с анимацией fade-in
                             const lowerShift = shiftId.toLowerCase();
                             container.style.display = 'block';
-                            if (navigator.vibrate) {
-                                navigator.vibrate(13);
-                            }
-                            container.classList.remove('fade-out2'); // если был применён fade-out
+                            if (navigator.vibrate) navigator.vibrate(13);
+                            container.classList.remove('fade-out2');
                             container.classList.add('next-lesson-frame');
                             container.classList.add('fade-in');
                             showNextLesson(lowerShift);
@@ -428,6 +420,7 @@ const updateCurrentLessons = () => {
     updateShift("Shift1", currentLessonShift1);
     updateShift("Shift2", currentLessonShift2);
 };
+
 
 updateCurrentLessons();
 getNextLesson();

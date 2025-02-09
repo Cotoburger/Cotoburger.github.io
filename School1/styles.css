@@ -58,13 +58,22 @@ body {
   .next-lesson-frame.open {
     display: block;
 }
-
+.lesson-container {
+    display: flex;
+    justify-content: space-between; /* Текст слева, кнопка справа */
+    align-items: center; /* Выравниваем элементы по центру */
+    width: 100%; /* Контейнер на всю ширину */
+}
 .toggle-btn {
-    background: none; /* Убираем фон */
+    width:  1.7rem;  /* Установи нужный размер */
+    height: 1.7rem;
+    background-image: url('images/next.svg');
+    background-color: transparent; /* Убираем фон */
+    background-size: contain;
+    vertical-align: middle; /* Или bottom */
+    background-repeat: no-repeat;
     text-align: right;
     border: none; /* Убираем границу */
-    color: #0000006d; /* Цвет текста */
-    font-size: 1.3rem; /* Размер шрифта */
     cursor: pointer; /* Изменение курсора при наведении */
     outline: none;
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
@@ -504,7 +513,10 @@ h4 {
     
         font-size: 2.75rem;
     }
-
+    .toggle-btn {
+        width:  3rem;  /* Установи нужный размер */
+        height: 3rem;
+    }
 }
 
 @media (min-width: 95rem) {
@@ -608,6 +620,7 @@ h4 {
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
+
     -webkit-backdrop-filter: blur(1rem);
     backdrop-filter: blur(1rem);
     outline: none;
@@ -778,7 +791,9 @@ body.light-theme .theme-toggle {
     background-color: rgba(200, 200, 200, 0.215);
     box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
 }
-
+[data-theme="light"] .toggle-btn {
+    background-image: url('images/nextwhite.svg'); 
+}
 [data-theme="light"] .sectionles,
 [data-theme="light"] .fact-content,
 [data-theme="light"] .sectionles2 {
