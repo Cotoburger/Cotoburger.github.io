@@ -7,13 +7,6 @@ function pxToRem(px) {
     return px / 16 + 'rem';
 }
 
-
-AOS.init({
-    duration: 200,
-    once: true
-    
-}); 
-
 // Функция для имитации тряски
 function simulateShake() {
     const event = {

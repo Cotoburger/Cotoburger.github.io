@@ -59,6 +59,21 @@ body {
         transform: translateY(0);
     }
 }
+@keyframes fadeInProgress {
+    from {
+        opacity: 0;
+        height: 1rem;
+        transform: translateY(0.5rem);
+        
+    }
+    to {
+        opacity: 1;
+        scale: 1;
+        transform: translateY(0);
+        max-height: 15vh;
+    }
+}
+
 
 .next-lesson-frame {
     padding: 1rem;
@@ -127,6 +142,8 @@ body {
     user-select: none;
     outline: none;
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
+    animation: fadeInProgress 0.7s ease forwards;
+    
 }
 
 .time-progress::-webkit-progress-bar {
@@ -137,6 +154,7 @@ body {
 .time-progress::-webkit-progress-value {
     background-color: #46ca4a;
     border-radius: 0.875rem;
+    animation: fadeInProgressGreen 0.7s ease forwards;
 }
 
 header {
@@ -773,6 +791,9 @@ h4 {
     margin-right: 1.5rem;
     background-image: url('images/moon.svg');
     outline: none;
+    opacity: 0;
+    transform: rotate(180deg);
+    transition: none; /* Отключаем анимацию при первой отрисовке */
 }
 
 body.light-theme .theme-toggle {

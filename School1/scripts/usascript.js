@@ -392,8 +392,3 @@ const logCurrentDay = () => {
 };
 
 window.logCurrentDay = logCurrentDay;
-
-AOS.init({
-    duration: 200,
-    once: true
-});
