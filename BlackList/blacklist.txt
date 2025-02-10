@@ -2,7 +2,7 @@
   { "name": "ArtyomK", "reason": "Постоянно мне звонит", "avatar": "images/artyomk.webp", 
   "description": "ХВАТИТ МНЕ ЗВОНИТЬ!!!!!!!!" },
 
-  { "name": "Игорь Шевцов", "reason": "Гей, педофил, программист.", "avatar": "images/igor.png", 
+  { "name": "Игорь Шлепцов", "reason": "Гей, педофил, программист.", "avatar": "images/igor.png", 
   "description": "Соре игор" },
 
   { "name": "Полина хз", "reason": " Полина Заслуженно", "avatar": "images/polina.png", 
