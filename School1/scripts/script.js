@@ -354,16 +354,64 @@ const updateCurrentLessons = () => {
             document.getElementById(`progress${shiftId}`).value = (daysPassed / totalDays) * 100;
         } else if (currentLesson && currentLesson.lessonName) {
             if (currentLesson.isBreak) {
-                document.getElementById(`lesson${shiftId}`).innerHTML = "Перемена";
+                // Для перемены выводим текст "Перемена" и кнопку следующего урока
+                document.getElementById(`lesson${shiftId}`).innerHTML = `
+                    <div class="lesson-container">
+                        <span class="lesson-name">Перемена</span>
+                        <button class="toggle-btn" id="toggleBtn${shiftId}"></button>
+                    </div>
+                `;
                 document.getElementById(`timeLeft${shiftId}`).innerHTML = `<span style="color: green;">${formatTime(currentLesson.timeLeft)}</span><span style="color: rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.timeLeft)}</span>`;
                 document.getElementById(`progress${shiftId}`).style.display = 'none';
+
+                // Добавляем обработчик нажатия для кнопки следующего урока
+                const toggleBtn = document.getElementById(`toggleBtn${shiftId}`);
+                if (toggleBtn) {
+                    toggleBtn.onclick = () => {
+                        const container = document.getElementById(`nextLesson${shiftId}`);
+                        if (container.style.display === 'block') {
+                            if (navigator.vibrate) navigator.vibrate(4);
+                            container.classList.remove('fade-in2');
+                            container.classList.add('fade-out2');
+                            container.addEventListener('animationend', function handler() {
+                                container.style.display = 'none';
+                                container.classList.remove('fade-out2', 'next-lesson-frame');
+                                container.removeEventListener('animationend', handler);
+                            });
+                            if (shiftId === "Shift1" && nextLessonIntervalShift1) {
+                                clearInterval(nextLessonIntervalShift1);
+                                nextLessonIntervalShift1 = null;
+                            } else if (shiftId === "Shift2" && nextLessonIntervalShift2) {
+                                clearInterval(nextLessonIntervalShift2);
+                                nextLessonIntervalShift2 = null;
+                            }
+                        } else {
+                            const lowerShift = shiftId.toLowerCase();
+                            container.style.display = 'block';
+                            if (navigator.vibrate) navigator.vibrate(13);
+                            container.classList.remove('fade-out2');
+                            container.classList.add('next-lesson-frame');
+                            container.classList.add('fade-in');
+                            showNextLesson(lowerShift);
+                            if (shiftId === "Shift1") {
+                                nextLessonIntervalShift1 = setInterval(() => {
+                                    showNextLesson('shift1');
+                                }, 1000);
+                            } else if (shiftId === "Shift2") {
+                                nextLessonIntervalShift2 = setInterval(() => {
+                                    showNextLesson('shift2');
+                                }, 1000);
+                            }
+                        }
+                    };
+                }
             } else {
                 document.getElementById(`lesson${shiftId}`).innerHTML = `
-    <div class="lesson-container">
-        <span class="lesson-name">${currentLesson.lessonName}</span>
-        <button class="toggle-btn" id="toggleBtn${shiftId}"></button>
-    </div>
-`;
+                    <div class="lesson-container">
+                        <span class="lesson-name">${currentLesson.lessonName}</span>
+                        <button class="toggle-btn" id="toggleBtn${shiftId}"></button>
+                    </div>
+                `;
                 document.getElementById(`timeLeft${shiftId}`).innerHTML = `<span>${formatTime(currentLesson.timeLeft)}</span><span style="color:rgba(97, 123, 141, 0.63); float: right;">${formatTime(currentLesson.totalTime)}</span>`;
                 const progress = ((currentLesson.totalTime - currentLesson.timeLeft) / currentLesson.totalTime) * 100;
                 document.getElementById(`progress${shiftId}`).style.display = 'inline-block';
@@ -421,12 +469,10 @@ const updateCurrentLessons = () => {
     updateShift("Shift2", currentLessonShift2);
 };
 
-
 updateCurrentLessons();
 getNextLesson();
 // Обновляем данные каждые 1 секунду
 setInterval(updateCurrentLessons, 1000);
-
 
 window.simulateTime = simulateTime;
 
