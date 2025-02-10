@@ -29,6 +29,8 @@
   { "name": "Девочка Дарина", "reason": " Ещё более странная", "avatar": "images/dvchka2.png", 
   "description": "У всех пятиклассниц проблемы с ментальным здоровьем." },
 
+  { "name": "Павел Дуров", "reason": " Подписка в тг дорого стоит", "avatar": "images/pavel.png", 
+  "description": "Очень" },
 
   { "name": " Влад", "reason": " читайте описание", "avatar": "images/vlad.png", 
   "description": "В НАЧАЛЬНОЙ ШКОЛЕ СЛОМАЛ МОЙ ЗВЕЗДОЛЁТ ИЗ ПЛАСТИЛИНА" },
