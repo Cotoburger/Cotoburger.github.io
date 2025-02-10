@@ -13,6 +13,7 @@ html, body {
     -ms-overflow-style: none;
     justify-content: center;
     align-items: center;
+    cursor: url('images/cursor.png'), auto;
 }
 
 *, *::before, *::after {
