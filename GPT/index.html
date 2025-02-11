@@ -94,137 +94,145 @@
   </style>
 </head>
 <body>
-  <header>
-    <h1>ChatGPT Clone с LM Studio API</h1>
-  </header>
-  <div class="chat-container" id="chatContainer">
-    <!-- Сообщения будут добавляться сюда -->
-  </div>
-  <div id="loading">Генерация ответа...</div>
-  <div class="input-area">
-    <input type="text" id="chatInput" placeholder="Напиши сообщение...">
-    <button id="sendBtn">Отправить</button>
-  </div>
-  <script>
-    const chatContainer = document.getElementById('chatContainer');
-    const chatInput = document.getElementById('chatInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const loadingIndicator = document.getElementById('loading');
-    
-    const LM_API_URL = 'http://10.0.85.2:1488/v1/chat/completions';
-    
-    // Массив для хранения истории сообщений
-    let chatHistory = [];
-    
-    function appendMessage(role, htmlContent) {
-      const msgDiv = document.createElement('div');
-      msgDiv.classList.add('message', role === 'user' ? 'user' : 'assistant');
-      msgDiv.innerHTML = htmlContent;
-      chatContainer.appendChild(msgDiv);
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-
-    function updateStreamingMessage(htmlContent) {
-      let streamingDiv = document.getElementById('streaming');
-      if (!streamingDiv) {
-        streamingDiv = document.createElement('div');
-        streamingDiv.id = 'streaming';
-        streamingDiv.classList.add('message', 'assistant');
-        streamingDiv.style.fontStyle = 'italic';
-        chatContainer.appendChild(streamingDiv);
-      }
-      streamingDiv.innerHTML = htmlContent;
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-
-    function clearStreamingMessage() {
-      const streamingDiv = document.getElementById('streaming');
-      if (streamingDiv) {
-        streamingDiv.remove();
-      }
-    }
-
-    async function streamResponse(requestBody) {
-      const response = await fetch(LM_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-      });
+    <header>
+      <h1>ChatGPT Clone с LM Studio API</h1>
+    </header>
+    <div class="chat-container" id="chatContainer">
+      <!-- Сообщения будут добавляться сюда -->
+    </div>
+    <div id="loading">
+      <div>Генерация ответа...</div>
+      <div id="speed">Скорость: 0 токенов/сек</div>
+    </div>
+    <div class="input-area">
+      <input type="text" id="chatInput" placeholder="Напиши сообщение...">
+      <button id="sendBtn">Отправить</button>
+    </div>
+    <script>
+      const chatContainer = document.getElementById('chatContainer');
+      const chatInput = document.getElementById('chatInput');
+      const sendBtn = document.getElementById('sendBtn');
+      const loadingIndicator = document.getElementById('loading');
+      const speedIndicator = document.getElementById('speed');
       
-      if (!response.body) throw new Error("Нет потока ответа");
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let accumulatedHTML = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n').filter(line => line.startsWith('data: '));
-        for (const line of lines) {
-          const dataLine = line.replace('data: ', '').trim();
-          if (dataLine === '[DONE]') {
-            clearStreamingMessage();
-            return accumulatedHTML;
-          }
-          try {
-            const parsed = JSON.parse(dataLine);
-            if (parsed.choices?.[0]?.delta?.content) {
-              accumulatedHTML += parsed.choices[0].delta.content;
-              updateStreamingMessage(accumulatedHTML);
+      const LM_API_URL = 'http://10.0.85.2:1488/v1/chat/completions';
+      
+      let chatHistory = [];
+      
+      function appendMessage(role, htmlContent) {
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message', role === 'user' ? 'user' : 'assistant');
+        msgDiv.innerHTML = htmlContent;
+        chatContainer.appendChild(msgDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+  
+      function updateStreamingMessage(htmlContent) {
+        let streamingDiv = document.getElementById('streaming');
+        if (!streamingDiv) {
+          streamingDiv = document.createElement('div');
+          streamingDiv.id = 'streaming';
+          streamingDiv.classList.add('message', 'assistant');
+          streamingDiv.style.fontStyle = 'italic';
+          chatContainer.appendChild(streamingDiv);
+        }
+        streamingDiv.innerHTML = htmlContent;
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+  
+      function clearStreamingMessage() {
+        const streamingDiv = document.getElementById('streaming');
+        if (streamingDiv) {
+          streamingDiv.remove();
+        }
+      }
+  
+      async function streamResponse(requestBody) {
+        const response = await fetch(LM_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody)
+        });
+  
+        if (!response.body) throw new Error("Нет потока ответа");
+  
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let accumulatedHTML = "";
+        let tokenCount = 0;
+        let startTime = Date.now();
+  
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n').filter(line => line.startsWith('data: '));
+          for (const line of lines) {
+            const dataLine = line.replace('data: ', '').trim();
+            if (dataLine === '[DONE]') {
+              clearStreamingMessage();
+              return accumulatedHTML;
             }
-          } catch (err) {
-            console.error("Ошибка парсинга JSON:", err, dataLine);
+            try {
+              const parsed = JSON.parse(dataLine);
+              if (parsed.choices?.[0]?.delta?.content) {
+                accumulatedHTML += parsed.choices[0].delta.content;
+                tokenCount += parsed.choices[0].delta.content.length; // Подсчитываем количество токенов
+                updateStreamingMessage(accumulatedHTML);
+  
+                // Вычисляем скорость в токенах в секунду
+                const elapsedTime = (Date.now() - startTime) / 1000; // время в секундах
+                const speed = elapsedTime > 0 ? (tokenCount / elapsedTime).toFixed(2) : 0;
+                speedIndicator.innerHTML = `Скорость: ${speed} токенов/сек`;
+              }
+            } catch (err) {
+              console.error("Ошибка парсинга JSON:", err, dataLine);
+            }
           }
         }
+        clearStreamingMessage();
+        return accumulatedHTML;
       }
-      clearStreamingMessage();
-      return accumulatedHTML;
-    }
-
-    sendBtn.addEventListener('click', async () => {
-      const userText = chatInput.value.trim();
-      if (!userText) return;
-      
-      // Добавляем сообщение пользователя в историю и интерфейс
-      appendMessage('user', userText);
-      chatHistory.push({ role: 'user', content: userText });
-      chatInput.value = "";
-      loadingIndicator.style.display = 'block';
-
-      const requestBody = {
-        model: "qwen2.5-14b-instruct",
-        messages: chatHistory, // Отправляем всю историю
-        temperature: 0.7,
-        max_tokens: 500, // Увеличил лимит токенов для контекста
-        stream: true
-      };
-
-      try {
-        const finalHTML = await streamResponse(requestBody);
-        loadingIndicator.style.display = 'none';
-        
-        // Добавляем ответ ассистента в историю и интерфейс
-        appendMessage('assistant', finalHTML);
-        chatHistory.push({ role: 'assistant', content: finalHTML });
-
-        // Очищаем историю если слишком длинная (последние 20 сообщений)
-        if (chatHistory.length > 20) {
-          chatHistory = chatHistory.slice(-20);
+  
+      sendBtn.addEventListener('click', async () => {
+        const userText = chatInput.value.trim();
+        if (!userText) return;
+  
+        appendMessage('user', userText);
+        chatHistory.push({ role: 'user', content: userText });
+        chatInput.value = "";
+        loadingIndicator.style.display = 'block';
+  
+        const requestBody = {
+          model: "qwen2.5-14b-instruct",
+          messages: chatHistory,
+          temperature: 0.7,
+          max_tokens: 500,
+          stream: true
+        };
+  
+        try {
+          const finalHTML = await streamResponse(requestBody);
+          loadingIndicator.style.display = 'none';
+          
+          appendMessage('assistant', finalHTML);
+          chatHistory.push({ role: 'assistant', content: finalHTML });
+  
+          if (chatHistory.length > 15) {
+            chatHistory = chatHistory.slice(-15);
+          }
+        } catch (error) {
+          console.error("Ошибка потокового ответа:", error);
+          loadingIndicator.style.display = 'none';
+          appendMessage('assistant', "Ошибка: не удалось получить ответ от нейросети.");
         }
-      } catch (error) {
-        console.error("Ошибка потокового ответа:", error);
-        loadingIndicator.style.display = 'none';
-        appendMessage('assistant', "Ошибка: не удалось получить ответ от нейросети.");
-      }
-    });
-
-    chatInput.addEventListener('keydown', (e) => {
-      if (e.key === "Enter") {
-        sendBtn.click();
-      }
-    });
-</script>
-</body>
+      });
+  
+      chatInput.addEventListener('keydown', (e) => {
+        if (e.key === "Enter") {
+          sendBtn.click();
+        }
+      });
+    </script>
+  </body>
 </html>
