@@ -139,10 +139,10 @@ function monitorPopupMotion() {
 
         if (vertical_acceleration > 7) { // Телефон движется вверх
             console.log('Phone moving upwards');
-            handleMotion('phoneup', '/https://cotoburger.github.io/School1/GPT/gpt.html');
+            handleMotion('phoneup', 'School1/gpt.html');
         } else if (vertical_acceleration < -7) { // Телефон движется вниз
             console.log('Phone moving downwards');
-            handleMotion('phonedown', 'https://cotoburger.github.io/School1/GPT/gpt.html');
+            handleMotion('phonedown', 'School1/gpt.html');
         }
     };
 
