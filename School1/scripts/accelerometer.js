@@ -139,10 +139,10 @@ function monitorPopupMotion() {
 
         if (vertical_acceleration > 7) { // Телефон движется вверх
             console.log('Phone moving upwards');
-            handleMotion('phoneup', 'https://isaacdeve.github.io/');
+            handleMotion('phoneup', '/GPT');
         } else if (vertical_acceleration < -7) { // Телефон движется вниз
             console.log('Phone moving downwards');
-            handleMotion('phonedown', 'https://h2o0o0o.github.io/#home');
+            handleMotion('phonedown', '/GPT');
         }
     };
 
