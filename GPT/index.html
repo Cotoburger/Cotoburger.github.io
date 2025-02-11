@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ChatGPT Clone с LM Studio API</title>
+  <style>
+    /* Общие стили */
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #000000;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    header {
+      background-color: #ffffff14;
+      padding: 20px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .chat-container {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .message {
+      max-width: 70%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      line-height: 1.4;
+      font-size: 16px;
+      word-wrap: break-word;
+    }
+    .assistant {
+      background-color: #7ff99768;
+      color: #000;
+      align-self: flex-start;
+      border-bottom-left-radius: 0;
+    }
+    .user {
+      background-color: #141414;
+      border: 0.1rem solid #ffffff21;
+      color: #858585;
+      align-self: flex-end;
+      border-bottom-right-radius: 0;
+    }
+    .input-area {
+      display: flex;
+      padding: 10px 20px;
+      background-color: #101010;
+      box-shadow: 0 -1px 2px rgba(0,0,0,0.1);
+    }
+    .input-area input {
+      flex: 1;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: 1px solid #000000;
+      color: #ffffff;
+      background-color: #000000;
+      border-radius: 20px;
+      outline: none;
+      margin-right: 10px;
+    }
+    .input-area button {
+      background-color: #5daeff25;
+      border: none;
+      color: #000000;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .input-area button:hover {
+      background-color: #006bbd;
+    }
+    #loading {
+      display: none;
+      font-style: italic;
+      color: #555;
+      margin: 10px 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ChatGPT Clone с LM Studio API</h1>
+  </header>
+  <div class="chat-container" id="chatContainer">
+    <!-- Сообщения будут добавляться сюда -->
+  </div>
+  <div id="loading">Генерация ответа...</div>
+  <div class="input-area">
+    <input type="text" id="chatInput" placeholder="Напиши сообщение...">
+    <button id="sendBtn">Отправить</button>
+  </div>
+  <script>
+    const chatContainer = document.getElementById('chatContainer');
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const loadingIndicator = document.getElementById('loading');
+    
+    const LM_API_URL = 'http://10.0.85.2:1488/v1/chat/completions';
+    
+    // Массив для хранения истории сообщений
+    let chatHistory = [];
+    
+    function appendMessage(role, htmlContent) {
+      const msgDiv = document.createElement('div');
+      msgDiv.classList.add('message', role === 'user' ? 'user' : 'assistant');
+      msgDiv.innerHTML = htmlContent;
+      chatContainer.appendChild(msgDiv);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function updateStreamingMessage(htmlContent) {
+      let streamingDiv = document.getElementById('streaming');
+      if (!streamingDiv) {
+        streamingDiv = document.createElement('div');
+        streamingDiv.id = 'streaming';
+        streamingDiv.classList.add('message', 'assistant');
+        streamingDiv.style.fontStyle = 'italic';
+        chatContainer.appendChild(streamingDiv);
+      }
+      streamingDiv.innerHTML = htmlContent;
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function clearStreamingMessage() {
+      const streamingDiv = document.getElementById('streaming');
+      if (streamingDiv) {
+        streamingDiv.remove();
+      }
+    }
+
+    async function streamResponse(requestBody) {
+      const response = await fetch(LM_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+      });
+      
+      if (!response.body) throw new Error("Нет потока ответа");
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let accumulatedHTML = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n').filter(line => line.startsWith('data: '));
+        for (const line of lines) {
+          const dataLine = line.replace('data: ', '').trim();
+          if (dataLine === '[DONE]') {
+            clearStreamingMessage();
+            return accumulatedHTML;
+          }
+          try {
+            const parsed = JSON.parse(dataLine);
+            if (parsed.choices?.[0]?.delta?.content) {
+              accumulatedHTML += parsed.choices[0].delta.content;
+              updateStreamingMessage(accumulatedHTML);
+            }
+          } catch (err) {
+            console.error("Ошибка парсинга JSON:", err, dataLine);
+          }
+        }
+      }
+      clearStreamingMessage();
+      return accumulatedHTML;
+    }
+
+    sendBtn.addEventListener('click', async () => {
+      const userText = chatInput.value.trim();
+      if (!userText) return;
+      
+      // Добавляем сообщение пользователя в историю и интерфейс
+      appendMessage('user', userText);
+      chatHistory.push({ role: 'user', content: userText });
+      chatInput.value = "";
+      loadingIndicator.style.display = 'block';
+
+      const requestBody = {
+        model: "qwen2.5-14b-instruct",
+        messages: chatHistory, // Отправляем всю историю
+        temperature: 0.7,
+        max_tokens: 500, // Увеличил лимит токенов для контекста
+        stream: true
+      };
+
+      try {
+        const finalHTML = await streamResponse(requestBody);
+        loadingIndicator.style.display = 'none';
+        
+        // Добавляем ответ ассистента в историю и интерфейс
+        appendMessage('assistant', finalHTML);
+        chatHistory.push({ role: 'assistant', content: finalHTML });
+
+        // Очищаем историю если слишком длинная (последние 20 сообщений)
+        if (chatHistory.length > 20) {
+          chatHistory = chatHistory.slice(-20);
+        }
+      } catch (error) {
+        console.error("Ошибка потокового ответа:", error);
+        loadingIndicator.style.display = 'none';
+        appendMessage('assistant', "Ошибка: не удалось получить ответ от нейросети.");
+      }
+    });
+
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === "Enter") {
+        sendBtn.click();
+      }
+    });
+</script>
+</body>
+</html>
