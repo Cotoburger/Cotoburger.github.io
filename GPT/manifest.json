@@ -1,6 +1,6 @@
 {
-	"short_name": "Schedule",
-	"name": "Schedule",
+	"short_name": "GPT",
+	"name": "Local GPT",
 	"icons": [
 		{
 		"src": "icon.svg",
