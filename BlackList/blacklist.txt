@@ -2,14 +2,14 @@
   { "name": "ArtyomK", "reason": "Постоянно мне звонит", "avatar": "images/artyomk.webp", 
   "description": "ХВАТИТ МНЕ ЗВОНИТЬ!!!!!!!!" },
 
+  { "name": "Игорь Шлепцов", "reason": "Гей, педофил, программист.", "avatar": "images/igor.png", 
+  "description": "Соре игор" },
+
   { "name": "Полина хз", "reason": " Полина Заслуженно", "avatar": "images/polina.png", 
   "description": "Она меня оскорбляет наверное" },
 
   { "name": "Nikita Noviko64", "reason": " Он в доту играет", "avatar": "images/Nikita.jpg", 
   "description": "НЕНАВИЖУ ДОТЕРОВ!!!" },
-
-  { "name": "Dima", "reason": " Кидает движ в Петербурге", "avatar": "images/unknown.png", 
-  "description": "Балбес, а мог бы щас на Алтае тусить" },
 
   { "name": "Егор", "reason": " Кидает закладки в Москве", "avatar": "images/egor.png", 
   "description": "Дебил, а мог бы щас на Камчатке быть" },
