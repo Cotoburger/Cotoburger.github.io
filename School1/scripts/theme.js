@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
             themeToggle.style.backgroundImage = "url('images/sun.svg')";
         } else {
             document.documentElement.setAttribute("data-theme", "dark");
-            document.documentElement.style.backgroundColor = "#0e1213";
+            document.documentElement.style.backgroundColor = "#090c0f";
             themeToggle.style.backgroundImage = "url('images/moon.svg')";
         }
     }
