@@ -139,10 +139,8 @@ function monitorPopupMotion() {
 
         if (vertical_acceleration > 7) { // Телефон движется вверх
             console.log('Phone moving upwards');
-            handleMotion('phoneup', 'gpt.html');
         } else if (vertical_acceleration < -7) { // Телефон движется вниз
             console.log('Phone moving downwards');
-            handleMotion('phonedown', 'gpt.html');
         }
     };
 
