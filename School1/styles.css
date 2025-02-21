@@ -59,11 +59,13 @@ body {
         opacity: 1;
         scale: 1;
         transform: translateY(0);
-        -webkit-backdrop-filter: blur(0.7rem);
-        backdrop-filter: blur(0.7rem);
+        -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
         border-radius: 1.875rem;
     }
 }
+
+
 @keyframes fadeInProgress {
     from {
         opacity: 0;
@@ -207,7 +209,6 @@ header {
     flex: 1;
     min-width: 1rem;
     background-color: rgba(44, 100, 143, 0.226);
-
     border-radius: 1.875rem;
     color: rgba(139, 191, 254, 0.614);
     text-align: center;
@@ -567,6 +568,8 @@ h4 {
         width:  3rem;  /* Установи нужный размер */
         height: 3rem;
     }
+
+
 }
 
 @media (min-width: 95rem) {
