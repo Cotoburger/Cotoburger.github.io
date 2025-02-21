@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 z: ${acceleration.z ? acceleration.z.toFixed(2) : 'N/A'} m/s²
             `;
             updateInfo("accelerometer-data", accelData);
-        });
+    }, 20);
     } else {
         updateInfo("accelerometer-status", "❌ API Акселерометр");
         updateInfo("accelerometer-data", "❌ Нет данных API Акселерометра");
@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 gamma: ${event.gamma ? event.gamma.toFixed(2) : 'N/A'}°
             `;
             updateInfo("gyroscope-data", gyroData);
-        });
+    }, 20);
     } else {
         updateInfo("gyroscope-status", "❌ API Гироскоп");
         updateInfo("gyroscope-data", "❌ Нет данных API Гироскопа");
