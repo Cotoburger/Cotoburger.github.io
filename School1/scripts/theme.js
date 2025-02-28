@@ -37,9 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.getElementById("themeToggle");
 
-    document.body.style.transition = "background-color 0.3s, color 0.3s";
-    themeToggle.style.transition = "transform 0.4s ease-in-out, opacity 0.2s ease-in-out";
-    document.documentElement.style.transition = "background-color 0.3s";
+    document.body.style.transition = "background-color 0.4s, color 0.4s";
+    themeToggle.style.transition = "transform 0.5s ease-in-out, opacity 0.3s ease-in-out";
+    document.documentElement.style.transition = "background-color 0.5s";
 
     function setTheme(theme) {
         if (theme === "light") {

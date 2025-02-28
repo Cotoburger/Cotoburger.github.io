@@ -3,13 +3,13 @@
 	"name": "Schedule",
 	"icons": [
 		{
-		"src": "images/icon.svg",
-		"sizes": "any",
-		"type": "image/svg+xml"
+			"src": "images/icon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml"
 		}
 	],
 	"start_url": ".",
-	"display": "standalone",
+	"display": "fullscreen",
 	"theme_color": "#090c0f31",
 	"background_color": "#181D2E"
 }
