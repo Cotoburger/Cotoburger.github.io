@@ -128,6 +128,10 @@ h2 {
     transition: background-image 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
     
 }
+
+#nextLessonShift1, #nextLessonShift2 {
+    will-change: opacity, transform;
+}
 .toggle-btn:hover {
     color: #0000006d; /* Цвет текста */
     scale: 1.1;
@@ -137,21 +141,22 @@ h2 {
     animation: fadeIn2 0.3s ease-in-out;
   }
   
-  @keyframes fadeIn2 {
-    from { opacity: 0; scale: 0; max-height: 0; margin-top: -2rem; justify-content: center;}
-    to { opacity: 1; scale: 1; max-height: 25vh; margin-top: 1rem; justify-content: center;}
-  }
 
   .fade-out2 {
     animation: fadeOut2 0.5s ease-in-out;
     overflow: hidden;
 }
 
-
-  @keyframes fadeOut2 {
-    from { opacity: 1; scale: 1; max-height: 25vh; margin-top: 1rem;}
-    to { opacity: 0; scale: 0; max-height: 0; margin-top: -2rem;}
+@keyframes fadeIn2 {
+    from { opacity: 0; transform: scale(0.2); max-height: 0; margin-top: -2rem; }
+    to { opacity: 1; transform: scale(1); max-height: 25vh; margin-top: 1rem; }
 }
+
+@keyframes fadeOut2 {
+    from { opacity: 1; transform: scale(1); max-height: 25vh; margin-top: 1rem; }
+    to { opacity: 0; transform: scale(0.2); max-height: 0; margin-top: -2rem; }
+}
+
 .time-progress {
     width: 100%;
     height: 2rem;
