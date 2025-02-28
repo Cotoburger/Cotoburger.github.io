@@ -110,6 +110,7 @@ const schedule = {
             {lesson: "4-й урок", start: "15:40", end: "16:20"},
             {lesson: "5-й урок", start: "16:30", end: "17:10"},
             {lesson: "6-й урок", start: "17:20", end: "18:00"},
+            {lesson: "ДЕБАГ", start: "00:00", end: "24:00"},
            // {lesson: "ДЕБАГ", start: "00:00", end: "24:00"},
         ]
     },
@@ -280,7 +281,7 @@ const getCurrentLesson = (shift) => {
                 lessonName: lesson.lesson,
                 timeLeft,
                 isBreak: false,
-                totalTime: lesson.end - lesson.start + 60
+                totalTime: lesson.end - lesson.start
             };
         }
 
