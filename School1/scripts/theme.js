@@ -49,13 +49,13 @@ document.addEventListener("DOMContentLoaded", () => {
             document.documentElement.style.backgroundColor = "#ffffff";
             themeToggle.style.backgroundImage = "url('images/sun.svg')";
             themeColorMeta?.setAttribute("content", "rgba(232, 243, 252, 0.82)");
-            header.style.backgroundColor = "rgba(232, 243, 252, 0.82)";
+            header.style.backgroundColor = "rgb(232, 243, 252)";
         } else {
             document.documentElement.setAttribute("data-theme", "dark");
             document.documentElement.style.backgroundColor = "#090c0f";
             themeToggle.style.backgroundImage = "url('images/moon.svg')";
             themeColorMeta?.setAttribute("content", "#090c0f");
-            header.style.backgroundColor = "rgba(9, 12, 15, 0.6)";
+            header.style.backgroundColor = "rgb(9, 12, 15)";
         }
     }
 

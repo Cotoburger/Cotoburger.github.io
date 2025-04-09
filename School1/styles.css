@@ -629,22 +629,22 @@ h4 {
     display: flex;
     position: fixed;
     top: 0;
-    width: 100%;
     left: 0;
-    z-index: 8000;
-    height: 4rem;
+    width: 100%;
+    height: 5rem;
     align-items: center;
     justify-content: space-between;
     padding: 1.3rem;
+    z-index: 8000;
 
-    background-color: rgba(0, 0, 0, 0.8); /* затемнённый чёрный фон */
-    backdrop-filter: blur(2rem);
-    -webkit-backdrop-filter: blur(2rem);
+    background-color: rgba(0, 0, 0, 0.5); /* фоновый цвет с прозрачностью */
+    backdrop-filter: blur(1rem);
+    -webkit-backdrop-filter: blur(1rem);
 
-    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0) 100%);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
 
-    border-bottom: 0.2rem solid #0000000a;
+    border-bottom: 0.2rem solid rgba(0, 0, 0, 0.1); /* лёгкая прозрачная граница */
     -webkit-tap-highlight-color: transparent;
 }
 
