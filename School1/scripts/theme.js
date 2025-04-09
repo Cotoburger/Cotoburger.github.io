@@ -45,15 +45,14 @@ document.addEventListener("DOMContentLoaded", () => {
     function setTheme(theme) {
         if (theme === "light") {
             document.documentElement.setAttribute("data-theme", "light");
-            document.documentElement.style.backgroundColor = "#ffffff";
+            document.documentElement.style.backgroundColor = "#b1ddfc";
             themeToggle.style.backgroundImage = "url('images/sun.svg')";
-            themeColorMeta.setAttribute("content", "#ffffff");
         } else {
             document.documentElement.setAttribute("data-theme", "dark");
             document.documentElement.style.backgroundColor = "#090c0f";
             themeToggle.style.backgroundImage = "url('images/moon.svg')";
-            themeColorMeta.setAttribute("content", "#090c0f");
         }
+        
     }
 
     const savedTheme = localStorage.getItem("theme") || 
