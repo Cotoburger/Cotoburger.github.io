@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.getElementById("themeToggle");
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
     document.body.style.transition = "background-color 0.4s, color 0.4s";
     themeToggle.style.transition = "transform 0.5s ease-in-out, opacity 0.3s ease-in-out";
@@ -46,10 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
             document.documentElement.setAttribute("data-theme", "light");
             document.documentElement.style.backgroundColor = "#ffffff";
             themeToggle.style.backgroundImage = "url('images/sun.svg')";
+            themeColorMeta.setAttribute("content", "#ffffff");
         } else {
             document.documentElement.setAttribute("data-theme", "dark");
             document.documentElement.style.backgroundColor = "#090c0f";
             themeToggle.style.backgroundImage = "url('images/moon.svg')";
+            themeColorMeta.setAttribute("content", "#090c0f");
         }
     }
 
