@@ -636,13 +636,13 @@ h4 {
     align-items: center;
     justify-content: space-between;
     padding: 1.3rem;
-    background-color: transparent;
 
+    background-color: #090c0f; /* затемнённый чёрный фон */
     backdrop-filter: blur(2rem);
     -webkit-backdrop-filter: blur(2rem);
 
-    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0) 100%);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0) 90%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0) 90%);
 
     border-bottom: 0.2rem solid #0000000a;
     -webkit-tap-highlight-color: transparent;
@@ -731,18 +731,6 @@ h4 {
     transition: ease 0.3s;
 }
 
-/* Стиль фона для schedule1 */
-.schedule1-background {
-    background-color: #8fbc8f; /* Зеленый фон */
-    transition: background-color 0.5s ease; /* Плавное изменение фона */
-
-}
-
-/* Стандартный фон для других расписаний */
-.schedule2-background {
-    background-color: #f0f0f0; /* Светлый фон для других расписаний */
-    transition: background-color 0.5s ease;
-}
 
 .tools-panel a {
     color: rgb(40, 107, 183);
