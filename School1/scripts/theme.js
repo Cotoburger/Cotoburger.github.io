@@ -45,12 +45,14 @@ document.addEventListener("DOMContentLoaded", () => {
     function setTheme(theme) {
         if (theme === "light") {
             document.documentElement.setAttribute("data-theme", "light");
-            document.documentElement.style.backgroundColor = "#b1ddfc";
+            document.documentElement.style.backgroundColor = "#ffffff";
             themeToggle.style.backgroundImage = "url('images/sun.svg')";
+            header.style.backgroundColor = "rgba(174, 222, 252, 0.82)";
         } else {
             document.documentElement.setAttribute("data-theme", "dark");
             document.documentElement.style.backgroundColor = "#090c0f";
             themeToggle.style.backgroundImage = "url('images/moon.svg')";
+            header.style.backgroundColor = "rgba(9, 12, 15, 0.6)";
         }
         
     }
