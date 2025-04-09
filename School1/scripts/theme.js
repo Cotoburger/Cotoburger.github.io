@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.getElementById("themeToggle");
     const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+    const header = document.querySelector('.header-container'); // 💡 ВОТ ЭТА СТРОКА — ключ
 
     document.body.style.transition = "background-color 0.4s, color 0.4s";
     themeToggle.style.transition = "transform 0.5s ease-in-out, opacity 0.3s ease-in-out";
@@ -47,33 +48,33 @@ document.addEventListener("DOMContentLoaded", () => {
             document.documentElement.setAttribute("data-theme", "light");
             document.documentElement.style.backgroundColor = "#ffffff";
             themeToggle.style.backgroundImage = "url('images/sun.svg')";
+            themeColorMeta?.setAttribute("content", "#ffffff");
             header.style.backgroundColor = "rgba(174, 222, 252, 0.82)";
         } else {
             document.documentElement.setAttribute("data-theme", "dark");
             document.documentElement.style.backgroundColor = "#090c0f";
             themeToggle.style.backgroundImage = "url('images/moon.svg')";
+            themeColorMeta?.setAttribute("content", "#090c0f");
             header.style.backgroundColor = "rgba(9, 12, 15, 0.6)";
         }
-        
     }
 
-    const savedTheme = localStorage.getItem("theme") || 
-                      (window.matchMedia('(prefers-color-scheme: light)').matches ? "light" : "dark");
+    const savedTheme = localStorage.getItem("theme") ||
+        (window.matchMedia('(prefers-color-scheme: light)').matches ? "light" : "dark");
     setTheme(savedTheme);
 
-    // Убираем анимацию при загрузке, просто устанавливаем финальное состояние
     themeToggle.style.opacity = "1";
     themeToggle.style.transform = "rotate(0deg)";
 
     themeToggle.addEventListener("click", () => {
         themeToggle.style.transform = "rotate(180deg)";
         themeToggle.style.opacity = "0";
-        
+
         setTimeout(() => {
             const newTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
             setTheme(newTheme);
             localStorage.setItem("theme", newTheme);
-            
+
             themeToggle.style.opacity = "1";
             themeToggle.style.transform = "rotate(0deg)";
         }, 200);
