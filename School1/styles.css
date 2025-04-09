@@ -637,12 +637,12 @@ h4 {
     justify-content: space-between;
     padding: 1.3rem;
 
-    background-color: #090c0f; /* затемнённый чёрный фон */
+    background-color: rgba(0, 0, 0, 0.8); /* затемнённый чёрный фон */
     backdrop-filter: blur(2rem);
     -webkit-backdrop-filter: blur(2rem);
 
-    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0) 90%);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0) 90%);
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0) 100%);
 
     border-bottom: 0.2rem solid #0000000a;
     -webkit-tap-highlight-color: transparent;
@@ -730,6 +730,8 @@ h4 {
     border-radius: 1rem;
     transition: ease 0.3s;
 }
+
+
 
 
 .tools-panel a {

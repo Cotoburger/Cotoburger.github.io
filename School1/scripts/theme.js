@@ -48,8 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
             document.documentElement.setAttribute("data-theme", "light");
             document.documentElement.style.backgroundColor = "#ffffff";
             themeToggle.style.backgroundImage = "url('images/sun.svg')";
-            themeColorMeta?.setAttribute("content", "#ffffff");
-            header.style.backgroundColor = "rgba(174, 222, 252, 0.82)";
+            themeColorMeta?.setAttribute("content", "rgba(232, 243, 252, 0.82)");
+            header.style.backgroundColor = "rgba(232, 243, 252, 0.82)";
         } else {
             document.documentElement.setAttribute("data-theme", "dark");
             document.documentElement.style.backgroundColor = "#090c0f";
