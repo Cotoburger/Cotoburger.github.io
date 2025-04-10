@@ -80,6 +80,7 @@ const schedule = {
             {lesson: "5-й урок", start: "12:20", end: "13:00"},
             {lesson: "6-й урок", start: "13:20", end: "14:00"},
             {lesson: "7-й урок", start: "14:15", end: "14:55"},
+            {lesson: "ДЕБАГ", start: "14:55", end: "24:00"},
         ],
         shift2: [
             {lesson: "0-й урок", start: "12:20", end: "13:00"},
@@ -90,6 +91,7 @@ const schedule = {
             {lesson: "4-й урок", start: "16:40", end: "17:20"},
             {lesson: "5-й урок", start: "17:30", end: "18:10"},
             {lesson: "6-й урок", start: "18:20", end: "19:00"},
+            {lesson: "ДЕБАГ", start: "19:00", end: "24:00"},
         ]
     },
     5: {
