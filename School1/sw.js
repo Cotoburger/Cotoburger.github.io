@@ -1,7 +1,5 @@
 const cacheName = 'Cache';
-const versionKey = 'version';
-
-// Список файлов для кэширования
+const GITHUB_API_URL = 'https://api.github.com/repos/Cotoburger/Cotoburger.github.io/commits?per_page=1';
 const filesToCache = [
     "arabic.html",
     "index.html",
@@ -20,30 +18,21 @@ const filesToCache = [
     "manifest.json"
 ];
 
-// Установка service worker и предзагрузка кэша
 self.addEventListener('install', (event) => {
     console.log('[ServiceWorker] Install Event');
     event.waitUntil(
-        caches.open(cacheName).then((cache) => {
-            return cache.addAll(filesToCache)
-                .then(() => {
-                    console.log('[ServiceWorker] Cached all files successfully');
-                    // Инициализируем версию в кэше (начальное значение)
-                    return cache.put(versionKey, new Response('0'));
-                })
-                .catch((error) => console.error('[ServiceWorker] Failed to cache files:', error));
-        })
+        caches.open(cacheName)
+            .then(cache => cache.addAll(filesToCache))
+            .then(() => self.skipWaiting())
     );
-    self.skipWaiting();
 });
 
-// Активация service worker, очистка старого кэша и запуск проверки обновлений
 self.addEventListener('activate', (event) => {
     console.log('[ServiceWorker] Activate Event');
     event.waitUntil(
-        caches.keys().then((cacheNames) => {
+        caches.keys().then(cacheNames => {
             return Promise.all(
-                cacheNames.map((oldCacheName) => {
+                cacheNames.map(oldCacheName => {
                     if (oldCacheName !== cacheName) {
                         console.log('[ServiceWorker] Deleting old cache:', oldCacheName);
                         return caches.delete(oldCacheName);
@@ -51,14 +40,11 @@ self.addEventListener('activate', (event) => {
                 })
             );
         }).then(() => {
-            // Проверяем обновления после активации
-            checkForUpdates();
-            return self.clients.claim();
-        })
+            return checkForUpdates();
+        }).then(() => self.clients.claim())
     );
 });
 
-// Обработка запросов fetch с исключениями для некоторых URL
 self.addEventListener('fetch', (event) => {
     const excludedUrls = [
         'https://api.mymemory.translated.net/',
@@ -67,118 +53,84 @@ self.addEventListener('fetch', (event) => {
     ];
 
     if (excludedUrls.some(url => event.request.url.startsWith(url))) {
-        console.log('[ServiceWorker] Excluding from cache:', event.request.url);
-        event.respondWith(fetch(event.request));
-        return;
+        return event.respondWith(fetch(event.request));
     }
 
     event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
+        caches.match(event.request).then(cachedResponse => {
+            const fetchPromise = fetchAndUpdateCache(event.request);
+            
             if (cachedResponse) {
-                console.log('[ServiceWorker] Serving from cache:', event.request.url);
-                // Асинхронно обновляем кэш
-                event.waitUntil(fetchAndUpdateCache(event.request));
+                event.waitUntil(fetchPromise);
                 return cachedResponse;
             }
-            return fetch(event.request).then((networkResponse) => {
-                if (networkResponse && networkResponse.ok && event.request.method !== 'HEAD') {
-                    const clonedResponse = networkResponse.clone();
-                    caches.open(cacheName).then((cache) => {
-                        cache.put(event.request, clonedResponse);
-                        console.log('[ServiceWorker] Cached new response for:', event.request.url);
-                    });
-                }
-                return networkResponse;
-            }).catch((error) => {
-                console.error('[ServiceWorker] Fetch failed:', error);
-                return caches.match(event.request).then((cachedResponse) => {
-                    return cachedResponse || new Response("Offline", { status: 503 });
-                });
-            });
+            return fetchPromise;
         })
     );
 });
 
-// Функция обновления кэша для отдельного запроса
-function fetchAndUpdateCache(request) {
-    return fetch(request).then((response) => {
-        if (response && response.ok && response.type !== 'opaque') {
-            const clonedResponse = response.clone();
-            caches.open(cacheName).then((cache) => {
-                cache.put(request, clonedResponse)
-                    .then(() => console.log('[ServiceWorker] Updated cache for:', request.url))
-                    .catch((error) => console.error('[ServiceWorker] Failed to cache the response:', error));
-            });
+async function checkForUpdates() {
+    try {
+        const response = await fetch(GITHUB_API_URL);
+        
+        if (response.status === 403) {
+            console.log('[ServiceWorker] GitHub API rate limit exceeded');
+            return;
         }
-        return response;
-    }).catch((error) => {
-        console.error('[ServiceWorker] Failed to fetch:', error);
-        return caches.match(request).then((cachedResponse) => {
-            if (cachedResponse) {
-                console.log('[ServiceWorker] Serving from cache:', request.url);
-                return cachedResponse;
-            } else {
-                throw new Error(`[ServiceWorker] No cache available for: ${request.url}`);
-            }
-        });
+        
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
+        const commits = await response.json();
+        const latestHash = commits[0].sha;
+        const cache = await caches.open(cacheName);
+        const cachedHash = await (await cache.match('lastCommitHash'))?.text() || null;
+
+        if (latestHash !== cachedHash) {
+            console.log('[ServiceWorker] New version detected');
+            await updateCache(latestHash, cache);
+            notifyClientsToReload();
+        }
+    } catch (error) {
+        console.log('[ServiceWorker] Update check failed:', error.message);
+    }
+}
+
+async function updateCache(newHash, cache) {
+    try {
+        const requests = filesToCache.map(file => new Request(file, { cache: 'no-cache' }));
+        const responses = await Promise.all(requests.map(req => fetch(req)));
+        
+        await Promise.all(requests.map((req, i) => 
+            responses[i].ok ? cache.put(req.url, responses[i]) : Promise.reject()
+        ));
+        
+        await cache.put('lastCommitHash', new Response(newHash));
+        console.log('[ServiceWorker] Cache updated successfully');
+    } catch (error) {
+        console.error('[ServiceWorker] Cache update failed:', error);
+        throw error;
+    }
+}
+
+function notifyClientsToReload() {
+    self.clients.matchAll().then(clients => {
+        clients.forEach(client => client.postMessage({ type: 'RELOAD' }));
     });
 }
 
-// Функция проверки обновлений через GitHub API
-function checkForUpdates() {
-    console.log('[ServiceWorker] Checking for updates...');
-    fetch('https://api.github.com/repos/Cotoburger/Cotoburger.github.io')
-        .then(response => response.json())
-        .then(data => {
-            // Используем поле pushed_at в качестве "хэша"
-            const remoteVersion = data.pushed_at;
-            if (!remoteVersion) {
-                console.warn('[ServiceWorker] No pushed_at value in API response');
-                return;
-            }
-            caches.open(cacheName).then((cache) => {
-                cache.match(versionKey).then((cachedResponse) => {
-                    if (cachedResponse) {
-                        cachedResponse.text().then((cachedVersion) => {
-                            // Выводим в консоль хэш с GitHub и хэш из кэша рядом
-                            console.log(`[ServiceWorker] GitHub hash: ${remoteVersion} | Cache hash: ${cachedVersion}`);
-                            // Если хэши различаются, выполняем обновление кэша и перезагрузку клиентов
-                            if (cachedVersion !== remoteVersion) {
-                                console.log('[ServiceWorker] New version detected. Updating cache...');
-                                updateCache(remoteVersion);
-                            }
-                        });
-                    } else {
-                        // Если версия не сохранена, записываем новую
-                        cache.put(versionKey, new Response(remoteVersion));
-                    }
-                });
-            });
-        })
-        .catch((error) => {
-            console.error('[ServiceWorker] Update check failed, using old cache. Error:', error);
+async function fetchAndUpdateCache(request) {
+    try {
+        const networkResponse = await fetch(request);
+        if (networkResponse.ok) {
+            const cache = await caches.open(cacheName);
+            await cache.put(request, networkResponse.clone());
+        }
+        return networkResponse;
+    } catch (error) {
+        const cachedResponse = await caches.match(request);
+        return cachedResponse || new Response('Offline', { 
+            status: 503, 
+            headers: { 'Content-Type': 'text/plain' } 
         });
-}
-
-// Функция обновления кэша и перезагрузки клиентов
-function updateCache(newVersion) {
-    caches.delete(cacheName)
-        .then(() => {
-            caches.open(cacheName).then((cache) => {
-                cache.addAll(filesToCache)
-                    .then(() => {
-                        // Сохраняем новую "версию" в кэше
-                        cache.put(versionKey, new Response(newVersion));
-                        console.log('[ServiceWorker] Cache updated with new version:', newVersion);
-                        // Перезагружаем все окна клиентов
-                        self.clients.matchAll({ type: 'window' }).then(clients => {
-                            clients.forEach(client => {
-                                client.navigate(client.url);
-                            });
-                        });
-                    })
-                    .catch((error) => console.error('[ServiceWorker] Failed to update cache:', error));
-            });
-        })
-        .catch((error) => console.error('[ServiceWorker] Failed to delete old cache:', error));
+    }
 }
