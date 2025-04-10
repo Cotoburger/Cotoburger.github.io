@@ -9,6 +9,7 @@ html, body {
     line-height: 1.6;
     background-color: #090c0f;
     color: #090c0f00;
+    scrollbar-width: none;
     -ms-overflow-style: none;
     justify-content: center;
     align-items: center;
