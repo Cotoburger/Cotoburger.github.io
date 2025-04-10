@@ -652,18 +652,21 @@ h4 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 2rem;
-    height: 1.8rem;
+    width: 2.3rem;
+    height: 2rem;
+    padding: 0.05rem;
+    box-sizing: content-box;
     cursor: pointer;
     outline: none;
-    -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .menu-icon div {
     height: 4px;
     background-color: #0b6cad;
     border-radius: 2px;
-    -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
+    -webkit-tap-highlight-color: transparent;
 }
 
 .tools-panel {
@@ -673,7 +676,7 @@ h4 {
     left: 99;
     z-index: 9000;
     width: 15rem;
-    height: 10rem;
+    height: 7.2rem;
     background-color: rgba(22, 51, 67, 0.279);
     padding-left: 1rem;
     padding-right: 1rem;

@@ -1,7 +1,6 @@
 const cacheName = 'Cache';
 
 const filesToCache = [
-    'DebugInfo.txt',
     "arabic.html",
     "about.html",
     "index.html",
@@ -18,7 +17,6 @@ const filesToCache = [
     "scripts/usascript.js",
     "scripts/accelerometer.js",
     "images/16179f27f955d3d4ec88b294bcafd1b7.jpg",
-    "gpt.html",
     "manifest.json"
 ];
 

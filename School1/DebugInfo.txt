@@ -1,2 +1,3 @@
-Изменения: Next Lesson button upd
-thx Donald Trump for supporting this project.
+Оптимизация интерфейса под Safari
+Обновление внешнего вида верхней панели, адаптивное изменение цвета статус бара
+Скрыта лишняя страница
