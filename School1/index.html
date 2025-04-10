@@ -45,12 +45,12 @@
 </head>
 <script>
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.addEventListener('message', (event) => {
-    if (event.data && event.data.action === 'reload-page') {
-      console.log('[Client] Обновление найдено. Перезагрузка...');
-      location.reload();  // Перезагружает страницу
-    }
-  });
+    navigator.serviceWorker.addEventListener('message', event => {
+        if (event.data.type === 'RELOAD') {
+            window.location.reload();
+        }
+    });
+
 
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js')
