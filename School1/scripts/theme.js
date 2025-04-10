@@ -46,9 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function setTheme(theme) {
         if (theme === "light") {
             document.documentElement.setAttribute("data-theme", "light");
-            document.documentElement.style.backgroundColor = "rgb(202, 214, 223)";
+            document.documentElement.style.backgroundColor = "rgba(232, 243, 252, 0.82)";
             themeToggle.style.backgroundImage = "url('images/sun.svg')";
-            themeColorMeta?.setAttribute("content", "rgba(232, 243, 252, 0.82)");
+            themeColorMeta?.setAttribute("content", "rgb(232, 243, 252)");
             header.style.backgroundColor = "rgb(232, 243, 252)";
         } else {
             document.documentElement.setAttribute("data-theme", "dark");
