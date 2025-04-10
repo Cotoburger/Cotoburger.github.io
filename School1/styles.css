@@ -70,7 +70,7 @@ body {
     from {
         opacity: 0;
         max-height: 0;
-        height: 0;
+        height: 0.6rem;
     }
     to {
         opacity: 1;
