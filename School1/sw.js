@@ -1,6 +1,9 @@
 const cacheName = 'Cache';
 const GITHUB_API_URL = 'https://api.github.com/repos/Cotoburger/Cotoburger.github.io/commits?per_page=1';
 const filesToCache = [
+    "icons/icon-dark1x.png",
+    "icons/icon-dark2x.png",
+    "icons/icon-dark3x.png",
     "arabic.html",
     "index.html",
     "scripts/script.js",
