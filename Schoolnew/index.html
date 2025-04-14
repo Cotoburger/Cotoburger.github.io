@@ -36,7 +36,6 @@
             scrollbar-width: none;
             -ms-overflow-style: none;
             height: 100%;
-            overflow: hidden;
         }
         body::-webkit-scrollbar {
             display: none;
@@ -812,6 +811,7 @@
                     let nextLesson = null;
                     let breakStartTime = null;
 
+                    // Проверяем, находится ли текущее время между уроками (перемена)
                     for (let i = 0; i < shiftData.length - 1; i++) {
                         const currentLessonEnd = timeToSeconds(shiftData[i].end);
                         const nextLessonStart = timeToSeconds(shiftData[i + 1].start);
@@ -843,6 +843,7 @@
                         endTimeElement.textContent = `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
                         updateProgressBar(progressBar, currentTime, breakStartTime + ":00", nextLesson.start + ":00");
                     } else {
+                        // Проверяем время до следующего урока только если нет перемены
                         const timeToNextLesson = findNextLessonTime(shiftData, currentTime, currentDay, shiftKey);
                         if (timeToNextLesson) {
                             lessonNameElement.textContent = `До урока: ${timeToNextLesson}`;
