@@ -29,42 +29,38 @@
     <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
     <title>Расписание уроков</title>
     <style>
-        /* --- ИЗМЕНЕНО: Метод скрытия скроллбара --- */
         html {
-             height: 100%; /* Нужно для body 100% */
+             height: 100%;
         }
         body {
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none;  /* IE/Edge */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
             height: 100%;
             overflow: hidden;
         }
         body::-webkit-scrollbar {
-            display: none; /* Chrome/Safari/Opera */
+            display: none;
         }
         
         .day-header {
-        width: 100%;
-        text-align: center;
-        font-size: 3.3rem;
-        font-weight: bold;
-        color: rgba(255, 255, 255, 0.534);
-        animation: fadeInDown 0.6s ease-out;
-        padding: 3rem 0; /* Отступы сверху и снизу */
-    }
+            width: 100%;
+            text-align: center;
+            font-size: 3.3rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.534);
+            animation: fadeInDown 0.6s ease-out;
+            padding: 3rem 0;
+        }
 
-
-                /* Стили для звезд */
         .star {
             position: absolute;
             background-color: white;
             border-radius: 50%;
             opacity: 0.7;
             animation: twinkle 2s infinite alternate;
-            z-index: 1; /* Низкий z-index для звезд */
+            z-index: 1;
         }
 
-        /* Убедимся, что body поддерживает центрирование */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: linear-gradient(to bottom, #87CEEB, #4682B4);
@@ -72,30 +68,27 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Центрируем содержимое по горизонтали */
+            align-items: center;
             transition: background 0.5s ease;
             position: relative;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE/Edge */
-            overflow: hidden; /* Изменено на hidden для согласованности */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            overflow: hidden;
         }
 
-
-        /* Стили контейнера */
         .container {
-            width: 90%; /* Ограничиваем ширину, чтобы были отступы */
-            max-width: 500px; /* Увеличиваем для лучшего вида, можно настроить */
-            margin: 5rem auto 0; /* Центрируем с отступом сверху */
-            padding: 0 10px; /* Небольшой внутренний отступ для мобильных */
+            width: 90%;
+            max-width: 500px;
+            margin: 5rem auto 0;
+            padding: 0 10px;
             box-sizing: border-box;
             z-index: 2;
         }
 
-        /* --- ДОБАВЛЕНА АНИМАЦИЯ --- */
         @keyframes cardFadeIn {
             from {
                 opacity: 0;
-                transform: translateY(15px); /* Начинаем чуть ниже */
+                transform: translateY(15px);
             }
             to {
                 opacity: 1;
@@ -111,19 +104,15 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             display: flex;
             flex-direction: column;
-            /* Анимация */
-            opacity: 0; /* Начинаем невидимыми */
-            animation: cardFadeIn 0.4s ease-out forwards; /* Применяем анимацию */
+            opacity: 0;
+            animation: cardFadeIn 0.4s ease-out forwards;
             -webkit-backdrop-filter: blur(0.4rem);
             backdrop-filter: blur(0.4rem);
         }
 
-        /* Задержка для второй карточки */
         .lesson-card:nth-child(2) {
             animation-delay: 0.15s;
         }
-        /* --- КОНЕЦ АНИМАЦИИ --- */
-
 
         .shift-number {
             font-size: 1.4rem;
@@ -137,31 +126,29 @@
             padding: 0.0rem 1.2rem;
         }
 
-                /* Обновляем lesson-header для поддержки переноса текста */
         .lesson-header {
             display: flex;
-            align-items: flex-start; /* Изменено с baseline, чтобы текст лучше выравнивался при переносе */
+            align-items: flex-start;
             margin-bottom: 12px;
             flex-wrap: nowrap;
             min-height: 27px;
         }
 
-                /* Обновляем стили для lesson-name */
         #lesson1-name, #lesson2-name {
             font-size: 2rem;
             font-weight: 600;
             color: #222;
             margin-bottom: 0;
-            white-space: normal; /* Разрешаем перенос текста */
+            white-space: normal;
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             line-clamp: 2;
-            -webkit-line-clamp: 2; /* Ограничиваем двумя строками */
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             flex-shrink: 1;
-            line-height: 1.3; /* Устанавливаем высоту строки для лучшего вида */
-            max-height: 5.2rem; /* 2 строки * 2.6rem (примерно высота строки) */
+            line-height: 1.3;
+            max-height: 5.2rem;
         }
 
         #lesson1-remaining, #lesson2-remaining {
@@ -179,10 +166,9 @@
             text-align: center;
             box-sizing: border-box;
             display: inline-block;
-            visibility: hidden; /* Оставляем этот метод */
+            visibility: hidden;
             margin-top: 0.45rem;
         }
-
 
         .progress-time-labels {
             display: flex;
@@ -208,7 +194,7 @@
             transition: width 0.3s ease;
         }
 
-                @keyframes twinkle2 {
+        @keyframes twinkle2 {
             0% { opacity: 0.6; }
             50% { opacity: 1; }
             100% { opacity: 0.7; }
@@ -221,119 +207,111 @@
             animation: twinkle2 infinite;
         }
 
-                /* Стили для ночного режима */
         body.night-mode {
-            color: #ffffff; /* Белый текст для основного контента */
+            color: #ffffff;
         }
 
         body.night-mode .lesson-card {
-            background-color: rgba(117, 117, 117, 0.137); /* Полупрозрачный фон карточек */
-            box-shadow: 0 4px 10px rgba(150, 150, 150, 0.116); /* Легкая тень */
+            background-color: rgba(117, 117, 117, 0.137);
+            box-shadow: 0 4px 10px rgba(150, 150, 150, 0.116);
         }
 
         body.night-mode .shift-number {
-            color: #ffffff60; /* Белый цвет для номера смены */
-            background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон */
+            color: #ffffff60;
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         body.night-mode .lesson-header {
-            color: #ffffff63; /* Белый цвет заголовков уроков */
+            color: #ffffff63;
         }
 
         body.night-mode #lesson1-name, 
         body.night-mode #lesson2-name {
-            color: #ffffff58; /* Белый цвет названий уроков */
+            color: #ffffff58;
         }
 
         body.night-mode #lesson1-remaining, 
         body.night-mode #lesson2-remaining {
-            color: #ffffff4a; /* Белый цвет оставшегося времени */
-            background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон */
+            color: #ffffff4a;
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         body.night-mode .progress-time-labels {
-            color: #5f5f5f; /* Белый цвет меток времени прогресса */
+            color: #5f5f5f;
         }
 
         body.night-mode .progress-bar {
-            background-color: rgba(255, 255, 255, 0.2); /* Серый фон прогресс-бара */
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         body.night-mode #lesson1-progress, 
         body.night-mode #lesson2-progress {
-            background-color: #52ce52c6; /* Зеленый цвет заполнения прогресс-бара */
+            background-color: #52ce52c6;
         }
-
 
         @keyframes twinkle {
             from { opacity: 0.7; }
             to { opacity: 1; }
         }
 
-/* Медиа-запрос для экранов меньше 600px (телефоны) */
-@media (max-width: 600px) {
-    body {
-        align-items: center; /* Центрируем на мобильных */
-        padding-top: 20px;
-    }
+        @media (max-width: 600px) {
+            body {
+                align-items: center;
+                padding-top: 20px;
+            }
 
-    .container {
-        width: 93%; /* Чуть больше для мобильных */
-        max-width: none; /* Убираем ограничение максимальной ширины */
-        margin: 3rem auto 0; /* Уменьшаем верхний отступ */
-        padding: 0 5px; /* Минимальные отступы */
-    }
-    #lesson1-remaining, #lesson2-remaining {
-            font-size: 1.4rem;
-            padding: 0.1rem 0;
+            .container {
+                width: 93%;
+                max-width: none;
+                margin: 3rem auto 0;
+                padding: 0 5px;
+            }
+            #lesson1-remaining, #lesson2-remaining {
+                font-size: 1.4rem;
+                padding: 0.1rem 0;
+            }
+
+            .shift-number {
+                align-self: flex-start;
+                margin-top: -0.2rem;
+                margin-bottom: 0.5rem;
+                margin-right: -0.2rem;
+                background-color: rgba(0, 0, 0, 0.043);
+                border-radius: 4rem;
+                padding: 0.0rem 1.2rem;
+            }
+
+            #lesson1-name, #lesson2-name {
+                max-width: 100%;
+                font-size: 1.8rem;
+                max-height: 4.68rem;
+            }
+
+            #lesson1-remaining, #lesson2-remaining {
+                font-size: 1.2rem;
+                min-width: 5.5rem;
+                margin-left: 8px;
+            }
+
+            .lesson-header {
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .day-header {
+                font-size: 2.8rem;
+            }
         }
 
-    .shift-number {
-
-        align-self: flex-start;
-        margin-top: -0.2rem;
-        margin-bottom: 0.5rem;
-        margin-right: -0.2rem;
-        background-color: rgba(0, 0, 0, 0.043);
-        border-radius: 4rem;
-        padding: 0.0rem 1.2rem;
-    }
-
-    /* Позволяем названию урока занимать всю ширину карточки */
-    #lesson1-name, #lesson2-name {
-        max-width: 100%; /* Название урока до конца карточки */
-        font-size: 1.8rem; /* Чуть уменьшаем шрифт для мобильных, если нужно */
-        max-height: 4.68rem; /* 2 строки * 2.34rem (с учетом line-height: 1.3 и font-size: 1.8rem) */
-    }
-
-    /* Убедимся, что remaining элементы не мешают */
-    #lesson1-remaining, #lesson2-remaining {
-        font-size: 1.2rem; /* Уменьшаем для мобильных, если нужно */
-        min-width: 5.5rem; /* Уменьшаем минимальную ширину */
-        margin-left: 8px;
-    }
-
-    .lesson-header {
-        align-items: flex-start;
-        flex-wrap: wrap; /* Позволяем перенос remaining на следующую строку, если не помещается */
-    }
-
-    .day-header {
-        font-size: 2.8rem; /* Уменьшаем шрифт для мобильных */
-    }
-
-}
-
-/* Медиа-запрос для экранов больше 600px (ПК) */
-@media (min-width: 601px) {
-    .container {
-        width: 50%; /* Фиксированная ширина для ПК */
-        min-width: 37rem;
-        max-width: 60rem; /* Убираем ограничение максимальной ширины */
-        margin: 80px auto 0; /* Центрируем */
-        padding: 0; /* Убираем лишние отступы */
-    }
-}
+        @media (min-width: 601px) {
+            .container {
+                width: 50%;
+                min-width: 37rem;
+                max-width: 60rem;
+                margin: 80px auto 0;
+                padding: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -370,527 +348,519 @@
     </div>
 
     <script>
-                        const schedule = {
-                            1: {
-                                shift1: [
-                                    {lesson: "Классный час", start: "08:15", end: "08:45"},
-                                    {lesson: "1-й урок", start: "08:55", end: "09:35"},
-                                    {lesson: "2-й урок", start: "09:50", end: "10:30"},
-                                    {lesson: "3-й урок", start: "10:45", end: "11:25"},
-                                    {lesson: "4-й урок", start: "11:30", end: "12:10"},
-                                    {lesson: "5-й урок", start: "12:20", end: "13:00"},
-                                    {lesson: "6-й урок", start: "13:20", end: "14:00"},
-                                    {lesson: "7-й урок", start: "14:15", end: "14:55"},
-                                ],
-                                shift2: [
-                                    {lesson: "0-й урок", start: "12:20", end: "13:00"},
-                                    {lesson: "1-й урок", start: "13:20", end: "14:00"},
-                                    {lesson: "2-й урок", start: "14:15", end: "14:55"},
-                                    {lesson: "3-й урок", start: "15:10", end: "15:50"},
-                                    {lesson: "Классный час", start: "16:05", end: "16:35"},
-                                    {lesson: "4-й урок", start: "16:40", end: "17:20"},
-                                    {lesson: "5-й урок", start: "17:30", end: "18:10"},
-                                    {lesson: "6-й урок", start: "18:20", end: "19:00"},
-                                ]
-                            },
-                            2: {
-                                shift1: [
-                                    {lesson: "1-й урок", start: "08:15", end: "08:55"},
-                                    {lesson: "2-й урок", start: "09:05", end: "09:45"},
-                                    {lesson: "3-й урок", start: "10:00", end: "10:40"},
-                                    {lesson: "4-й урок", start: "11:00", end: "11:40"},
-                                    {lesson: "5-й урок", start: "11:50", end: "12:30"},
-                                    {lesson: "6-й урок", start: "12:50", end: "13:30"},
-                                    {lesson: "7-й урок", start: "13:50", end: "14:30"},
-                                ],
-                                shift2: [
-                                    {lesson: "0-й урок", start: "11:50", end: "12:30"},
-                                    {lesson: "1-й урок", start: "12:50", end: "13:30"},
-                                    {lesson: "2-й урок", start: "13:50", end: "14:30"},
-                                    {lesson: "3-й урок", start: "14:45", end: "15:25"},
-                                    {lesson: "4-й урок", start: "15:40", end: "16:20"},
-                                    {lesson: "5-й урок", start: "16:30", end: "17:10"},
-                                    {lesson: "6-й урок", start: "17:20", end: "18:00"},
-                                ]
-                            },
-                            3: {
-                                shift1: [
-                                    {lesson: "1-й урок", start: "08:15", end: "08:55"},
-                                    {lesson: "2-й урок", start: "09:05", end: "09:45"},
-                                    {lesson: "3-й урок", start: "10:00", end: "10:40"},
-                                    {lesson: "Классный час", start: "10:55", end: "11:25"},
-                                    {lesson: "4-й урок", start: "11:30", end: "12:10"},
-                                    {lesson: "5-й урок", start: "12:20", end: "13:00"},
-                                    {lesson: "6-й урок", start: "13:20", end: "14:00"},
-                                    {lesson: "7-й урок", start: "14:15", end: "14:55"},
-                                ],
-                                shift2: [
-                                    {lesson: "0-й урок", start: "12:20", end: "13:00"},
-                                    {lesson: "1-й урок", start: "13:20", end: "14:00"},
-                                    {lesson: "2-й урок", start: "14:15", end: "14:55"},
-                                    {lesson: "3-й урок", start: "15:10", end: "15:50"},
-                                    {lesson: "Классный час", start: "16:05", end: "16:35"},
-                                    {lesson: "4-й урок", start: "16:40", end: "17:20"},
-                                    {lesson: "5-й урок", start: "17:30", end: "18:10"},
-                                    {lesson: "6-й урок", start: "18:20", end: "19:00"},
-                                ]
-                            },
-                            4: {
-                                shift1: [
-                                    {lesson: "1-й урок", start: "08:15", end: "08:55"},
-                                    {lesson: "2-й урок", start: "09:05", end: "09:45"},
-                                    {lesson: "3-й урок", start: "10:00", end: "10:40"},
-                                    {lesson: "Классный час", start: "10:55", end: "11:25"},
-                                    {lesson: "4-й урок", start: "11:30", end: "12:10"},
-                                    {lesson: "5-й урок", start: "12:20", end: "13:00"},
-                                    {lesson: "6-й урок", start: "13:20", end: "14:00"},
-                                    {lesson: "7-й урок", start: "14:15", end: "14:55"},
-                                ],
-                                shift2: [
-                                    {lesson: "0-й урок", start: "12:20", end: "13:00"},
-                                    {lesson: "1-й урок", start: "13:20", end: "14:00"},
-                                    {lesson: "2-й урок", start: "14:15", end: "14:55"},
-                                    {lesson: "3-й урок", start: "15:10", end: "15:50"},
-                                    {lesson: "Классный час", start: "16:05", end: "16:35"},
-                                    {lesson: "4-й урок", start: "16:40", end: "17:20"},
-                                    {lesson: "5-й урок", start: "17:30", end: "18:10"},
-                                    {lesson: "6-й урок", start: "18:20", end: "19:00"},
-                                ]
-                            },
-                            5: {
-                                shift1: [
-                                    {lesson: "1-й урок", start: "08:15", end: "08:55"},
-                                    {lesson: "2-й урок", start: "09:05", end: "09:45"},
-                                    {lesson: "3-й урок", start: "10:00", end: "10:40"},
-                                    {lesson: "4-й урок", start: "11:00", end: "11:40"},
-                                    {lesson: "5-й урок", start: "11:50", end: "12:30"},
-                                    {lesson: "6-й урок", start: "12:50", end: "13:30"},
-                                    {lesson: "7-й урок", start: "13:50", end: "14:30"},
-                                ],
-                                shift2: [
-                                    {lesson: "0-й урок", start: "11:50", end: "12:30"},
-                                    {lesson: "1-й урок", start: "12:50", end: "13:30"},
-                                    {lesson: "2-й урок", start: "13:50", end: "14:30"},
-                                    {lesson: "3-й урок", start: "14:45", end: "15:25"},
-                                    {lesson: "4-й урок", start: "15:40", end: "16:20"},
-                                    {lesson: "5-й урок", start: "16:30", end: "17:10"},
-                                    {lesson: "6-й урок", start: "17:20", end: "18:00"},
-                                // {lesson: "ДЕБАГ", start: "00:00", end: "24:00"},
-                                ]
-                            },
-                            6: {
-                                shift1: [
-                                    {lesson: "Суббота", start: "00:01", end: "23:59"},
-                                    {lesson: "Суббота", start: "23:59", end: "00:00"},
-                                ],
-                                shift2: [
-                                    {lesson: "Суббота", start: "00:01", end: "23:59"},
-                                ]
-                            },
-                            0: {
-                                shift1: [
-                                    {lesson: "Воскресенье", start: "00:01", end: "23:59"},
-                                    {lesson: "Воскресенье", start: "23:59", end: "21:00"},
-                                ],
-                                shift2: [
-                                    {lesson: "Воскресенье", start: "00:01", end: "23:59"},
+        const schedule = {
+            1: {
+                shift1: [
+                    {lesson: "Классный час", start: "08:15", end: "08:45"},
+                    {lesson: "1-й урок", start: "08:55", end: "09:35"},
+                    {lesson: "2-й урок", start: "09:50", end: "10:30"},
+                    {lesson: "3-й урок", start: "10:45", end: "11:25"},
+                    {lesson: "4-й урок", start: "11:30", end: "12:10"},
+                    {lesson: "5-й урок", start: "12:20", end: "13:00"},
+                    {lesson: "6-й урок", start: "13:20", end: "14:00"},
+                    {lesson: "7-й урок", start: "14:15", end: "14:55"},
+                ],
+                shift2: [
+                    {lesson: "0-й урок", start: "12:20", end: "13:00"},
+                    {lesson: "1-й урок", start: "13:20", end: "14:00"},
+                    {lesson: "2-й урок", start: "14:15", end: "14:55"},
+                    {lesson: "3-й урок", start: "15:10", end: "15:50"},
+                    {lesson: "Классный час", start: "16:05", end: "16:35"},
+                    {lesson: "4-й урок", start: "16:40", end: "17:20"},
+                    {lesson: "5-й урок", start: "17:30", end: "18:10"},
+                    {lesson: "6-й урок", start: "18:20", end: "19:00"},
+                ]
+            },
+            2: {
+                shift1: [
+                    {lesson: "1-й урок", start: "08:15", end: "08:55"},
+                    {lesson: "2-й урок", start: "09:05", end: "09:45"},
+                    {lesson: "3-й урок", start: "10:00", end: "10:40"},
+                    {lesson: "4-й урок", start: "11:00", end: "11:40"},
+                    {lesson: "5-й урок", start: "11:50", end: "12:30"},
+                    {lesson: "6-й урок", start: "12:50", end: "13:30"},
+                    {lesson: "7-й урок", start: "13:50", end: "14:30"},
+                ],
+                shift2: [
+                    {lesson: "0-й урок", start: "11:50", end: "12:30"},
+                    {lesson: "1-й урок", start: "12:50", end: "13:30"},
+                    {lesson: "2-й урок", start: "13:50", end: "14:30"},
+                    {lesson: "3-й урок", start: "14:45", end: "15:25"},
+                    {lesson: "4-й урок", start: "15:40", end: "16:20"},
+                    {lesson: "5-й урок", start: "16:30", end: "17:10"},
+                    {lesson: "6-й урок", start: "17:20", end: "18:00"},
+                ]
+            },
+            3: {
+                shift1: [
+                    {lesson: "1-й урок", start: "08:15", end: "08:55"},
+                    {lesson: "2-й урок", start: "09:05", end: "09:45"},
+                    {lesson: "3-й урок", start: "10:00", end: "10:40"},
+                    {lesson: "Классный час", start: "10:55", end: "11:25"},
+                    {lesson: "4-й урок", start: "11:30", end: "12:10"},
+                    {lesson: "5-й урок", start: "12:20", end: "13:00"},
+                    {lesson: "6-й урок", start: "13:20", end: "14:00"},
+                    {lesson: "7-й урок", start: "14:15", end: "14:55"},
+                ],
+                shift2: [
+                    {lesson: "0-й урок", start: "12:20", end: "13:00"},
+                    {lesson: "1-й урок", start: "13:20", end: "14:00"},
+                    {lesson: "2-й урок", start: "14:15", end: "14:55"},
+                    {lesson: "3-й урок", start: "15:10", end: "15:50"},
+                    {lesson: "Классный час", start: "16:05", end: "16:35"},
+                    {lesson: "4-й урок", start: "16:40", end: "17:20"},
+                    {lesson: "5-й урок", start: "17:30", end: "18:10"},
+                    {lesson: "6-й урок", start: "18:20", end: "19:00"},
+                ]
+            },
+            4: {
+                shift1: [
+                    {lesson: "1-й урок", start: "08:15", end: "08:55"},
+                    {lesson: "2-й урок", start: "09:05", end: "09:45"},
+                    {lesson: "3-й урок", start: "10:00", end: "10:40"},
+                    {lesson: "Классный час", start: "10:55", end: "11:25"},
+                    {lesson: "4-й урок", start: "11:30", end: "12:10"},
+                    {lesson: "5-й урок", start: "12:20", end: "13:00"},
+                    {lesson: "6-й урок", start: "13:20", end: "14:00"},
+                    {lesson: "7-й урок", start: "14:15", end: "14:55"},
+                ],
+                shift2: [
+                    {lesson: "0-й урок", start: "12:20", end: "13:00"},
+                    {lesson: "1-й урок", start: "13:20", end: "14:00"},
+                    {lesson: "2-й урок", start: "14:15", end: "14:55"},
+                    {lesson: "3-й урок", start: "15:10", end: "15:50"},
+                    {lesson: "Классный час", start: "16:05", end: "16:35"},
+                    {lesson: "4-й урок", start: "16:40", end: "17:20"},
+                    {lesson: "5-й урок", start: "17:30", end: "18:10"},
+                    {lesson: "6-й урок", start: "18:20", end: "19:00"},
+                ]
+            },
+            5: {
+                shift1: [
+                    {lesson: "1-й урок", start: "08:15", end: "08:55"},
+                    {lesson: "2-й урок", start: "09:05", end: "09:45"},
+                    {lesson: "3-й урок", start: "10:00", end: "10:40"},
+                    {lesson: "4-й урок", start: "11:00", end: "11:40"},
+                    {lesson: "5-й урок", start: "11:50", end: "12:30"},
+                    {lesson: "6-й урок", start: "12:50", end: "13:30"},
+                    {lesson: "7-й урок", start: "13:50", end: "14:30"},
+                ],
+                shift2: [
+                    {lesson: "0-й урок", start: "11:50", end: "12:30"},
+                    {lesson: "1-й урок", start: "12:50", end: "13:30"},
+                    {lesson: "2-й урок", start: "13:50", end: "14:30"},
+                    {lesson: "3-й урок", start: "14:45", end: "15:25"},
+                    {lesson: "4-й урок", start: "15:40", end: "16:20"},
+                    {lesson: "5-й урок", start: "16:30", end: "17:10"},
+                    {lesson: "6-й урок", start: "17:20", end: "18:00"},
+                ]
+            },
+            6: {
+                shift1: [
+                    {lesson: "Суббота", start: "00:01", end: "23:59"},
+                    {lesson: "Суббота", start: "23:59", end: "00:00"},
+                ],
+                shift2: [
+                    {lesson: "Суббота", start: "00:01", end: "23:59"},
+                ]
+            },
+            0: {
+                shift1: [
+                    {lesson: "Воскресенье", start: "00:01", end: "23:59"},
+                    {lesson: "Воскресенье", start: "23:59", end: "21:00"},
+                ],
+                shift2: [
+                    {lesson: "Воскресенье", start: "00:01", end: "23:59"},
+                ]
+            }
+        };
 
-                                ]
-                            }
-                        };
-                
-                                        function getKamchatkaTime() {
-                                            const now = new Date();
-                                            // Получаем время в UTC
-                                            const utcHours = now.getUTCHours();
-                                            const utcMinutes = String(now.getUTCMinutes()).padStart(2, '0');
-                                            const utcSeconds = String(now.getUTCSeconds()).padStart(2, '0');
-                                            const utcDate = now.getUTCDate();
-                                            const utcMonth = now.getUTCMonth();
-                                            const utcYear = now.getUTCFullYear();
+        function getCurrentTimeInKamchatkaContext() {
+            const now = new Date();
+            const localHours = now.getHours();
+            const localMinutes = String(now.getMinutes()).padStart(2, '0');
+            const localSeconds = String(now.getSeconds()).padStart(2, '0');
+            return `${localHours}:${localMinutes}:${localSeconds}`;
+        }
 
-                                            // Камчатское время: UTC+12
-                                            let kamchatkaHours = utcHours + 12;
-                                            let kamchatkaDate = utcDate;
-                                            let kamchatkaMonth = utcMonth;
-                                            let kamchatkaYear = utcYear;
+        function getCurrentDayOfWeek() {
+            const now = new Date();
+            const localOffsetMinutes = now.getTimezoneOffset();
+            const kamchatkaOffsetMinutes = 12 * 60;
+            const offsetDiffMinutes = kamchatkaOffsetMinutes - (-localOffsetMinutes);
+            const kamchatkaDate = new Date(now.getTime() + offsetDiffMinutes * 60 * 1000);
+            const day = kamchatkaDate.getDay();
+            return day === 0 ? 0 : day;
+        }
 
-                                            // Корректируем часы и дату, если переходим через полночь
-                                            if (kamchatkaHours >= 24) {
-                                                kamchatkaHours -= 24;
-                                                kamchatkaDate += 1;
+        function timeToSeconds(timeString) {
+            const parts = timeString.split(':').map(Number);
+            if (parts.length === 2) {
+                return parts[0] * 3600 + parts[1] * 60;
+            } else if (parts.length === 3) {
+                return parts[0] * 3600 + parts[1] * 60 + parts[2];
+            }
+            return 0;
+        }
 
-                                                // Проверяем, не перешли ли на новый месяц
-                                                const lastDayOfMonth = new Date(utcYear, utcMonth + 1, 0).getDate();
-                                                if (kamchatkaDate > lastDayOfMonth) {
-                                                    kamchatkaDate = 1;
-                                                    kamchatkaMonth += 1;
+        function isTimeBetween(currentTime, startTime, endTime) {
+            const now = new Date();
+            const localOffsetMinutes = now.getTimezoneOffset();
+            const kamchatkaOffsetMinutes = 12 * 60;
+            const offsetDiffSeconds = (kamchatkaOffsetMinutes - (-localOffsetMinutes)) * 60;
 
-                                                    // Проверяем, не перешли ли на новый год
-                                                    if (kamchatkaMonth > 11) {
-                                                        kamchatkaMonth = 0;
-                                                        kamchatkaYear += 1;
-                                                    }
-                                                }
-                                            }
+            const currentTimeSeconds = timeToSeconds(currentTime);
+            let kamchatkaEquivalentSeconds = (currentTimeSeconds + offsetDiffSeconds) % (24 * 3600);
+            if (kamchatkaEquivalentSeconds < 0) kamchatkaEquivalentSeconds += 24 * 3600;
 
-                                            // Форматируем часы
-                                            const hours = String(kamchatkaHours).padStart(2, '0');
-                                            return {
-                                                time: `${hours}:${utcMinutes}:${utcSeconds}`,
-                                                date: new Date(kamchatkaYear, kamchatkaMonth, kamchatkaDate, kamchatkaHours, now.getUTCMinutes(), now.getUTCSeconds())
-                                            };
-                                        }
+            const startSeconds = timeToSeconds(startTime);
+            let endSeconds = timeToSeconds(endTime);
 
-                                        function getCurrentDayOfWeek() {
-                                            const kamchatkaDate = getKamchatkaTime().date;
-                                            const day = kamchatkaDate.getDay();
-                                            return day === 0 ? 0 : day;
-                                        }
+            if (endSeconds < startSeconds) {
+                endSeconds += 24 * 3600;
+            }
 
-                                        function getCurrentTime() {
-                                            return getKamchatkaTime().time;
-                                        }
-                
-                        function timeToSeconds(timeString) {
-                             const parts = timeString.split(':').map(Number);
-                             if (parts.length === 2) {
-                                 return parts[0] * 3600 + parts[1] * 60;
-                             } else if (parts.length === 3) {
-                                 return parts[0] * 3600 + parts[1] * 60 + parts[2];
-                             }
-                             return 0;
-                        }
-                
-                        function isTimeBetween(currentTime, startTime, endTime) {
-                            const nowSeconds = timeToSeconds(currentTime);
-                            const startSeconds = timeToSeconds(startTime);
-                            const endSeconds = timeToSeconds(endTime);
-                
-                            if (endSeconds < startSeconds) {
-                                 return nowSeconds >= startSeconds || nowSeconds < endSeconds;
-                            }
-                
-                            return nowSeconds >= startSeconds && nowSeconds < endSeconds;
-                        }
-                
-                        function calculateRemainingTime(currentTime, endTime) {
-                             const nowSeconds = timeToSeconds(currentTime);
-                             const endSeconds = timeToSeconds(endTime + ":00");
-                
-                             if (nowSeconds >= endSeconds) return "0 сек";
-                
-                             const remainingTotalSeconds = endSeconds - nowSeconds;
-                
-                             if (remainingTotalSeconds >= 60) {
-                                 const remainingMinutes = Math.ceil(remainingTotalSeconds / 60);
-                                 return `${remainingMinutes} мин`;
-                             } else {
-                                 const remainingSeconds = Math.ceil(remainingTotalSeconds);
-                                 if (remainingSeconds === 0 && remainingTotalSeconds > 0) {
-                                     return "1 сек";
-                                 }
-                                 return `${remainingSeconds} сек`;
-                             }
-                        }
-                
-                        function formatTimeDifference(diffSeconds) {
-                            const days = Math.floor(diffSeconds / (3600 * 24));
-                            diffSeconds %= (3600 * 24);
-                            const hours = Math.floor(diffSeconds / 3600);
-                            diffSeconds %= 3600;
-                            const minutes = Math.floor(diffSeconds / 60);
-                            return `${days} дн ${hours} ч ${minutes} мин`;
-                        }
-                
-                        function updateSchedule() {
-                            const dayOfWeek = getCurrentDayOfWeek();
-                            const currentTime = getCurrentTime();
-                            const currentHour = getKamchatkaTime().date.getHours();
-                            const todaySchedule = schedule[dayOfWeek];
-                            const body = document.body;
-                            const themeColorMeta = document.getElementById('themeColor');
+            return kamchatkaEquivalentSeconds >= startSeconds && kamchatkaEquivalentSeconds < endSeconds;
+        }
 
-                            // Обновление названия дня недели
-                            const dayNames = [
-                                "Воскресенье",
-                                "Понедельник",
-                                "Вторник",
-                                "Среда",
-                                "Четверг",
-                                "Пятница",
-                                "Суббота"
-                            ];
-                            const dayOfWeekElement = document.getElementById('dayOfWeek');
-                            dayOfWeekElement.textContent = dayNames[dayOfWeek];
+        function calculateRemainingTime(currentTime, endTime) {
+            const now = new Date();
+            const localOffsetMinutes = now.getTimezoneOffset();
+            const kamchatkaOffsetMinutes = 12 * 60;
+            const offsetDiffSeconds = (kamchatkaOffsetMinutes - (-localOffsetMinutes)) * 60;
 
-                            let themeColor;
+            const nowSeconds = timeToSeconds(currentTime);
+            let kamchatkaEquivalentSeconds = (nowSeconds + offsetDiffSeconds) % (24 * 3600);
+            if (kamchatkaEquivalentSeconds < 0) kamchatkaEquivalentSeconds += 24 * 3600;
 
-                            if (currentHour >= 6 && currentHour < 12) {
-                                body.style.background = "linear-gradient(to bottom, #AA8E61, #A2493F)";
-                                themeColor = "#AA8E61";
-                                removeStars();
-                                body.classList.remove('night-mode');
-                            } else if (currentHour >= 12 && currentHour < 17) {
-                                body.style.background = "linear-gradient(to bottom, #E0C18A, #54A6D2)";
-                                themeColor = "#E0C18A";
-                                removeStars();
-                                body.classList.remove('night-mode');
-                            } else if (currentHour >= 17 && currentHour < 20) {
-                                body.style.background = "linear-gradient(to bottom, #4682B4, #1E90FF)";
-                                themeColor = "#4682B4";
-                                removeStars();
-                                body.classList.remove('night-mode');
-                            } else if (currentHour >= 20 && currentHour < 21) {
-                                body.style.background = "linear-gradient(to bottom, #9E4D29, #1B2C5D)";
-                                themeColor = "#9E4D29";
-                                removeStars();
-                                body.classList.remove('night-mode');
-                            } else {
-                                body.style.background = "#000000";
-                                themeColor = "#000000";
-                                if (document.querySelectorAll('.star').length === 0) {
-                                    createStars();
-                                }
-                                body.classList.add('night-mode');
-                            }
-                            themeColorMeta.setAttribute('content', themeColor);
+            let endSeconds = timeToSeconds(endTime + ":00");
+            if (endSeconds < kamchatkaEquivalentSeconds) {
+                endSeconds += 24 * 3600;
+            }
 
-                            const lesson1NameElement = document.getElementById('lesson1-name');
-                            const lesson1RemainingElement = document.getElementById('lesson1-remaining');
-                            const lesson1StartTimeElement = document.getElementById('lesson1-start-time');
-                            const lesson1EndTimeElement = document.getElementById('lesson1-end-time');
-                            const lesson1Progress = document.getElementById('lesson1-progress');
+            if (kamchatkaEquivalentSeconds >= endSeconds) {
+                return "0 сек";
+            }
 
-                            const lesson2NameElement = document.getElementById('lesson2-name');
-                            const lesson2RemainingElement = document.getElementById('lesson2-remaining');
-                            const lesson2StartTimeElement = document.getElementById('lesson2-start-time');
-                            const lesson2EndTimeElement = document.getElementById('lesson2-end-time');
-                            const lesson2Progress = document.getElementById('lesson2-progress');
+            const remainingTotalSeconds = endSeconds - kamchatkaEquivalentSeconds;
 
-                            function formatTimeDifference(diffSeconds) {
-                                const days = Math.floor(diffSeconds / (3600 * 24));
-                                diffSeconds %= (3600 * 24);
-                                const hours = Math.floor(diffSeconds / 3600);
-                                diffSeconds %= 3600;
-                                const minutes = Math.floor(diffSeconds / 60);
-                                const seconds = diffSeconds % 60;
+            if (remainingTotalSeconds >= 3600) {
+                const remainingHours = Math.floor(remainingTotalSeconds / 3600);
+                const remainingMinutes = Math.ceil((remainingTotalSeconds % 3600) / 60);
+                return `${remainingHours} ч ${remainingMinutes} мин`;
+            } else if (remainingTotalSeconds >= 60) {
+                const remainingMinutes = Math.ceil(remainingTotalSeconds / 60);
+                return `${remainingMinutes} мин`;
+            } else {
+                const remainingSeconds = Math.ceil(remainingTotalSeconds);
+                return `${remainingSeconds} сек`;
+            }
+        }
 
-                                let result = [];
-                                if (days > 0) result.push(`${days} дн`);
-                                if (hours > 0) result.push(`${hours} ч`);
-                                if (minutes > 0) result.push(`${minutes} мин`);
-                                if (result.length === 0 || (seconds > 0 && result.length < 2)) result.push(`${seconds} сек`);
+        function formatTimeDifference(diffSeconds) {
+            if (diffSeconds <= 0) return "0 мин";
 
-                                return result.join(' ') || '0 сек';
-                            }
+            const days = Math.floor(diffSeconds / (3600 * 24));
+            diffSeconds %= (3600 * 24);
+            const hours = Math.floor(diffSeconds / 3600);
+            diffSeconds %= 3600;
+            const minutes = Math.floor(diffSeconds / 60);
 
-                            function updateProgressBar(progressBar, currentTime, startTime, endTime) {
-                                const nowSeconds = timeToSeconds(currentTime);
-                                const startTotalSeconds = timeToSeconds(startTime);
-                                const endTotalSeconds = timeToSeconds(endTime);
+            let result = [];
+            if (days > 0) result.push(`${days} дн`);
+            if (hours > 0) result.push(`${hours} ч`);
+            if (minutes > 0 || result.length === 0) result.push(`${minutes} мин`);
 
-                                const totalDuration = endTotalSeconds - startTotalSeconds;
-                                const elapsed = nowSeconds - startTotalSeconds;
+            return result.join(' ') || "0 мин";
+        }
 
-                                if (totalDuration > 0 && elapsed >= 0 && elapsed <= totalDuration) {
-                                    const percentage = (elapsed / totalDuration) * 100;
-                                    progressBar.style.width = `${percentage}%`;
-                                } else if (elapsed > totalDuration) {
-                                    progressBar.style.width = '100%';
-                                } else {
-                                    progressBar.style.width = '0%';
-                                }
-                            }
+        function updateProgressBar(progressBar, currentTime, startTime, endTime) {
+            const now = new Date();
+            const localOffsetMinutes = now.getTimezoneOffset();
+            const kamchatkaOffsetMinutes = 12 * 60;
+            const offsetDiffSeconds = (kamchatkaOffsetMinutes - (-localOffsetMinutes)) * 60;
 
-                            function findNextLessonTime(shiftData, currentTime, currentDay) {
-                                const nowSeconds = timeToSeconds(currentTime);
-                                let nextLesson = null;
-                                let nextLessonDay = currentDay;
+            const nowSeconds = timeToSeconds(currentTime);
+            let kamchatkaEquivalentSeconds = (nowSeconds + offsetDiffSeconds) % (24 * 3600);
+            if (kamchatkaEquivalentSeconds < 0) kamchatkaEquivalentSeconds += 24 * 3600;
 
-                                // Сначала ищем в текущем дне
-                                for (const lesson of shiftData) {
-                                    if (timeToSeconds(lesson.start) > nowSeconds) {
-                                        nextLesson = lesson;
-                                        break;
-                                    }
-                                }
+            const startTotalSeconds = timeToSeconds(startTime);
+            let endTotalSeconds = timeToSeconds(endTime);
 
-                                // Если в текущем дне нет уроков, ищем в следующем дне
-                                if (!nextLesson && currentDay < 5) {
-                                    const nextDaySchedule = schedule[currentDay + 1];
-                                    if (nextDaySchedule && nextDaySchedule.shift1 && nextDaySchedule.shift1.length > 0) {
-                                        nextLesson = nextDaySchedule.shift1[0];
-                                        nextLessonDay = currentDay + 1;
-                                    }
-                                }
+            if (endTotalSeconds < startTotalSeconds) {
+                endTotalSeconds += 24 * 3600;
+            }
 
-                                if (nextLesson) {
-                                    const nextLessonTimeParts = nextLesson.start.split(':');
-                                    let nextLessonDate = new Date();
-                                    nextLessonDate.setDate(nextLessonDate.getDate() + (nextLessonDay - currentDay));
-                                    nextLessonDate.setHours(parseInt(nextLessonTimeParts[0]), parseInt(nextLessonTimeParts[1]), 0, 0);
-                                    
-                                    const now = new Date();
-                                    const timeDiffSeconds = Math.floor((nextLessonDate - now) / 1000);
-                                    return formatTimeDifference(timeDiffSeconds);
-                                }
-                                
-                                return null;
-                            }
+            const totalDuration = endTotalSeconds - startTotalSeconds;
+            const elapsed = kamchatkaEquivalentSeconds - startTotalSeconds;
 
-                            function updateShiftDisplay(shiftData, lessonNameElement, remainingElement, startTimeElement, endTimeElement, progressBar) {
-                                if (!shiftData || shiftData.length === 0) {
-                                    lessonNameElement.textContent = "Нет уроков";
-                                    remainingElement.style.visibility = 'hidden';
-                                    remainingElement.textContent = '';
-                                    startTimeElement.textContent = "";
-                                    endTimeElement.textContent = "";
-                                    progressBar.style.width = '0%';
-                                    return;
-                                }
+            if (totalDuration > 0 && elapsed >= 0 && elapsed <= totalDuration) {
+                const percentage = (elapsed / totalDuration) * 100;
+                progressBar.style.width = `${percentage}%`;
+            } else if (elapsed > totalDuration) {
+                progressBar.style.width = '100%';
+            } else {
+                progressBar.style.width = '0%';
+            }
+        }
 
-                                const currentTime = getCurrentTime();
-                                const currentDay = getCurrentDayOfWeek();
-                                let currentLessonIndex = -1;
+        function findNextLessonTime(shiftData, currentTime, currentDay, shiftKey) {
+            const now = new Date();
+            const localOffsetMinutes = now.getTimezoneOffset();
+            const kamchatkaOffsetMinutes = 12 * 60;
+            const offsetDiffSeconds = (kamchatkaOffsetMinutes - (-localOffsetMinutes)) * 60;
 
-                                // Проверяем, идет ли урок
-                                for (let i = 0; i < shiftData.length; i++) {
-                                    if (isTimeBetween(currentTime, shiftData[i].start, shiftData[i].end)) {
-                                        currentLessonIndex = i;
-                                        break;
-                                    }
-                                }
+            const nowSeconds = timeToSeconds(currentTime);
+            let kamchatkaEquivalentSeconds = (nowSeconds + offsetDiffSeconds) % (24 * 3600);
+            if (kamchatkaEquivalentSeconds < 0) kamchatkaEquivalentSeconds += 24 * 3600;
 
-                                if (currentLessonIndex !== -1) {
-                                    // Отображаем текущий урок
-                                    const currentLesson = shiftData[currentLessonIndex];
-                                    lessonNameElement.textContent = currentLesson.lesson;
-                                    remainingElement.style.visibility = 'visible';
-                                    remainingElement.textContent = calculateRemainingTime(currentTime, currentLesson.end);
-                                    startTimeElement.textContent = currentLesson.start;
-                                    endTimeElement.textContent = currentLesson.end;
-                                    updateProgressBar(progressBar, currentTime, currentLesson.start + ":00", currentLesson.end + ":00");
-                                } else {
-                                    // Проверяем, является ли это перерывом между уроками
-                                    let isBreak = false;
-                                    let nextLesson = null;
-                                    let breakStartTime = null;
+            let nextLesson = null;
+            let nextLessonDay = currentDay;
 
-                                    for (let i = 0; i < shiftData.length - 1; i++) {
-                                        const currentLessonEnd = timeToSeconds(shiftData[i].end);
-                                        const nextLessonStart = timeToSeconds(shiftData[i + 1].start);
-                                        if (timeToSeconds(currentTime) > currentLessonEnd && timeToSeconds(currentTime) < nextLessonStart) {
-                                            isBreak = true;
-                                            nextLesson = shiftData[i + 1];
-                                            breakStartTime = shiftData[i].end;
-                                            break;
-                                        }
-                                    }
+            for (const lesson of shiftData) {
+                const lessonStartSeconds = timeToSeconds(lesson.start);
+                if (lessonStartSeconds > kamchatkaEquivalentSeconds) {
+                    nextLesson = lesson;
+                    break;
+                }
+            }
 
-                                    if (isBreak && nextLesson && breakStartTime) {
-                                        // Отображаем перерыв с прогресс-баром и обратным отсчетом в рамке
-                                        lessonNameElement.textContent = `Перемена`;
-                                        remainingElement.style.visibility = 'visible';
-                                        remainingElement.textContent = calculateRemainingTime(currentTime, nextLesson.start);
-                                        startTimeElement.textContent = breakStartTime;
-                                        endTimeElement.textContent = nextLesson.start;
-                                        updateProgressBar(progressBar, currentTime, breakStartTime + ":00", nextLesson.start + ":00");
-                                    } else {
-                                        // Уроки закончились, показываем время до следующего урока
-                                        const timeToNextLesson = findNextLessonTime(shiftData, currentTime, currentDay);
-                                        if (timeToNextLesson) {
-                                            lessonNameElement.textContent = `До урока: ${timeToNextLesson}`;
-                                            remainingElement.style.visibility = 'hidden';
-                                            remainingElement.textContent = '';
-                                            startTimeElement.textContent = "";
-                                            endTimeElement.textContent = "";
-                                            progressBar.style.width = '0%';
-                                        } else {
-                                            lessonNameElement.textContent = "Уроки кончились";
-                                            remainingElement.style.visibility = 'hidden';
-                                            remainingElement.textContent = '';
-                                            startTimeElement.textContent = "";
-                                            endTimeElement.textContent = "";
-                                            progressBar.style.width = '0%';
-                                        }
-                                    }
-                                }
-                            }
+            if (!nextLesson && currentDay < 5) {
+                const nextDaySchedule = schedule[currentDay + 1];
+                if (nextDaySchedule && nextDaySchedule[shiftKey] && nextDaySchedule[shiftKey].length > 0) {
+                    nextLesson = nextDaySchedule[shiftKey][0];
+                    nextLessonDay = currentDay + 1;
+                }
+            }
 
-                            if (todaySchedule) {
-                                updateShiftDisplay(todaySchedule.shift1, lesson1NameElement, lesson1RemainingElement, lesson1StartTimeElement, lesson1EndTimeElement, lesson1Progress);
-                                updateShiftDisplay(todaySchedule.shift2, lesson2NameElement, lesson2RemainingElement, lesson2StartTimeElement, lesson2EndTimeElement, lesson2Progress);
-                            } else {
-                                lesson1NameElement.textContent = "Расписание не найдено";
-                                lesson1RemainingElement.style.visibility = 'hidden';
-                                lesson1StartTimeElement.textContent = "";
-                                lesson1EndTimeElement.textContent = "";
-                                lesson1Progress.style.width = '0%';
+            if (nextLesson) {
+                const nextLessonTimeParts = nextLesson.start.split(':');
+                let nextLessonDate = new Date();
+                nextLessonDate.setDate(nextLessonDate.getDate() + (nextLessonDay - currentDay));
+                nextLessonDate.setHours(parseInt(nextLessonTimeParts[0]), parseInt(nextLessonTimeParts[1]), 0, 0);
+                nextLessonDate = new Date(nextLessonDate.getTime() - offsetDiffSeconds * 1000);
 
-                                lesson2NameElement.textContent = "Расписание не найдено";
-                                lesson2RemainingElement.style.visibility = 'hidden';
-                                lesson2StartTimeElement.textContent = "";
-                                lesson2EndTimeElement.textContent = "";
-                                lesson2Progress.style.width = '0%';
-                            }
-                        }
-                
-                        function updateProgressBar(progressBar, currentTime, startTime, endTime) {
-                            const nowSeconds = timeToSeconds(currentTime);
-                            const startTotalSeconds = timeToSeconds(startTime);
-                            const endTotalSeconds = timeToSeconds(endTime);
-                
-                            const totalDuration = endTotalSeconds - startTotalSeconds;
-                            const elapsed = nowSeconds - startTotalSeconds;
-                
-                            if (totalDuration > 0 && elapsed >= 0 && elapsed <= totalDuration) {
-                                const percentage = (elapsed / totalDuration) * 100;
-                                progressBar.style.width = `${percentage}%`;
-                            } else if (elapsed > totalDuration) {
-                                 progressBar.style.width = '100%';
-                            }
-                             else {
-                                progressBar.style.width = '0%';
-                            }
-                        }
-                
-                        function createStars() {
-                        const body = document.body;
-                        const numStars = 100;
+                const nowAdjusted = new Date(now.getTime());
+                let timeDiffSeconds = Math.floor((nextLessonDate - nowAdjusted) / 1000);
+                if (timeDiffSeconds < 0) {
+                    timeDiffSeconds += 24 * 3600;
+                }
+                return formatTimeDifference(timeDiffSeconds);
+            }
 
-                        for (let i = 0; i < numStars; i++) {
-                            const star = document.createElement('div');
-                            star.classList.add('star');
+            return null;
+        }
 
-                            const x = Math.random() * 100; // Случайная позиция по X (0-100% ширины)
-                            const y = Math.random() * 100; // Случайная позиция по Y (0-100% высоты)
-                            const size = Math.random() * 2 + 1; // Случайный размер от 1 до 3 пикселей
-                            const duration = Math.random() * 2 + 1; // Случайная длительность от 1 до 3 секунд
-                            const delay = Math.random() * 2; // Случайная задержка от 0 до 2 секунд
+        function updateSchedule() {
+            const dayOfWeek = getCurrentDayOfWeek();
+            const currentTime = getCurrentTimeInKamchatkaContext();
+            const now = new Date();
+            const localOffsetMinutes = now.getTimezoneOffset();
+            const kamchatkaOffsetMinutes = 12 * 60;
+            const offsetDiffMinutes = kamchatkaOffsetMinutes - (-localOffsetMinutes);
+            const kamchatkaDate = new Date(now.getTime() + offsetDiffMinutes * 60 * 1000);
+            const currentHour = kamchatkaDate.getHours();
+            const todaySchedule = schedule[dayOfWeek];
+            const body = document.body;
+            const themeColorMeta = document.getElementById('themeColor');
 
-                            star.style.left = `${x}vw`;
-                            star.style.top = `${y}vh`;
-                            star.style.width = `${size}px`;
-                            star.style.height = `${size}px`;
-                            star.style.animationDuration = `${duration}s`;
-                            star.style.animationDelay = `${delay}s`;
+            const dayNames = [
+                "Воскресенье",
+                "Понедельник",
+                "Вторник",
+                "Среда",
+                "Четверг",
+                "Пятница",
+                "Суббота"
+            ];
+            const dayOfWeekElement = document.getElementById('dayOfWeek');
+            dayOfWeekElement.textContent = dayNames[dayOfWeek];
 
-                            body.appendChild(star);
+            let themeColor;
+
+            if (currentHour >= 6 && currentHour < 12) {
+                body.style.background = "linear-gradient(to bottom, #AA8E61, #A2493F)";
+                themeColor = "#AA8E61";
+                removeStars();
+                body.classList.remove('night-mode');
+            } else if (currentHour >= 12 && currentHour < 17) {
+                body.style.background = "linear-gradient(to bottom, #E0C18A, #54A6D2)";
+                themeColor = "#E0C18A";
+                removeStars();
+                body.classList.remove('night-mode');
+            } else if (currentHour >= 17 && currentHour < 20) {
+                body.style.background = "linear-gradient(to bottom, #4682B4, #1E90FF)";
+                themeColor = "#4682B4";
+                removeStars();
+                body.classList.remove('night-mode');
+            } else if (currentHour >= 20 && currentHour < 21) {
+                body.style.background = "linear-gradient(to bottom, #9E4D29, #1B2C5D)";
+                themeColor = "#9E4D29";
+                removeStars();
+                body.classList.remove('night-mode');
+            } else {
+                body.style.background = "#000000";
+                themeColor = "#000000";
+                if (document.querySelectorAll('.star').length === 0) {
+                    createStars();
+                }
+                body.classList.add('night-mode');
+            }
+            themeColorMeta.setAttribute('content', themeColor);
+
+            const lesson1NameElement = document.getElementById('lesson1-name');
+            const lesson1RemainingElement = document.getElementById('lesson1-remaining');
+            const lesson1StartTimeElement = document.getElementById('lesson1-start-time');
+            const lesson1EndTimeElement = document.getElementById('lesson1-end-time');
+            const lesson1Progress = document.getElementById('lesson1-progress');
+
+            const lesson2NameElement = document.getElementById('lesson2-name');
+            const lesson2RemainingElement = document.getElementById('lesson2-remaining');
+            const lesson2StartTimeElement = document.getElementById('lesson2-start-time');
+            const lesson2EndTimeElement = document.getElementById('lesson2-end-time');
+            const lesson2Progress = document.getElementById('lesson2-progress');
+
+            function updateShiftDisplay(shiftData, lessonNameElement, remainingElement, startTimeElement, endTimeElement, progressBar, shiftKey) {
+                if (!shiftData || shiftData.length === 0) {
+                    lessonNameElement.textContent = "Нет уроков";
+                    remainingElement.style.visibility = 'hidden';
+                    remainingElement.textContent = '';
+                    startTimeElement.textContent = "";
+                    endTimeElement.textContent = "";
+                    progressBar.style.width = '0%';
+                    return;
+                }
+
+                const currentTime = getCurrentTimeInKamchatkaContext();
+                const currentDay = getCurrentDayOfWeek();
+                let currentLessonIndex = -1;
+
+                for (let i = 0; i < shiftData.length; i++) {
+                    if (isTimeBetween(currentTime, shiftData[i].start, shiftData[i].end)) {
+                        currentLessonIndex = i;
+                        break;
+                    }
+                }
+
+                if (currentLessonIndex !== -1) {
+                    const currentLesson = shiftData[currentLessonIndex];
+                    lessonNameElement.textContent = currentLesson.lesson;
+                    remainingElement.style.visibility = 'visible';
+                    const remainingTime = calculateRemainingTime(currentTime, currentLesson.end);
+                    remainingElement.textContent = remainingTime;
+                    const startDate = new Date(`1970-01-01T${currentLesson.start}:00Z`);
+                    startDate.setMinutes(startDate.getMinutes() - (kamchatkaOffsetMinutes - (-localOffsetMinutes)));
+                    const endDate = new Date(`1970-01-01T${currentLesson.end}:00Z`);
+                    endDate.setMinutes(endDate.getMinutes() - (kamchatkaOffsetMinutes - (-localOffsetMinutes)));
+                    startTimeElement.textContent = `${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}`;
+                    endTimeElement.textContent = `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
+                    updateProgressBar(progressBar, currentTime, currentLesson.start + ":00", currentLesson.end + ":00");
+                } else {
+                    let isBreak = false;
+                    let nextLesson = null;
+                    let breakStartTime = null;
+
+                    for (let i = 0; i < shiftData.length - 1; i++) {
+                        const currentLessonEnd = timeToSeconds(shiftData[i].end);
+                        const nextLessonStart = timeToSeconds(shiftData[i + 1].start);
+                        const now = new Date();
+                        const localOffsetMinutes = now.getTimezoneOffset();
+                        const kamchatkaOffsetMinutes = 12 * 60;
+                        const offsetDiffSeconds = (kamchatkaOffsetMinutes - (-localOffsetMinutes)) * 60;
+                        const currentTimeSeconds = timeToSeconds(currentTime);
+                        let kamchatkaEquivalentSeconds = (currentTimeSeconds + offsetDiffSeconds) % (24 * 3600);
+                        if (kamchatkaEquivalentSeconds < 0) kamchatkaEquivalentSeconds += 24 * 3600;
+                        if (kamchatkaEquivalentSeconds > currentLessonEnd && kamchatkaEquivalentSeconds < nextLessonStart) {
+                            isBreak = true;
+                            nextLesson = shiftData[i + 1];
+                            breakStartTime = shiftData[i].end;
+                            break;
                         }
                     }
 
-                    // Вызов функции для создания звезд
-                    createStars();
-                
-                        function removeStars() {
-                            const stars = document.querySelectorAll('.star');
-                            stars.forEach(star => star.remove());
-                        }
-                
-                        setInterval(updateSchedule, 1000);
-                        updateSchedule();
-                
-                    </script>
+                    if (isBreak && nextLesson && breakStartTime) {
+                        lessonNameElement.textContent = `Перемена`;
+                        remainingElement.style.visibility = 'visible';
+                        const remainingTime = calculateRemainingTime(currentTime, nextLesson.start);
+                        remainingElement.textContent = remainingTime;
+                        const startDate = new Date(`1970-01-01T${breakStartTime}:00Z`);
+                        startDate.setMinutes(startDate.getMinutes() - (kamchatkaOffsetMinutes - (-localOffsetMinutes)));
+                        const endDate = new Date(`1970-01-01T${nextLesson.start}:00Z`);
+                        endDate.setMinutes(endDate.getMinutes() - (kamchatkaOffsetMinutes - (-localOffsetMinutes)));
+                        startTimeElement.textContent = `${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}`;
+                        endTimeElement.textContent = `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
+                        updateProgressBar(progressBar, currentTime, breakStartTime + ":00", nextLesson.start + ":00");
+                    } else {
+                        const timeToNextLesson = findNextLessonTime(shiftData, currentTime, currentDay, shiftKey);
+                        if (timeToNextLesson) {
+                            lessonNameElement.textContent = `До урока: ${timeToNextLesson}`;
+                            remainingElement.style.visibility = 'hidden';
+                            remainingElement.textContent = '';
+                            startTimeElement.textContent = "";
+                            endTimeElement.textContent = "";
+                            progressBar.style.width = '0%';
+                        } else {
+                            lessonNameElement.textContent = "Уроки кончились";
+                            remainingElement.style.visibility = 'hidden';
+                            remainingElement.textContent = '';
+                            startTimeElement.textContent = "";
+                            endTimeElement.textContent = "";
+                            progressBar.style.width = '0%';
+                        }
+                    }
+                }
+            }
+
+            if (todaySchedule) {
+                updateShiftDisplay(todaySchedule.shift1, lesson1NameElement, lesson1RemainingElement, lesson1StartTimeElement, lesson1EndTimeElement, lesson1Progress, "shift1");
+                updateShiftDisplay(todaySchedule.shift2, lesson2NameElement, lesson2RemainingElement, lesson2StartTimeElement, lesson2EndTimeElement, lesson2Progress, "shift2");
+            } else {
+                lesson1NameElement.textContent = "Расписание не найдено";
+                lesson1RemainingElement.style.visibility = 'hidden';
+                lesson1StartTimeElement.textContent = "";
+                lesson1EndTimeElement.textContent = "";
+                lesson1Progress.style.width = '0%';
+
+                lesson2NameElement.textContent = "Расписание не найдено";
+                lesson2RemainingElement.style.visibility = 'hidden';
+                lesson2StartTimeElement.textContent = "";
+                lesson2EndTimeElement.textContent = "";
+                lesson2Progress.style.width = '0%';
+            }
+        }
+
+        function createStars() {
+            const body = document.body;
+            const numStars = 100;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const size = Math.random() * 2 + 1;
+                const duration = Math.random() * 2 + 1;
+                const delay = Math.random() * 2;
+
+                star.style.left = `${x}vw`;
+                star.style.top = `${y}vh`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.animationDuration = `${duration}s`;
+                star.style.animationDelay = `${delay}s`;
+
+                body.appendChild(star);
+            }
+        }
+
+        function removeStars() {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => star.remove());
+        }
+
+        setInterval(updateSchedule, 1000);
+        updateSchedule();
+    </script>
 </body>
 </html>
