@@ -152,11 +152,14 @@
         }
 
         #lesson1-remaining, #lesson2-remaining {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 1.4rem;
             font-weight: 500;
             color: #333;
             margin-left: 10px;
-            padding: 0.3rem 0;
+            padding: 0.3rem 0.8rem;
             background-color: rgba(0, 0, 0, 0.08);
             border-radius: 8px;
             white-space: nowrap;
@@ -165,9 +168,27 @@
             min-width: 6.5rem;
             text-align: center;
             box-sizing: border-box;
-            display: inline-block;
-            visibility: hidden;
             margin-top: 0.45rem;
+        }
+
+        .hourglass-icon {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 0.4rem;
+        }
+
+        .hourglass-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: #333;
+        }
+
+        body.night-mode .hourglass-icon svg {
+            fill: #ffffff4a;
+        }
+
+        .remaining-text {
+            display: inline-block;
         }
 
         .progress-time-labels {
@@ -267,8 +288,19 @@
                 padding: 0 5px;
             }
             #lesson1-remaining, #lesson2-remaining {
-                font-size: 1.4rem;
-                padding: 0.1rem 0;
+                font-size: 1.2rem;
+                padding: 0.1rem 0.6rem;
+                min-width: 5.5rem;
+                margin-left: 8px;
+            }
+
+            .hourglass-icon svg {
+                width: 14px;
+                height: 14px;
+            }
+
+            .hourglass-icon {
+                margin-right: 0.3rem;
             }
 
             .shift-number {
@@ -285,12 +317,6 @@
                 max-width: 100%;
                 font-size: 1.8rem;
                 max-height: 4.68rem;
-            }
-
-            #lesson1-remaining, #lesson2-remaining {
-                font-size: 1.2rem;
-                min-width: 5.5rem;
-                margin-left: 8px;
             }
 
             .lesson-header {
@@ -321,11 +347,18 @@
             <div class="shift-number">1 смена</div>
             <div class="lesson-header">
                 <div id="lesson1-name"></div>
-                <div id="lesson1-remaining"></div>
+                <div id="lesson1-remaining">
+                    <span class="hourglass-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 3H5C4.44772 3 4 3.44772 4 4V6.58579C4 7.11622 4.21071 7.62493 4.58579 8L8 11.4142V12.5858L4.58579 16C4.21071 16.3751 4 16.8838 4 17.4142V20C4 20.5523 4.44772 21 5 21H19C19.5523 21 20 20.5523 20 20V17.4142C20 16.8838 19.7893 16.3751 19.4142 16L16 12.5858V11.4142L19.4142 8C19.7893 7.62493 20 7.11622 20 6.58579V4C20 3.44772 19.5523 3 19 3ZM18 6H6V5H18V6ZM12 11V13L15.4142 16.4142C15.7893 16.7893 16 17.298 16 17.8284V19H8V17.8284C8 17.298 8.21071 16.7893 8.58579 16.4142L12 13V11Z" fill="currentColor"/>
+                        </svg>
+                    </span>
+                    <span class="remaining-text"></span>
+                </div>
             </div>
             <div class="progress-time-labels">
-                 <span id="lesson1-start-time"></span>
-                 <span id="lesson1-end-time"></span>
+                <span id="lesson1-start-time"></span>
+                <span id="lesson1-end-time"></span>
             </div>
             <div class="progress-bar">
                 <div id="lesson1-progress"></div>
@@ -335,11 +368,18 @@
             <div class="shift-number">2 смена</div>
             <div class="lesson-header">
                 <div id="lesson2-name"></div>
-                <div id="lesson2-remaining"></div>
+                <div id="lesson2-remaining">
+                    <span class="hourglass-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 3H5C4.44772 3 4 3.44772 4 4V6.58579C4 7.11622 4.21071 7.62493 4.58579 8L8 11.4142V12.5858L4.58579 16C4.21071 16.3751 4 16.8838 4 17.4142V20C4 20.5523 4.44772 21 5 21H19C19.5523 21 20 20.5523 20 20V17.4142C20 16.8838 19.7893 16.3751 19.4142 16L16 12.5858V11.4142L19.4142 8C19.7893 7.62493 20 7.11622 20 6.58579V4C20 3.44772 19.5523 3 19 3ZM18 6H6V5H18V6ZM12 11V13L15.4142 16.4142C15.7893 16.7893 16 17.298 16 17.8284V19H8V17.8284C8 17.298 8.21071 16.7893 8.58579 16.4142L12 13V11Z" fill="currentColor"/>
+                        </svg>
+                    </span>
+                    <span class="remaining-text"></span>
+                </div>
             </div>
             <div class="progress-time-labels">
-                 <span id="lesson2-start-time"></span>
-                 <span id="lesson2-end-time"></span>
+                <span id="lesson2-start-time"></span>
+                <span id="lesson2-end-time"></span>
             </div>
             <div class="progress-bar">
                 <div id="lesson2-progress"></div>
@@ -724,7 +764,7 @@
                 if (!shiftData || shiftData.length === 0) {
                     lessonNameElement.textContent = "Нет уроков";
                     remainingElement.style.visibility = 'hidden';
-                    remainingElement.textContent = '';
+                    remainingElement.querySelector('.remaining-text').textContent = '';
                     startTimeElement.textContent = "";
                     endTimeElement.textContent = "";
                     progressBar.style.width = '0%';
@@ -747,27 +787,22 @@
                     lessonNameElement.textContent = currentLesson.lesson;
                     remainingElement.style.visibility = 'visible';
                     const remainingTime = calculateRemainingTime(currentTime, currentLesson.end);
-                    remainingElement.textContent = remainingTime;
+                    remainingElement.querySelector('.remaining-text').textContent = remainingTime;
 
-                    // Создаём объект Date с учётом времени Камчатки
                     const kamchatkaOffsetMinutes = 12 * 60;
                     const localOffsetMinutes = new Date().getTimezoneOffset();
                     const offsetDiffMinutes = kamchatkaOffsetMinutes - (-localOffsetMinutes);
 
-                    // Парсим время урока как локальное время Камчатки
                     const [startHours, startMinutes] = currentLesson.start.split(':').map(Number);
                     const [endHours, endMinutes] = currentLesson.end.split(':').map(Number);
 
-                    // Создаём Date для текущей даты с временем урока в Камчатке
                     const now = new Date();
                     const startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHours, startMinutes);
                     const endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endHours, endMinutes);
 
-                    // Корректируем на локальный часовой пояс
                     startDate.setMinutes(startDate.getMinutes() - offsetDiffMinutes);
                     endDate.setMinutes(endDate.getMinutes() - offsetDiffMinutes);
 
-                    // Форматируем время
                     startTimeElement.textContent = `${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}`;
                     endTimeElement.textContent = `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
 
@@ -799,7 +834,7 @@
                         lessonNameElement.textContent = `Перемена`;
                         remainingElement.style.visibility = 'visible';
                         const remainingTime = calculateRemainingTime(currentTime, nextLesson.start);
-                        remainingElement.textContent = remainingTime;
+                        remainingElement.querySelector('.remaining-text').textContent = remainingTime;
                         const startDate = new Date(`1970-01-01T${breakStartTime}:00Z`);
                         startDate.setMinutes(startDate.getMinutes() - (kamchatkaOffsetMinutes - (-localOffsetMinutes)));
                         const endDate = new Date(`1970-01-01T${nextLesson.start}:00Z`);
@@ -812,14 +847,14 @@
                         if (timeToNextLesson) {
                             lessonNameElement.textContent = `До урока: ${timeToNextLesson}`;
                             remainingElement.style.visibility = 'hidden';
-                            remainingElement.textContent = '';
+                            remainingElement.querySelector('.remaining-text').textContent = '';
                             startTimeElement.textContent = "";
                             endTimeElement.textContent = "";
                             progressBar.style.width = '0%';
                         } else {
                             lessonNameElement.textContent = "Уроки кончились";
                             remainingElement.style.visibility = 'hidden';
-                            remainingElement.textContent = '';
+                            remainingElement.querySelector('.remaining-text').textContent = '';
                             startTimeElement.textContent = "";
                             endTimeElement.textContent = "";
                             progressBar.style.width = '0%';
@@ -834,12 +869,14 @@
             } else {
                 lesson1NameElement.textContent = "Расписание не найдено";
                 lesson1RemainingElement.style.visibility = 'hidden';
+                lesson1RemainingElement.querySelector('.remaining-text').textContent = '';
                 lesson1StartTimeElement.textContent = "";
                 lesson1EndTimeElement.textContent = "";
                 lesson1Progress.style.width = '0%';
 
                 lesson2NameElement.textContent = "Расписание не найдено";
                 lesson2RemainingElement.style.visibility = 'hidden';
+                lesson2RemainingElement.querySelector('.remaining-text').textContent = '';
                 lesson2StartTimeElement.textContent = "";
                 lesson2EndTimeElement.textContent = "";
                 lesson2Progress.style.width = '0%';
