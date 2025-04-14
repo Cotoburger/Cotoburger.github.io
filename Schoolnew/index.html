@@ -760,6 +760,8 @@
             const lesson2Progress = document.getElementById('lesson2-progress');
 
             function updateShiftDisplay(shiftData, lessonNameElement, remainingElement, startTimeElement, endTimeElement, progressBar, shiftKey) {
+                const progressBarContainer = progressBar.parentElement; // Получаем родительский элемент прогресс-бара
+
                 if (!shiftData || shiftData.length === 0) {
                     lessonNameElement.textContent = "Нет уроков";
                     remainingElement.style.visibility = 'hidden';
@@ -767,6 +769,7 @@
                     startTimeElement.textContent = "";
                     endTimeElement.textContent = "";
                     progressBar.style.width = '0%';
+                    progressBarContainer.style.display = 'none'; // Скрываем прогресс-бар
                     return;
                 }
 
@@ -806,6 +809,7 @@
                     endTimeElement.textContent = `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
 
                     updateProgressBar(progressBar, currentTime, currentLesson.start + ":00", currentLesson.end + ":00");
+                    progressBarContainer.style.display = 'block'; // Показываем прогресс-бар
                 } else {
                     let isBreak = false;
                     let nextLesson = null;
@@ -842,6 +846,7 @@
                         startTimeElement.textContent = `${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}`;
                         endTimeElement.textContent = `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
                         updateProgressBar(progressBar, currentTime, breakStartTime + ":00", nextLesson.start + ":00");
+                        progressBarContainer.style.display = 'block'; // Показываем прогресс-бар для перемены
                     } else {
                         // Проверяем время до следующего урока только если нет перемены
                         const timeToNextLesson = findNextLessonTime(shiftData, currentTime, currentDay, shiftKey);
@@ -852,6 +857,7 @@
                             startTimeElement.textContent = "";
                             endTimeElement.textContent = "";
                             progressBar.style.width = '0%';
+                            progressBarContainer.style.display = 'none'; // Скрываем прогресс-бар
                         } else {
                             lessonNameElement.textContent = "Уроки кончились";
                             remainingElement.style.visibility = 'hidden';
@@ -859,6 +865,7 @@
                             startTimeElement.textContent = "";
                             endTimeElement.textContent = "";
                             progressBar.style.width = '0%';
+                            progressBarContainer.style.display = 'none'; // Скрываем прогресс-бар
                         }
                     }
                 }
