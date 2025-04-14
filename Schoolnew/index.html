@@ -717,12 +717,12 @@
 
             let themeColor;
 
-            if (currentHour >= 6 && currentHour < 12) {
+            if (currentHour >= 6 && currentHour < 11) {
                 body.style.background = "linear-gradient(to bottom, #AA8E61, #A2493F)";
                 themeColor = "#AA8E61";
                 removeStars();
                 body.classList.remove('night-mode');
-            } else if (currentHour >= 12 && currentHour < 17) {
+            } else if (currentHour >= 11 && currentHour < 17) {
                 body.style.background = "linear-gradient(to bottom, #E0C18A, #54A6D2)";
                 themeColor = "#E0C18A";
                 removeStars();
