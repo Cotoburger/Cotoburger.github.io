@@ -30,24 +30,31 @@
     <title>Расписание уроков</title>
     <style>
 html {
+    min-height: fit-content;
     height: 100%;
-    background: linear-gradient(to bottom, #87cfeb9e, #4683b46d);
+    background: linear-gradient(to bottom, #000000, #232323);
+    overflow-y: none;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 body {
+    overflow-y: none;
+    overflow-x: hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    min-height: fit-content;
+    max-height: fit-content;
     height: 100%;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: linear-gradient(to bottom, #87CEEB, #4682B4);
-    min-height: 100vh;
+    background: #23232300;
     margin: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     transition: background 0.5s ease;
     position: relative;
-    overflow: hidden;
 }
 
 body::-webkit-scrollbar {
@@ -757,6 +764,7 @@ body.night-mode #lesson2-progress {
             const currentHour = kamchatkaDate.getHours();
             const todaySchedule = schedule[dayOfWeek];
             const body = document.body;
+            const html = document.documentElement;
             const themeColorMeta = document.getElementById('themeColor');
 
             const dayNames = [
@@ -774,27 +782,27 @@ body.night-mode #lesson2-progress {
             let themeColor;
 
             if (currentHour >= 6 && currentHour < 11) {
-                body.style.background = "linear-gradient(to bottom, #AA8E61, #A2493F)";
+                html.style.background = "linear-gradient(to bottom, #AA8E61, #A2493F)";
                 themeColor = "#AA8E61";
                 removeStars();
                 body.classList.remove('night-mode');
             } else if (currentHour >= 11 && currentHour < 17) {
-                body.style.background = "linear-gradient(to bottom, #E0C18A, #54A6D2)";
+                html.style.background = "linear-gradient(to bottom, #E0C18A, #54A6D2)";
                 themeColor = "#E0C18A";
                 removeStars();
                 body.classList.remove('night-mode');
             } else if (currentHour >= 17 && currentHour < 20) {
-                body.style.background = "linear-gradient(to bottom, #4682B4, #1E90FF)";
+                html.style.background = "linear-gradient(to bottom, #4682B4, #1E90FF)";
                 themeColor = "#4682B4";
                 removeStars();
                 body.classList.remove('night-mode');
             } else if (currentHour >= 20 && currentHour < 21) {
-                body.style.background = "linear-gradient(to bottom, #9E4D29, #1B2C5D)";
+                html.style.background = "linear-gradient(to bottom, #9E4D29, #1B2C5D)";
                 themeColor = "#9E4D29";
                 removeStars();
                 body.classList.remove('night-mode');
             } else {
-                body.style.background = "#000000";
+                html.style.background = "#000000";
                 themeColor = "#000000";
                 if (document.querySelectorAll('.star').length === 0) {
                     createStars();
