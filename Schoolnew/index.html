@@ -107,10 +107,27 @@
             animation: cardFadeIn 0.4s ease-out forwards;
             -webkit-backdrop-filter: blur(0.4rem);
             backdrop-filter: blur(0.4rem);
-            transition: height 0.3s ease; /* Плавный переход для высоты */
-            overflow: hidden; /* Чтобы содержимое не выходило за границы при уменьшении */
+            transition: max-height 0.3s ease, opacity 0.3s ease; /* Плавный переход для max-height */
+            overflow: hidden;
+            max-height: 500px; /* Максимальная высота в развёрнутом состоянии */
         }
 
+        .lesson-card.collapsed {
+            max-height: 100px; /* Минимальная высота в свёрнутом состоянии (подгоните под ваш дизайн) */
+        }
+
+        .progress-bar,
+        .progress-time-labels {
+            transition: opacity 0.3s ease; /* Плавное скрытие/показ */
+        }
+
+        .progress-bar.hidden,
+            .progress-time-labels.hidden {
+                opacity: 0;
+                height: 0;
+                margin: 0;
+                overflow: hidden;
+            }
         .lesson-card:nth-child(2) {
             animation-delay: 0.15s;
         }
@@ -765,9 +782,14 @@
             const lesson2Progress = document.getElementById('lesson2-progress');
 
             function updateShiftDisplay(shiftData, lessonNameElement, remainingElement, startTimeElement, endTimeElement, progressBar, shiftKey) {
-                const progressBarContainer = progressBar.parentElement; // Родительский элемент прогресс-бара
-                const progressTimeLabels = startTimeElement.parentElement; // Родительский элемент меток времени
-                const lessonCard = lessonNameElement.closest('.lesson-card'); // Карточка урока
+                const progressBarContainer = progressBar.parentElement;
+                const progressTimeLabels = startTimeElement.parentElement;
+                const lessonCard = lessonNameElement.closest('.lesson-card');
+
+                // Сбрасываем состояние карточки
+                lessonCard.classList.remove('collapsed');
+                progressBarContainer.classList.remove('hidden');
+                progressTimeLabels.classList.remove('hidden');
 
                 if (!shiftData || shiftData.length === 0) {
                     lessonNameElement.textContent = "Нет уроков";
@@ -776,8 +798,9 @@
                     startTimeElement.textContent = "";
                     endTimeElement.textContent = "";
                     progressBar.style.width = '0%';
-                    progressBarContainer.style.display = 'none'; // Скрываем прогресс-бар
-                    progressTimeLabels.style.display = 'none'; // Скрываем метки времени
+                    progressBarContainer.classList.add('hidden');
+                    progressTimeLabels.classList.add('hidden');
+                    lessonCard.classList.add('collapsed');
                     return;
                 }
 
@@ -817,15 +840,11 @@
                     endTimeElement.textContent = `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
 
                     updateProgressBar(progressBar, currentTime, currentLesson.start + ":00", currentLesson.end + ":00");
-                    progressBarContainer.style.display = 'block'; // Показываем прогресс-бар
-                    progressTimeLabels.style.display = 'flex'; // Показываем метки времени
-                    lessonCard.style.height = 'auto'; // Возвращаем нормальную высоту
                 } else {
                     let isBreak = false;
                     let nextLesson = null;
                     let breakStartTime = null;
 
-                    // Проверяем, находится ли текущее время между уроками (перемена)
                     for (let i = 0; i < shiftData.length - 1; i++) {
                         const currentLessonEnd = timeToSeconds(shiftData[i].end);
                         const nextLessonStart = timeToSeconds(shiftData[i + 1].start);
@@ -856,11 +875,7 @@
                         startTimeElement.textContent = `${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}`;
                         endTimeElement.textContent = `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
                         updateProgressBar(progressBar, currentTime, breakStartTime + ":00", nextLesson.start + ":00");
-                        progressBarContainer.style.display = 'block'; // Показываем прогресс-бар
-                        progressTimeLabels.style.display = 'flex'; // Показываем метки времени
-                        lessonCard.style.height = 'auto'; // Возвращаем нормальную высоту
                     } else {
-                        // Проверяем время до следующего урока только если нет перемены
                         const timeToNextLesson = findNextLessonTime(shiftData, currentTime, currentDay, shiftKey);
                         if (timeToNextLesson) {
                             lessonNameElement.textContent = `До урока: ${timeToNextLesson}`;
@@ -869,13 +884,9 @@
                             startTimeElement.textContent = "";
                             endTimeElement.textContent = "";
                             progressBar.style.width = '0%';
-                            progressBarContainer.style.display = 'none'; // Скрываем прогресс-бар
-                            progressTimeLabels.style.display = 'none'; // Скрываем метки времени
-                            // Уменьшаем высоту карточки
-                            lessonCard.style.height = `${lessonCard.scrollHeight}px`; // Сначала устанавливаем текущую высоту
-                            setTimeout(() => {
-                                lessonCard.style.height = `${lessonNameElement.offsetHeight + lessonCard.querySelector('.shift-number').offsetHeight + 40}px`; // Уменьшаем до высоты содержимого
-                            }, 0);
+                            progressBarContainer.classList.add('hidden');
+                            progressTimeLabels.classList.add('hidden');
+                            lessonCard.classList.add('collapsed');
                         } else {
                             lessonNameElement.textContent = "Уроки кончились";
                             remainingElement.style.visibility = 'hidden';
@@ -883,13 +894,9 @@
                             startTimeElement.textContent = "";
                             endTimeElement.textContent = "";
                             progressBar.style.width = '0%';
-                            progressBarContainer.style.display = 'none'; // Скрываем прогресс-бар
-                            progressTimeLabels.style.display = 'none'; // Скрываем метки времени
-                            // Уменьшаем высоту карточки
-                            lessonCard.style.height = `${lessonCard.scrollHeight}px`; // Сначала устанавливаем текущую высоту
-                            setTimeout(() => {
-                                lessonCard.style.height = `${lessonNameElement.offsetHeight + lessonCard.querySelector('.shift-number').offsetHeight + 40}px`; // Уменьшаем до высоты содержимого
-                            }, 0);
+                            progressBarContainer.classList.add('hidden');
+                            progressTimeLabels.classList.add('hidden');
+                            lessonCard.classList.add('collapsed');
                         }
                     }
                 }
