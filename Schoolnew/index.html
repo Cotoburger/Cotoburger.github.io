@@ -359,6 +359,61 @@
                 padding: 0;
             }
         }
+        /* Медиа-запрос для горизонтальной ориентации и маленькой высоты */
+@media (orientation: landscape) and (max-height: 600px) {
+    body {
+        align-items: center; /* Сохраняем выравнивание по центру, как в портретной ориентации */
+        padding-top: 1rem; /* Оставляем отступ сверху, как в портретной ориентации */
+    }
+
+    .container {
+        margin: 1rem auto 0; /* Оставляем те же отступы, что в портретной ориентации */
+        padding: 0 10px;
+        max-height: 90%; /* Убираем ограничение по высоте */
+        width: 90%; /* Оставляем ширину, как в портретной ориентации */
+        max-width: 1000px; /* Оставляем максимальную ширину, как в портретной ориентации */
+    }
+
+    .day-header {
+        font-size: 3.3rem; /* Оставляем размер шрифта, как в портретной ориентации */
+        padding: 0rem 0; /* Оставляем отступы, как в портретной ориентации */
+    }
+
+    .lesson-card {
+        margin-bottom: 20px; /* Оставляем расстояние между карточками, как в портретной ориентации */
+        padding: 1rem; /* Оставляем внутренние отступы, как в портретной ориентации */
+        font-size: 1rem; /* Оставляем базовый размер шрифта */
+    }
+
+    .lesson-card.collapsed {
+        max-height: 100px; /* Оставляем высоту свёрнутой карточки, как в портретной ориентации */
+    }
+
+    #lesson1-name, #lesson2-name {
+        font-size: 2rem; /* Оставляем размер шрифта названия урока, как в портретной ориентации */
+        max-height: 5.2rem; /* Оставляем высоту текста, как в портретной ориентации */
+    }
+
+    #lesson1-remaining, #lesson2-remaining {
+        font-size: 1.4rem; /* Оставляем размер текста оставшегося времени, как в портретной ориентации */
+        padding: 0.3rem 0.8rem;
+        min-width: 6.5rem;
+    }
+
+    .shift-number {
+        font-size: 1.4rem; /* Оставляем размер номера смены, как в портретной ориентации */
+        padding: 0.0rem 1.2rem;
+    }
+
+    .progress-time-labels {
+        font-size: 1.2rem; /* Оставляем размер меток времени, как в портретной ориентации */
+        margin-bottom: 6px;
+    }
+
+    .progress-bar {
+        height: 1.2rem; /* Оставляем высоту прогресс-бара, как в портретной ориентации */
+    }
+}
     </style>
 </head>
 <body>
@@ -868,12 +923,27 @@
                         remainingElement.style.visibility = 'visible';
                         const remainingTime = calculateRemainingTime(currentTime, nextLesson.start);
                         remainingElement.querySelector('.remaining-text').textContent = remainingTime;
-                        const startDate = new Date(`1970-01-01T${breakStartTime}:00Z`);
-                        startDate.setMinutes(startDate.getMinutes() - (kamchatkaOffsetMinutes - (-localOffsetMinutes)));
-                        const endDate = new Date(`1970-01-01T${nextLesson.start}:00Z`);
-                        endDate.setMinutes(endDate.getMinutes() - (kamchatkaOffsetMinutes - (-localOffsetMinutes)));
+
+                        // Создаем объекты Date с текущей датой
+                        const now = new Date();
+                        const [startHours, startMinutes] = breakStartTime.split(':').map(Number);
+                        const [endHours, endMinutes] = nextLesson.start.split(':').map(Number);
+
+                        const startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHours, startMinutes);
+                        const endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endHours, endMinutes);
+
+                        // Корректируем с учетом разницы часовых поясов
+                        const kamchatkaOffsetMinutes = 12 * 60;
+                        const localOffsetMinutes = new Date().getTimezoneOffset();
+                        const offsetDiffMinutes = kamchatkaOffsetMinutes - (-localOffsetMinutes);
+
+                        startDate.setMinutes(startDate.getMinutes() - offsetDiffMinutes);
+                        endDate.setMinutes(endDate.getMinutes() - offsetDiffMinutes);
+
+                        // Устанавливаем время в элементы
                         startTimeElement.textContent = `${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}`;
                         endTimeElement.textContent = `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
+
                         updateProgressBar(progressBar, currentTime, breakStartTime + ":00", nextLesson.start + ":00");
                     } else {
                         const timeToNextLesson = findNextLessonTime(shiftData, currentTime, currentDay, shiftKey);
