@@ -748,12 +748,29 @@
                     remainingElement.style.visibility = 'visible';
                     const remainingTime = calculateRemainingTime(currentTime, currentLesson.end);
                     remainingElement.textContent = remainingTime;
-                    const startDate = new Date(`1970-01-01T${currentLesson.start}:00Z`);
-                    startDate.setMinutes(startDate.getMinutes() - (kamchatkaOffsetMinutes - (-localOffsetMinutes)));
-                    const endDate = new Date(`1970-01-01T${currentLesson.end}:00Z`);
-                    endDate.setMinutes(endDate.getMinutes() - (kamchatkaOffsetMinutes - (-localOffsetMinutes)));
+
+                    // Создаём объект Date с учётом времени Камчатки
+                    const kamchatkaOffsetMinutes = 12 * 60;
+                    const localOffsetMinutes = new Date().getTimezoneOffset();
+                    const offsetDiffMinutes = kamchatkaOffsetMinutes - (-localOffsetMinutes);
+
+                    // Парсим время урока как локальное время Камчатки
+                    const [startHours, startMinutes] = currentLesson.start.split(':').map(Number);
+                    const [endHours, endMinutes] = currentLesson.end.split(':').map(Number);
+
+                    // Создаём Date для текущей даты с временем урока в Камчатке
+                    const now = new Date();
+                    const startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHours, startMinutes);
+                    const endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endHours, endMinutes);
+
+                    // Корректируем на локальный часовой пояс
+                    startDate.setMinutes(startDate.getMinutes() - offsetDiffMinutes);
+                    endDate.setMinutes(endDate.getMinutes() - offsetDiffMinutes);
+
+                    // Форматируем время
                     startTimeElement.textContent = `${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}`;
                     endTimeElement.textContent = `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
+
                     updateProgressBar(progressBar, currentTime, currentLesson.start + ":00", currentLesson.end + ":00");
                 } else {
                     let isBreak = false;
