@@ -431,6 +431,9 @@
         gap: 1rem;
         width: 100%;
         padding-top: 3rem ; /* Добавлен верхний padding */
+        opacity: 0;
+        animation: cardFadeIn 0.4s ease-out forwards;
+        animation-delay: 0.3s; /* Задержка после второй карточки */
     }
 
     .lesson-item {
@@ -515,7 +518,7 @@
             </div>
         </div>
     </div>
-    <div class="container" style="padding-top: 0.1rem;">
+    <div class="container" style="padding-top: 0.1rem; opacity: 0; animation: cardFadeIn 0.4s ease-out 0.3s forwards;">
         <div class="lesson-card">
             <div class="schedule-header">Расписание</div>
             <div class="full-schedule-container">
