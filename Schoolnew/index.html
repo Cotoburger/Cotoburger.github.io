@@ -307,7 +307,10 @@
         color: #222;
         margin-bottom: -3.0rem;
         text-align: center;
-    }
+        }
+        body.night-mode .schedule-header {
+        color: #606060;
+        }
 
         .full-schedule-container {
             display: grid;
@@ -333,7 +336,7 @@
         }
 
         body.night-mode .lesson-item {
-            background: rgba(255, 255, 255, 0.021);
+            background: rgba(163, 163, 163, 0.014);
             border-radius: 1.4rem;
             padding: 0.3rem;
             margin: 0.5rem 0;
@@ -347,7 +350,7 @@
         }
 
         body.night-mode .lesson-number {
-            color: #000000;
+            color: #a5a5a57e;
             background: rgba(0, 0, 0, 0.1);
         }
 
@@ -371,7 +374,24 @@
         }
 
         body.night-mode .lesson-time {
-            color: #000000da;
+            color: #cecece62;
+        }
+
+        .schedule-index {
+            font-size: 1.4rem;
+            padding: 0.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-align: center;
+            color: #171717cb;
+            background-color: rgba(0, 0, 0, 0.043);
+            border-radius: 2rem;
+        }
+
+        body.night-mode .schedule-index {
+            color: #858585cb;
+            background-color: rgba(122, 122, 122, 0.196);
         }
 
 
@@ -543,9 +563,11 @@
             <div class="schedule-header">Расписание</div>
             <div class="full-schedule-container">
                 <div class="shift-schedule">
+                    <div class="schedule-index">1 смена</div>
                     <div id="shift1-full"></div>
                 </div>
                 <div class="shift-schedule">
+                    <div class="schedule-index">2 смена</div>
                     <div id="shift2-full"></div>
                 </div>
             </div>
