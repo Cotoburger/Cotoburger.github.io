@@ -363,6 +363,15 @@
                 max-width: none;
                 padding-top: 3rem ; /* Добавлен верхний padding */
             }
+
+            .lesson-time {
+                font-size: 1.0rem;
+                font-weight: 600;
+                text-align: center;
+                opacity: 0.8;
+                margin-top: 0.0rem;
+                color: #1b1b1bcb;
+            }
         }
 
         @media (min-width: 37.5625rem) {
@@ -377,6 +386,15 @@
              .day-header {
                  /* Возвращаем padding для больших экранов */
                 padding: 3rem 0;
+            }
+
+            .lesson-time {
+                font-size: 1.4rem;
+                font-weight: 600;
+                text-align: center;
+                opacity: 0.8;
+                margin-top: 0.0rem;
+                color: #1b1b1bcb;
             }
         }
 
@@ -439,7 +457,7 @@
 
     .lesson-number {
         font-weight: 600;
-        margin-right: 1rem;
+        margin-right: 0.3rem;
         min-width: 1rem;
         text-align: center;
         background: rgba(0, 0, 0, 0.1);
@@ -454,23 +472,6 @@
         opacity: 0.8;
         margin-top: 0.0rem;
         color: #1b1b1bcb;
-    }
-
-    /* Ночной режим */
-    body.night-mode .schedule-header {
-        color: #ffffff58;
-    }
-
-    body.night-mode .shift-schedule {
-        background: rgba(255, 255, 255, 0.05);
-    }
-
-    body.night-mode .lesson-item {
-        background: rgba(255, 0, 0, 0.08);
-    }
-
-    body.night-mode .lesson-number {
-        background: rgba(255, 255, 255, 0.1);
     }
 
     </style>
@@ -1136,5 +1137,6 @@
         updateSchedule();
         renderFullSchedule(); // Добавить эту строку
     </script>
+    
 </body>
 </html>
