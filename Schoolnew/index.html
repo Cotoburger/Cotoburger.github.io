@@ -5,13 +5,10 @@
     <meta name="theme-color" id="themeColor" content="#87CEEB">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-
     <link rel="shortcut icon" href="icons/icon-dark3x.png">
-
     <link rel="apple-touch-icon" href="icons/icon-dark1x.png" media="(prefers-color-scheme: dark)" sizes="128x128">
     <link rel="apple-touch-icon" href="icons/icon-dark2x.png" media="(prefers-color-scheme: dark)" sizes="256x256">
     <link rel="apple-touch-icon" href="icons/icon-dark3x.png" media="(prefers-color-scheme: dark)" sizes="384x384">
-
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
     <meta property="og:title" content="Schedule">
@@ -24,390 +21,385 @@
     <meta name="twitter:description" content="Расписание звонков в МАОУ Средняя школа №1 v2">
     <meta name="twitter:image" content="https://cotoburger.github.io/Schoolnew//icons/icon.svg">
     <meta name="twitter:url" content="https://cotoburger.github.io/Schoolnew/">
-
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
     <title>Расписание уроков</title>
     <style>
-html {
-    min-height: fit-content;
-    height: 100%;
-    background: linear-gradient(to bottom, #000000, #232323);
-    overflow-y: none;
-    overflow-x: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
+        html {
+            height: 100%;
+            /* Градиент остаётся на html, который не скроллится */
+            background: linear-gradient(to bottom, #000000, #232323);
+            /* Запрещаем скролл для html */
+            overflow: hidden;
+        }
 
-body {
-    overflow-y: none;
-    overflow-x: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    min-height: fit-content;
-    max-height: fit-content;
-    height: 100%;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: #23232300;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: background 0.5s ease;
-    position: relative;
-}
+        body {
+            min-height: 100%;
+            height: 100%; /* Задаём высоту 100% для включения скролла */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: transparent; /* Фон body прозрачный, виден фон html */
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            position: relative;
+            /* Включаем вертикальный скролл для body */
+            overflow-y: auto;
+            /* Скрываем горизонтальный скролл */
+            overflow-x: hidden;
 
-body::-webkit-scrollbar {
-    display: none;
-}
+            /* Скрытие полосы прокрутки */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        }
 
-.day-header {
-    width: 100%;
-    text-align: center;
-    font-size: 3.3rem;
-    font-weight: bold;
-    color: rgba(255, 255, 255, 0.534);
-    animation: fadeInDown 0.6s ease-out;
-    padding: 3rem 0;
-}
+        /* Скрытие полосы прокрутки для WebKit (Chrome, Safari, Edge) */
+        body::-webkit-scrollbar {
+            display: none;
+        }
 
-.star {
-    position: absolute;
-    background-color: white;
-    border-radius: 50%;
-    opacity: 0.7;
-    animation: twinkle 2s infinite alternate;
-    z-index: 1;
-}
+        .day-header {
+            width: 100%;
+            text-align: center;
+            font-size: 3.3rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.534);
+            animation: fadeInDown 0.6s ease-out;
+            padding: 3rem 0;
+        }
 
-.container {
-    width: 90%;
-    max-width: 31.25rem;
-    margin: 5rem auto 0;
-    padding: 0 0.625rem;
-    box-sizing: border-box;
-    z-index: 2;
-}
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: twinkle 2s infinite alternate;
+            z-index: 1; /* Ниже контента */
+        }
 
-@keyframes cardFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(0.9375rem);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        .container {
+            width: 90%;
+            max-width: 31.25rem;
+             /* Убираем верхний margin, чтобы контент начинался сверху */
+            margin: 0 auto 2rem;
+            padding: 0 0.625rem;
+            box-sizing: border-box;
+            z-index: 2; /* Выше звёзд */
+            /* Добавим padding-top, чтобы компенсировать убранный margin */
+            padding-top: 5rem;
+            /* Убрал min-height, он больше не нужен для теста */
+        }
 
-.lesson-card {
-    background-color: #d0cece37;
-    border-radius: 1.4rem;
-    padding: 1rem;
-    margin-bottom: 1.25rem;
-    box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    opacity: 0;
-    animation: cardFadeIn 0.4s ease-out forwards;
-    -webkit-backdrop-filter: blur(0.4rem);
-    backdrop-filter: blur(0.4rem);
-    transition: max-height 0.3s ease, opacity 0.3s ease;
-    overflow: hidden;
-    max-height: 31.25rem;
-}
+        @keyframes cardFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(0.9375rem);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-.lesson-card.collapsed {
-    max-height: 6.25rem;
-}
+        .lesson-card {
+            background-color: #d0cece37;
+            border-radius: 1.4rem;
+            padding: 1rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            animation: cardFadeIn 0.4s ease-out forwards;
+            -webkit-backdrop-filter: blur(0.4rem);
+            backdrop-filter: blur(0.4rem);
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            overflow: hidden;
+            max-height: 31.25rem;
+        }
 
-.progress-bar,
-.progress-time-labels {
-    transition: opacity 0.3s ease;
-}
+        .lesson-card.collapsed {
+            max-height: 6.25rem;
+        }
 
-.progress-bar.hidden,
-.progress-time-labels.hidden {
-    opacity: 0;
-    height: 0;
-    margin: 0;
-    overflow: hidden;
-}
+        .progress-bar,
+        .progress-time-labels {
+            transition: opacity 0.3s ease;
+        }
 
-.lesson-card:nth-child(2) {
-    animation-delay: 0.15s;
-}
+        .progress-bar.hidden,
+        .progress-time-labels.hidden {
+            opacity: 0;
+            height: 0;
+            margin: 0;
+            overflow: hidden;
+        }
 
-.shift-number {
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: #313131;
-    align-self: flex-end;
-    margin-top: -0.125rem;
-    margin-right: -0.125rem;
-    background-color: rgba(0, 0, 0, 0.043);
-    border-radius: 4rem;
-    padding: 0 1.2rem;
-}
+        .lesson-card:nth-child(2) {
+            animation-delay: 0.15s;
+        }
 
-.lesson-header {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 0.75rem;
-    flex-wrap: nowrap;
-    min-height: 1.6875rem;
-}
+        .shift-number {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #313131;
+            align-self: flex-end;
+            margin-top: -0.125rem;
+            margin-right: -0.125rem;
+            background-color: rgba(0, 0, 0, 0.043);
+            border-radius: 4rem;
+            padding: 0 1.2rem;
+        }
 
-#lesson1-name,
-#lesson2-name {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #222;
-    margin-bottom: 0;
-    white-space: normal;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    flex-shrink: 1;
-    line-height: 1.3;
-    max-height: 5.2rem;
-}
+        .lesson-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+            flex-wrap: nowrap;
+            min-height: 1.6875rem;
+        }
 
-#lesson1-remaining,
-#lesson2-remaining {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    font-weight: 500;
-    color: #333;
-    margin-left: 0.625rem;
-    padding: 0.3rem 0.8rem;
-    background-color: rgba(0, 0, 0, 0.08);
-    border-radius: 0.5rem;
-    white-space: nowrap;
-    flex-shrink: 0;
-    line-height: 1.2;
-    min-width: 6.5rem;
-    text-align: center;
-    box-sizing: border-box;
-    margin-top: 0.45rem;
-}
+        #lesson1-name,
+        #lesson2-name {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 0;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            flex-shrink: 1;
+            line-height: 1.3;
+            max-height: 5.2rem;
+        }
 
-.hourglass-icon {
-    display: inline-flex;
-    align-items: center;
-    margin-right: 0.4rem;
-}
+        #lesson1-remaining,
+        #lesson2-remaining {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #333;
+            margin-left: 0.625rem;
+            padding: 0.3rem 0.8rem;
+            background-color: rgba(0, 0, 0, 0.08);
+            border-radius: 0.5rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+            line-height: 1.2;
+            min-width: 6.5rem;
+            text-align: center;
+            box-sizing: border-box;
+            margin-top: 0.45rem;
+        }
 
-.hourglass-icon svg {
-    width: 1rem;
-    height: 1rem;
-    fill: #333;
-}
+        .hourglass-icon {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 0.4rem;
+        }
 
-body.night-mode .hourglass-icon svg {
-    fill: #ffffff4a;
-}
+        .hourglass-icon svg {
+            width: 1rem;
+            height: 1rem;
+            fill: #333;
+        }
 
-.remaining-text {
-    display: inline-block;
-}
+        body.night-mode .hourglass-icon svg {
+            fill: #ffffff4a;
+        }
 
-.progress-time-labels {
-    font-weight: 600;
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.2rem;
-    color: #3535357c;
-    margin-bottom: 0.375rem;
-    padding: 0 0.125rem;
-    min-height: 1rem;
-    transition: opacity 0.3s ease;
-}
+        .remaining-text {
+            display: inline-block;
+        }
 
-.progress-bar {
-    height: 1.2rem;
-    background-color: #0000002c;
-    border-radius: 7rem;
-    overflow: hidden;
-    transition: opacity 0.3s ease;
-}
+        .progress-time-labels {
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            color: #3535357c;
+            margin-bottom: 0.375rem;
+            padding: 0 0.125rem;
+            min-height: 1rem;
+            transition: opacity 0.3s ease;
+        }
 
-#lesson1-progress,
-#lesson2-progress {
-    height: 100%;
-    background-color: #52ce52c6;
-    width: 0%;
-    transition: width 0.3s ease;
-}
+        .progress-bar {
+            height: 1.2rem;
+            background-color: #0000002c;
+            border-radius: 7rem;
+            overflow: hidden;
+            transition: opacity 0.3s ease;
+        }
 
-@keyframes twinkle2 {
-    0% {
-        opacity: 0.6;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0.7;
-    }
-}
+        #lesson1-progress,
+        #lesson2-progress {
+            height: 100%;
+            background-color: #52ce52c6;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
 
-.star {
-    position: absolute;
-    background-color: white;
-    border-radius: 50%;
-    animation: twinkle2 infinite;
-}
+        @keyframes twinkle2 {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
 
-body.night-mode {
-    color: #ffffff;
-}
+        /* Анимация для .star должна быть twinkle2 или twinkle? Оставляю twinkle */
+        @keyframes twinkle {
+            from { opacity: 0.7; }
+            to { opacity: 1; }
+        }
 
-body.night-mode .lesson-card {
-    background-color: rgba(117, 117, 117, 0.137);
-    box-shadow: 0 0.25rem 0.625rem rgba(150, 150, 150, 0.116);
-}
+        body.night-mode {
+            color: #ffffff;
+        }
 
-body.night-mode .shift-number {
-    color: #ffffff60;
-    background-color: rgba(255, 255, 255, 0.1);
-}
+        body.night-mode .lesson-card {
+            background-color: rgba(117, 117, 117, 0.137);
+            box-shadow: 0 0.25rem 0.625rem rgba(150, 150, 150, 0.116);
+        }
 
-body.night-mode .lesson-header {
-    color: #ffffff63;
-}
+        body.night-mode .shift-number {
+            color: #ffffff60;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
 
-body.night-mode #lesson1-name,
-body.night-mode #lesson2-name {
-    color: #ffffff58;
-}
+        body.night-mode .lesson-header {
+            color: #ffffff63;
+        }
 
-body.night-mode #lesson1-remaining,
-body.night-mode #lesson2-remaining {
-    color: #ffffff4a;
-    background-color: rgba(255, 255, 255, 0.1);
-}
+        body.night-mode #lesson1-name,
+        body.night-mode #lesson2-name {
+            color: #ffffff58;
+        }
 
-body.night-mode .progress-time-labels {
-    color: #5f5f5f;
-}
+        body.night-mode #lesson1-remaining,
+        body.night-mode #lesson2-remaining {
+            color: #ffffff4a;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
 
-body.night-mode .progress-bar {
-    background-color: rgba(255, 255, 255, 0.2);
-}
+        body.night-mode .progress-time-labels {
+            color: #5f5f5f;
+        }
 
-body.night-mode #lesson1-progress,
-body.night-mode #lesson2-progress {
-    background-color: #52ce52c6;
-}
+        body.night-mode .progress-bar {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
 
-@keyframes twinkle {
-    from {
-        opacity: 0.7;
-    }
-    to {
-        opacity: 1;
-    }
-}
+        body.night-mode #lesson1-progress,
+        body.night-mode #lesson2-progress {
+            background-color: #52ce52c6;
+        }
 
-@media (max-width: 37.5rem) {
-    body {
-        align-items: center;
-        padding-top: 1.25rem;
-    }
+        @media (max-width: 37.5rem) {
+            /* Убираем padding-top для body на маленьких экранах */
+            body {
+                 padding-top: 0;
+            }
 
-    .container {
-        width: 93%;
-        max-width: none;
-        margin: 3rem auto 0;
-        padding: 0 0.3125rem;
-    }
+            .container {
+                width: 93%;
+                max-width: none;
+                /* Устанавливаем верхний padding вместо margin */
+                margin: 0 auto 2rem;
+                padding: 3rem 0.3125rem 0; /* Добавлен верхний padding */
+            }
 
-    #lesson1-remaining,
-    #lesson2-remaining {
-        font-size: 1.2rem;
-        padding: 0.1rem 0.6rem;
-        min-width: 5.5rem;
-        margin-left: 0.5rem;
-    }
+            #lesson1-remaining,
+            #lesson2-remaining {
+                font-size: 1.2rem;
+                padding: 0.1rem 0.6rem;
+                min-width: 5.5rem;
+                margin-left: 0.5rem;
+            }
 
-    .hourglass-icon svg {
-        width: 0.875rem;
-        height: 0.875rem;
-    }
+            .hourglass-icon svg {
+                width: 0.875rem;
+                height: 0.875rem;
+            }
 
-    .hourglass-icon {
-        margin-right: 0.3rem;
-    }
+            .hourglass-icon {
+                margin-right: 0.3rem;
+            }
 
-    .shift-number {
-        align-self: flex-start;
-        margin-top: -0.125rem;
-        margin-bottom: 0.5rem;
-        margin-right: -0.125rem;
-        border-radius: 4rem;
-        padding: 0 1.2rem;
-    }
+            .shift-number {
+                align-self: flex-start;
+                margin-top: -0.125rem;
+                margin-bottom: 0.5rem;
+                margin-right: -0.125rem;
+                border-radius: 4rem;
+                padding: 0 1.2rem;
+            }
 
-    #lesson1-name,
-    #lesson2-name {
-        max-width: 100%;
-        font-size: 1.8rem;
-        max-height: 4.68rem;
-    }
+            #lesson1-name,
+            #lesson2-name {
+                max-width: 100%;
+                font-size: 1.8rem;
+                max-height: 4.68rem;
+            }
 
-    .lesson-header {
-        align-items: flex-start;
-        flex-wrap: wrap;
-    }
+            .lesson-header {
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
 
-    .day-header {
-        font-size: 2.8rem;
-    }
-}
+            .day-header {
+                font-size: 2.8rem;
+                 /* Уменьшаем верхний padding */
+                padding: 1.5rem 0;
+            }
+        }
 
-@media (min-width: 37.5625rem) {
-    .container {
-        width: 55%;
-        min-width: 27.125rem;
-        max-width: 60rem;
-        margin: 5rem auto 0;
-        padding: 0;
-    }
-}
+        @media (min-width: 37.5625rem) {
+            .container {
+                width: 55%;
+                min-width: 27.125rem;
+                max-width: 60rem;
+                 /* Устанавливаем верхний padding вместо margin */
+                margin: 0 auto 2rem;
+                padding: 5rem 0 0; /* Добавлен верхний padding */
+            }
+             .day-header {
+                 /* Возвращаем padding для больших экранов */
+                padding: 3rem 0;
+            }
+        }
 
-@media (orientation: landscape) and (max-height: 37.5rem) {
-    body {
-        align-items: center;
-        padding-top: 0.1rem;
-    }
+        @media (orientation: landscape) and (max-height: 37.5rem) {
+            body {
+                padding-top: 0; /* Убираем padding */
+            }
+             .container {
+                 /* Устанавливаем верхний padding вместо margin */
+                margin: 0 auto 2rem;
+                padding: 1rem 0.625rem 0;
+                max-height: 90%;
+                width: 90%;
+                max-width: 62.5rem;
+            }
 
-    .container {
-        margin: 1rem auto 0;
-        padding: 0 0.625rem;
-        max-height: 90%;
-        width: 90%;
-        max-width: 62.5rem;
-    }
+            .day-header {
+                font-size: 2rem;
+                padding: 0.5rem 0; /* Уменьшаем padding */
+            }
 
-    .day-header {
-        font-size: 2rem;
-        padding: 0;
-    }
-
-    .shift-number {
-
-    align-self: flex-end;
-    margin-top: -0.125rem;
-    margin-bottom: -2rem;
-    margin-right: -0.125rem;
-}
-}
+            .shift-number {
+                align-self: flex-end;
+                margin-top: -0.125rem;
+                 /* Убираем отрицательный margin */
+                margin-bottom: 0;
+                margin-right: -0.125rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -810,7 +802,7 @@ body.night-mode #lesson2-progress {
                 removeStars();
                 body.classList.remove('night-mode');
             } else {
-                html.style.background = "#000000";
+                html.style.background = "linear-gradient(to bottom, #000000, #232323)"; /* Use gradient instead of solid color */
                 themeColor = "#000000";
                 if (document.querySelectorAll('.star').length === 0) {
                     createStars();
