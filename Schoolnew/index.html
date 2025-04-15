@@ -722,15 +722,24 @@
                     return;
                 }
 
-                scheduleData[shiftKey].forEach((lesson, index) => {
+                scheduleData[shiftKey].forEach((lesson) => {
+                    const isClassHour = lesson.lesson.toLowerCase().includes('классный час');
+                    const lessonNumberMatch = lesson.lesson.match(/^(\d+)-й урок/);
+                    let lessonNumber = '';
+                    
+                    if (isClassHour) {
+                        lessonNumber = 'КЛ';
+                    } else if (lessonNumberMatch) {
+                        lessonNumber = lessonNumberMatch[1]; // Извлекаем номер из названия
+                    }
+                    
                     const isCurrent = isTimeBetween(currentTime, lesson.start, lesson.end);
-                    const isClassHour = lesson.lesson.toLowerCase().includes('классный');
                     
                     const lessonEl = document.createElement('div');
                     lessonEl.className = `lesson-item ${isCurrent ? 'current' : ''}`;
                     
                     lessonEl.innerHTML = `
-                        <div class="lesson-number">${isClassHour ? 'КЛ' : index + 1}</div>
+                        <div class="lesson-number">${lessonNumber}</div>
                         <div>
                             <div class="lesson-time">${lesson.start} - ${lesson.end}</div>
                         </div>
