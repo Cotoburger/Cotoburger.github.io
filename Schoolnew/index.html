@@ -27,34 +27,28 @@
     <style>
         html {
             height: 100%;
-            /* Градиент остаётся на html, который не скроллится */
             background: linear-gradient(to bottom, #000000, #232323);
-            /* Запрещаем скролл для html */
             overflow: hidden;
-            transition: background 3.5s ease; /* Плавный переход фона */
+            transition: background 3.5s ease;
         }
 
         body {
             min-height: 100%;
-            height: 100%; /* Задаём высоту 100% для включения скролла */
+            height: 100%;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: transparent; /* Фон body прозрачный, виден фон html */
+            background: transparent;
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: stretch;
             position: relative;
-            /* Включаем вертикальный скролл для body */
             overflow-y: auto;
-            /* Скрываем горизонтальный скролл */
             overflow-x: hidden;
 
-            /* Скрытие полосы прокрутки */
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none;  /* Internet Explorer 10+ */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
-        /* Скрытие полосы прокрутки для WebKit (Chrome, Safari, Edge) */
         body::-webkit-scrollbar {
             display: none;
         }
@@ -76,20 +70,17 @@
             border-radius: 50%;
             opacity: 0.7;
             animation: twinkle 2s infinite alternate;
-            z-index: 1; /* Ниже контента */
+            z-index: 1;
         }
 
         .container {
             width: 90%;
             max-width: 35.25rem;
-             /* Убираем верхний margin, чтобы контент начинался сверху */
             margin: 0 auto 2rem;
             padding: 0 0.625rem;
             box-sizing: border-box;
-            z-index: 2; /* Выше звёзд */
-            /* Добавим padding-top, чтобы компенсировать убранный margin */
+            z-index: 2;
             padding-top: 5rem;
-            /* Убрал min-height, он больше не нужен для теста */
         }
 
         @keyframes cardFadeIn {
@@ -252,7 +243,6 @@
             100% { opacity: 0.7; }
         }
 
-        /* Анимация для .star должна быть twinkle2 или twinkle? Оставляю twinkle */
         @keyframes twinkle {
             from { opacity: 0.7; }
             to { opacity: 1; }
@@ -317,10 +307,10 @@
             align-items: center;
             gap: 1rem;
             width: 100%;
-            padding-top: 3rem ; /* Добавлен верхний padding */
+            padding-top: 3rem ;
             opacity: 0;
             animation: cardFadeIn 0.4s ease-out forwards;
-            animation-delay: 0.3s; /* Задержка после второй карточки */
+            animation-delay: 0.3s;
             margin-bottom: -0.37rem;
         }
 
@@ -395,7 +385,6 @@
 
 
         @media (max-width: 37.5rem) {
-            /* Убираем padding-top для body на маленьких экранах */
             body {
                  padding-top: 0;
             }
@@ -403,9 +392,8 @@
             .container {
                 width: 93%;
                 max-width: none;
-                /* Устанавливаем верхний padding вместо margin */
                 margin: 0 auto 2rem;
-                padding: 1rem 0.3125rem 0; /* Добавлен верхний padding */
+                padding: 1rem 0.3125rem 0;
             }
 
             #lesson1-remaining,
@@ -448,12 +436,11 @@
 
             .day-header {
                 font-size: 2.8rem;
-                 /* Уменьшаем верхний padding */
                 padding: 1.5rem 0;
             }
 
             .full-schedule-container {
-                padding-top: 2.74rem ; /* Добавлен верхний padding */
+                padding-top: 2.74rem ;
             }
 
 
@@ -464,12 +451,10 @@
                 width: 55%;
                 min-width: 30.125rem;
                 max-width: 60rem;
-                 /* Устанавливаем верхний padding вместо margin */
                 margin: 0 auto 2rem;
-                padding: 5rem 0 0; /* Добавлен верхний padding */
+                padding: 5rem 0 0;
             }
              .day-header {
-                 /* Возвращаем padding для больших экранов */
                 padding: 3rem 0;
             }
 
@@ -771,7 +756,7 @@
                     if (isClassHour) {
                         lessonNumber = 'КЛ';
                     } else if (lessonNumberMatch) {
-                        lessonNumber = lessonNumberMatch[1]; // Извлекаем номер из названия
+                        lessonNumber = lessonNumberMatch[1];
                     }
                     
                     const isCurrent = isTimeBetween(currentTime, lesson.start, lesson.end);
@@ -923,7 +908,7 @@
         }
 
         function updateSchedule() {
-    renderFullSchedule(); // Добавить эту строку в конец функции
+    renderFullSchedule();
     const dayOfWeek = getCurrentDayOfWeek();
     const currentTime = getCurrentTimeInKamchatkaContext();
     const now = new Date();
@@ -945,9 +930,8 @@
     dayOfWeekElement.textContent = dayNames[dayOfWeek];
 
     let themeColor;
-    let backgroundStyle; // Переменная для хранения стиля фона
+    let backgroundStyle;
 
-    // Определяем стиль фона и цвет темы в зависимости от времени
     if (currentHour >= 6 && currentHour < 11) {
         backgroundStyle = "linear-gradient(to bottom, #AA8E61, #A2493F)";
         themeColor = "#AA8E61";
@@ -968,13 +952,13 @@
         themeColor = "#77889C";
         removeStars();
         body.classList.remove('night-mode');
-     } else if (currentHour >= 20 && currentHour < 21) { // Этот блок никогда не выполнится (0 < 0 ложно)
+     } else if (currentHour >= 20 && currentHour < 21) {
          backgroundStyle = "linear-gradient(to bottom, #1A3D4E, #2C3141)";
          themeColor = "#1A3D4E";
          removeStars();
          body.classList.remove('night-mode');
-    } else { // Ночной режим (20:00 - 05:59)
-        backgroundStyle = "linear-gradient(to bottom, #000000, #232323)";
+    } else {
+        backgroundStyle = "linear-gradient(to bottom, #000000, #1B1B1B)";
         themeColor = "#000000";
         if (document.querySelectorAll('.star').length === 0) {
             createStars();
@@ -982,8 +966,6 @@
         body.classList.add('night-mode');
     }
 
-    // Устанавливаем фон, только если он изменился
-    // Для плавности нужно добавить CSS transition (см. ниже)
     if (html.style.background !== backgroundStyle) {
        html.style.background = backgroundStyle;
     }
@@ -1074,10 +1056,7 @@
                 const kamchatkaOffsetMinutes = 12 * 60;
                 const offsetDiffSeconds = (kamchatkaOffsetMinutes - (-localOffsetMinutes)) * 60;
                 const currentTimeSeconds = timeToSeconds(currentTime);
-                // Применяем смещение к текущему времени, чтобы сравнить с Камчатским временем уроков
-                let kamchatkaEquivalentSeconds = currentTimeSeconds; // В вашем коде время уже в контексте Камчатки
-                // Удалена строка: let kamchatkaEquivalentSeconds = (currentTimeSeconds + offsetDiffSeconds) % (24 * 3600);
-                // Удалена строка: if (kamchatkaEquivalentSeconds < 0) kamchatkaEquivalentSeconds += 24 * 3600;
+                let kamchatkaEquivalentSeconds = currentTimeSeconds;
 
                 if (kamchatkaEquivalentSeconds > currentLessonEnd && kamchatkaEquivalentSeconds < nextLessonStart) {
                     isBreak = true;
@@ -1142,7 +1121,6 @@
         updateShiftDisplay(todaySchedule.shift1, lesson1NameElement, lesson1RemainingElement, lesson1StartTimeElement, lesson1EndTimeElement, lesson1Progress, "shift1");
         updateShiftDisplay(todaySchedule.shift2, lesson2NameElement, lesson2RemainingElement, lesson2StartTimeElement, lesson2EndTimeElement, lesson2Progress, "shift2");
     } else {
-        // Скрываем карточки, если расписания нет
         [lesson1NameElement, lesson2NameElement].forEach(el => {
             const card = el.closest('.lesson-card');
             if (card) {
@@ -1190,7 +1168,7 @@
 
         setInterval(updateSchedule, 1000);
         updateSchedule();
-        renderFullSchedule(); // Добавить эту строку
+        renderFullSchedule();
     </script>
     
 </body>
