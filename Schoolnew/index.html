@@ -299,6 +299,61 @@
             background-color: #52ce52c6;
         }
 
+        .schedule-header {
+        font-size: 1.7rem;
+        font-weight: 600;
+        margin-top: -0.8rem;
+        color: #222;
+        margin-bottom: -3.0rem;
+        text-align: center;
+    }
+
+        .full-schedule-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            padding-top: 3rem ; /* Добавлен верхний padding */
+            opacity: 0;
+            animation: cardFadeIn 0.4s ease-out forwards;
+            animation-delay: 0.3s; /* Задержка после второй карточки */
+        }
+
+        .lesson-item {
+            background: rgba(255, 255, 255, 0.135);
+            border-radius: 1.4rem;
+            padding: 0.3rem;
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .lesson-item.current {
+            background: #52ce52c6 !important;
+        }
+
+        .lesson-number {
+            font-weight: 600;
+            margin-right: 0.3rem;
+            min-width: 1rem;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 1rem;
+            padding: 0.4rem 0.4rem;
+        }
+
+        .lesson-time {
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: center;
+            opacity: 0.8;
+            margin-top: 0.0rem;
+            color: #1b1b1bcb;
+        }
+
+
         @media (max-width: 37.5rem) {
             /* Убираем padding-top для body на маленьких экранах */
             body {
@@ -358,9 +413,7 @@
             }
 
             .full-schedule-container {
-                width: 93%;
-                max-width: none;
-                padding-top: 3rem ; /* Добавлен верхний padding */
+                padding-top: 2.74rem ; /* Добавлен верхний padding */
             }
 
 
@@ -388,6 +441,7 @@
                 margin-top: 0.0rem;
                 color: #1b1b1bcb;
             }
+            
         }
 
         @media (orientation: landscape) and (max-height: 37.5rem) {
@@ -414,61 +468,6 @@
                 margin-right: -0.125rem;
             }
         }
-
-    .schedule-header {
-        font-size: 1.7rem;
-        font-weight: 600;
-        margin-top: -0.8rem;
-        color: #222;
-        margin-bottom: -3.0rem;
-        text-align: center;
-    }
-
-    .full-schedule-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        align-items: center;
-        gap: 1rem;
-        width: 100%;
-        padding-top: 3rem ; /* Добавлен верхний padding */
-        opacity: 0;
-        animation: cardFadeIn 0.4s ease-out forwards;
-        animation-delay: 0.3s; /* Задержка после второй карточки */
-    }
-
-    .lesson-item {
-        background: rgba(255, 255, 255, 0.135);
-        border-radius: 1.4rem;
-        padding: 0.3rem;
-        margin: 0.5rem 0;
-        display: flex;
-        align-items: center;
-        transition: all 0.3s ease;
-    }
-
-    .lesson-item.current {
-        background: #52ce52c6 !important;
-    }
-
-    .lesson-number {
-        font-weight: 600;
-        margin-right: 0.3rem;
-        min-width: 1rem;
-        text-align: center;
-        background: rgba(0, 0, 0, 0.1);
-        border-radius: 1rem;
-        padding: 0.4rem 0.4rem;
-    }
-
-    .lesson-time {
-        font-size: 0.95rem;
-        font-weight: 600;
-        text-align: center;
-        opacity: 0.8;
-        margin-top: 0.0rem;
-        color: #1b1b1bcb;
-    }
-
 
     </style>
 </head>
