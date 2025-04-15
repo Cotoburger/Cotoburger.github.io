@@ -64,7 +64,7 @@
             font-size: 3.3rem;
             font-weight: bold;
             color: rgba(255, 255, 255, 0.534);
-            animation: fadeInDown 0.6s ease-out;
+            animation: cardFadeIn 0.6s ease-out;
             padding: 3rem 0;
         }
 
@@ -79,7 +79,7 @@
 
         .container {
             width: 90%;
-            max-width: 31.25rem;
+            max-width: 35.25rem;
              /* Убираем верхний margin, чтобы контент начинался сверху */
             margin: 0 auto 2rem;
             padding: 0 0.625rem;
@@ -311,7 +311,7 @@
                 max-width: none;
                 /* Устанавливаем верхний padding вместо margin */
                 margin: 0 auto 2rem;
-                padding: 3rem 0.3125rem 0; /* Добавлен верхний padding */
+                padding: 1rem 0.3125rem 0; /* Добавлен верхний padding */
             }
 
             #lesson1-remaining,
@@ -357,6 +357,12 @@
                  /* Уменьшаем верхний padding */
                 padding: 1.5rem 0;
             }
+
+            .full-schedule-container {
+                width: 93%;
+                max-width: none;
+                padding-top: 3rem ; /* Добавлен верхний padding */
+            }
         }
 
         @media (min-width: 37.5625rem) {
@@ -398,6 +404,75 @@
                 margin-right: -0.125rem;
             }
         }
+
+    .schedule-header {
+        font-size: 1.7rem;
+        font-weight: 600;
+        margin-top: -0.8rem;
+        color: #222;
+        margin-bottom: -3.0rem;
+        text-align: center;
+    }
+
+    .full-schedule-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        padding-top: 3rem ; /* Добавлен верхний padding */
+    }
+
+    .lesson-item {
+        background: rgba(255, 255, 255, 0.135);
+        border-radius: 1.4rem;
+        padding: 0.3rem;
+        margin: 0.5rem 0;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .lesson-item.current {
+        background: #52ce52c6 !important;
+    }
+
+    .lesson-number {
+        font-weight: 600;
+        margin-right: 1rem;
+        min-width: 1rem;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 1rem;
+        padding: 0.4rem 0.4rem;
+    }
+
+    .lesson-time {
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-align: center;
+        opacity: 0.8;
+        margin-top: 0.0rem;
+        color: #1b1b1bcb;
+    }
+
+    /* Ночной режим */
+    body.night-mode .schedule-header {
+        color: #ffffff58;
+    }
+
+    body.night-mode .shift-schedule {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    body.night-mode .lesson-item {
+        background: rgba(255, 0, 0, 0.08);
+    }
+
+    body.night-mode .lesson-number {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
     </style>
 </head>
 <body>
@@ -443,6 +518,19 @@
             </div>
             <div class="progress-bar">
                 <div id="lesson2-progress"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="padding-top: 0.1rem;">
+        <div class="lesson-card">
+            <div class="schedule-header">Расписание</div>
+            <div class="full-schedule-container">
+                <div class="shift-schedule">
+                    <div id="shift1-full"></div>
+                </div>
+                <div class="shift-schedule">
+                    <div id="shift2-full"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -622,7 +710,43 @@
 
             return kamchatkaEquivalentSeconds >= startSeconds && kamchatkaEquivalentSeconds < endSeconds;
         }
+        
+        function renderFullSchedule() {
+            const day = getCurrentDayOfWeek();
+            const currentTime = getCurrentTimeInKamchatkaContext();
+            const scheduleData = schedule[day];
+            
+            function renderShift(shiftKey, containerId) {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                
+                if (!scheduleData || !scheduleData[shiftKey]) {
+                    container.innerHTML = '<div class="lesson-item">Нет уроков</div>';
+                    return;
+                }
 
+                scheduleData[shiftKey].forEach((lesson, index) => {
+                    const isCurrent = isTimeBetween(currentTime, lesson.start, lesson.end);
+                    const isClassHour = lesson.lesson.toLowerCase().includes('классный');
+                    
+                    const lessonEl = document.createElement('div');
+                    lessonEl.className = `lesson-item ${isCurrent ? 'current' : ''}`;
+                    
+                    lessonEl.innerHTML = `
+                        <div class="lesson-number">${isClassHour ? 'КЛ' : index + 1}</div>
+                        <div>
+                            <div class="lesson-time">${lesson.start} - ${lesson.end}</div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(lessonEl);
+                });
+            }
+
+            renderShift('shift1', 'shift1-full');
+            renderShift('shift2', 'shift2-full');
+        }
+        
         function calculateRemainingTime(currentTime, endTime) {
             const now = new Date();
             const localOffsetMinutes = now.getTimezoneOffset();
@@ -752,6 +876,7 @@
         }
 
         function updateSchedule() {
+            renderFullSchedule(); // Добавить эту строку в конец функции
             const dayOfWeek = getCurrentDayOfWeek();
             const currentTime = getCurrentTimeInKamchatkaContext();
             const now = new Date();
@@ -1009,6 +1134,7 @@
 
         setInterval(updateSchedule, 1000);
         updateSchedule();
+        renderFullSchedule(); // Добавить эту строку
     </script>
 </body>
 </html>
