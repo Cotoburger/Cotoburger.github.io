@@ -65,10 +65,10 @@
         }
 
         .star {
-            position: absolute;
+            position: fixed;
             background-color: white;
             border-radius: 50%;
-            opacity: 0.7;
+            opacity: 0.3;
             animation: twinkle 2s infinite alternate;
             z-index: 1;
         }
@@ -244,7 +244,7 @@
         }
 
         @keyframes twinkle {
-            from { opacity: 0.7; }
+            from { opacity: 0.3; }
             to { opacity: 1; }
         }
 
@@ -1137,33 +1137,46 @@
 
 
         function createStars() {
-            const body = document.body;
-            const numStars = 100;
+            const numStars = 45;
+            const starContainer = document.createElement('div');
+            starContainer.style.position = 'fixed';
+            starContainer.style.top = '0';
+            starContainer.style.left = '0';
+            starContainer.style.width = '100vw';
+            starContainer.style.height = '100vh';
+            starContainer.style.pointerEvents = 'none';
+            starContainer.style.zIndex = '1';
 
             for (let i = 0; i < numStars; i++) {
                 const star = document.createElement('div');
                 star.classList.add('star');
-
+                
+                // Генерируем координаты относительно viewport
                 const x = Math.random() * 100;
                 const y = Math.random() * 100;
+                
+                star.style.left = `${x}vw`;
+                star.style.top = `${y}vh`;
+                
+                // Остальные параметры без изменений
                 const size = Math.random() * 2 + 1;
                 const duration = Math.random() * 2 + 1;
                 const delay = Math.random() * 2;
-
-                star.style.left = `${x}vw`;
-                star.style.top = `${y}vh`;
+                
                 star.style.width = `${size}px`;
                 star.style.height = `${size}px`;
                 star.style.animationDuration = `${duration}s`;
                 star.style.animationDelay = `${delay}s`;
 
-                body.appendChild(star);
+                starContainer.appendChild(star);
             }
+
+            document.body.appendChild(starContainer);
         }
 
         function removeStars() {
-            const stars = document.querySelectorAll('.star');
-            stars.forEach(star => star.remove());
+            const starContainers = document.querySelectorAll('div[style*="position: fixed"]');
+            starContainers.forEach(container => container.remove());
         }
 
         setInterval(updateSchedule, 1000);
