@@ -407,6 +407,7 @@
             color: #0000004a;
             transition: transform 0.3s ease;
             z-index: 2;
+            outline: none;
         }
 
         .open-full-schedule:hover {
@@ -517,7 +518,9 @@
 
         .close-panel {
             position: sticky; /* добавлено */
-            top: -0.40rem; /* добавлено, чтобы кнопка была ниже заголовка */
+            top: -0.70rem; /* добавлено, чтобы кнопка была ниже заголовка */
+            margin-top: -2rem;
+            margin-left: -0.3rem;
             right: 2rem;
             width: 2rem;
             text-align: center;
@@ -529,7 +532,7 @@
             color: #ff000084;
             transition: transform 0.3s ease;
             z-index: 5; /* добавлено, чтобы кнопка была поверх содержимого */
-
+            outline: none;
 
         }
 
@@ -728,20 +731,33 @@
 
 
 
-        /* Existing styles remain unchanged */
         .day-navigation {
             display: flex;
+            align-items: center; /* Вертикальное выравнивание */
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0rem;
+            margin-bottom: 1rem;
+        }
+
+        .day-navigation h2 {
+            margin: 0; /* Убираем отступы */
+            padding: 0.5rem;
+            max-width: 11rem;
+            font-size: 1.6rem; /* Регулируем размер шрифта */
+            line-height: 1; /* Исправляем высоту строки */
         }
         .day-navigation button {
             background: none;
             border: none;
-            font-size: 1.8rem;
+            font-size: 2.4rem; /* Увеличиваем размер стрелок */
             cursor: pointer;
-            color: #0000004a;
+            color: #0000008a;
             transition: transform 0.3s ease;
+            line-height: 1; /* Исправляем высоту строки */
+            padding-left: 1rem;
+            padding-right: 1rem;
+            margin-top: -1rem;
+            margin: 0rem 0.5rem; /* Добавляем небольшие внешние отступы */
+            outline: none;
         }
         .day-navigation button:hover {
             transform: scale(1.2);
