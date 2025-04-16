@@ -407,11 +407,16 @@
             color: #0000004a;
             transition: transform 0.3s ease;
             z-index: 2;
+            user-select: none;
             outline: none;
+            -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
         }
 
         .open-full-schedule:hover {
             transform: scale(1.1);
+            user-select: none;
+            outline: none;
+            -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
         }
 
         body.night-mode .open-full-schedule {
@@ -427,6 +432,9 @@
 
         /* Стили для панели с расписанием */
         .full-schedule-panel {
+            user-select: none;
+            outline: none;
+            -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
             position: fixed;
             width: 90%;
             max-width: 38.25rem;
@@ -762,6 +770,7 @@
         }
         .day-navigation button:hover {
             transform: scale(1.2);
+            outline: none;
         }
         body.night-mode .day-navigation button {
             color: #f9f9f936;
