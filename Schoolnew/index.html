@@ -417,6 +417,13 @@
             color: #f9f9f936;
         }
 
+        .full-schedule-panel {
+            will-change: transform, opacity;
+        }
+        .schedule-slider {
+            will-change: transform;
+        }
+
         /* Стили для панели с расписанием */
         .full-schedule-panel {
             position: fixed;
@@ -660,6 +667,12 @@
 
         @media (min-width: 37.5625rem) {
 
+                /* Стили для оверлея */
+            .overlay {
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+            }
+
             .full-schedule-panel {
                 max-width: 800px;
                 padding: 2.5rem;
@@ -756,13 +769,6 @@
         }
         .schedule-slider.active .day-schedule {
             transform: translateX(-100%);
-        }
-
-
-        @media (max-width: 37.5rem) {
-            .day-navigation button {
-                font-size: 1.2rem;
-            }
         }
 
 
