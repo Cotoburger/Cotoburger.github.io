@@ -387,6 +387,193 @@
             background-color: rgba(122, 122, 122, 0.196);
         }
 
+        .open-full-schedule {
+            position: absolute;
+            top: 0.45rem;
+            right: 0.5rem;
+            width: 40px;
+            height: 40px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #363636;
+            transition: transform 0.3s ease;
+            z-index: 2;
+        }
+
+        .open-full-schedule:hover {
+            transform: scale(1.1);
+        }
+
+        body.night-mode .open-full-schedule {
+            color: #8a8a8a60;
+        }
+
+        /* Стили для панели с расписанием */
+        .full-schedule-panel {
+            position: fixed;
+            width: 90%;
+            max-width: 35.25rem;
+            margin: 0 auto 2rem;
+            padding: 1.5rem;
+            top: 58%;
+            left: 50%;
+            box-sizing: border-box;
+            transform: translate(-50%, -50%) scale(0.8); /* Начальное уменьшение масштаба */
+            background-color: #e1e1e137;
+            border-radius: 1.4rem;
+            z-index: 5;
+            max-height: 77vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0; /* Начальная прозрачность */
+            transition: transform 0.3s ease, opacity 0.3s ease; /* Плавные переходы */
+            padding-top: 1.5rem;
+            scrollbar-width: none;
+            user-select: none;
+            -webkit-user-select: none;  /* Safari */
+            -moz-user-select: none;     /* Firefox */
+            -ms-user-select: none;      /* IE/Edge */
+        }
+
+        .full-schedule-panel.open {
+            transform: translate(-50%, -50%) scale(1); /* Полный масштаб при открытии */
+            opacity: 1; /* Полная видимость */
+        }
+
+        .full-schedule-panel.closing {
+            transform: translate(-50%, -50%) scale(0.8); /* Уменьшение при закрытии */
+            opacity: 0; /* Исчезновение */
+        }
+
+
+        body.night-mode .full-schedule-panel {
+            background: rgba(22, 22, 22, 0.95);
+        }
+
+        .panel-content {
+            position: relative;
+        }
+
+        .full-schedule-panel h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            width: fit-content;
+            color: #222222bd;
+            position: sticky;
+            top: 0;
+            border-radius: 2rem;
+            background-color: rgba(160, 160, 160, 0.694);
+            z-index: 1;
+            padding: 0.4rem;
+            margin: 0 auto 1rem; /* Центрирование с помощью auto и небольшой отступ снизу */
+        }
+
+        body.night-mode .full-schedule-panel h2 {
+            color: #ffffff60;
+        }
+
+        /* Стили для оверлея */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0); /* Начальный фон */
+            z-index: 4;
+            backdrop-filter: blur(1rem);
+            opacity: 0; /* Начальная прозрачность */
+            transition: opacity 0.3s ease, background 0.3s ease; /* Плавные переходы */
+        }
+
+        .overlay.open {
+            background: rgba(0, 0, 0, 0.5); /* Затемнение при открытии */
+            opacity: 1;
+        }
+
+        .overlay.closing {
+            background: rgba(0, 0, 0, 0); /* Прозрачность при закрытии */
+            opacity: 0;
+        }
+
+        .close-panel {
+            position: sticky; /* добавлено */
+            top: 0.3rem; /* добавлено, чтобы кнопка была ниже заголовка */
+            right: 10px;
+            background-color: rgba(160, 160, 160, 0.694);
+            border: none;
+            border-radius: 2rem;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: #ff000084;
+            transition: transform 0.3s ease;
+            z-index: 3; /* добавлено, чтобы кнопка была поверх содержимого */
+
+
+        }
+
+        .close-panel:hover {
+            transform: scale(1.1);
+        }
+
+        body.night-mode .close-panel {
+            color: #cf232382;
+        }
+
+        body.night-mode .day-schedule {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .schedule-content .day-schedule {
+            margin-bottom: 3.9rem;
+            padding: 1.1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1.2rem;
+
+        }
+
+        .schedule-content .day-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        body.night-mode .schedule-content .day-title {
+            color: #5c5b5b60;
+        }
+        .full-lesson-name {
+            font-size: 1.2rem;
+        }
+        body.night-mode .full-lesson-name {
+            color: #99999979;
+        }
+
+        .schedule-content .shift-schedule {
+            margin-bottom: 1rem;
+        }
+
+        .schedule-content .schedule-index {
+            font-size: 1.2rem;
+            padding: 0.2rem 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-align: center;
+            color: #171717cb;
+            background-color: rgba(0, 0, 0, 0.043);
+            border-radius: 2rem;
+        }
+
+        body.night-mode .schedule-content .schedule-index {
+            color: #858585cb;
+            background-color: rgba(122, 122, 122, 0.196);
+        }
+
+
+        body.night-mode .day-schedule {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
 
         @media (max-width: 37.5rem) {
             body {
@@ -447,10 +634,26 @@
                 padding-top: 2.74rem ;
             }
 
+            .full-schedule-panel h2 {
+                font-size: 1.3rem;
+                width: fit-content;
+                max-width: 75%;
+                top:  0.25rem;
+            }
+
 
         }
 
         @media (min-width: 37.5625rem) {
+
+            .full-schedule-panel {
+                max-width: 800px;
+                padding: 2.5rem;
+            }
+
+            body.night-mode .day-schedule {
+                background: rgba(0, 0, 0, 0.15);
+            }
             .container {
                 width: 55%;
                 min-width: 30.125rem;
@@ -458,9 +661,7 @@
                 margin: 0 auto 2rem;
                 padding: 1.2rem 0 0;
             }
-             .day-header {
-                padding: 3rem 0;
-            }
+
 
             .lesson-time {
                 font-size: 1.4rem;
@@ -497,6 +698,9 @@
                 margin-right: -0.125rem;
             }
         }
+
+
+
 
     </style>
 </head>
@@ -548,6 +752,16 @@
     </div>
     <div class="container" style="margin-top: -3.0rem; opacity: 0; animation: cardFadeIn 0.4s ease-out 0.3s forwards;">
         <div class="lesson-card">
+            <button class="open-full-schedule">
+                <svg width="20.000000" height="20.000000" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <desc>
+                            Created with Pixso.
+                    </desc>
+                    <defs/>
+                    <rect id="Прямоугольник 18" x="1.000000" y="1.000000" rx="7.000000" width="18.000000" height="18.000000" stroke="currentColor" stroke-width="2.000000"/>
+                    <path id="Стрелка 1" d="M13.14 7.55L6.08 15.49C5.77 15.84 5.24 15.87 4.88 15.56C4.53 15.24 4.5 14.71 4.81 14.36L11.87 6.42L7.13 6.7C6.66 6.73 6.26 6.37 6.23 5.9C6.21 5.42 6.56 5.03 7.03 5L13.82 4.6C14.3 4.57 14.69 4.92 14.72 5.4L15.12 12.19C15.15 12.66 14.8 13.06 14.32 13.09C13.84 13.11 13.45 12.76 13.42 12.29L13.14 7.55Z"  fill="currentColor" />
+                </svg>                
+            </button>
             <div class="schedule-header">Расписание</div>
             <div class="full-schedule-container">
                 <div class="shift-schedule">
@@ -561,6 +775,21 @@
             </div>
         </div>
     </div>
+
+    <!-- Всплывающая панель с полным расписанием -->
+<div class="full-schedule-panel" style="display: none;">
+    <div class="panel-content">
+        <button class="close-panel">✖</button>
+        <h2>Расписание</h2>
+        <div class="schedule-content" id="weekly-schedule">
+            <!-- Здесь будет полное расписание на неделю -->
+        </div>
+    </div>
+</div>
+
+<!-- Полупрозрачный слой для затемнения фона -->
+<div class="overlay" style="display: none;"></div>
+    
 
     <script>
         const schedule = {
@@ -1186,6 +1415,97 @@
         setInterval(updateSchedule, 1000);
         updateSchedule();
         renderFullSchedule();
+    
+
+    function renderWeeklySchedule() {
+        const container = document.getElementById('weekly-schedule');
+        container.innerHTML = '';
+        
+        const dayNames = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
+        
+        for (let day = 1; day <= 5; day++) {
+            const daySchedule = schedule[day];
+            const dayEl = document.createElement('div');
+            dayEl.className = 'day-schedule';
+            
+            dayEl.innerHTML = `<div class="day-title">${dayNames[day]}</div>`;
+            
+            // 1 смена
+            const shift1El = document.createElement('div');
+            shift1El.className = 'shift-schedule';
+            shift1El.innerHTML = '<div class="schedule-index">1 смена</div>';
+            daySchedule.shift1.forEach(lesson => {
+                const lessonEl = document.createElement('div');
+                lessonEl.className = 'lesson-item';
+                lessonEl.innerHTML = `
+                    <div class="lesson-time">${lesson.start} - ${lesson.end}</div>
+                    <div class="full-lesson-name" style="padding-left: 1rem">${lesson.lesson}</div>
+                `;
+                shift1El.appendChild(lessonEl);
+            });
+            
+            // 2 смена
+            const shift2El = document.createElement('div');
+            shift2El.className = 'shift-schedule';
+            shift2El.innerHTML = '<div class="schedule-index">2 смена</div>';
+            daySchedule.shift2.forEach(lesson => {
+                const lessonEl = document.createElement('div');
+                lessonEl.className = 'lesson-item';
+                lessonEl.innerHTML = `
+                    <div class="lesson-time">${lesson.start} - ${lesson.end}</div>
+                    <div class="full-lesson-name" style="padding-left: 1rem">${lesson.lesson}</div>
+                `;
+                shift2El.appendChild(lessonEl);
+            });
+            
+            dayEl.appendChild(shift1El);
+            dayEl.appendChild(shift2El);
+            container.appendChild(dayEl);
+        }
+    }
+    // Функция для открытия панели с анимацией
+    function openSchedulePanel() {
+        renderWeeklySchedule();
+        const panel = document.querySelector('.full-schedule-panel');
+        const overlay = document.querySelector('.overlay');
+
+        // Устанавливаем display: block перед началом анимации
+        panel.style.display = 'block';
+        overlay.style.display = 'block';
+
+        // Запускаем анимацию открытия
+        setTimeout(() => {
+            panel.classList.add('open');
+            overlay.classList.add('open');
+        }, 10); // Небольшая задержка для корректного отображения
+    }
+
+    // Функция для закрытия панели с анимацией
+    function closeSchedulePanel() {
+        const panel = document.querySelector('.full-schedule-panel');
+        const overlay = document.querySelector('.overlay');
+
+        // Запускаем анимацию закрытия
+        panel.classList.remove('open');
+        panel.classList.add('closing');
+        overlay.classList.remove('open');
+        overlay.classList.add('closing');
+
+        // Ждем завершения анимации перед скрытием
+        setTimeout(() => {
+            panel.style.display = 'none';
+            overlay.style.display = 'none';
+            panel.classList.remove('closing');
+            overlay.classList.remove('closing');
+        }, 300); // Длительность анимации (0.3s)
+    }
+
+    // Обработчики событий для кнопок
+    document.querySelector('.open-full-schedule').addEventListener('click', openSchedulePanel);
+    document.querySelector('.close-panel').addEventListener('click', closeSchedulePanel);
+
+    // Дополнительно: закрытие панели при клике на оверлей
+    document.querySelector('.overlay').addEventListener('click', closeSchedulePanel);
     </script>
     
 </body>
