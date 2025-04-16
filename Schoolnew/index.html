@@ -321,8 +321,8 @@
         .lesson-item {
             background: rgba(255, 255, 255, 0.135);
             border-radius: 1.4rem;
-            padding: 0.3rem;
-            margin: 0.5rem 0;
+            padding: 0.1rem;
+            margin: 0.2rem 0;
             display: flex;
             align-items: center;
             transition: all 0.3s ease;
@@ -331,8 +331,8 @@
         body.night-mode .lesson-item {
             background: rgba(163, 163, 163, 0.014);
             border-radius: 1.4rem;
-            padding: 0.3rem;
-            margin: 0.5rem 0;
+            padding: 0.1rem;
+            margin: 0.2rem 0;
             display: flex;
             align-items: center;
             transition: all 0.3s ease;
@@ -364,6 +364,14 @@
             opacity: 0.8;
             margin-top: 0.0rem;
             color: #1b1b1bcb;
+        }
+
+        .lesson-item {
+            gap: 0.8rem; /* Добавляем отступ */
+        }
+
+        .lesson-time {
+            font-size: 0.95rem;
         }
 
         body.night-mode .lesson-time {
@@ -413,17 +421,18 @@
         .full-schedule-panel {
             position: fixed;
             width: 90%;
-            max-width: 35.25rem;
+            max-width: 38.25rem;
             margin: 0 auto 2rem;
-            padding: 1.5rem;
-            top: 56%;
+            padding: 1.1rem;
+            padding-top: 0; /* Убираем верхний отступ */
+            top: 52%;
             left: 50%;
             box-sizing: border-box;
             transform: translate(-50%, -50%) scale(0.8); /* Начальное уменьшение масштаба */
             background-color: #e1e1e137;
             border-radius: 1.4rem;
             z-index: 5;
-            max-height: 77vh;
+            max-height: 94vh;
             overflow-y: auto;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             opacity: 0; /* Начальная прозрачность */
@@ -453,6 +462,7 @@
 
         .panel-content {
             position: relative;
+            margin-top: 0; /* Убираем верхний отступ */
         }
 
         .full-schedule-panel h2 {
@@ -466,7 +476,7 @@
             background-color: rgba(160, 160, 160, 0.694);
             z-index: 1;
             padding: 0.4rem;
-            margin: 0 auto 1rem; /* Центрирование с помощью auto и небольшой отступ снизу */
+            margin-top: 0; /* Убираем верхний отступ */
         }
 
         body.night-mode .full-schedule-panel h2 {
@@ -499,8 +509,9 @@
 
         .close-panel {
             position: sticky; /* добавлено */
-            top: 0.3rem; /* добавлено, чтобы кнопка была ниже заголовка */
+            top: -0.40rem; /* добавлено, чтобы кнопка была ниже заголовка */
             right: 10px;
+            width: 2rem;
             background-color: rgba(160, 160, 160, 0.694);
             border: none;
             border-radius: 2rem;
@@ -508,7 +519,7 @@
             cursor: pointer;
             color: #ff000084;
             transition: transform 0.3s ease;
-            z-index: 3; /* добавлено, чтобы кнопка была поверх содержимого */
+            z-index: 5; /* добавлено, чтобы кнопка была поверх содержимого */
 
 
         }
@@ -519,6 +530,7 @@
 
         body.night-mode .close-panel {
             color: #cf232382;
+            background-color: rgba(79, 79, 79, 0.694);
         }
 
         body.night-mode .day-schedule {
@@ -526,7 +538,7 @@
         }
 
         .schedule-content .day-schedule {
-            margin-bottom: 3.9rem;
+            margin-bottom: 0rem;
             padding: 1.1rem;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 1.2rem;
@@ -544,13 +556,14 @@
         }
         .full-lesson-name {
             font-size: 1.2rem;
+            padding-left: 0.3remm;
         }
         body.night-mode .full-lesson-name {
             color: #99999979;
         }
 
         .schedule-content .shift-schedule {
-            margin-bottom: 1rem;
+            margin-bottom: 0rem;
         }
 
         .schedule-content .schedule-index {
@@ -607,10 +620,9 @@
             .shift-number {
                 align-self: flex-start;
                 margin-top: -0.125rem;
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.1rem;
                 margin-right: -0.125rem;
                 border-radius: 4rem;
-                padding: 0 1.2rem;
             }
 
             #lesson1-name,
@@ -701,12 +713,66 @@
 
 
 
+        /* Existing styles remain unchanged */
+        .day-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0rem;
+        }
+        .day-navigation button {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #0000004a;
+            transition: transform 0.3s ease;
+        }
+        .day-navigation button:hover {
+            transform: scale(1.2);
+        }
+        body.night-mode .day-navigation button {
+            color: #f9f9f936;
+        }
+        .schedule-slider {
+            display: flex;
+            overflow: hidden;
+            position: relative;
+            border-radius: 1rem;
+            height: fit-content;
+            margin-top: 0; /* Убираем верхний отступ */
+            padding-top: 0; /* Убираем внутренний отступ */
+            width: 100%; /* Добавляем ширину 100% */
+            will-change: transform; /* Оптимизация для браузера */
+        }
+        .day-schedule {
+            flex: 0 0 100%; /* Меняем на 100% */
+            transition: transform 0.4s ease-in-out;
+            padding: 0.6rem;
+            min-width: 100%; /* Добавляем минимальную ширину */
+            box-sizing: border-box; /* Учитываем padding в размерах */
+        }
+        .schedule-slider.active .day-schedule {
+            transform: translateX(-100%);
+        }
+
+
+        @media (max-width: 37.5rem) {
+            .day-navigation button {
+                font-size: 1.2rem;
+            }
+        }
+
+
+
 
     </style>
 </head>
 <body>
+    <!-- Day Header -->
     <div class="day-header" id="dayOfWeek"></div>
     <div class="container">
+        <!-- Lesson Cards -->
         <div class="lesson-card">
             <div class="shift-number">1 смена</div>
             <div class="lesson-header">
@@ -775,22 +841,22 @@
             </div>
         </div>
     </div>
-
-    <!-- Всплывающая панель с полным расписанием -->
-<div class="full-schedule-panel" style="display: none;">
-    <div class="panel-content">
-        <button class="close-panel">✖</button>
-        <h2>Расписание</h2>
-        <div class="schedule-content" id="weekly-schedule">
-            <!-- Здесь будет полное расписание на неделю -->
+    <!-- Full Schedule Panel -->
+    <div class="full-schedule-panel" style="display: none;">
+        <div class="panel-content">
+            <button class="close-panel">✖</button>
+            <div class="day-navigation">
+                <button id="prevDay"><</button>
+                <h2 id="currentDayTitle">Расписание</h2>
+                <button id="nextDay">></button>
+            </div>
+            <div class="schedule-slider" id="scheduleSlider">
+                <!-- Days will be dynamically added here -->
+            </div>
         </div>
     </div>
-</div>
-
-<!-- Полупрозрачный слой для затемнения фона -->
-<div class="overlay" style="display: none;"></div>
-    
-
+    <!-- Overlay -->
+    <div class="overlay" style="display: none;"></div>
     <script>
         const schedule = {
             1: {
@@ -1417,95 +1483,117 @@
         renderFullSchedule();
     
 
-    function renderWeeklySchedule() {
-        const container = document.getElementById('weekly-schedule');
-        container.innerHTML = '';
+        // Исправленная функция рендеринга расписания
+function renderWeeklySchedule() {
+    const slider = document.getElementById('scheduleSlider');
+    slider.innerHTML = '';
+    for (let day = 1; day <= 5; day++) {
+        const daySchedule = schedule[day];
+        const dayEl = document.createElement('div');
+        dayEl.className = 'day-schedule';
         
-        const dayNames = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
+        // Убрал заголовок дня недели
         
-        for (let day = 1; day <= 5; day++) {
-            const daySchedule = schedule[day];
-            const dayEl = document.createElement('div');
-            dayEl.className = 'day-schedule';
-            
-            dayEl.innerHTML = `<div class="day-title">${dayNames[day]}</div>`;
-            
-            // 1 смена
-            const shift1El = document.createElement('div');
-            shift1El.className = 'shift-schedule';
-            shift1El.innerHTML = '<div class="schedule-index">1 смена</div>';
-            daySchedule.shift1.forEach(lesson => {
-                const lessonEl = document.createElement('div');
-                lessonEl.className = 'lesson-item';
-                lessonEl.innerHTML = `
-                    <div class="lesson-time">${lesson.start} - ${lesson.end}</div>
-                    <div class="full-lesson-name" style="padding-left: 1rem">${lesson.lesson}</div>
-                `;
-                shift1El.appendChild(lessonEl);
-            });
-            
-            // 2 смена
-            const shift2El = document.createElement('div');
-            shift2El.className = 'shift-schedule';
-            shift2El.innerHTML = '<div class="schedule-index">2 смена</div>';
-            daySchedule.shift2.forEach(lesson => {
-                const lessonEl = document.createElement('div');
-                lessonEl.className = 'lesson-item';
-                lessonEl.innerHTML = `
-                    <div class="lesson-time">${lesson.start} - ${lesson.end}</div>
-                    <div class="full-lesson-name" style="padding-left: 1rem">${lesson.lesson}</div>
-                `;
-                shift2El.appendChild(lessonEl);
-            });
-            
-            dayEl.appendChild(shift1El);
-            dayEl.appendChild(shift2El);
-            container.appendChild(dayEl);
+        // 1 смена
+        const shift1El = document.createElement('div');
+        shift1El.className = 'shift-schedule';
+        shift1El.innerHTML = '<div class="schedule-index">1 смена</div>';
+        daySchedule.shift1.forEach(lesson => {
+            const lessonEl = document.createElement('div');
+            lessonEl.className = 'lesson-item';
+            lessonEl.innerHTML = `
+                <div class="lesson-time">${lesson.start} - ${lesson.end}</div>
+                <div class="full-lesson-name">${lesson.lesson}</div>
+            `;
+            shift1El.appendChild(lessonEl);
+        });
+        
+        // 2 смена
+        const shift2El = document.createElement('div');
+        shift2El.className = 'shift-schedule';
+        shift2El.innerHTML = '<div class="schedule-index">2 смена</div>';
+        daySchedule.shift2.forEach(lesson => {
+            const lessonEl = document.createElement('div');
+            lessonEl.className = 'lesson-item';
+            lessonEl.innerHTML = `
+                <div class="lesson-time">${lesson.start} - ${lesson.end}</div>
+                <div class="full-lesson-name">${lesson.lesson}</div>
+            `;
+            shift2El.appendChild(lessonEl);
+        });
+        
+        dayEl.appendChild(shift1El);
+        dayEl.appendChild(shift2El);
+        slider.appendChild(dayEl);
+    }
+}
+
+// Исправленная функция закрытия панели
+function closeSchedulePanel() {
+    const panel = document.querySelector('.full-schedule-panel');
+    const overlay = document.querySelector('.overlay');
+    
+    panel.classList.remove('open');
+    panel.classList.add('closing');
+    overlay.classList.remove('open');
+    overlay.classList.add('closing');
+    
+    setTimeout(() => {
+        panel.style.display = 'none';
+        overlay.style.display = 'none';
+        panel.classList.remove('closing');
+        overlay.classList.remove('closing');
+    }, 300);
+}
+
+        let currentDayIndex = getCurrentDayOfWeek();
+        if (currentDayIndex === 0 || currentDayIndex === 6) {
+            currentDayIndex = 1; // Set to Monday on weekends
         }
-    }
-    // Функция для открытия панели с анимацией
-    function openSchedulePanel() {
-        renderWeeklySchedule();
-        const panel = document.querySelector('.full-schedule-panel');
-        const overlay = document.querySelector('.overlay');
 
-        // Устанавливаем display: block перед началом анимации
-        panel.style.display = 'block';
-        overlay.style.display = 'block';
+        function updateDayDisplay() {
+            const dayNames = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
+            document.getElementById('currentDayTitle').textContent = dayNames[currentDayIndex];
+            const slider = document.getElementById('scheduleSlider');
+            Array.from(slider.children).forEach((child, index) => {
+                child.style.transform = `translateX(-${(currentDayIndex - 1) * 100}%)`;
+            });
+        }
 
-        // Запускаем анимацию открытия
-        setTimeout(() => {
-            panel.classList.add('open');
-            overlay.classList.add('open');
-        }, 10); // Небольшая задержка для корректного отображения
-    }
+        document.getElementById('prevDay').addEventListener('click', () => {
+            if (currentDayIndex > 1) {
+                currentDayIndex--;
+                updateDayDisplay();
+            }
+        });
 
-    // Функция для закрытия панели с анимацией
-    function closeSchedulePanel() {
-        const panel = document.querySelector('.full-schedule-panel');
-        const overlay = document.querySelector('.overlay');
+        document.getElementById('nextDay').addEventListener('click', () => {
+            if (currentDayIndex < 5) {
+                currentDayIndex++;
+                updateDayDisplay();
+            }
+        });
 
-        // Запускаем анимацию закрытия
-        panel.classList.remove('open');
-        panel.classList.add('closing');
-        overlay.classList.remove('open');
-        overlay.classList.add('closing');
+        function openSchedulePanel() {
+            renderWeeklySchedule();
+            updateDayDisplay();
+            const panel = document.querySelector('.full-schedule-panel');
+            const overlay = document.querySelector('.overlay');
+            panel.style.display = 'block';
+            overlay.style.display = 'block';
+            setTimeout(() => {
+                panel.classList.add('open');
+                overlay.classList.add('open');
+            }, 10);
+        }
 
-        // Ждем завершения анимации перед скрытием
-        setTimeout(() => {
-            panel.style.display = 'none';
-            overlay.style.display = 'none';
-            panel.classList.remove('closing');
-            overlay.classList.remove('closing');
-        }, 300); // Длительность анимации (0.3s)
-    }
 
-    // Обработчики событий для кнопок
-    document.querySelector('.open-full-schedule').addEventListener('click', openSchedulePanel);
-    document.querySelector('.close-panel').addEventListener('click', closeSchedulePanel);
+        document.querySelector('.open-full-schedule').addEventListener('click', openSchedulePanel);
+        document.querySelector('.close-panel').addEventListener('click', closeSchedulePanel);
+        document.querySelector('.overlay').addEventListener('click', closeSchedulePanel);
 
-    // Дополнительно: закрытие панели при клике на оверлей
-    document.querySelector('.overlay').addEventListener('click', closeSchedulePanel);
+        setInterval(updateSchedule, 1000);
+        updateSchedule();
     </script>
     
 </body>
