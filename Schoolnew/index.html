@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="shortcut icon" href="icons/icon-dark3x.png">
-    <link rel="apple-touch-icon" href="icons/icon-dark1x.png" media="(prefers-color-scheme: dark)" sizes="128x128">
+    <link rel="apple-touch-icon" href="icons/icon-dark1x.png" mediыa="(prefers-color-scheme: dark)" sizes="128x128">
     <link rel="apple-touch-icon" href="icons/icon-dark2x.png" media="(prefers-color-scheme: dark)" sizes="256x256">
     <link rel="apple-touch-icon" href="icons/icon-dark3x.png" media="(prefers-color-scheme: dark)" sizes="384x384">
     <meta name="mobile-web-app-capable" content="yes">
@@ -25,6 +25,29 @@
     <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
     <title>Расписание уроков</title>
     <style>
+
+
+
+        /* Убираем outline для всех кнопок */
+        button {
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent; /* Для мобильных браузеров */
+        }
+
+        /* Убираем outline для конкретных кнопок */
+        .open-full-schedule,
+        .close-panel,
+        .day-navigation button {
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent; /* Для мобильных браузеров */
+        }
+
+        /* Дополнительно для предотвращения эффекта прикосновения */
+        button:focus,
+        button:active {
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent;
+        }
         html {
             height: 100%;
             background: linear-gradient(to bottom, #000000, #232323);
@@ -682,6 +705,17 @@
             .overlay {
                 backdrop-filter: none;
                 -webkit-backdrop-filter: none;
+                background-color: rgba(0, 0, 0, 0.712);
+            }
+
+            .overlay.open {
+                background: rgba(0, 0, 0, 0.712); /* Затемнение при открытии */
+                opacity: 1;
+            }
+
+            .overlay.closing {
+                background: rgba(0, 0, 0, 0.381); /* Прозрачность при закрытии */
+                opacity: 0;
             }
 
             .full-schedule-panel {
