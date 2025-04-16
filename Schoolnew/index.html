@@ -492,7 +492,8 @@
             height: 100%;
             background: rgba(0, 0, 0, 0); /* Начальный фон */
             z-index: 4;
-            backdrop-filter: blur(0.8rem);
+            backdrop-filter: blur(0.3rem);
+            -webkit-backdrop-filter: blur(0.3rem);
             opacity: 0; /* Начальная прозрачность */
             transition: opacity 0.3s ease, background 0.3s ease; /* Плавные переходы */
         }
@@ -512,6 +513,7 @@
             top: -0.40rem; /* добавлено, чтобы кнопка была ниже заголовка */
             right: 2rem;
             width: 2rem;
+            text-align: center;
             background-color: rgba(160, 160, 160, 0.694);
             border: none;
             border-radius: 2rem;
