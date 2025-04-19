@@ -404,7 +404,7 @@
         .schedule-index {
             font-size: 1.4rem;
             padding: 0.2rem;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
             margin-bottom: 0.5rem;
             font-weight: 600;
             text-align: center;
@@ -464,11 +464,13 @@
             margin: 0 auto 2rem;
             padding: 1.1rem;
             padding-top: 0; /* Убираем верхний отступ */
-            top: 52%;
+            top: 50%;
             left: 50%;
             box-sizing: border-box;
             transform: translate(-50%, -50%) scale(0.8); /* Начальное уменьшение масштаба */
             background-color: #e1e1e137;
+            -webkit-backdrop-filter: blur(1rem);
+            backdrop-filter: blur(1rem);
             border-radius: 1.4rem;
             z-index: 5;
             max-height: 94vh;
@@ -506,7 +508,6 @@
 
         .full-schedule-panel h2 {
             text-align: center;
-            font-size: 1.5rem;
             width: fit-content;
             color: #222222bd;
             position: sticky;
@@ -520,31 +521,6 @@
 
         body.night-mode .full-schedule-panel h2 {
             color: #ffffff60;
-        }
-
-        /* Стили для оверлея */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0); /* Начальный фон */
-            z-index: 4;
-            backdrop-filter: blur(0.8rem);
-            -webkit-backdrop-filter: blur(0.5rem);
-            opacity: 0; /* Начальная прозрачность */
-            transition: opacity 0.3s ease, background 0.3s ease; /* Плавные переходы */
-        }
-
-        .overlay.open {
-            background: rgba(0, 0, 0, 0); /* Затемнение при открытии */
-            opacity: 1;
-        }
-
-        .overlay.closing {
-            background: rgba(0, 0, 0, 0); /* Прозрачность при закрытии */
-            opacity: 0;
         }
 
         .close-panel {
@@ -577,7 +553,7 @@
         }
 
         body.night-mode .day-schedule {
-            background: rgba(110, 110, 110, 0.15);
+            background: rgba(64, 64, 64, 0.15);
         }
 
         .day-schedule {
@@ -786,7 +762,7 @@
             max-width: 11rem;
             font-size: 1.6rem; /* Регулируем размер шрифта */
             line-height: 1; /* Исправляем высоту строки */
-            background-color: #0000001e;
+            background-color: #00000000;
         }
         .day-navigation button {
             background: none;
@@ -815,7 +791,6 @@
             position: relative;
             border-radius: 1rem;
             height: fit-content;
-            margin-top: 0; /* Убираем верхний отступ */
             padding-top: 0; /* Убираем внутренний отступ */
             width: 100%; /* Добавляем ширину 100% */
             will-change: transform; /* Оптимизация для браузера */
@@ -934,8 +909,6 @@
             </div>
         </div>
     </div>
-    <!-- Overlay -->
-    <div class="overlay" style="display: none;"></div>
     <script>
         const schedule = {
             1: {
@@ -1046,20 +1019,14 @@
             },
             6: {
                 shift1: [
-                    {lesson: "Суббота", start: "00:01", end: "23:59"},
-                    {lesson: "Суббота", start: "23:59", end: "00:00"},
                 ],
                 shift2: [
-                    {lesson: "Суббота", start: "00:01", end: "23:59"},
                 ]
             },
             0: {
                 shift1: [
-                    {lesson: "Воскресенье", start: "00:01", end: "23:59"},
-                    {lesson: "Воскресенье", start: "23:59", end: "21:00"},
                 ],
                 shift2: [
-                    {lesson: "Воскресенье", start: "00:01", end: "23:59"},
                 ]
             }
         };
@@ -1610,18 +1577,13 @@ function renderWeeklySchedule() {
 // Исправленная функция закрытия панели
 function closeSchedulePanel() {
     const panel = document.querySelector('.full-schedule-panel');
-    const overlay = document.querySelector('.overlay');
     
     panel.classList.remove('open');
     panel.classList.add('closing');
-    overlay.classList.remove('open');
-    overlay.classList.add('closing');
     
     setTimeout(() => {
         panel.style.display = 'none';
-        overlay.style.display = 'none';
         panel.classList.remove('closing');
-        overlay.classList.remove('closing');
     }, 300);
 }
 
@@ -1657,19 +1619,15 @@ function closeSchedulePanel() {
             renderWeeklySchedule();
             updateDayDisplay();
             const panel = document.querySelector('.full-schedule-panel');
-            const overlay = document.querySelector('.overlay');
             panel.style.display = 'block';
-            overlay.style.display = 'block';
             setTimeout(() => {
                 panel.classList.add('open');
-                overlay.classList.add('open');
             }, 10);
         }
 
 
         document.querySelector('.open-full-schedule').addEventListener('click', openSchedulePanel);
         document.querySelector('.close-panel').addEventListener('click', closeSchedulePanel);
-        document.querySelector('.overlay').addEventListener('click', closeSchedulePanel);
 
         setInterval(updateSchedule, 1000);
         updateSchedule();
