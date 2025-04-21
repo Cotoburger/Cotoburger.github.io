@@ -383,6 +383,7 @@
         .lesson-time {
             font-size: 0.95rem;
             font-weight: 600;
+            margin-left: 0.3rem;
             text-align: center;
             opacity: 0.8;
             margin-top: 0.0rem;
@@ -399,18 +400,6 @@
 
         body.night-mode .lesson-time {
             color: #cecece62;
-        }
-
-        .schedule-index {
-            font-size: 1.4rem;
-            padding: 0.2rem;
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            text-align: center;
-            color: #171717cb;
-            background-color: rgba(0, 0, 0, 0.043);
-            border-radius: 2rem;
         }
 
         .schedule-slider .schedule-index {
@@ -593,15 +582,23 @@
             margin-bottom: 0rem;
         }
 
-        .schedule-content .schedule-index {
-            font-size: 1.2rem;
-            padding: 0.2rem 1rem;
+        .schedule-index {
+            font-size: 1.4rem;
+            padding: 0.2rem;
+            margin-top: 1rem;
             margin-bottom: 0.5rem;
             font-weight: 600;
             text-align: center;
             color: #171717cb;
             background-color: rgba(0, 0, 0, 0.043);
             border-radius: 2rem;
+        }
+
+        .shift-schedule .schedule-index {
+            font-size: 1.2rem;
+            padding: 0.2rem 1rem;
+            margin-top: 0.7rem;
+            margin-bottom: 0.1rem;
         }
 
         body.night-mode .schedule-content .schedule-index {
@@ -795,6 +792,7 @@
             transition: transform 0.4s ease-in-out;
             padding: 0.6rem;
             min-width: 100%; /* Добавляем минимальную ширину */
+            margin-top: -0.7rem;
             box-sizing: border-box; /* Учитываем padding в размерах */
         }
         .schedule-slider.active .day-schedule {
