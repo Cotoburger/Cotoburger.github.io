@@ -376,6 +376,7 @@
             text-align: center;
             background: rgba(0, 0, 0, 0.1);
             border-radius: 1rem;
+            margin: 0.1rem;
             padding: 0.4rem 0.4rem;
         }
 
@@ -387,14 +388,24 @@
             opacity: 0.8;
             margin-top: 0.0rem;
             color: #1b1b1bcb;
+            justify-items: center;
         }
 
         .lesson-item {
-            gap: 0.4rem; /* Добавляем отступ */
+            gap: 0.1rem; /* Добавляем отступ */
+        }
+
+        .full-schedule-panel .lesson-item {
+            display: flex;
+            align-items: center;
+            padding-left: 0.5rem;
+            justify-content: space-between; /* Добавляем распределение пространства */
+            gap: 1rem; /* Добавляем промежуток между элементами */
         }
 
         .lesson-time {
             font-size: 0.95rem;
+            
         }
 
         body.night-mode .lesson-time {
@@ -570,8 +581,11 @@
             color: #5c5b5b60;
         }
         .full-lesson-name {
-            font-size: 1.2rem;
-            padding-left: 0.3remm;
+            padding-right: 0.5rem;
+            text-align: right; /* Выравнивание текста по правому краю */
+            flex-shrink: 0; /* Запрещаем уменьшение элемента */
+            margin-left: auto; /* Прижимаем элемент к правому краю */
+            max-width: 60%; /* Ограничиваем ширину для переноса текста */
         }
         body.night-mode .full-lesson-name {
             color: #99999979;
@@ -677,6 +691,10 @@
 
         @media (min-width: 37.5625rem) {
 
+
+            .full-lesson-name {
+                font-size: 1.3rem;
+                }
             .full-schedule-panel {
                 max-width: 800px;
                 padding: 2.5rem;
@@ -695,7 +713,7 @@
 
 
             .lesson-time {
-                font-size: 1.4rem;
+                font-size: 1.3rem;
                 font-weight: 600;
                 text-align: center;
                 opacity: 0.8;
