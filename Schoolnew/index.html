@@ -122,19 +122,45 @@
         }
 
         .lesson-card {
-            background-color: #e1e1e137;
-            border-radius: 1.4rem;
-            padding: 1rem;
-            margin-bottom: 1.25rem;
-            display: flex;
-            flex-direction: column;
-            opacity: 0;
-            animation: cardFadeIn 0.4s ease-out forwards;
+        background: rgba(255, 255, 255, 0.1); /* Стеклянная прозрачность */
+        border-radius: 1.4rem;
+        padding: 1rem;
+        margin-bottom: 1.25rem;
+        display: flex;
+        flex-direction: column;
 
-            transition: max-height 0.3s ease, opacity 0.3s ease;
-            overflow: hidden;
-            max-height: 31.25rem;
+        backdrop-filter: blur(20px); /* Размытие заднего фона */
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3); /* Лёгкая "ледяная" рамка */
+
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); /* Глубина */
+        opacity: 0;
+        animation: cardFadeIn 0.4s ease-out forwards;
+
+        transition: max-height 0.3s ease, opacity 0.3s ease;
+        overflow: hidden;
+        max-height: 31.25rem;
+        position: relative;
+        color: white; /* Рекомендуется, чтобы текст хорошо читался */
         }
+
+        .lesson-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+            circle at center,
+            rgba(255, 255, 255, 0.2),
+            transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        }
+
+        
 
         .lesson-card.collapsed {
             max-height: 6.25rem;
