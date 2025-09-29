@@ -524,6 +524,7 @@ body::-webkit-scrollbar {
             box-sizing: border-box;
             transform: translate(-50%, -50%) scale(0.8); /* Начальное уменьшение масштаба */
             background-color: #e1e1e137;
+            border: 2px solid rgba(255, 255, 255, 0.1);
             /* Размытие фона */
             backdrop-filter: blur(20px) saturate(110%);
             -webkit-backdrop-filter: blur(20px) saturate(110%);
@@ -531,7 +532,7 @@ body::-webkit-scrollbar {
             z-index: 5;
             max-height: 93%;
             overflow-y: auto;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 15px 15px rgb(0, 0, 0);
             opacity: 0; /* Начальная прозрачность */
             transition: transform 0.3s ease, opacity 0.3s ease; /* Плавные переходы */
             padding-top: 1.5rem;
