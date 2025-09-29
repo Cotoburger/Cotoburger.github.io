@@ -132,48 +132,52 @@ body::-webkit-scrollbar {
         }
 
         .lesson-card {
-        background: rgba(161, 161, 161, 0.085); /* Стеклянная прозрачность */
-        border-radius: 1.4rem;
-        padding: 1rem;
-        margin-bottom: 1.25rem;
-        display: flex;
-        flex-direction: column;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            margin-bottom: 1.25rem;
+            border-radius: 1.4rem;
 
-        backdrop-filter: blur(20px); /* Размытие заднего фона */
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.097); /* Лёгкая "ледяная" рамка */
+            /* Полупрозрачный стеклянный фон */
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
 
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); /* Глубина */
-        opacity: 0;
-        animation: cardFadeIn 0.4s ease-out forwards;
+            /* Размытие фона */
+            backdrop-filter: blur(20px) saturate(115%);
+            -webkit-backdrop-filter: blur(20px) saturate(115%);
 
-        transition: max-height 0.3s ease, opacity 0.3s ease;
-        overflow: hidden;
-        max-height: 31.25rem;
-        position: relative;
-        color: rgb(0, 0, 0); /* Рекомендуется, чтобы текст хорошо читался */
+            /* Тени для глубины */
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 
+                        inset 0 0 2px rgba(255, 255, 255, 0.15);
+
+            /* Плавная анимация появления */
+            opacity: 0;
+            animation: cardFadeIn 0.4s ease-out forwards;
+
+            transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+            overflow: hidden;
+            max-height: 31.25rem;
+            color: #000; /* Контрастный текст */
         }
 
+        /* Внутренний светящийся эффект */
         .lesson-card::before {
-        content: "";
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(
-            circle at center,
-            rgba(255, 255, 255, 0.048),
-            transparent 70%
-        );
-        pointer-events: none;
-        z-index: 0;
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
         }
 
-        
-
+        /* Эффект сжатия */
         .lesson-card.collapsed {
             max-height: 6.25rem;
+            transform: scaleY(0.98); /* лёгкое сжатие для визуального эффекта */
         }
 
         .progress-bar,
@@ -488,6 +492,18 @@ body::-webkit-scrollbar {
         .full-schedule-panel {
             will-change: transform, opacity;
         }
+        .full-schedule-panel {
+            background-color: rgba(225, 225, 225, 0.08); /* прозрачный светлый фон */
+            backdrop-filter: blur(20px) saturate(210%);   /* увеличиваем насыщение */
+            -webkit-backdrop-filter: blur(20px) saturate(210%);
+        }
+
+        .full-schedule-panel .panel-content,
+        .full-schedule-panel .day-navigation,
+        .full-schedule-panel h2,
+        .full-schedule-panel .close-panel {
+            background-color: transparent !important; /* внутренние блоки прозрачные */
+        }
         .schedule-slider {
             will-change: transform;
         }
@@ -508,8 +524,9 @@ body::-webkit-scrollbar {
             box-sizing: border-box;
             transform: translate(-50%, -50%) scale(0.8); /* Начальное уменьшение масштаба */
             background-color: #e1e1e137;
-            -webkit-backdrop-filter: blur(1rem);
-            backdrop-filter: blur(1rem);
+            /* Размытие фона */
+            backdrop-filter: blur(20px) saturate(110%);
+            -webkit-backdrop-filter: blur(20px) saturate(110%);
             border-radius: 1.4rem;
             z-index: 5;
             max-height: 93%;
@@ -905,7 +922,7 @@ body::-webkit-scrollbar {
             </div>
         </div>
     </div>
-    <div class="container" style="margin-top: -3.0rem; opacity: 0; animation: cardFadeIn 0.4s ease-out 0.3s forwards;">
+    <div class="container" style="margin-top: -3.0rem; opacity: 0; animation: cardFadeIn 0.2s ease-out 0.2s forwards;">
         <div class="lesson-card">
             <button class="open-full-schedule">
                 <svg width="20.000000" height="20.000000" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -1323,7 +1340,7 @@ body::-webkit-scrollbar {
     let themeColor;
     let backgroundStyle;
 
-    if (currentHour >= 6 && currentHour < 11) {
+    if (currentHour >= 6 && currentHour < 211) {
         backgroundStyle = "#814A36";
         themeColor = "#814A36";
         removeStars();
@@ -1550,7 +1567,7 @@ body::-webkit-scrollbar {
                 star.style.top = `${y}vh`;
                 
                 // Остальные параметры без изменений
-                const size = Math.random() * 2 + 1;
+                const size = Math.random() * 2.5 + 1;
                 const duration = Math.random() * 2 + 1;
                 const delay = Math.random() * 2;
                 
