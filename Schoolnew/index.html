@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="theme-color" id="themeColor" content="#87CEEB">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="shortcut icon" href="icons/icon-dark3x.png">
-    <link rel="apple-touch-icon" href="icons/icon-dark1x.png" mediыa="(prefers-color-scheme: dark)" sizes="128x128">
+    <link rel="apple-touch-icon" href="icons/icon-dark1x.png" media="(prefers-color-scheme: dark)" sizes="128x128">
     <link rel="apple-touch-icon" href="icons/icon-dark2x.png" media="(prefers-color-scheme: dark)" sizes="256x256">
     <link rel="apple-touch-icon" href="icons/icon-dark3x.png" media="(prefers-color-scheme: dark)" sizes="384x384">
     <meta name="mobile-web-app-capable" content="yes">
@@ -48,33 +48,42 @@
             outline: none !important;
             -webkit-tap-highlight-color: transparent;
         }
-        html {
-            height: 100%;
-            background: linear-gradient(to bottom, #000000, #232323);
-            overflow: hidden;
-            transition: background 3.5s ease;
-            user-select: none;
-            -webkit-user-select: none;  /* Safari */
-            -moz-user-select: none;     /* Firefox */
-            -ms-user-select: none;      /* IE/Edge */
-        }
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-        body {
-            min-height: 100%;
-            height: 100%;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: transparent;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            position: relative;
-            overflow-y: auto;
-            overflow-x: hidden;
+    /* твой фон под прозрачный статус бар */
+    background: linear-gradient(180deg, var(--bg1), var(--bg2));
 
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
+    /* поддержка iPhone с "чёлкой" */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right)
+             env(safe-area-inset-bottom) env(safe-area-inset-left);
+
+    /* запрет выделения текста */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+body {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+
+    /* скролл без полос */
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+    display: none; /* убрать скроллбар в Safari */
+}
 
         body::-webkit-scrollbar {
             display: none;
@@ -122,19 +131,45 @@
         }
 
         .lesson-card {
-            background-color: #e1e1e137;
-            border-radius: 1.4rem;
-            padding: 1rem;
-            margin-bottom: 1.25rem;
-            display: flex;
-            flex-direction: column;
-            opacity: 0;
-            animation: cardFadeIn 0.4s ease-out forwards;
+        background: rgba(161, 161, 161, 0.085); /* Стеклянная прозрачность */
+        border-radius: 1.4rem;
+        padding: 1rem;
+        margin-bottom: 1.25rem;
+        display: flex;
+        flex-direction: column;
 
-            transition: max-height 0.3s ease, opacity 0.3s ease;
-            overflow: hidden;
-            max-height: 31.25rem;
+        backdrop-filter: blur(20px); /* Размытие заднего фона */
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.097); /* Лёгкая "ледяная" рамка */
+
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); /* Глубина */
+        opacity: 0;
+        animation: cardFadeIn 0.4s ease-out forwards;
+
+        transition: max-height 0.3s ease, opacity 0.3s ease;
+        overflow: hidden;
+        max-height: 31.25rem;
+        position: relative;
+        color: rgb(0, 0, 0); /* Рекомендуется, чтобы текст хорошо читался */
         }
+
+        .lesson-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+            circle at center,
+            rgba(255, 255, 255, 0.048),
+            transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        }
+
+        
 
         .lesson-card.collapsed {
             max-height: 6.25rem;
@@ -160,7 +195,7 @@
         .shift-number {
             font-size: 1.4rem;
             font-weight: 600;
-            color: #313131;
+            color: #191919;
             align-self: flex-end;
             margin-top: -0.125rem;
             margin-right: -0.125rem;
@@ -1288,32 +1323,32 @@
     let backgroundStyle;
 
     if (currentHour >= 6 && currentHour < 11) {
-        backgroundStyle = "linear-gradient(to bottom, #AA8E61, #A2493F)";
+        backgroundStyle = "#AA8E61";
         themeColor = "#AA8E61";
         removeStars();
         body.classList.remove('night-mode');
     } else if (currentHour >= 11 && currentHour < 17) {
-        backgroundStyle = "linear-gradient(to bottom, #718FC3, #61899E)";
+        backgroundStyle = "#718FC3";
         themeColor = "#718FC3";
         removeStars();
         body.classList.remove('night-mode');
     } else if (currentHour >= 17 && currentHour < 18) {
-        backgroundStyle = "linear-gradient(to bottom, #6C94B5, #2A5E90)";
+        backgroundStyle = "#6C94B5";
         themeColor = "#6C94B5";
         removeStars();
         body.classList.remove('night-mode');
     } else if (currentHour >= 18 && currentHour < 20) {
-        backgroundStyle = "linear-gradient(to bottom, #77889C, #696969)";
+        backgroundStyle = "#77889C";
         themeColor = "#77889C";
         removeStars();
         body.classList.remove('night-mode');
-     } else if (currentHour >= 20 && currentHour < 21) {
-         backgroundStyle = "linear-gradient(to bottom, #1A3D4E, #2C3141)";
-         themeColor = "#1A3D4E";
-         removeStars();
-         body.classList.remove('night-mode');
+    } else if (currentHour >= 20 && currentHour < 22) {
+        backgroundStyle = "#1A3D4E";
+        themeColor = "#1A3D4E";
+        removeStars();
+        body.classList.remove('night-mode');
     } else {
-        backgroundStyle = "linear-gradient(to bottom, #000000, #1B1B1B)";
+        backgroundStyle = "#000000";
         themeColor = "#000000";
         if (document.querySelectorAll('.star').length === 0) {
             createStars();
@@ -1322,7 +1357,7 @@
     }
 
     if (html.style.background !== backgroundStyle) {
-       html.style.background = backgroundStyle;
+        html.style.background = backgroundStyle;
     }
 
     themeColorMeta.setAttribute('content', themeColor);
