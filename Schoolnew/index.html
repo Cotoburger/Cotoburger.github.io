@@ -65,6 +65,8 @@ html, body {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 body {
@@ -77,8 +79,7 @@ body {
     /* скролл без полос */
     overflow-y: auto;
     overflow-x: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+
 }
 
 body::-webkit-scrollbar {
@@ -1323,13 +1324,13 @@ body::-webkit-scrollbar {
     let backgroundStyle;
 
     if (currentHour >= 6 && currentHour < 11) {
-        backgroundStyle = "#AA8E61";
-        themeColor = "#AA8E61";
+        backgroundStyle = "#814A36";
+        themeColor = "#814A36";
         removeStars();
         body.classList.remove('night-mode');
     } else if (currentHour >= 11 && currentHour < 17) {
-        backgroundStyle = "#718FC3";
-        themeColor = "#718FC3";
+        backgroundStyle = "#4E6999";
+        themeColor = "#4E6999";
         removeStars();
         body.classList.remove('night-mode');
     } else if (currentHour >= 17 && currentHour < 18) {
@@ -1343,8 +1344,8 @@ body::-webkit-scrollbar {
         removeStars();
         body.classList.remove('night-mode');
     } else if (currentHour >= 20 && currentHour < 22) {
-        backgroundStyle = "#1A3D4E";
-        themeColor = "#1A3D4E";
+        backgroundStyle = "#2C4653";
+        themeColor = "#2C4653";
         removeStars();
         body.classList.remove('night-mode');
     } else {
