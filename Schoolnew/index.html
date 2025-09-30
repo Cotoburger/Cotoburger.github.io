@@ -28,21 +28,18 @@
 
 
 
-        /* Убираем outline для всех кнопок */
         button {
             outline: none !important;
-            -webkit-tap-highlight-color: transparent; /* Для мобильных браузеров */
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Убираем outline для конкретных кнопок */
         .open-full-schedule,
         .close-panel,
         .day-navigation button {
             outline: none !important;
-            -webkit-tap-highlight-color: transparent; /* Для мобильных браузеров */
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Дополнительно для предотвращения эффекта прикосновения */
         button:focus,
         button:active {
             outline: none !important;
@@ -53,8 +50,6 @@ html, body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-    /* твой фон под прозрачный статус бар */
-    background: linear-gradient(180deg, var(--bg1), var(--bg2));
 
     /* поддержка iPhone с "чёлкой" */
     padding: env(safe-area-inset-top) env(safe-area-inset-right)
@@ -1435,22 +1430,24 @@ body::-webkit-scrollbar {
     const dayOfWeekElement = document.getElementById('dayOfWeek');
     dayOfWeekElement.textContent = dayNames[dayOfWeek];
 
+
     let themeColor;
     let backgroundStyle;
 
+    // Определяем цвет фона по времени
     if (currentHour >= 6 && currentHour < 11) {
-        backgroundStyle = "#814A36";
-        themeColor = "#814A36";
+        backgroundStyle = "#927A46";
+        themeColor = "#927A46";
         removeStars();
         body.classList.remove('night-mode');
-    } else if (currentHour >= 11 && currentHour < 17) {
+    } else if (currentHour >= 11 && currentHour < 16) {
         backgroundStyle = "#4E6999";
         themeColor = "#4E6999";
         removeStars();
         body.classList.remove('night-mode');
-    } else if (currentHour >= 17 && currentHour < 18) {
-        backgroundStyle = "#6C94B5";
-        themeColor = "#6C94B5";
+    } else if (currentHour >= 16 && currentHour < 18) {
+        backgroundStyle = "#6E9A97";
+        themeColor = "#6E9A97";
         removeStars();
         body.classList.remove('night-mode');
     } else if (currentHour >= 18 && currentHour < 20) {
@@ -1459,8 +1456,8 @@ body::-webkit-scrollbar {
         removeStars();
         body.classList.remove('night-mode');
     } else if (currentHour >= 20 && currentHour < 22) {
-        backgroundStyle = "#2C4653";
-        themeColor = "#2C4653";
+        backgroundStyle = "#314551";
+        themeColor = "#314551";
         removeStars();
         body.classList.remove('night-mode');
     } else {
@@ -1472,11 +1469,14 @@ body::-webkit-scrollbar {
         body.classList.add('night-mode');
     }
 
-    if (html.style.background !== backgroundStyle) {
-        html.style.background = backgroundStyle;
-    }
-
+    // Устанавливаем начальный цвет **сразу**, без плавного перехода
+    html.style.backgroundColor = backgroundStyle;
     themeColorMeta.setAttribute('content', themeColor);
+
+    // Делаем переход для всех последующих изменений
+    setTimeout(() => {
+        html.style.transition = "background-color 0.5s ease";
+    }, 50); // небольшая задержка, чтобы первый цвет сразу применился
 
     // --- Остальная часть функции updateShiftDisplay без изменений ---
     const lesson1NameElement = document.getElementById('lesson1-name');
