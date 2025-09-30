@@ -1038,12 +1038,6 @@ body::-webkit-scrollbar {
     { once: true, passive: true }
   );
 
-  // отключаем восстановление скролла браузером
-  if ("scrollRestoration" in history) {
-    try {
-      history.scrollRestoration = "manual";
-    } catch (e) {}
-  }
 
   // при загрузке страницы один раз сбросим скролл
   window.addEventListener("load", () => {
