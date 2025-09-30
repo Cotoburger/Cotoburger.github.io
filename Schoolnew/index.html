@@ -1869,7 +1869,7 @@ function closeSchedulePanel() {
                             latestStatus.state === "failure" ? "ERR" : "Work";
                         
                         if (lastDeploymentElement) {
-                            lastDeploymentElement.textContent = `Последнее обновление: ${formattedDate} ${formattedTime} (${statusText})`;
+                            lastDeploymentElement.textContent = `изменение кода: ${formattedDate} ${formattedTime} (${statusText})`;
                         }
                     });
                 })
