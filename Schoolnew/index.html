@@ -538,27 +538,14 @@ body::-webkit-scrollbar {
             color: #f9f9f936;
         }
 
-        .full-schedule-panel {
-            will-change: transform, opacity;
-        }
-        .full-schedule-panel {
-            background-color: rgba(225, 225, 225, 0.08); /* прозрачный светлый фон */
-            backdrop-filter: blur(20px) saturate(210%);   /* увеличиваем насыщение */
-            -webkit-backdrop-filter: blur(20px) saturate(210%);
-        }
 
-        .full-schedule-panel .panel-content,
-        .full-schedule-panel .day-navigation,
-        .full-schedule-panel h2,
-        .full-schedule-panel .close-panel {
-            background-color: transparent !important; /* внутренние блоки прозрачные */
-        }
         .schedule-slider {
             will-change: transform;
         }
 
         /* Стили для панели с расписанием */
         .full-schedule-panel {
+            will-change: transform, opacity;
             user-select: none;
             outline: none;
             -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
@@ -572,11 +559,10 @@ body::-webkit-scrollbar {
             left: 50%;
             box-sizing: border-box;
             transform: translate(-50%, -50%) scale(0.8); /* Начальное уменьшение масштаба */
-            background-color: #e1e1e137;
             border: 2px solid rgba(255, 255, 255, 0.1);
             /* Размытие фона */
-            backdrop-filter: blur(20px) saturate(110%);
-            -webkit-backdrop-filter: blur(20px) saturate(110%);
+            backdrop-filter: blur(15px) saturate(110%);
+            -webkit-backdrop-filter: blur(15px) saturate(110%);
             border-radius: 1.4rem;
             z-index: 5;
             max-height: 93%;
@@ -857,13 +843,12 @@ body::-webkit-scrollbar {
             position: sticky;
             top: 0;
             display: flex;
+            background: #cbcbcb6b;
+            border: 1px solid rgba(41, 41, 41, 0.281);
             flex-direction: row; /* Важно - горизонтальное расположение */
             align-items: center;
             justify-content: space-between;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.016);
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
+            z-index: 11;
             padding: 0.4rem;
             border-radius: 1.5rem;
         }
@@ -902,6 +887,7 @@ body::-webkit-scrollbar {
             display: flex;
             overflow: hidden;
             position: relative;
+            background: transparent;
             border-radius: 1rem;
             height: fit-content;
             width: 100%; /* Добавляем ширину 100% */
