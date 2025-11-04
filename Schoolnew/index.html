@@ -1666,6 +1666,10 @@ function createClouds() {
 
     const numClouds = 16;
 
+    const windowWidth = window.innerWidth;
+    const baseWidth = 1920; // Базовая ширина экрана для калибровки (можно изменить)
+    const scale = windowWidth / baseWidth;
+
     for (let i = 0; i < numClouds; i++) {
         const cloud = document.createElement('div');
         cloud.classList.add('cloud');
@@ -1679,9 +1683,9 @@ function createClouds() {
         cloud.style.width = `${width}px`;
         cloud.style.height = `${width * 0.85}px`;
 
-        // Скорость
-        const minDuration = 16;
-        const maxDuration = 20;
+        // Скорость, зависящая от ширины окна (длительность анимации масштабируется)
+        const minDuration = 16 / scale;
+        const maxDuration = 20 / scale;
         const duration = Math.random() * (maxDuration - minDuration) + minDuration;
         cloud.style.animationDuration = `${duration}s`;
 
