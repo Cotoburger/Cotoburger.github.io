@@ -1481,8 +1481,8 @@ function updateSchedule() {
             backgroundStyle = "#77889C";
             themeColor = "#77889C";
         } else {
-            backgroundStyle = "#223250";
-            themeColor = "#223250";
+            backgroundStyle = "#536478";
+            themeColor = "#536478";
         }
         removeStars();
         if (!document.querySelector('.cloud')) createClouds();
@@ -1664,7 +1664,7 @@ function createClouds() {
     container.style.zIndex = '1';
     container.style.overflow = 'hidden';
 
-    const numClouds = 16;
+    const numClouds = 15;
 
     const windowWidth = window.innerWidth;
     const baseWidth = 1920; // Базовая ширина экрана для калибровки (можно изменить)
@@ -1675,7 +1675,7 @@ function createClouds() {
         cloud.classList.add('cloud');
 
         // Случайная высота
-        const top = Math.random() * 80 + 5;
+        const top = Math.random() * 65 + 4;
         cloud.style.top = `${top}vh`;
 
         // Размер
@@ -1696,7 +1696,7 @@ function createClouds() {
         cloud.style.transform = `translateX(${initialTranslateX}vw)`;
 
         // Отрицательная задержка, чтобы симулировать уже начатую анимацию
-        const delay = - (progress * duration);
+        const delay = - (progress * duration + 2);
         cloud.style.animationDelay = `${delay}s`;
 
         // Начальная opacity на основе progress (синхронизация с keyframes)
