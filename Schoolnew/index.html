@@ -1692,7 +1692,7 @@ function createClouds() {
         cloud.style.transform = `translateX(${initialTranslateX}vw)`;
 
         // Отрицательная задержка, чтобы симулировать уже начатую анимацию
-        const delay = - (progress * duration);
+        const delay = - (progress * duration + 2);
         cloud.style.animationDelay = `${delay}s`;
 
         // Начальная opacity на основе progress (синхронизация с keyframes)
