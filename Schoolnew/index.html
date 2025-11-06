@@ -146,8 +146,8 @@ body::-webkit-scrollbar {
             background: rgba(255, 255, 255, 0.068);
             border: 1px solid rgba(255, 255, 255, 0.1);
             /* Размытие фона */
-            backdrop-filter: blur(1px) saturate(115%);
-            -webkit-backdrop-filter: blur(1px) saturate(115%);
+            backdrop-filter: blur(1.5rem) saturate(115%);
+            -webkit-backdrop-filter: blur(1.5rem) saturate(115%);
 
 
             /* Тени для глубины */
@@ -213,8 +213,8 @@ body::-webkit-scrollbar {
             background: rgba(255, 255, 255, 0.068);
             border: 1px solid rgba(255, 255, 255, 0.1);
             /* Размытие фона */
-            backdrop-filter: blur(1px) saturate(115%);
-            -webkit-backdrop-filter: blur(1px) saturate(115%);
+            backdrop-filter: blur(1.5rem) saturate(115%);
+            -webkit-backdrop-filter: blur(1.5rem) saturate(115%);
 
 
             /* Тени для глубины */
@@ -323,18 +323,15 @@ body::-webkit-scrollbar {
             transition: opacity 0.3s ease;
         }
 
-        .cloud {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.055);
-            border-radius: 50%;
-            opacity: 0;
-            box-shadow: 
-                15px 0 8px rgba(255, 255, 255, 0.027),
-                -15px 0 8px rgba(255, 255, 255, 0.041),
-                0 0 20px rgba(255, 255, 255, 0.041);
-            animation: drift linear infinite;
-            animation-fill-mode: forwards;
-        }
+    .cloud {
+        position: absolute;
+        width: 130px; /* можешь менять размер */
+        height: 90px;
+        background: no-repeat center/contain;
+        background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 67 44' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='paint_linear_0' x1='33.5' x2='33.5' y1='0' y2='44' gradientUnits='userSpaceOnUse'><stop stop-color='rgb(239,239,239)' offset='0' stop-opacity='0.289999992'/><stop stop-color='rgb(239,239,239)' offset='1' stop-opacity='0.0500000007'/></linearGradient></defs><path d='M14.6289 43.4133C18.6212 43.4133 22.2401 41.8099 24.8796 39.2102C25.0305 39.3761 25.1851 39.5386 25.3433 39.6974C27.9911 42.3552 31.6515 44 35.6943 44C39.6608 44 43.2585 42.4173 45.8936 39.8473C47.8462 40.8157 50.0454 41.36 52.3713 41.36C60.4504 41.36 67 34.7935 67 26.6932C67 18.5931 60.4504 12.0266 52.3713 12.0266C50.1559 12.0266 48.0555 12.5204 46.1736 13.4041C45.535 5.89504 39.2533 0 31.5984 0C23.6522 0 17.1857 6.35194 16.9748 14.2675C16.211 14.1441 15.4274 14.08 14.6289 14.08C6.54956 14.08 0 20.6465 0 28.7466C0 36.8468 6.54956 43.4133 14.6289 43.4133Z' fill='url(%23paint_linear_0)' fill-rule='evenodd'/></svg>");
+        animation: drift linear infinite;
+        animation-fill-mode: forwards;
+    }
         @keyframes drift {
             0% {
                 transform: translateX(-100vw);
@@ -1664,18 +1661,14 @@ function createClouds() {
     container.style.zIndex = '1';
     container.style.overflow = 'hidden';
 
-    const numClouds = 15;
-
-    const windowWidth = window.innerWidth;
-    const baseWidth = 1920; // Базовая ширина экрана для калибровки (можно изменить)
-    const scale = windowWidth / baseWidth;
+    const numClouds = 10;
 
     for (let i = 0; i < numClouds; i++) {
         const cloud = document.createElement('div');
         cloud.classList.add('cloud');
 
         // Случайная высота
-        const top = Math.random() * 65 + 4;
+        const top = Math.random() * 20 + 4;
         cloud.style.top = `${top}vh`;
 
         // Размер
@@ -1683,9 +1676,9 @@ function createClouds() {
         cloud.style.width = `${width}px`;
         cloud.style.height = `${width * 0.85}px`;
 
-        // Скорость, зависящая от ширины окна (длительность анимации масштабируется)
-        const minDuration = 16 / scale;
-        const maxDuration = 20 / scale;
+        // Скорость
+        const minDuration = 16;
+        const maxDuration = 20;
         const duration = Math.random() * (maxDuration - minDuration) + minDuration;
         cloud.style.animationDuration = `${duration}s`;
 
