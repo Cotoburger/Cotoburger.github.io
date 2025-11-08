@@ -146,8 +146,8 @@ body::-webkit-scrollbar {
             background: rgba(255, 255, 255, 0.068);
             border: 1px solid rgba(255, 255, 255, 0.1);
             /* Размытие фона */
-            backdrop-filter: blur(1.5rem) saturate(115%);
-            -webkit-backdrop-filter: blur(1.5rem) saturate(115%);
+            backdrop-filter: blur(1.3rem) saturate(115%);
+            -webkit-backdrop-filter: blur(1.3rem) saturate(115%);
 
 
             /* Тени для глубины */
@@ -213,8 +213,8 @@ body::-webkit-scrollbar {
             background: rgba(255, 255, 255, 0.068);
             border: 1px solid rgba(255, 255, 255, 0.1);
             /* Размытие фона */
-            backdrop-filter: blur(1.5rem) saturate(115%);
-            -webkit-backdrop-filter: blur(1.5rem) saturate(115%);
+            backdrop-filter: blur(1.3rem) saturate(115%);
+            -webkit-backdrop-filter: blur(1.3rem) saturate(115%);
 
 
             /* Тени для глубины */
@@ -1648,10 +1648,10 @@ function createStars() {
 }
 
 function createClouds() {
-    // Удаляем старые облака, если есть
-    removeClouds();
+    removeClouds(); // удаляем старые облака
 
     const container = document.createElement('div');
+    container.id = 'cloud-container';
     container.style.position = 'fixed';
     container.style.top = '0';
     container.style.left = '0';
@@ -1661,7 +1661,8 @@ function createClouds() {
     container.style.zIndex = '1';
     container.style.overflow = 'hidden';
 
-    const numClouds = 10;
+    const screenWidth = window.innerWidth;
+    const numClouds = Math.max(6, Math.min(20, Math.round(((screenWidth - 400) / (2000 - 400)) * (20 - 6) + 6)));
 
     for (let i = 0; i < numClouds; i++) {
         const cloud = document.createElement('div');
@@ -1671,50 +1672,80 @@ function createClouds() {
         const top = Math.random() * 20 + 4;
         cloud.style.top = `${top}vh`;
 
-        // Размер
-        const width = Math.random() * 50 + 60;
-        cloud.style.width = `${width}px`;
-        cloud.style.height = `${width * 0.85}px`;
+        // Базовый размер (сохраняем для динамического пересчёта)
+        const baseMin = 60;
+        const baseMax = 50;
+        const baseWidth = Math.random() * baseMax + baseMin;
+        cloud.dataset.baseWidth = baseWidth;
 
-        // Скорость
-        const minDuration = 16;
-        const maxDuration = 20;
-        const duration = Math.random() * (maxDuration - minDuration) + minDuration;
-        cloud.style.animationDuration = `${duration}s`;
+        // Позиция и задержка
+        const progress = Math.random();
+        cloud.dataset.progress = progress;
 
-        // Распределение по экрану при загрузке (чтобы появились сразу)
-        const progress = Math.random(); // 0 to 1
-        const totalDistanceVw = 400; // от -200vw до 200vw
-        const initialTranslateX = -200 + (progress * totalDistanceVw);
-        cloud.style.transform = `translateX(${initialTranslateX}vw)`;
+        // Случайная горизонтальная позиция по всей ширине экрана
+        const initialX = Math.random() * 100; // 0% - 100% ширины окна
+        cloud.style.left = `${initialX}vw`;
 
-        // Отрицательная задержка, чтобы симулировать уже начатую анимацию
-        const delay = - (progress * duration + 2);
-        cloud.style.animationDelay = `${delay}s`;
+        // Движение облака через transform анимацию
+        cloud.style.transform = `translateX(0)`;
 
-        // Начальная opacity на основе progress (синхронизация с keyframes)
+        // Случайная задержка, чтобы облака не стартовали синхронно
+        cloud.style.animationDelay = `${-(Math.random() * 100)}s`;
+
+        // Начальная opacity
         let initialOpacity = 0;
-        if (progress >= 0.05 && progress <= 0.95) {
-            initialOpacity = 0.7;
-        } else if (progress > 0.95) {
-            initialOpacity = (1 - progress) / 0.05 * 0.7; // Плавное угасание, но приблизительно
-        }
+        if (progress >= 0.05 && progress <= 0.95) initialOpacity = 0.7;
+        else if (progress > 0.95) initialOpacity = (1 - progress) / 0.05 * 0.7;
         cloud.style.opacity = initialOpacity;
 
         container.appendChild(cloud);
     }
 
     document.body.appendChild(container);
+
+    // После создания обновляем размеры и скорости под текущее окно
+    updateClouds();
+}
+
+function updateClouds() {
+    const clouds = document.querySelectorAll('.cloud');
+    const screenWidth = window.innerWidth;
+
+    clouds.forEach(cloud => {
+        const baseWidth = parseFloat(cloud.dataset.baseWidth);
+
+        // Размер
+        const scale = Math.min(2.8, Math.max(1, screenWidth / 2000 + 0.5));
+        const width = baseWidth * scale;
+        cloud.style.width = `${width}px`;
+        cloud.style.height = `${width * 0.85}px`;
+
+        // Скорость анимации
+        const minDuration = 20;
+        const maxDuration = 300;
+        const duration = ((screenWidth - 400) / (2000 - 400)) * (maxDuration - minDuration) + minDuration;
+        cloud.style.animationDuration = `${Math.max(minDuration, Math.min(maxDuration, duration))}s`;
+    });
+}
+
+function removeClouds() {
+    const container = document.getElementById('cloud-container');
+    if (container) container.remove();
 }
 
 function removeStars() {
     document.querySelectorAll('div[style*="position: fixed"] .star').forEach(s => s.closest('div').remove());
 }
 
-function removeClouds() {
-    document.querySelectorAll('div[style*="overflow: hidden"] .cloud').forEach(c => c.closest('div').remove());
-}
+// Создаём облака при загрузке страницы
+createClouds();
 
+// Обновляем облака при изменении ширины окна
+window.addEventListener('resize', () => {
+    updateClouds();
+});
+
+// Прочие функции
 setInterval(updateSchedule, 1000);
 updateSchedule();
 renderFullSchedule();
