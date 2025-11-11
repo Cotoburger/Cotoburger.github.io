@@ -77,7 +77,7 @@ body {
 
 }
 
-body.no-lessons .no-lessons-message {
+body.no-lessons .no-lessons-message-text {
     text-align: center;
     padding: 5px 2px;
     font-size: 1.40em;
@@ -85,7 +85,7 @@ body.no-lessons .no-lessons-message {
     color: #171717d4;
 }
 
-body.night-mode.no-lessons .no-lessons-message {
+body.night-mode.no-lessons .no-lessons-message-text {
     color: #545454;
     font-weight: 600;
 }
@@ -981,6 +981,27 @@ body::-webkit-scrollbar {
             background-color: rgba(255, 255, 255, 0.1);
         }
 
+        /* Контейнер для контента */
+        .no-lessons-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 0px 0px 0px;
+        }
+
+        /* Картинка */
+        .no-lessons-image {
+            max-width: 100%;
+            max-height: 15rem;
+            width: auto;
+            height: auto;
+            border-radius: 12px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
 
 
 
@@ -1147,21 +1168,20 @@ body::-webkit-scrollbar {
 
 <script>
     // === ГЛАВНАЯ ПЕРЕМЕННАЯ — МЕНЯЙ ТОЛЬКО ЗДЕСЬ ===
-    const lessons1 = 1;
-    const lessons2 = 1; 
+    const lessons1 = 0; 
+    const lessons2 = 0; 
 
     const reasons = {
         0: null,
-        1: "Уроков нет из-за плохой погоды",
+        1: "Занятия отменены ☹︎",
         2: "Уроков нет по техническим причинам",
-        3: "Уроков нет — каникулы",
+        3: "Уроков нет — каникулы ☺",
         4: "Уроков нет — субботник",
         5: "Уроков нет — ремонт в школе",
         6: "Уроков нет — день самоуправления",
-        // Добавляй свои: 7: "Твоя причина",
+        7: "/Schoolnew/icons/icon-dark1x.png",
     };
     // ================================================
-
     const schedule = {
             1: {
                 shift1: [
@@ -1290,12 +1310,32 @@ function applyNoLessonsReasonToShifts() {
     const shift1Card = document.querySelector('.lesson-card:nth-child(1)');
     const shift2Card = document.querySelector('.lesson-card:nth-child(2)');
 
+    // Функция для генерации контента
+    function getReasonContent(reasonId) {
+    const reason = reasons[reasonId];
+    if (!reason) return "";
+
+    // === 1. Если это HTML (начинается с <) ===
+    if (typeof reason === 'string' && reason.trim().startsWith('<')) {
+        return reason; // Вставляем как есть (с картинкой, стилями и т.д.)
+    }
+
+    // === 2. Если это URL картинки ===
+    if (typeof reason === 'string' && 
+        (reason.startsWith('http') || reason.startsWith('/') || reason.startsWith('./'))) {
+        return `<img src="${reason}" alt="Причина отмены" class="no-lessons-image">`;
+    }
+
+    // === 3. Обычный текст ===
+    return `<div class="no-lessons-message-text">${reason}</div>`;
+}
+
     // 1-я смена
     if (lessons1 !== 0 && shift1Card) {
-        const reason = reasons[lessons1] || "Уроков нет";
+        const content = getReasonContent(lessons1);
         shift1Card.innerHTML = `
             <div class="no-lessons-header">1 смена</div>
-            <div class="no-lessons-message">${reason}</div>
+            <div class="no-lessons-content">${content}</div>
         `;
         shift1Card.classList.remove('collapsed');
         shift1Card.classList.add('no-lessons');
@@ -1305,10 +1345,10 @@ function applyNoLessonsReasonToShifts() {
 
     // 2-я смена
     if (lessons2 !== 0 && shift2Card) {
-        const reason = reasons[lessons2] || "Уроков нет";
+        const content = getReasonContent(lessons2);
         shift2Card.innerHTML = `
             <div class="no-lessons-header">2 смена</div>
-            <div class="no-lessons-message">${reason}</div>
+            <div class="no-lessons-content">${content}</div>
         `;
         shift2Card.classList.remove('collapsed');
         shift2Card.classList.add('no-lessons');
@@ -1316,7 +1356,7 @@ function applyNoLessonsReasonToShifts() {
         shift2Card.classList.remove('no-lessons');
     }
 
-    // Управление body.no-lessons
+    // body.no-lessons
     if (lessons1 !== 0 || lessons2 !== 0) {
         document.body.classList.add('no-lessons');
     } else {
@@ -1691,7 +1731,7 @@ function updateSchedule() {
         cloud.classList.add('cloud');
 
         // Случайная высота
-        const top = Math.random() * 20 + 4;
+        const top = Math.random() * 10 + 4;
         cloud.style.top = `${top}vh`;
 
         // Базовый размер (сохраняем для динамического пересчёта)
