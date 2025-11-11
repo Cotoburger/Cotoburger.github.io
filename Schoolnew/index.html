@@ -1843,7 +1843,52 @@ createClouds();
     renderFullSchedule();
 
     // === Деплой ===
-    function updateDeployment() { /* ... как было ... */ }
+    function updateDeployment() {
+        const lastDeploymentElement = document.getElementById("last-deployment");
+
+        // Получаем информацию о последнем деплое
+        fetch("https://api.github.com/repos/Cotoburger/Cotoburger.github.io/deployments", {
+            headers: { "Accept": "application/vnd.github.v3+json" }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Ошибка HTTP! Статус: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.length === 0) {
+                    throw new Error("Нет доступных деплоев");
+                }
+                const latestDeployment = data[0]; // Берём самый свежий деплой
+                const date = new Date(latestDeployment.created_at);
+                const formattedDate = date.toLocaleDateString("ru-RU");
+                const formattedTime = date.toLocaleTimeString("ru-RU");
+
+                return fetch(latestDeployment.statuses_url, {
+                    headers: { "Accept": "application/vnd.github.v3+json" }
+                }).then(statusResponse => {
+                    if (!statusResponse.ok) {
+                        throw new Error(`Ошибка HTTP! Статус: ${statusResponse.status}`);
+                    }
+                    return statusResponse.json();
+                }).then(statuses => {
+                    const latestStatus = statuses[0] || { state: "unknown" };
+                    const statusText = latestStatus.state === "success" ? "OK" :
+                        latestStatus.state === "failure" ? "ERR" : "Work";
+
+                    if (lastDeploymentElement) {
+                        lastDeploymentElement.textContent = `Изменение кода: ${formattedDate} ${formattedTime} (${statusText})`;
+                    }
+                });
+            })
+            .catch(error => {
+                console.error("Deployment fetch failure:", error);
+                if (lastDeploymentElement) {
+                    lastDeploymentElement.textContent = "";
+                }
+            });
+    }
     const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
