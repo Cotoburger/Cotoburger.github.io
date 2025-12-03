@@ -1,0 +1,3 @@
+requests
+pdfplumber
+certifi
