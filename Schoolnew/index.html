@@ -2219,6 +2219,7 @@ body.night-mode #meals-full .full-lesson-name {
         const panel = document.querySelector(".full-schedule-panel");
         if (panel) {
           panel.style.display = "block";
+          document.body.style.overflow = "hidden";
           setTimeout(() => panel.classList.add("open"), 10);
         }
       }
@@ -2228,6 +2229,7 @@ body.night-mode #meals-full .full-lesson-name {
         if (panel) {
           panel.classList.remove("open");
           panel.classList.add("closing");
+          document.body.style.overflow = "";
           setTimeout(() => {
             panel.style.display = "none";
             panel.classList.remove("closing");
