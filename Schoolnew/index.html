@@ -1060,7 +1060,7 @@ body.night-mode #meals-full .full-lesson-name {
           <div id="meal-progress"></div>
         </div>
         <!-- Таблица питания -->
-        <div id="meal-table-container" style="margin-top:1.2rem;"></div>
+        <div id="meal-table-container" style="margin-top:0.3rem;"></div>
       </div>
     </div>
     <div class="container">
@@ -1513,7 +1513,7 @@ body.night-mode #meals-full .full-lesson-name {
           const nowSec = timeToSeconds(currentTime);
           const nextMeal = mealsData.find((m) => timeToSeconds(m.start) > nowSec);
           if (nextMeal) {
-            nameEl.textContent = `${nextMeal.meal} через: ${findNextSimpleTimeDiff(
+            nameEl.textContent = `До ${nextMeal.meal}а: ${findNextSimpleTimeDiff(
               nextMeal.start,
               currentTime
             )}`;
