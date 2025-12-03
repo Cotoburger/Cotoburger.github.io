@@ -196,7 +196,7 @@
      animation: cardFadeIn 0.4s ease-out forwards;
      transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
      overflow: hidden;
-     max-height: 31.25rem;
+    /* max-height: 31.25rem; */
      color: #000;
     /* Контрастный текст */
 }
@@ -212,9 +212,14 @@
      pointer-events: none;
      z-index: 0;
 }
+
+.lesson-card:nth-child(-n+2) {
+  max-height: 8.5rem;
+}
+
+
 /* Эффект сжатия */
  .lesson-card.collapsed {
-     max-height: 6.25rem;
      transform: scaleY(0.98);
     /* лёгкое сжатие для визуального эффекта */
 }
@@ -252,7 +257,7 @@
      opacity: 0;
      transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
      overflow: hidden;
-     max-height: 31.25rem;
+    /* max-height: 31.25rem; */
      color: #000;
     /* Контрастный текст */
 }
@@ -1054,6 +1059,8 @@ body.night-mode #meals-full .full-lesson-name {
         <div class="progress-bar">
           <div id="meal-progress"></div>
         </div>
+        <!-- Таблица питания -->
+        <div id="meal-table-container" style="margin-top:1.2rem;"></div>
       </div>
     </div>
     <div class="container">
@@ -1295,7 +1302,7 @@ body.night-mode #meals-full .full-lesson-name {
         },
         4: {
           shift1: [
-            { lesson: "1-й урок", start: "08:15", end: "08:55" },
+            { lesson: "1-й урок", start: "03:15", end: "08:55" },
             { lesson: "2-й урок", start: "09:05", end: "09:45" },
             { lesson: "3-й урок", start: "10:00", end: "10:40" },
             { lesson: "Классный час", start: "10:55", end: "11:25" },
@@ -1383,6 +1390,86 @@ body.night-mode #meals-full .full-lesson-name {
         lessonCard.classList.remove("collapsed");
         progressBarContainer.classList.remove("hidden");
         progressTimeLabels.classList.remove("hidden");
+
+        // Загружаем меню из файла
+        async function loadFoodMenu() {
+          try {
+            const resp = await fetch("./foodmenu.txt");
+            const text = await resp.text();
+
+            const lines = text.split("\n").map(l => l.trim()).filter(l => l);
+
+            const food = {};
+            lines.forEach(line => {
+              const [meal, items] = line.split(":");
+              food[meal] = items.split(",").map(i => i.trim());
+            });
+
+            return food;
+          } catch (e) {
+            console.error("Не удалось загрузить foodmenu.txt", e);
+            return null;
+          }
+        }
+
+        // Рисуем таблицу
+        async function renderMealTable() {
+          const tableContainer = document.getElementById("meal-table-container");
+          if (!tableContainer) return;
+
+          const food = await loadFoodMenu();
+          if (!food) {
+            tableContainer.innerHTML = "";
+            return;
+          }
+
+          let tableHtml = `
+          <table style="
+            width:100%;
+            border-collapse:collapse;
+            font-size:1.1em;
+            background:rgba(255,255,255,0.13);
+            border-radius:0.7em;
+            overflow:hidden;
+          ">
+          <thead>
+            <tr style="background:rgba(0,0,0,0.07);font-weight:600;border-bottom:1px solid rgba(255,255,255,0.12);">
+              <th style="padding:0.4em 0.2em;">Приём пищи</th>
+              <th style="padding:0.4em 0.2em;">Меню</th>
+            </tr>
+          </thead>
+          <tbody>
+          `;
+
+          const order = ["Завтрак", "Обед", "Полдник"];
+
+          order.forEach((meal, i) => {
+            // прозрачная полоска — кроме полдника
+            const addBorder = meal !== "Полдник";
+
+            tableHtml += `
+            <tr style="${addBorder ? 'border-bottom:1px solid rgba(255,255,255,0.1);' : ''}">
+              <td style="padding:0.6em 0.3em;">${meal}</td>
+              <td style="padding:0.6em 0.3em;">${food[meal].join(", ")}</td>
+            </tr>
+            `;
+
+            // Пустое пространство ниже полдника
+            if (meal === "Полдник") {
+              tableHtml += `
+                <tr>
+                  <td colspan="2" style="padding:0.8em 0;"></td>
+                </tr>
+              `;
+            }
+          });
+
+          tableHtml += `</tbody></table>`;
+          tableContainer.innerHTML = tableHtml;
+        }
+
+        // Запуск
+        renderMealTable();
 
         if (!mealsData || mealsData.length === 0) {
           nameEl.textContent = "Нет питания";
@@ -1935,7 +2022,7 @@ body.night-mode #meals-full .full-lesson-name {
           dayNames[getCurrentDayOfWeek()];
 
         let bg, color;
-        const isNight = hour < 6 || hour >= 20;
+        const isNight = hour < 1 || hour >= 20;
         if (isNight) {
           bg = "#000000";
           color = "#000000";
@@ -1943,7 +2030,7 @@ body.night-mode #meals-full .full-lesson-name {
           if (!document.querySelector(".star")) createStars();
           body.classList.add("night-mode");
         } else {
-          if (hour < 13) {
+          if (hour < 2) {
             bg = "#927A46";
             color = "#927A46";
           } else if (hour < 17) {
