@@ -134,6 +134,23 @@
      animation: twinkle 2s infinite alternate;
      z-index: 1;
 }
+
+.snowflake {
+    position: absolute;
+    top: -5vh;
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.325);
+    border-radius: 50%;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% { transform: translateY(0); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(110vh); opacity: 0.4; }
+}
+
  .container {
      width: 90%;
      max-width: 35.25rem;
@@ -1149,7 +1166,6 @@
     </script>
 
     <script>
-      // === ГЛАВНАЯ ПЕРЕМЕННАЯ — МЕНЯЙ ТОЛЬКО ЗДЕСЬ ===
       const lessons1 = 1;
       const lessons2 = 1;
 
@@ -1725,7 +1741,7 @@
           } else if (hour < 17) {
             bg = "#5D827F";
             color = "#5D827F";
-          } else if (hour < 19) {
+          } else if (hour < 18) {
             bg = "#6B7C8E";
             color = "#6B7C8E";
           } else {
@@ -1822,70 +1838,84 @@
         document.body.appendChild(container);
       }
       function createClouds() {
-        removeClouds(); // удаляем старые облака
+          // Проверка — если контейнер уже есть, не создаём заново
+          if (document.getElementById("cloud-container")) return;
 
-        const container = document.createElement("div");
-        container.id = "cloud-container";
-        container.style.position = "fixed";
-        container.style.top = "0";
-        container.style.left = "0";
-        container.style.width = "100vw";
-        container.style.height = "100vh";
-        container.style.pointerEvents = "none";
-        container.style.zIndex = "1";
-        container.style.overflow = "hidden";
+          const isWinter = [12, 1, 2].includes(new Date().getMonth() + 1);
 
-        const screenWidth = window.innerWidth;
-        const numClouds = Math.max(
-          6,
-          Math.min(
-            20,
-            Math.round(((screenWidth - 400) / (2000 - 400)) * (20 - 6) + 6)
-          )
-        );
+          const container = document.createElement("div");
+          container.id = "cloud-container";
+          container.style.position = "fixed";
+          container.style.top = "0";
+          container.style.left = "0";
+          container.style.width = "100vw";
+          container.style.height = "100vh";
+          container.style.pointerEvents = "none";
+          container.style.zIndex = "1";
+          container.style.overflow = "hidden";
 
-        for (let i = 0; i < numClouds; i++) {
-          const cloud = document.createElement("div");
-          cloud.classList.add("cloud");
+          const screenWidth = window.innerWidth;
 
-          // Случайная высота
-          const top = Math.random() * 10 + 4;
-          cloud.style.top = `${top}vh`;
+          if (!isWinter) {
+              // Летний режим (облака)
+              const numClouds = Math.max(
+                  6,
+                  Math.min(
+                      20,
+                      Math.round(((screenWidth - 400) / (2000 - 400)) * (20 - 6) + 6)
+                  )
+              );
 
-          // Базовый размер (сохраняем для динамического пересчёта)
-          const baseMin = 60;
-          const baseMax = 50;
-          const baseWidth = Math.random() * baseMax + baseMin;
-          cloud.dataset.baseWidth = baseWidth;
+              for (let i = 0; i < numClouds; i++) {
+                  const cloud = document.createElement("div");
+                  cloud.classList.add("cloud");
 
-          // Позиция и задержка
-          const progress = Math.random();
-          cloud.dataset.progress = progress;
+                  const top = Math.random() * 10 + 4;
+                  cloud.style.top = `${top}vh`;
 
-          // Случайная горизонтальная позиция по всей ширине экрана
-          const initialX = Math.random() * 100; // 0% - 100% ширины окна
-          cloud.style.left = `${initialX}vw`;
+                  const baseMin = 60;
+                  const baseMax = 50;
+                  const baseWidth = Math.random() * baseMax + baseMin;
+                  cloud.dataset.baseWidth = baseWidth;
 
-          // Движение облака через transform анимацию
-          cloud.style.transform = `translateX(0)`;
+                  const progress = Math.random();
+                  cloud.dataset.progress = progress;
 
-          // Случайная задержка, чтобы облака не стартовали синхронно
-          cloud.style.animationDelay = `${-(Math.random() * 100)}s`;
+                  const initialX = Math.random() * 100;
+                  cloud.style.left = `${initialX}vw`;
 
-          // Начальная opacity
-          let initialOpacity = 0;
-          if (progress >= 0.05 && progress <= 0.95) initialOpacity = 0.7;
-          else if (progress > 0.95)
-            initialOpacity = ((1 - progress) / 0.05) * 0.7;
-          cloud.style.opacity = initialOpacity;
+                  cloud.style.transform = `translateX(0)`;
+                  cloud.style.animationDelay = `${-(Math.random() * 100)}s`;
 
-          container.appendChild(cloud);
-        }
+                  let initialOpacity = 0;
+                  if (progress >= 0.05 && progress <= 0.95) initialOpacity = 0.7;
+                  else if (progress > 0.95)
+                      initialOpacity = ((1 - progress) / 0.05) * 0.7;
 
-        document.body.appendChild(container);
+                  cloud.style.opacity = initialOpacity;
 
-        // После создания обновляем размеры и скорости под текущее окно
-        updateClouds();
+                  container.appendChild(cloud);
+              }
+          } else {
+              // Зимний режим (снег)
+              const numSnow = Math.floor(screenWidth / 25);
+
+              for (let i = 0; i < numSnow; i++) {
+                  const flake = document.createElement("div");
+                  flake.classList.add("snowflake");
+
+                  flake.style.left = `${Math.random() * 100}vw`;
+                  flake.style.animationDelay = `${Math.random() * -20}s`;
+                  const duration = Math.random() * 10 + 10;
+                  flake.style.animationDuration = `${duration}s`;
+
+                  container.appendChild(flake);
+              }
+          }
+
+          document.body.appendChild(container);
+
+          if (!isWinter) updateClouds();
       }
       function updateClouds() {
         const clouds = document.querySelectorAll(".cloud");
