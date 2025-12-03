@@ -1,0 +1,36 @@
+name: PDF Auto Parser
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"   # запуск каждые 2 часа
+  workflow_dispatch:        # запуск вручную из вкладки Actions
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write        # нужно, чтобы делать commit
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run PDF script
+        run: python background.py
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Auto update" || echo "Nothing to commit"
+          git push
