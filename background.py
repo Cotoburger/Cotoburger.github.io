@@ -8,7 +8,7 @@ import urllib3
 # Формируем URL файла PDF с сегодняшней датой в имени
 today_str = date.today().strftime("%d.%m.%Y")
 PDF_URL = f"https://sh1-petropavlovskkamchatskij-r30.gosweb.gosuslugi.ru/netcat_files/50/2957/Menyu_na_{today_str}g..pdf"
-OUTPUT_FILE = "result.txt"
+OUTPUT_FILE = "Schoolnew/foodmenu.txt"
 
 print(f"Using PDF URL: {PDF_URL}")
 print("Downloading PDF...")
