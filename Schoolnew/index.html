@@ -1211,8 +1211,8 @@ body.night-mode #meals-full .full-lesson-name {
     </script>
 
     <script>
-      const lessons1 = 1;
-      const lessons2 = 1;
+      const lessons1 = 0;
+      const lessons2 = 0;
 
       const reasons = {
         0: null,
@@ -1639,34 +1639,16 @@ body.night-mode #meals-full .full-lesson-name {
 
         renderShift("shift1", "shift1-full");
         renderShift("shift2", "shift2-full");
-        // Рендерим питание (но если уроки отменены у ОБЕИХ смен — питание тоже отменено)
+        // Убираем вкладку питания из развернутого расписания (не показываем meals-full)
         try {
           const mealsContainer = document.getElementById("meals-full");
           if (mealsContainer) {
-            // Если уроки отменены у ОБЕИХ смен — в полноэкранном расписании питания не показываем
-            if (lessons1 !== 0 && lessons2 !== 0) {
-              mealsContainer.innerHTML = "";
-              const parent = mealsContainer.closest('.shift-schedule');
-              if (parent) parent.style.display = 'none';
-            } else {
-              const parent = mealsContainer.closest('.shift-schedule');
-              if (parent) parent.style.display = '';
-              mealsContainer.innerHTML = "";
-              const meals = mealsSchedule[day] || [];
-              meals.forEach((m) => {
-                const isCurrent = isTimeBetween(currentTime, m.start, m.end);
-                const mealEl = document.createElement("div");
-                mealEl.className = `lesson-item ${isCurrent ? "current" : ""}`;
-                mealEl.innerHTML = `
-                      <div class="lesson-time">${m.start} - ${m.end}</div>
-                      <div class="full-lesson-name">${m.meal}</div>
-                  `;
-                mealsContainer.appendChild(mealEl);
-              });
-            }
+            const parent = mealsContainer.closest('.shift-schedule');
+            if (parent) parent.style.display = 'none';
+            mealsContainer.innerHTML = '';
           }
         } catch (e) {
-          console.warn("Render meals failed", e);
+          console.warn("Hide meals tab failed", e);
         }
       }
 
@@ -2222,26 +2204,8 @@ body.night-mode #meals-full .full-lesson-name {
             });
             dayEl.appendChild(shiftEl);
           });
-          // Добавляем расписание питания только если занятия не отменены у ОБЕИХ смен
-          try {
-            if (!(lessons1 !== 0 && lessons2 !== 0)) {
-              const mealsEl = document.createElement("div");
-              mealsEl.className = "shift-schedule";
-              mealsEl.innerHTML = `<div class="schedule-index">Питание</div>`;
-              (mealsSchedule[day] || []).forEach((m) => {
-                const mealEl = document.createElement("div");
-                mealEl.className = "lesson-item";
-                mealEl.innerHTML = `
-                          <div class="lesson-time">${m.start} - ${m.end}</div>
-                          <div class="full-lesson-name">${m.meal}</div>
-                      `;
-                mealsEl.appendChild(mealEl);
-              });
-              dayEl.appendChild(mealsEl);
-            }
-          } catch (e) {
-            console.warn("Render weekly meals failed", e);
-          }
+          // Убираем вкладку питания из недельного просмотра (не добавляем meals block)
+          // (намеренно пусто)
           slider.appendChild(dayEl);
         }
       }
