@@ -1315,7 +1315,7 @@ body.night-mode #meals-full .full-lesson-name {
       };
 
       let lastUpdateTime = 0;
-        const UPDATE_INTERVAL = 60000; // 1 минута в миллисекундах
+        const UPDATE_INTERVAL = 3600000; // 1 час в миллисекундах
 
         function updateMealDisplay() {
         // Загружаем меню из файла
@@ -1424,22 +1424,10 @@ body.night-mode #meals-full .full-lesson-name {
             <thead>
               <tr style="background:rgba(0,0,0,0.07);font-weight:600;border-bottom:1px solid rgba(255,255,255,0.12);">
                 <th style="padding:0.4em 0.2em;">Приём<br>пищи</th>
-                <th style="padding:0.4em 0.2em;">Меню(xx.xx.xx)</th>
+                <th style="padding:0.4em 0.2em;">Меню(xx.xx.xxxx)</th>
               </tr>
             </thead>
             <tbody>
-              <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-                <td style="padding:0.6em 0.3em;">Завтрак</td>
-                <td style="padding:0.6em 0.3em;">Получение сведений... <br> это может занять некоторое время</td>
-              </tr>
-              <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-                <td style="padding:0.6em 0.3em;">Обед</td>
-                  <td style="padding:0.6em 0.3em;">Получение сведений... <br> это может занять некоторое время</td>
-              </tr>
-              <tr>
-                <td style="padding:0.6em 0.3em;">Полдник</td>
-                <td style="padding:0.6em 0.3em;">Получение сведений... <br> это может занять некоторое время</td>
-              </tr>
               <tr>
                 <td colspan="2" style="padding:0.8em 0;"></td>
               </tr>
