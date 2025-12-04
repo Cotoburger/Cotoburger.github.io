@@ -233,7 +233,7 @@
      animation-delay: 0.3s;
 }
  .lesson-card-full {
-     margin-top: -3rem;
+     margin-top: 0;
      opacity: 0;
      animation: cardFadeIn 0.4s ease-out 0.2s forwards;
      padding: 1rem;
@@ -427,7 +427,7 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
      font-weight: 600;
      margin-top: -0.8rem;
      color: #1b1b1bcd;
-     margin-bottom: -3rem;
+     margin-bottom: 0;
      text-align: center;
 }
  body.night-mode .schedule-header {
@@ -1339,7 +1339,7 @@ body.night-mode #meals-full .full-lesson-name {
         6: [],
         0: [],
       };
-      // Обновленная функция updateMealDisplay (убраны параметры времени)
+            // Обновленная функция updateMealDisplay (убраны параметры времени)
       function updateMealDisplay() {
         // Загружаем меню из файла
         async function loadFoodMenu() {
@@ -1362,12 +1362,21 @@ body.night-mode #meals-full .full-lesson-name {
         async function renderMealTable() {
           const tableContainer = document.getElementById("meal-table-container");
           if (!tableContainer) return;
+
           const food = await loadFoodMenu();
           if (!food) {
             tableContainer.innerHTML = "";
             return;
           }
+
+          // Забираем дату, если есть
+          const menuDate = food["Дата меню"] || null;
+          if (menuDate) delete food["Дата меню"]; // чтобы не отображалось как приём пищи
+
+          let dateLabel = menuDate ? ` (${menuDate})` : "";
+
           let tableHtml = `
+
           <table style="
             width:100%;
             border-collapse:collapse;
@@ -1379,14 +1388,15 @@ body.night-mode #meals-full .full-lesson-name {
           <thead>
             <tr style="background:rgba(0,0,0,0.07);font-weight:600;border-bottom:1px solid rgba(255,255,255,0.12);">
               <th style="padding:0.4em 0.2em;">Приём пищи</th>
-              <th style="padding:0.4em 0.2em;">Меню</th>
+              <th style="padding:0.4em 0.2em;">Меню${dateLabel}</th>
             </tr>
           </thead>
           <tbody>
           `;
+
           const order = ["Завтрак", "Обед", "Полдник"];
-          order.forEach((meal, i) => {
-            // прозрачная полоска — кроме полдника
+
+          order.forEach(meal => {
             const addBorder = meal !== "Полдник";
             tableHtml += `
             <tr style="${addBorder ? 'border-bottom:1px solid rgba(255,255,255,0.1);' : ''}">
@@ -1394,7 +1404,7 @@ body.night-mode #meals-full .full-lesson-name {
               <td style="padding:0.6em 0.3em;">${food[meal].join(", ")}</td>
             </tr>
             `;
-            // Пустое пространство ниже полдника
+
             if (meal === "Полдник") {
               tableHtml += `
                 <tr>
@@ -1403,6 +1413,7 @@ body.night-mode #meals-full .full-lesson-name {
               `;
             }
           });
+
           tableHtml += `</tbody></table>`;
           tableContainer.innerHTML = tableHtml;
         }

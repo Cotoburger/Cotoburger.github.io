@@ -132,5 +132,6 @@ with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     f.write("Полдник: ")
     f.write(', '.join(snack_names))
     f.write("\n")
+    f.write(f"Дата меню: {today_str}\n")
 
 print("PDF parsed and result saved.")
