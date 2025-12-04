@@ -134,7 +134,6 @@
      animation: twinkle 2s infinite alternate;
      z-index: 1;
 }
-
 .snowflake {
     position: absolute;
     top: -5vh;
@@ -144,13 +143,11 @@
     border-radius: 50%;
     animation: fall linear infinite;
 }
-
 @keyframes fall {
     0% { transform: translateY(0); opacity: 0; }
     10% { opacity: 1; }
     100% { transform: translateY(110vh); opacity: 0.4; }
 }
-
  .container {
      width: 90%;
      max-width: 35.25rem;
@@ -212,12 +209,9 @@
      pointer-events: none;
      z-index: 0;
 }
-
 .lesson-card:nth-child(-n+2) {
   max-height: 8.5rem;
 }
-
-
 /* Эффект сжатия */
  .lesson-card.collapsed {
      transform: scaleY(0.98);
@@ -701,7 +695,6 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
  body.night-mode .full-lesson-name {
      color: #99999979;
 }
-
 /* Делает шрифт названий питания таким же, как в верхних картах */
 #meal-name, #meals-full .full-lesson-name {
   font-size: 2rem;
@@ -1031,34 +1024,6 @@ body.night-mode #meals-full .full-lesson-name {
         </div>
       </div>
       <div class="lesson-card">
-        <div class="shift-number">Питание</div>
-        <div class="lesson-header">
-          <div id="meal-name"></div>
-          <div id="meal-remaining">
-            <span class="hourglass-icon">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 21 21"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19 3H5C4.44772 3 4 3.44772 4 4V6.58579C4 7.11622 4.21071 7.62493 4.58579 8L8 11.4142V12.5858L4.58579 16C4.21071 16.3751 4 16.8838 4 17.4142V20C4 20.5523 4.44772 21 5 21H19C19.5523 21 20 20.5523 20 20V17.4142C20 16.8838 19.7893 16.3751 19.4142 16L16 12.5858V11.4142L19.4142 8C19.7893 7.62493 20 7.11622 20 6.58579V4C20 3.44772 19.5523 3 19 3ZM18 6H6V5H18V6ZM12 11V13L15.4142 16.4142C15.7893 16.7893 16 17.298 16 17.8284V19H8V17.8284C8 17.298 8.21071 16.7893 8.58579 16.4142L12 13V11Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            <span class="remaining-text"></span>
-          </div>
-        </div>
-        <div class="progress-time-labels">
-          <span id="meal-start-time"></span>
-          <span id="meal-end-time"></span>
-        </div>
-        <div class="progress-bar">
-          <div id="meal-progress"></div>
-        </div>
         <!-- Таблица питания -->
         <div id="meal-table-container" style="margin-top:0.3rem;"></div>
       </div>
@@ -1170,16 +1135,13 @@ body.night-mode #meals-full .full-lesson-name {
           const vh = window.innerHeight * 0.01;
           document.documentElement.style.setProperty("--vh", vh + "px");
         }
-
         // сброс скролла в начало
         function resetScroll() {
           window.scrollTo(0, 0);
           document.documentElement.scrollTop = 0;
           document.body.scrollTop = 0;
         }
-
         let userScrolled = false;
-
         // отмечаем, что пользователь начал скроллить
         window.addEventListener(
           "scroll",
@@ -1194,7 +1156,6 @@ body.night-mode #meals-full .full-lesson-name {
             history.scrollRestoration = "manual";
           } catch (e) {}
         }
-
         // при загрузке страницы один раз сбросим скролл
         window.addEventListener("load", () => {
           updateVh();
@@ -1206,7 +1167,6 @@ body.night-mode #meals-full .full-lesson-name {
             }, 100);
           }
         });
-
         // при ресайзе и смене ориентации обновляем vh
         window.addEventListener("resize", updateVh, { passive: true });
         window.addEventListener(
@@ -1219,11 +1179,9 @@ body.night-mode #meals-full .full-lesson-name {
         );
       })();
     </script>
-
     <script>
       const lessons1 = 0;
       const lessons2 = 0;
-
       const reasons = {
         0: null,
         1: "Занятия отменены из за плохой погоды",
@@ -1351,7 +1309,6 @@ body.night-mode #meals-full .full-lesson-name {
           shift2: [],
         },
       };
-
       // Расписание питания (для карточки "Питание")
       const mealsSchedule = {
         1: [
@@ -1382,47 +1339,34 @@ body.night-mode #meals-full .full-lesson-name {
         6: [],
         0: [],
       };
-
-      function updateMealDisplay(mealsData, nameEl, remainingEl, startEl, endEl, progressEl) {
-        const progressBarContainer = progressEl.parentElement;
-        const progressTimeLabels = startEl.parentElement;
-        const lessonCard = nameEl.closest(".lesson-card");
-        lessonCard.classList.remove("collapsed");
-        progressBarContainer.classList.remove("hidden");
-        progressTimeLabels.classList.remove("hidden");
-
+      // Обновленная функция updateMealDisplay (убраны параметры времени)
+      function updateMealDisplay() {
         // Загружаем меню из файла
         async function loadFoodMenu() {
           try {
             const resp = await fetch("./foodmenu.txt");
             const text = await resp.text();
-
             const lines = text.split("\n").map(l => l.trim()).filter(l => l);
-
             const food = {};
             lines.forEach(line => {
               const [meal, items] = line.split(":");
               food[meal] = items.split(",").map(i => i.trim());
             });
-
             return food;
           } catch (e) {
             console.error("Не удалось загрузить foodmenu.txt", e);
             return null;
           }
         }
-
         // Рисуем таблицу
         async function renderMealTable() {
           const tableContainer = document.getElementById("meal-table-container");
           if (!tableContainer) return;
-
           const food = await loadFoodMenu();
           if (!food) {
             tableContainer.innerHTML = "";
             return;
           }
-
           let tableHtml = `
           <table style="
             width:100%;
@@ -1440,20 +1384,16 @@ body.night-mode #meals-full .full-lesson-name {
           </thead>
           <tbody>
           `;
-
           const order = ["Завтрак", "Обед", "Полдник"];
-
           order.forEach((meal, i) => {
             // прозрачная полоска — кроме полдника
             const addBorder = meal !== "Полдник";
-
             tableHtml += `
             <tr style="${addBorder ? 'border-bottom:1px solid rgba(255,255,255,0.1);' : ''}">
               <td style="padding:0.6em 0.3em;">${meal}</td>
               <td style="padding:0.6em 0.3em;">${food[meal].join(", ")}</td>
             </tr>
             `;
-
             // Пустое пространство ниже полдника
             if (meal === "Полдник") {
               tableHtml += `
@@ -1463,80 +1403,20 @@ body.night-mode #meals-full .full-lesson-name {
               `;
             }
           });
-
           tableHtml += `</tbody></table>`;
           tableContainer.innerHTML = tableHtml;
         }
-
         // Запуск
         renderMealTable();
-
-        if (!mealsData || mealsData.length === 0) {
-          nameEl.textContent = "Нет питания";
-          remainingEl.style.visibility = "hidden";
-          startEl.textContent = "";
-          endEl.textContent = "";
-          progressEl.style.width = "0%";
-          progressBarContainer.classList.add("hidden");
-          progressTimeLabels.classList.add("hidden");
-          lessonCard.classList.add("collapsed");
-          return;
-        }
-
-        const currentTime = getCurrentTimeInKamchatkaContext();
-        const currentIndex = mealsData.findIndex((m) =>
-          isTimeBetween(currentTime, m.start, m.end)
-        );
-
-        if (currentIndex !== -1) {
-          const meal = mealsData[currentIndex];
-          nameEl.textContent = meal.meal;
-          remainingEl.style.visibility = "visible";
-          remainingEl.querySelector(".remaining-text").textContent =
-            calculateRemainingTime(currentTime, meal.end);
-          const { startDate, endDate } = getLocalTimes(meal.start, meal.end);
-          startEl.textContent = `${String(startDate.getHours()).padStart(
-            2,
-            "0"
-          )}:${String(startDate.getMinutes()).padStart(2, "0")}`;
-          endEl.textContent = `${String(endDate.getHours()).padStart(2, "0")}:${String(
-            endDate.getMinutes()
-          ).padStart(2, "0")}`;
-          updateProgressBar(
-            progressEl,
-            currentTime,
-            `${meal.start}:00`,
-            `${meal.end}:00`
-          );
-        } else {
-          // Ищем ближайший приём пищи сегодня
-          const nowSec = timeToSeconds(currentTime);
-          const nextMeal = mealsData.find((m) => timeToSeconds(m.start) > nowSec);
-          if (nextMeal) {
-            nameEl.textContent = `До ${nextMeal.meal}а: ${findNextSimpleTimeDiff(
-              nextMeal.start,
-              currentTime
-            )}`;
-            remainingEl.style.visibility = "hidden";
-            startEl.textContent = "";
-            endEl.textContent = "";
-            progressEl.style.width = "0%";
-            progressBarContainer.classList.add("hidden");
-            progressTimeLabels.classList.add("hidden");
-            lessonCard.classList.add("collapsed");
-          } else {
-            nameEl.textContent = "Питание кончилось";
-            remainingEl.style.visibility = "hidden";
-            startEl.textContent = "";
-            endEl.textContent = "";
-            progressEl.style.width = "0%";
-            progressBarContainer.classList.add("hidden");
-            progressTimeLabels.classList.add("hidden");
-            lessonCard.classList.add("collapsed");
-          }
-        }
       }
-
+      // Обновленный вызов в функции updateSchedule
+      try {
+        if (!(lessons1 !== 0 && lessons2 !== 0)) {
+          updateMealDisplay();
+        }
+      } catch (e) {
+        console.warn("Meal update failed", e);
+      }
       function findNextSimpleTimeDiff(targetTimeStr, currentTimeStr) {
         const now = new Date();
         const [th, tm] = targetTimeStr.split(":").map(Number);
@@ -1546,21 +1426,17 @@ body.night-mode #meals-full .full-lesson-name {
         if (diffSec <= 0) return "0 мин";
         return formatTimeDifference(diffSec);
       }
-
       function applyNoLessonsReasonToShifts() {
         const shift1Card = document.querySelector(".lesson-card:nth-child(1)");
         const shift2Card = document.querySelector(".lesson-card:nth-child(2)");
-
         // Функция для генерации контента
         function getReasonContent(reasonId) {
           const reason = reasons[reasonId];
           if (!reason) return "";
-
           // === 1. Если это HTML (начинается с <) ===
           if (typeof reason === "string" && reason.trim().startsWith("<")) {
             return reason; // Вставляем как есть (с картинкой, стилями и т.д.)
           }
-
           // === 2. Если это URL картинки ===
           if (
             typeof reason === "string" &&
@@ -1570,11 +1446,9 @@ body.night-mode #meals-full .full-lesson-name {
           ) {
             return `<img src="${reason}" alt="Причина отмены" class="no-lessons-image">`;
           }
-
           // === 3. Обычный текст ===
           return `<div class="no-lessons-message-text">${reason}</div>`;
         }
-
         // 1-я смена
         if (lessons1 !== 0 && shift1Card) {
           const content = getReasonContent(lessons1);
@@ -1587,7 +1461,6 @@ body.night-mode #meals-full .full-lesson-name {
         } else if (shift1Card) {
           shift1Card.classList.remove("no-lessons");
         }
-
         // 2-я смена
         if (lessons2 !== 0 && shift2Card) {
           const content = getReasonContent(lessons2);
@@ -1600,14 +1473,12 @@ body.night-mode #meals-full .full-lesson-name {
         } else if (shift2Card) {
           shift2Card.classList.remove("no-lessons");
         }
-
         // body.no-lessons
         if (lessons1 !== 0 || lessons2 !== 0) {
           document.body.classList.add("no-lessons");
         } else {
           document.body.classList.remove("no-lessons");
         }
-
         // Если уроки отменены у ОБЕИХ смен — питания вообще нет: скрываем карточку питания.
         const mealCard = document.querySelectorAll(".lesson-card")[2];
         if (mealCard) {
@@ -1617,32 +1488,15 @@ body.night-mode #meals-full .full-lesson-name {
             // Восстанавливаем видимость и структуру карточки, если она была перезаписана
             mealCard.style.display = "";
             // Если элемент потерял внутреннюю структуру (например, при старых патчах), восстановим её
-            if (!mealCard.querySelector("#meal-name")) {
+            if (!mealCard.querySelector("#meal-table-container")) {
               mealCard.innerHTML = `
-                <div class="shift-number">Питание</div>
-                <div class="lesson-header">
-                  <div id="meal-name"></div>
-                  <div id="meal-remaining">
-                    <span class="hourglass-icon">
-                      <svg width="20" height="20" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5C4.44772 3 4 3.44772 4 4V6.58579C4 7.11622 4.21071 7.62493 4.58579 8L8 11.4142V12.5858L4.58579 16C4.21071 16.3751 4 16.8838 4 17.4142V20C4 20.5523 4.44772 21 5 21H19C19.5523 21 20 20.5523 20 20V17.4142C20 16.8838 19.7893 16.3751 19.4142 16L16 12.5858V11.4142L19.4142 8C19.7893 7.62493 20 7.11622 20 6.58579V4C20 3.44772 19.5523 3 19 3ZM18 6H6V5H18V6ZM12 11V13L15.4142 16.4142C15.7893 16.7893 16 17.298 16 17.8284V19H8V17.8284C8 17.298 8.21071 16.7893 8.58579 16.4142L12 13V11Z" fill="currentColor"/></svg>
-                    </span>
-                    <span class="remaining-text"></span>
-                  </div>
-                </div>
-                <div class="progress-time-labels">
-                  <span id="meal-start-time"></span>
-                  <span id="meal-end-time"></span>
-                </div>
-                <div class="progress-bar">
-                  <div id="meal-progress"></div>
-                </div>
+                <div id="meal-table-container" style="margin-top:0.3rem;"></div>
               `;
             }
             mealCard.classList.remove("no-lessons");
           }
         }
       }
-
       // === Остальные функции без изменений ===
       function getCurrentTimeInKamchatkaContext() {
         const now = new Date();
@@ -1651,7 +1505,6 @@ body.night-mode #meals-full .full-lesson-name {
         const localSeconds = String(now.getSeconds()).padStart(2, "0");
         return `${localHours}:${localMinutes}:${localSeconds}`;
       }
-
       function getCurrentDayOfWeek() {
         const now = new Date();
         const localOffsetMinutes = now.getTimezoneOffset();
@@ -1663,7 +1516,6 @@ body.night-mode #meals-full .full-lesson-name {
         const day = kamchatkaDate.getDay();
         return day === 0 ? 0 : day;
       }
-
       function timeToSeconds(timeString) {
         const parts = timeString.split(":").map(Number);
         if (parts.length === 2) return parts[0] * 3600 + parts[1] * 60;
@@ -1671,7 +1523,6 @@ body.night-mode #meals-full .full-lesson-name {
           return parts[0] * 3600 + parts[1] * 60 + parts[2];
         return 0;
       }
-
       function isTimeBetween(currentTime, startTime, endTime) {
         const now = new Date();
         const localOffsetMinutes = now.getTimezoneOffset();
@@ -1691,12 +1542,10 @@ body.night-mode #meals-full .full-lesson-name {
           kamchatkaEquivalentSeconds < endSeconds
         );
       }
-
       function renderFullSchedule() {
         const day = getCurrentDayOfWeek();
         const currentTime = getCurrentTimeInKamchatkaContext();
         const scheduleData = schedule[day];
-
         function renderShift(shiftKey, containerId) {
           const container = document.getElementById(containerId);
           if (!container || !scheduleData || !scheduleData[shiftKey]) {
@@ -1726,7 +1575,6 @@ body.night-mode #meals-full .full-lesson-name {
             container.appendChild(lessonEl);
           });
         }
-
         renderShift("shift1", "shift1-full");
         renderShift("shift2", "shift2-full");
         // Убираем вкладку питания из развернутого расписания (не показываем meals-full)
@@ -1741,7 +1589,6 @@ body.night-mode #meals-full .full-lesson-name {
           console.warn("Hide meals tab failed", e);
         }
       }
-
       function calculateRemainingTime(currentTime, endTime) {
         const now = new Date();
         const localOffsetMinutes = now.getTimezoneOffset();
@@ -1767,7 +1614,6 @@ body.night-mode #meals-full .full-lesson-name {
           return `${Math.ceil(remainingTotalSeconds)} сек`;
         }
       }
-
       function formatTimeDifference(diffSeconds) {
         if (diffSeconds <= 0) return "0 мин";
         const days = Math.floor(diffSeconds / 86400);
@@ -1781,7 +1627,6 @@ body.night-mode #meals-full .full-lesson-name {
         if (minutes > 0 || parts.length === 0) parts.push(`${minutes} мин`);
         return parts.join(" ") || "0 мин";
       }
-
       function updateProgressBar(progressBar, currentTime, startTime, endTime) {
         const now = new Date();
         const localOffsetMinutes = now.getTimezoneOffset();
@@ -1806,7 +1651,6 @@ body.night-mode #meals-full .full-lesson-name {
           progressBar.style.width = "0%";
         }
       }
-
       function findNextLessonTime(
         shiftData,
         currentTime,
@@ -1850,7 +1694,6 @@ body.night-mode #meals-full .full-lesson-name {
         }
         return null;
       }
-
       function updateShiftDisplay(
         shiftData,
         lessonNameElement,
@@ -1866,7 +1709,6 @@ body.night-mode #meals-full .full-lesson-name {
         lessonCard.classList.remove("collapsed");
         progressBarContainer.classList.remove("hidden");
         progressTimeLabels.classList.remove("hidden");
-
         if (!shiftData || shiftData.length === 0) {
           lessonNameElement.textContent = "Нет уроков";
           remainingElement.style.visibility = "hidden";
@@ -1878,12 +1720,10 @@ body.night-mode #meals-full .full-lesson-name {
           lessonCard.classList.add("collapsed");
           return;
         }
-
         const currentTime = getCurrentTimeInKamchatkaContext();
         const currentLessonIndex = shiftData.findIndex((lesson) =>
           isTimeBetween(currentTime, lesson.start, lesson.end)
         );
-
         if (currentLessonIndex !== -1) {
           const lesson = shiftData[currentLessonIndex];
           lessonNameElement.textContent = lesson.lesson;
@@ -1970,7 +1810,6 @@ body.night-mode #meals-full .full-lesson-name {
           }
         }
       }
-
       function getLocalTimes(startTimeStr, endTimeStr) {
         const [sh, sm] = startTimeStr.split(":").map(Number);
         const [eh, em] = endTimeStr.split(":").map(Number);
@@ -1994,7 +1833,6 @@ body.night-mode #meals-full .full-lesson-name {
         endDate.setMinutes(endDate.getMinutes() - offsetDiffMinutes);
         return { startDate, endDate };
       }
-
       // === ФОН И ТЕМА (ВЫЗЫВАЕТСЯ ВСЕГДА) ===
       function updateThemeAndBackground() {
         const now = new Date();
@@ -2005,7 +1843,6 @@ body.night-mode #meals-full .full-lesson-name {
           now.getTime() + offsetDiffMinutes * 60 * 1000
         );
         const hour = kamchatkaDate.getHours();
-
         const body = document.body;
         const html = document.documentElement;
         const themeColorMeta = document.getElementById("themeColor");
@@ -2020,7 +1857,6 @@ body.night-mode #meals-full .full-lesson-name {
         ];
         document.getElementById("dayOfWeek").textContent =
           dayNames[getCurrentDayOfWeek()];
-
         let bg, color;
         const isNight = hour < 6 || hour >= 20;
         if (isNight) {
@@ -2053,17 +1889,13 @@ body.night-mode #meals-full .full-lesson-name {
           html.style.transition = "background-color 0.5s ease";
         }, 50);
       }
-
       function updateSchedule() {
         updateThemeAndBackground();
-
         // Применяем отмену по сменам
         applyNoLessonsReasonToShifts();
-
         // === ВСЕГДА обновляем смены, у которых уроки ЕСТЬ ===
         const dayOfWeek = getCurrentDayOfWeek();
         const todaySchedule = schedule[dayOfWeek];
-
         const shifts = [
           {
             name: "lesson1",
@@ -2078,7 +1910,6 @@ body.night-mode #meals-full .full-lesson-name {
             cancel: lessons2,
           },
         ];
-
         shifts.forEach((shift) => {
           const prefix = shift.name;
           const nameEl = document.getElementById(`${prefix}-name`);
@@ -2086,10 +1917,8 @@ body.night-mode #meals-full .full-lesson-name {
           const startEl = document.getElementById(`${prefix}-start-time`);
           const endEl = document.getElementById(`${prefix}-end-time`);
           const progEl = document.getElementById(`${prefix}-progress`);
-
           // Пропускаем, только если смена отменена
           if (shift.cancel !== 0 || !nameEl) return;
-
           updateShiftDisplay(
             shift.data,
             nameEl,
@@ -2100,28 +1929,17 @@ body.night-mode #meals-full .full-lesson-name {
             shift.key
           );
         });
-
         // Обновляем карточку питания (только если занятия не отменены у ОБЕИХ смен)
         try {
           if (!(lessons1 !== 0 && lessons2 !== 0)) {
-            const mealData = mealsSchedule[dayOfWeek];
-            const mealNameEl = document.getElementById("meal-name");
-            const mealRemEl = document.getElementById("meal-remaining");
-            const mealStartEl = document.getElementById("meal-start-time");
-            const mealEndEl = document.getElementById("meal-end-time");
-            const mealProgEl = document.getElementById("meal-progress");
-            if (mealNameEl && mealProgEl) {
-              updateMealDisplay(mealData, mealNameEl, mealRemEl, mealStartEl, mealEndEl, mealProgEl);
-            }
+            updateMealDisplay();
           }
         } catch (e) {
           console.warn("Meal update failed", e);
         }
-
         // renderFullSchedule() — вызываем всегда (для боковой панели)
         renderFullSchedule();
       }
-
       function createStars() {
         removeStars();
         const container = document.createElement("div");
@@ -2132,9 +1950,7 @@ body.night-mode #meals-full .full-lesson-name {
         container.style.height = "100vh";
         container.style.pointerEvents = "none";
         container.style.zIndex = "1";
-
         const numStars = 45;
-
         for (let i = 0; i < numStars; i++) {
           const star = document.createElement("div");
           star.classList.add("star");
@@ -2152,9 +1968,7 @@ body.night-mode #meals-full .full-lesson-name {
       function createClouds() {
           // Проверка — если контейнер уже есть, не создаём заново
           if (document.getElementById("cloud-container")) return;
-
           const isWinter = [12, 1, 2].includes(new Date().getMonth() + 1);
-
           const container = document.createElement("div");
           container.id = "cloud-container";
           container.style.position = "fixed";
@@ -2165,9 +1979,7 @@ body.night-mode #meals-full .full-lesson-name {
           container.style.pointerEvents = "none";
           container.style.zIndex = "1";
           container.style.overflow = "hidden";
-
           const screenWidth = window.innerWidth;
-
           if (!isWinter) {
               // Летний режим (облака)
               const numClouds = Math.max(
@@ -2177,71 +1989,54 @@ body.night-mode #meals-full .full-lesson-name {
                       Math.round(((screenWidth - 400) / (2000 - 400)) * (20 - 6) + 6)
                   )
               );
-
               for (let i = 0; i < numClouds; i++) {
                   const cloud = document.createElement("div");
                   cloud.classList.add("cloud");
-
                   const top = Math.random() * 10 + 4;
                   cloud.style.top = `${top}vh`;
-
                   const baseMin = 60;
                   const baseMax = 50;
                   const baseWidth = Math.random() * baseMax + baseMin;
                   cloud.dataset.baseWidth = baseWidth;
-
                   const progress = Math.random();
                   cloud.dataset.progress = progress;
-
                   const initialX = Math.random() * 100;
                   cloud.style.left = `${initialX}vw`;
-
                   cloud.style.transform = `translateX(0)`;
                   cloud.style.animationDelay = `${-(Math.random() * 100)}s`;
-
                   let initialOpacity = 0;
                   if (progress >= 0.05 && progress <= 0.95) initialOpacity = 0.7;
                   else if (progress > 0.95)
                       initialOpacity = ((1 - progress) / 0.05) * 0.7;
-
                   cloud.style.opacity = initialOpacity;
-
                   container.appendChild(cloud);
               }
           } else {
               // Зимний режим (снег)
               const numSnow = Math.floor(screenWidth / 25);
-
               for (let i = 0; i < numSnow; i++) {
                   const flake = document.createElement("div");
                   flake.classList.add("snowflake");
-
                   flake.style.left = `${Math.random() * 100}vw`;
                   flake.style.animationDelay = `${Math.random() * -20}s`;
                   const duration = Math.random() * 10 + 10;
                   flake.style.animationDuration = `${duration}s`;
-
                   container.appendChild(flake);
               }
           }
-
           document.body.appendChild(container);
-
           if (!isWinter) updateClouds();
       }
       function updateClouds() {
         const clouds = document.querySelectorAll(".cloud");
         const screenWidth = window.innerWidth;
-
         clouds.forEach((cloud) => {
           const baseWidth = parseFloat(cloud.dataset.baseWidth);
-
           // Размер
           const scale = Math.min(2.8, Math.max(1, screenWidth / 2000 + 0.5));
           const width = baseWidth * scale;
           cloud.style.width = `${width}px`;
           cloud.style.height = `${width * 0.85}px`;
-
           // Скорость анимации
           const minDuration = 20;
           const maxDuration = 300;
@@ -2254,21 +2049,17 @@ body.night-mode #meals-full .full-lesson-name {
           )}s`;
         });
       }
-
       function removeClouds() {
         const container = document.getElementById("cloud-container");
         if (container) container.remove();
       }
-
       function removeStars() {
         document
           .querySelectorAll('div[style*="position: fixed"] .star')
           .forEach((s) => s.closest("div").remove());
       }
-
       // Создаём облака при загрузке страницы
       createClouds();
-
       function renderWeeklySchedule() {
         const slider = document.getElementById("scheduleSlider");
         if (!slider) return;
@@ -2299,7 +2090,6 @@ body.night-mode #meals-full .full-lesson-name {
           slider.appendChild(dayEl);
         }
       }
-
       function openSchedulePanel() {
         renderWeeklySchedule();
         updateDayDisplay();
@@ -2310,7 +2100,6 @@ body.night-mode #meals-full .full-lesson-name {
           setTimeout(() => panel.classList.add("open"), 10);
         }
       }
-
       function closeSchedulePanel() {
         const panel = document.querySelector(".full-schedule-panel");
         if (panel) {
@@ -2323,10 +2112,8 @@ body.night-mode #meals-full .full-lesson-name {
           }, 300);
         }
       }
-
       let currentDayIndex = getCurrentDayOfWeek();
       if (currentDayIndex === 0 || currentDayIndex === 6) currentDayIndex = 1;
-
       function updateDayDisplay() {
         const dayNames = [
           "Воскресенье",
@@ -2348,11 +2135,9 @@ body.night-mode #meals-full .full-lesson-name {
           });
         }
       }
-
       // === ИНИЦИАЛИЗАЦИЯ ===
       createClouds();
       window.addEventListener("resize", updateClouds);
-
       document.getElementById("prevDay")?.addEventListener("click", () => {
         if (currentDayIndex > 1) {
           currentDayIndex--;
@@ -2371,16 +2156,13 @@ body.night-mode #meals-full .full-lesson-name {
       document
         .querySelector(".close-panel")
         ?.addEventListener("click", closeSchedulePanel);
-
       setInterval(updateSchedule, 1000);
       updateSchedule();
       renderFullSchedule();
-
       // === Деплой ===
       function updateDeployment() {
         const lastDeploymentElement =
           document.getElementById("last-deployment");
-
         // Получаем информацию о последнем деплое
         fetch(
           "https://api.github.com/repos/Cotoburger/Cotoburger.github.io/deployments",
@@ -2402,7 +2184,6 @@ body.night-mode #meals-full .full-lesson-name {
             const date = new Date(latestDeployment.created_at);
             const formattedDate = date.toLocaleDateString("ru-RU");
             const formattedTime = date.toLocaleTimeString("ru-RU");
-
             return fetch(latestDeployment.statuses_url, {
               headers: { Accept: "application/vnd.github.v3+json" },
             })
@@ -2422,7 +2203,6 @@ body.night-mode #meals-full .full-lesson-name {
                     : latestStatus.state === "failure"
                     ? "ERR"
                     : "Work";
-
                 if (lastDeploymentElement) {
                   lastDeploymentElement.textContent = `Изменение кода: ${formattedDate} ${formattedTime} (${statusText})`;
                 }
@@ -2435,12 +2215,12 @@ body.night-mode #meals-full .full-lesson-name {
             }
           });
       }
-      const observer = new IntersectionObserver((entries, obs) => {
+      const observer = new IntersectionObserver((entries, entriesObs) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             updateDeployment();
             setInterval(updateDeployment, 90000);
-            obs.unobserve(entry.target);
+            entriesObs.unobserve(entry.target);
           }
         });
       });
