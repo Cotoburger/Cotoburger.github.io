@@ -235,19 +235,16 @@
     </div>
     <script>
       (function () {
-        // обновляем переменную --vh под фактический размер экрана
         function updateVh() {
           const vh = window.innerHeight * 0.01;
           document.documentElement.style.setProperty("--vh", vh + "px");
         }
-        // сброс скролла в начало
         function resetScroll() {
           window.scrollTo(0, 0);
           document.documentElement.scrollTop = 0;
           document.body.scrollTop = 0;
         }
         let userScrolled = false;
-        // отмечаем, что пользователь начал скроллить
         window.addEventListener(
           "scroll",
           () => {
@@ -255,7 +252,6 @@
           },
           { once: true, passive: true }
         );
-        // отключаем восстановление скролла браузером
         if ("scrollRestoration" in history) {
           try {
             history.scrollRestoration = "manual";
@@ -285,7 +281,7 @@
       })();
     </script>
     <script>
-      const lessons1 = 0;
+      const lessons1 = 1;
       const lessons2 = 0;
       const reasons = {
         0: null,
