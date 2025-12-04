@@ -474,6 +474,7 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
      margin: 0.1rem;
      padding: 0.4rem 0.4rem;
 }
+
  .lesson-time {
      font-size: 0.95rem;
      font-weight: 600;
@@ -509,6 +510,12 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
      gap: 1rem;
     /* Добавляем промежуток между элементами */
 }
+
+body.night-mode .meal-table {
+  color: #f9f9f938 !important;
+  background-color: #fffcfc10 !important;
+}
+
  .lesson-time {
      font-size: 0.95rem;
 }
@@ -700,7 +707,7 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
   line-height: 1.3;
 }
 body.night-mode #meals-full .full-lesson-name {
-  color: #ffffff58;
+  color: #ffffff4d;
 }
  .schedule-content .shift-schedule {
      margin-bottom: 0rem;
@@ -1304,92 +1311,93 @@ body.night-mode #meals-full .full-lesson-name {
         0: {
           shift1: [],
           shift2: [],
-        },
+       },
       };
 
       let lastUpdateTime = 0;
         const UPDATE_INTERVAL = 60000; // 1 минута в миллисекундах
 
         function updateMealDisplay() {
-          // Загружаем меню из файла
-          async function loadFoodMenu() {
-            try {
-              const resp = await fetch("./foodmenu.txt", { cache: "no-store" });
-              const text = await resp.text();
-              const lines = text.split("\n").map(l => l.trim()).filter(l => l);
-              const food = {};
-              lines.forEach(line => {
-                const [meal, items] = line.split(":");
-                food[meal] = items.split(",").map(i => i.trim());
-              });
-              return food;
-            } catch (e) {
-              console.error("Не удалось загрузить foodmenu.txt", e);
-              return null;
-            }
+        // Загружаем меню из файла
+        async function loadFoodMenu() {
+          try {
+            const resp = await fetch("./foodmenu.txt", { cache: "no-store" });
+            const text = await resp.text();
+            const lines = text.split("\n").map(l => l.trim()).filter(l => l);
+            const food = {};
+            lines.forEach(line => {
+              const [meal, items] = line.split(":");
+              food[meal] = items.split(",").map(i => i.trim());
+            });
+            return food;
+          } catch (e) {
+            console.error("Не удалось загрузить foodmenu.txt", e);
+            return null;
+          }
+        }
+
+        // Рисуем таблицу
+        async function renderMealTable() {
+          const currentTime = Date.now();
+          if (currentTime - lastUpdateTime < UPDATE_INTERVAL) {
+            return; // Не обновляем, если не прошла минута
+          }
+          lastUpdateTime = currentTime;
+
+          const tableContainer = document.getElementById("meal-table-container");
+          if (!tableContainer) return;
+          let food = await loadFoodMenu();
+          if (food === null) {
+            food = {}; // Используем пустой объект для отображения пустой таблицы
           }
 
-          // Рисуем таблицу
-          async function renderMealTable() {
-            const currentTime = Date.now();
-            if (currentTime - lastUpdateTime < UPDATE_INTERVAL) {
-              return; // Не обновляем, если не прошла минута
-            }
-            lastUpdateTime = currentTime;
-
-            const tableContainer = document.getElementById("meal-table-container");
-            if (!tableContainer) return;
-            let food = await loadFoodMenu();
-            if (food === null) {
-              food = {}; // Используем пустой объект для отображения пустой таблицы
-            }
-
-            // Забираем дату, если есть
-            const menuDate = food["Дата меню"] || null;
-            if (menuDate) delete food["Дата меню"]; // чтобы не отображалось как приём пищи
-            let dateLabel = menuDate ? ` (${menuDate})` : "";
-            let tableHtml = `
-              <table style="
-                width:100%;
-                border-collapse:collapse;
-                font-size:1.1em;
-                background:rgba(255,255,255,0.13);
-                border-radius:0.7em;
-                overflow:hidden;
-              ">
-              <thead>
-                <tr style="background:rgba(0,0,0,0.07);font-weight:600;border-bottom:1px solid rgba(255,255,255,0.12);">
-                  <th style="padding:0.4em 0.2em;">Приём пищи</th>
-                  <th style="padding:0.4em 0.2em;">Меню${dateLabel}</th>
-                </tr>
-              </thead>
-              <tbody>
+          // Забираем дату, если есть
+          const menuDate = food["Дата меню"] || null;
+          if (menuDate) delete food["Дата меню"];
+          let dateLabel = menuDate ? ` (${menuDate})` : "";
+          
+          let tableHtml = `
+            <table class="meal-table" style="
+              width:100%;
+              border-collapse:collapse;
+              font-size:1.1em;
+              background:rgba(255,255,255,0.13);
+              border-radius:0.7em;
+              overflow:hidden;
+            ">
+            <thead>
+              <tr style="background:rgba(0,0,0,0.07);font-weight:600;border-bottom:1px solid rgba(255,255,255,0.12);">
+                <th style="padding:0.4em 0.2em;">Приём пищи</th>
+                <th style="padding:0.4em 0.2em;">Меню${dateLabel}</th>
+              </tr>
+            </thead>
+            <tbody>
+          `;
+          const order = ["Завтрак", "Обед", "Полдник"];
+          order.forEach(meal => {
+            const addBorder = meal !== "Полдник";
+            const menuItems = food[meal] ? food[meal].join(", ") : "";
+            tableHtml += `
+              <tr style="${addBorder ? 'border-bottom:1px solid rgba(255,255,255,0.1);' : ''}">
+                <td style="padding:0.6em 0.3em;">${meal}</td>
+                <td style="padding:0.6em 0.3em;">${menuItems}</td>
+              </tr>
             `;
-            const order = ["Завтрак", "Обед", "Полдник"];
-            order.forEach(meal => {
-              const addBorder = meal !== "Полдник";
-              const menuItems = food[meal] ? food[meal].join(", ") : ""; // Пусто, если нет данных
+            if (meal === "Полдник") {
               tableHtml += `
-                <tr style="${addBorder ? 'border-bottom:1px solid rgba(255,255,255,0.1);' : ''}">
-                  <td style="padding:0.6em 0.3em;">${meal}</td>
-                  <td style="padding:0.6em 0.3em;">${menuItems}</td>
+                <tr>
+                  <td colspan="2" style="padding:0.8em 0;"></td>
                 </tr>
               `;
-              if (meal === "Полдник") {
-                tableHtml += `
-                  <tr>
-                    <td colspan="2" style="padding:0.8em 0;"></td>
-                  </tr>
-                `;
-              }
-            });
-            tableHtml += `</tbody></table>`;
-            tableContainer.innerHTML = tableHtml;
-          }
-
-          // Запуск
-          renderMealTable();
+            }
+          });
+          tableHtml += `</tbody></table>`;
+          tableContainer.innerHTML = tableHtml;
         }
+
+        // Запуск
+        renderMealTable();
+      }
 
         // Обновленный вызов в функции updateSchedule
         try {
