@@ -160,7 +160,7 @@
  @keyframes cardFadeIn {
      0% {
          opacity: 0;
-         transform: scale(0.3) translateY(0.9375rem);
+         transform: scale(0.6) translateY(0.9375rem);
     }
      50% {
          opacity: 1;
@@ -171,31 +171,28 @@
          transform: scale(1) translateY(0);
     }
 }
- .lesson-card {
-     position: relative;
-     display: flex;
-     flex-direction: column;
-     padding: 1rem;
-     margin-bottom: 1.25rem;
-     border-radius: 1.4rem;
-     transform: translateZ(0);
-    /* создаёт отдельный слой заранее */
-    /* Полупрозрачный стеклянный фон */
-     background: rgba(255, 255, 255, 0.068);
-     border: 1px solid rgba(255, 255, 255, 0.1);
-    /* Размытие фона */
-     backdrop-filter: blur(1.3rem) saturate(115%);
-     -webkit-backdrop-filter: blur(1.3rem) saturate(115%);
-    /* Тени для глубины */
-     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), inset 0 0 2px rgba(255, 255, 255, 0.15);
-    /* Плавная анимация появления */
-     opacity: 0;
-     animation: cardFadeIn 0.4s ease-out forwards;
-     transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
-     overflow: hidden;
-    /* max-height: 31.25rem; */
-     color: #000;
-    /* Контрастный текст */
+.lesson-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  border-radius: 1.4rem;
+  transform: translateZ(0);
+  background: rgba(255, 255, 255, 0.068);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(1.3rem) saturate(115%);
+  -webkit-backdrop-filter: blur(1.3rem) saturate(115%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), inset 0 0 2px rgba(255, 255, 255, 0.15);
+
+  opacity: 0;
+  animation: cardFadeIn 0.35s ease-out forwards;
+
+  /* ✔ transition больше НЕ мешает animation */
+  transition: max-height 0.3s ease, transform 0.3s ease;
+
+  overflow: hidden;
+  color: #000;
 }
 /* Внутренний светящийся эффект */
  .lesson-card::before {
