@@ -522,7 +522,7 @@ body.night-mode .meal-table {
      z-index: 5;
      max-height: 93%;
      overflow-y: auto;
-     box-shadow: 0px 25px 25px rgba(0, 0, 0, 0.479);
+     box-shadow: 0 0 2rem rgba(0, 0, 0, 0.446);
      opacity: 0;
     /* Начальная прозрачность */
      transition: transform 0.3s ease, opacity 0.3s ease;
