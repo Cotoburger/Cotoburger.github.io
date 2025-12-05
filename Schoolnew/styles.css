@@ -516,13 +516,13 @@ body.night-mode .meal-table {
     /* Начальное уменьшение масштаба */
      border: 2px solid rgba(255, 255, 255, 0.1);
     /* Размытие фона */
-     backdrop-filter: blur(15px) saturate(110%);
-     -webkit-backdrop-filter: blur(15px) saturate(110%);
-     border-radius: 1.4rem;
+     backdrop-filter: blur(35px) saturate(120%);
+     -webkit-backdrop-filter: blur(35px) saturate(120%);
+     border-radius: 1.8rem;
      z-index: 5;
      max-height: 93%;
      overflow-y: auto;
-     box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.533);
+     box-shadow: 0px 25px 25px rgba(0, 0, 0, 0.479);
      opacity: 0;
     /* Начальная прозрачность */
      transition: transform 0.3s ease, opacity 0.3s ease;
