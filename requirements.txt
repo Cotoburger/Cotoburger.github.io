@@ -2,4 +2,3 @@ requests
 pdfplumber
 certifi
 datetime
-zoneinfo
