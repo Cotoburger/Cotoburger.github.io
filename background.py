@@ -7,13 +7,6 @@ import urllib3
 import re
 import os
 
-# --- 1. Проверка дня недели ---
-# Monday=0 ... Sunday=6
-weekday = datetime.today().weekday()
-if weekday >= 5:  # 5=Saturday, 6=Sunday
-    print("Сегодня выходной — скрипт не работает.")
-    exit()
-
 # Формируем URL файла PDF с сегодняшней датой в имени
 today_str = date.today().strftime("%d.%m.%Y")
 PDF_URL = f"https://sh1-petropavlovskkamchatskij-r30.gosweb.gosuslugi.ru/netcat_files/50/2957/Menyu_na_{today_str}g..pdf"
