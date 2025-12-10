@@ -1,8 +1,4 @@
 requests
 pdfplumber
 certifi
-pytesseract
-opencv-python
-numpy
-pdf2image
-pillow
+urllib3
