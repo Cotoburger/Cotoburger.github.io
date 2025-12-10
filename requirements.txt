@@ -1,9 +1,8 @@
 requests
 pdfplumber
 certifi
-datetime
 pytesseract
-cv2
+opencv-python
 numpy
 pdf2image
-PIL
+pillow
