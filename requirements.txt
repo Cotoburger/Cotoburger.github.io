@@ -2,3 +2,8 @@ requests
 pdfplumber
 certifi
 datetime
+pytesseract
+cv2
+numpy
+pdf2image
+PIL
