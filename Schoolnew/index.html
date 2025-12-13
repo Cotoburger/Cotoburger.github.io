@@ -457,41 +457,27 @@
           if (menuDate) delete food["Дата меню"];
           let dateLabel = menuDate ? ` (${menuDate})` : "";
           let tableHtml = `
-            <table class="meal-table" style="
+            <div class="meal-table" style="
               width:100%;
-              border-collapse:collapse;
               font-size:1.1em;
               background:rgba(255,255,255,0.13);
               border-radius:0.7em;
               overflow:hidden;
             ">
-            <thead>
-              <tr style="background:rgba(0,0,0,0.07);font-weight:600;border-bottom:1px solid rgba(255,255,255,0.12);">
-                <th style="padding:0.4em 0.2em;">Приём пищи</th>
-                <th style="padding:0.4em 0.2em;">Меню${dateLabel}</th>
-              </tr>
-            </thead>
-            <tbody>
+            <div style="text-align: center; font-weight: 600; padding: 0.4em 0.2em; background:rgba(0,0,0,0.07); border-radius: 0.5em; margin: 0.5em;">Меню${dateLabel}</div>
           `;
           const order = ["Завтрак", "Обед", "Полдник"];
           order.forEach(meal => {
             const addBorder = meal !== "Полдник";
             const menuItems = food[meal] ? food[meal].join(", ") : "";
             tableHtml += `
-              <tr style="${addBorder ? 'border-bottom:1px solid rgba(255,255,255,0.1);' : ''}">
-                <td style="padding:0.6em 0.3em;">${meal}</td>
-                <td style="padding:0.6em 0.3em;">${menuItems}</td>
-              </tr>
+              <div style="margin-bottom: 0.5em; padding: 0.6em 0.3em; ${addBorder ? 'border-bottom:1px solid rgba(255,255,255,0.1);' : ''}">
+                <div style="font-weight: 600; margin-bottom: 0.2em;">${meal}</div>
+                <div>${menuItems}</div>
+              </div>
             `;
-            if (meal === "Полдник") {
-              tableHtml += `
-                <tr>
-                  <td colspan="2" style="padding:0.8em 0;"></td>
-                </tr>
-              `;
-            }
           });
-          tableHtml += `</tbody></table>`;
+          tableHtml += `</div>`;
           // Анимация замены заглушки на данные
           tableContainer.style.transition = 'height 0.3s ease-in-out';
           tableContainer.style.overflow = 'hidden';
@@ -515,21 +501,15 @@
         // Функция для рендеринга заглушки
         function renderPlaceholderTable(container) {
           let tableHtml = `
-            <table class="meal-table" style="
+            <div class="meal-table" style="
               width:100%;
-              border-collapse:collapse;
               font-size:1.1em;
               background:rgba(255,255,255,0.13);
               border-radius:0.7em;
               overflow:hidden;
             ">
-            <thead>
-              <tr style="background:rgba(0,0,0,0.07);font-weight:600;border-bottom:1px solid rgba(255,255,255,0.12);">
-                <th style="padding:0.4em 0.2em;">Приём<br>пищи</th>
-                <th style="padding:0.4em 0.2em;">Меню(xx.xx.xxxx)</th>
-              </tr>
-            </thead>
-          </table>`;
+            <div style="text-align: center; font-weight: 600; padding: 0.4em 0.2em; background:rgba(0,0,0,0.07); border-radius: 0.5em; margin: 0 0.5em 0.5em 0.5em;">Меню(xx.xx.xxxx)</div>
+          </div>`;
           container.innerHTML = tableHtml;
         }
         // Запуск
