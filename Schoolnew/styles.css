@@ -772,7 +772,6 @@ body.night-mode #meals-full .full-lesson-name {
      .container {
          margin: 0 auto 2rem;
          padding: 1rem 0.625rem 0;
-         max-height: 90%;
          width: 90%;
          max-width: 62.5rem;
     }
