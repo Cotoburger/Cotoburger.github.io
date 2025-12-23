@@ -168,8 +168,97 @@
  .lesson-card:nth-child(2) {
      animation-delay: 0.25s;
 }
+
  .lesson-card:nth-child(3) {
      animation-delay: 0.35s;
+}
+
+/* Стили для карточки меню */
+.meal-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    padding: 0 0.2rem;
+}
+
+.meal-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #171717f3;
+    margin: 0;
+}
+
+.copy-menu-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.08);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #171717f3;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.copy-menu-btn:hover {
+    background: rgba(0, 0, 0, 0.12);
+    transform: scale(1.05);
+}
+
+.copy-menu-btn:active {
+    transform: scale(0.95);
+}
+
+.copy-menu-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Стили для ночной темы */
+body.night-mode .meal-title {
+    color: #ffffff58;
+}
+
+body.night-mode .copy-menu-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff58;
+}
+
+body.night-mode .copy-menu-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Уведомление о копировании */
+.copy-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.copy-notification.show {
+    transform: translateX(0);
+}
+
+body.night-mode .copy-notification {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
  .lesson-card-full:nth-child(1) {
