@@ -773,44 +773,47 @@ body.night-mode .meal-table {
      will-change: transform;
 }
 /* Стили для панели с расписанием */
- .full-schedule-panel {
-     will-change: transform, opacity;
-     user-select: none;
-     outline: none;
-     -webkit-tap-highlight-color: transparent;
-    /* Убирает подсветку при нажатии */
-     position: fixed;
-     width: 91%;
-     max-width: 38.25rem;
-     margin: 0 auto 2rem;
-     padding: 1.1rem;
-     padding-top: 0;
-    /* Убираем верхний отступ */
-     top: 50%;
-     left: 50%;
-     box-sizing: border-box;
-     transform: translate(-50%, -50%) scale(0.8);
-     border: 2px solid rgba(255, 255, 255, 0.1);
-     backdrop-filter: blur(10rem) saturate(120%);
-     -webkit-backdrop-filter: blur(10rem) saturate(120%);
-     border-radius: 1.8rem;
-     z-index: 5;
-     max-height: 93%;
-     overflow-y: auto;
-     box-shadow: 0 0 2rem rgba(0, 0, 0, 0.446);
-     opacity: 0;
-     transition: transform 0.3s ease, opacity 0.3s ease;
-     padding-top: 1.5rem;
-     scrollbar-width: none;
-     user-select: none;
-     -webkit-user-select: none;
-     -moz-user-select: none;
-     -ms-user-select: none;
+.full-schedule-panel {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+
+  width: 91%;
+  max-width: 42rem;
+  height: 83%;
+
+  box-sizing: border-box;
+  padding: 1.5rem;
+
+  border-radius: 1.8rem;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+
+  background: rgba(22, 22, 22, 0.95);
+  backdrop-filter: blur(10rem) saturate(120%);
+  -webkit-backdrop-filter: blur(10rem) saturate(120%);
+
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.446);
+
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  transform: scale(0.8);
+  opacity: 0;
+
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  will-change: transform, opacity;
+
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  z-index: 5;
 }
- .full-schedule-panel.open {
-     transform: translate(-50%, -50%) scale(1);
-     opacity: 1;
+
+.full-schedule-panel.open {
+  transform: scale(1);
+  opacity: 1;
 }
+
  .full-schedule-panel.closing {
      transform: translate(-50%, -50%) scale(0.8);
     /* Уменьшение при закрытии */
@@ -993,7 +996,7 @@ body.night-mode #meals-full .full-lesson-name {
          top: 0.25rem;
     }
       .full-schedule-panel { 
-        max-height: 42rem;
+        height: 41rem;
     }
 }
  @media (min-width: 37.5625rem) {
