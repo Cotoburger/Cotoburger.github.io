@@ -144,6 +144,21 @@
      pointer-events: none;
      z-index: 0;
 }
+
+/* Внутренний светящийся эффект */
+ .lesson-card-full::before {
+     content: "";
+     position: absolute;
+     top: -50%;
+     left: -50%;
+     width: 200%;
+     height: 200%;
+     background: radial-gradient( circle at center, rgba(255, 255, 255, 0.023), transparent 70% );
+     pointer-events: none;
+     z-index: 0;
+}
+
+
 .lesson-card:nth-child(-n+2) {
   max-height: 8.5rem;
 }
@@ -590,6 +605,20 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
      margin-bottom: 0;
      text-align: center;
 }
+
+.full-schedule-panel.open .lesson-item {
+  border-radius: 0.2rem;
+  margin-bottom: 0.1rem;
+  margin-top: 0;
+  padding: 0rem;
+}
+
+.full-schedule-panel.open .schedule-index{
+  margin-top: 1rem !important;
+  margin-left: 0rem !important;
+  margin-right: 0rem !important;
+}
+
  body.night-mode .schedule-header {
      color: #606060;
 }
@@ -761,35 +790,26 @@ body.night-mode .meal-table {
      left: 50%;
      box-sizing: border-box;
      transform: translate(-50%, -50%) scale(0.8);
-    /* Начальное уменьшение масштаба */
      border: 2px solid rgba(255, 255, 255, 0.1);
-    /* Размытие фона */
-     backdrop-filter: blur(35px) saturate(120%);
-     -webkit-backdrop-filter: blur(35px) saturate(120%);
+     backdrop-filter: blur(10rem) saturate(120%);
+     -webkit-backdrop-filter: blur(10rem) saturate(120%);
      border-radius: 1.8rem;
      z-index: 5;
      max-height: 93%;
      overflow-y: auto;
      box-shadow: 0 0 2rem rgba(0, 0, 0, 0.446);
      opacity: 0;
-    /* Начальная прозрачность */
      transition: transform 0.3s ease, opacity 0.3s ease;
-    /* Плавные переходы */
      padding-top: 1.5rem;
      scrollbar-width: none;
      user-select: none;
      -webkit-user-select: none;
-    /* Safari */
      -moz-user-select: none;
-    /* Firefox */
      -ms-user-select: none;
-    /* IE/Edge */
 }
  .full-schedule-panel.open {
      transform: translate(-50%, -50%) scale(1);
-    /* Полный масштаб при открытии */
      opacity: 1;
-    /* Полная видимость */
 }
  .full-schedule-panel.closing {
      transform: translate(-50%, -50%) scale(0.8);
