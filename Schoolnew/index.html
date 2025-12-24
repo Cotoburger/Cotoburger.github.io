@@ -658,7 +658,7 @@
         const now = new Date(), off = 12 * 60 + now.getTimezoneOffset(), kDate = new Date(now.getTime() + off * 60 * 1000), hour = kDate.getHours();
         const names = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
         document.getElementById("dayOfWeek").textContent = names[getCurrentDayOfWeek()];
-        let bg, color, isNight = hour < 6 || hour >= 20;
+        let bg, color, isNight = hour < 0 || hour >= 20;
         if (isNight) { bg = "#000000"; color = "#000000"; removeClouds(); if (!document.querySelector(".star")) createStars(); document.body.classList.add("night-mode"); }
         else {
           if (hour < 12) bg = color = "#927A46"; 
