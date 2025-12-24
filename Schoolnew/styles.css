@@ -424,7 +424,7 @@ body.night-mode .meal-header {
 }
 
 .shift-schedule {
-  padding: 0 0.5rem; /* отступ слева и справа */
+  padding: 0 0.2rem; /* отступ слева и справа */
 }
 
 
@@ -652,6 +652,35 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
  body.night-mode #last-deployment {
      color: #4c4c4c92;
 }
+
+.shift-schedule:first-child .schedule-index {
+  margin-left: 0.3rem;
+  margin-right: 0;
+}
+
+.shift-schedule:last-child .schedule-index {
+  margin-left: 0;
+  margin-right: 0.3rem;
+}
+
+/* Общий стиль для смен */
+.shift-schedule {
+  display: flex;
+  flex-direction: column; /* уроки по вертикали */
+  gap: 0.3rem; /* расстояние между уроками */
+}
+
+/* Первая смена — отступ слева */
+#shift1-full {
+  margin-left: 0.3rem; /* левый отступ */
+}
+
+/* Вторая смена — отступ справа */
+#shift2-full {
+  margin-right: 0.3rem; /* правый отступ */
+}
+
+
  .lesson-item {
      gap: 0.1rem;
     /* Добавляем отступ */
