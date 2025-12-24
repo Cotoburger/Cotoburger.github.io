@@ -992,6 +992,9 @@ body.night-mode #meals-full .full-lesson-name {
          max-width: 75%;
          top: 0.25rem;
     }
+      .full-schedule-panel { 
+        height: 85vh;
+    }
 }
  @media (min-width: 37.5625rem) {
      .full-lesson-name {
