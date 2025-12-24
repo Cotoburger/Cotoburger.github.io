@@ -251,6 +251,42 @@ body.night-mode .copy-menu-btn:hover {
     -webkit-backdrop-filter: blur(10px);
 }
 
+
+.schedule-header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    padding: 0.4em ;
+    margin: 0.5em;
+
+    background: rgba(0, 0, 0, 0.07);
+    border-radius: 0.5em;
+}
+
+body.night-mode .schedule-header-container {
+    background: rgba(0, 0, 0, 0.192);
+}
+
+.schedule-header {
+    font-weight: 600;
+    font-size: 1.2rem !important;
+    margin: 0 !important;
+    color: inherit;
+}
+
+/* Кнопка в углу заголовка */
+.open-full-schedule {
+    position: absolute !important;
+    right: 0.4rem !important;
+    top: 55% !important;
+    transform: translateY(-50%) !important;
+    opacity: 0.7;
+    width: auto !important;
+    height: auto !important;
+}
+
 .copy-notification.show {
     transform: translateX(0);
 }
@@ -286,11 +322,97 @@ body.night-mode .copy-notification {
      transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
      overflow: hidden;
     /* max-height: 31.25rem; */
-     color: #000;
+     color: #232323;
     /* Контрастный текст */
 }
+
+/* Контейнер таблицы еды */
+.meal-table {
+  width: 100%;
+  font-size: 1.1em;
+  background: rgba(255, 255, 255, 0.13);
+  border-radius: 0.7em;
+  overflow: hidden;
+}
+
+/* Заголовок таблицы меню */
+.meal-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0.4em 0.2em;
+  background: rgba(0, 0, 0, 0.07);
+  border-radius: 0.5em;
+  margin: 0.5em;
+}
+
+body.night-mode .meal-header {
+  background: rgba(0, 0, 0, 0.192);
+}
+
+.meal-header-text {
+  font-weight: 600;
+}
+
+/* Кнопка копирования */
+.copy-button {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  opacity: 0.7;
+}
+
+.copy-button svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Ряд блюда */
+.meal-row {
+  margin-bottom: 0.5em;
+  padding: 0.6em 0.3em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.meal-row:last-child {
+  border-bottom: none; /* убираем нижнюю границу у последнего ряда */
+}
+
+/* Название блюда */
+.meal-title {
+  font-weight: 600;
+  margin-bottom: 0.2em;
+}
+
+/* Сами блюда */
+.meal-items {
+  /* здесь можно добавить отступы или перенос строк, если нужно */
+  word-break: break-word;
+}
+
+/* Плейсхолдер таблицы */
+.meal-placeholder {
+  text-align: center;
+  font-weight: 600;
+  padding: 0.4em 0.4em;
+  background: rgba(0, 0, 0, 0.07);
+  border-radius: 0.5em;
+  margin: 0.5em;
+}
+
  .shift-number {
-     font-size: 1.4rem;
+     font-size: 1.2rem;
      font-weight: 600;
      color: #191919;
      align-self: flex-end;
@@ -300,6 +422,12 @@ body.night-mode .copy-notification {
      border-radius: 4rem;
      padding: 0 1.2rem;
 }
+
+.shift-schedule {
+  padding: 0 0.5rem; /* отступ слева и справа */
+}
+
+
 .lesson-header {
     display: flex;
     align-items: center;
@@ -469,14 +597,13 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
      display: grid;
      grid-template-columns: 1fr 1fr;
      align-items: center;
-     gap: 1rem;
      width: 100%;
      opacity: 1;
-     margin-bottom: -0.37rem;
+     margin-bottom: 0.37rem;
 }
  .lesson-item {
-     background: rgba(255, 255, 255, 0.135);
-     border-radius: 1.4rem;
+     background: rgba(182, 181, 181, 0.135);
+     border-radius: 0.5rem;
      padding: 0.1rem;
      margin: 0.2rem 0;
      display: flex;
@@ -484,13 +611,7 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
      transition: all 0.3s ease;
 }
  body.night-mode .lesson-item {
-     background: rgba(163, 163, 163, 0.014);
-     border-radius: 1.4rem;
-     padding: 0.1rem;
-     margin: 0.2rem 0;
-     display: flex;
-     align-items: center;
-     transition: all 0.3s ease;
+     background: rgba(163, 163, 163, 0.047);
 }
  .lesson-item.current {
      background: #52ce52c6 !important;
@@ -501,10 +622,10 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
 }
  .lesson-number {
      font-weight: 600;
-     min-width: 1.6rem;
+     min-width: 1.4rem;
      text-align: center;
-     background: rgba(0, 0, 0, 0.1);
-     border-radius: 1rem;
+     background: rgba(0, 0, 0, 0.089);
+     border-radius: 0.5rem;
      margin: 0.1rem;
      padding: 0.4rem 0.4rem;
 }
@@ -744,23 +865,22 @@ body.night-mode #meals-full .full-lesson-name {
   color: #ffffff4d;
 }
  .schedule-content .shift-schedule {
-     margin-bottom: 0rem;
+    margin-bottom: 0rem;
+    padding: 1.1rem;
 }
  .schedule-index {
      font-size: 1.4rem;
      padding: 0.2rem;
-     margin-top: 1rem;
      margin-bottom: 0.5rem;
      font-weight: 600;
      text-align: center;
      color: #171717cb;
      background-color: rgba(0, 0, 0, 0.073);
-     border-radius: 2rem;
+     border-radius: 0.5rem;
 }
  .shift-schedule .schedule-index {
      font-size: 1.2rem;
      padding: 0.2rem 1rem;
-     margin-top: 0.7rem;
      margin-bottom: 0.1rem;
 }
  body.night-mode .schedule-content .schedule-index {
@@ -816,9 +936,6 @@ body.night-mode #meals-full .full-lesson-name {
      .day-header {
          font-size: 2.8rem;
          padding: 1.5rem 0;
-    }
-     .full-schedule-container {
-         padding-top: 0.50rem;
     }
      .full-schedule-panel h2 {
          font-size: 1.3rem;
