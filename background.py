@@ -118,9 +118,9 @@ lunch_text     = get_section(text_output, 'ОБЕД', ['ПОЛДНИК', 'ИТО
 snack_text     = get_section(text_output, 'ПОЛДНИК', ['ИТОГО', 'ВСЕГО'])
 
 res = {
-    "Завтрак": extract_dish_names(breakfast_text) or ["Не найдено"],
-    "Обед": extract_dish_names(lunch_text) or ["Не найдено"],
-    "Полдник": extract_dish_names(snack_text) or ["Не найдено"]
+    "Завтрак": extract_dish_names(breakfast_text) or ["Документ неправильно отсканирован"],
+    "Обед": extract_dish_names(lunch_text) or ["Документ неправильно отсканирован"],
+    "Полдник": extract_dish_names(snack_text) or ["Документ неправильно отсканирован"]
 }
 
 os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
