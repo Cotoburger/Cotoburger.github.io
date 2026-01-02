@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="Schedule">
+    <meta property="og:description" content="My BlackList">
+    <meta property="og:image" content="https://cotoburger.github.io/School1//images/icon.png">
+    <meta property="og:url" content="https://cotoburger.github.io/School1/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Schedule">
+    <meta name="twitter:description" content="My BlackList">
+    <meta name="twitter:image" content="https://cotoburger.github.io/School1//images/icon.png">
+    <meta name="twitter:url" content="https://cotoburger.github.io/School1/">
+    <title>Расписание звонков</title>
+    <link rel="icon" href="images/icon.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+</head>
+<body>
+    <div class="nav" id="nav">Black List</div>
+    <div class="grid" id="blacklist"></div>
+    <script>
+        async function loadBlacklist(sortOrder = 'asc') {
+    try {
+        let ascButton = document.getElementById('sort-asc');
+        let descButton = document.getElementById('sort-desc');
+        
+        // Делаем кнопки неактивными во время загрузки
+        ascButton.disabled = true;
+        descButton.disabled = true;
+        ascButton.classList.add('loading');
+        descButton.classList.add('loading');
+
+        let response = await fetch('blacklist.txt');
+        let data = await response.json();
+        
+        // Сортировка по имени
+        data.sort((a, b) => {
+            if (sortOrder === 'asc') {
+                return a.name.localeCompare(b.name);
+            } else {
+                return b.name.localeCompare(a.name);
+            }
+        });
+        
+        let container = document.getElementById('blacklist');
+        container.innerHTML = '';
+
+        for (let i = 0; i < data.length; i++) {
+            let person = data[i];
+            let card = document.createElement('div');
+            card.classList.add('card');
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(20px)';
+            card.style.position = 'relative';
+
+            let placeholder = document.createElement('div');
+            if (navigator.vibrate) {
+                navigator.vibrate([5]);
+            } 
+            console.log("card loaded");
+            placeholder.classList.add('placeholder');
+            card.appendChild(placeholder);
+
+            let img = new Image();
+            img.classList.add('avatar');
+            img.src = person.avatar;
+            img.alt = "Аватар";
+            
+            let info = document.createElement('div');
+            info.classList.add('info');
+            info.innerHTML = `
+                <div class="name">${person.name}</div>
+                <div class="reason">${person.reason}</div>
+            `;
+            
+            card.appendChild(img);
+            card.appendChild(info);
+            container.appendChild(card);
+
+            card.addEventListener('click', () => openPopup(person));
+            
+            await new Promise(resolve => {
+                img.onload = () => {
+                    setTimeout(() => {
+                        placeholder.style.display = 'none';
+                        card.style.transition = 'opacity 0.5s, transform 0.5s';
+                        card.style.opacity = 1;
+                        card.style.transform = 'translateY(0)';
+                        resolve();
+                    }, 50);
+                };
+                img.onerror = resolve;
+            });
+        }
+        
+        // После загрузки делаем кнопки активными
+        ascButton.disabled = false;
+        descButton.disabled = false;
+        ascButton.classList.remove('loading');
+        descButton.classList.remove('loading');
+    } catch (error) {
+        console.error("Ошибка загрузки списка", error);
+    }
+}
+
+function openPopup(person) {
+    let popup = document.getElementById('popup');
+    let popupContent = document.getElementById('popup-content');
+    if (navigator.vibrate) {
+        navigator.vibrate([14]);
+    }
+    popupContent.innerHTML = `
+        <div class="popup-header">
+            <h2>${person.name}</h2>
+            <button onclick="closePopup()">×</button>
+        </div>
+        <img class="popup-avatar" src="${person.avatar}" alt="Аватар">
+        <p><strong>Причина:</strong> ${person.reason}</p>
+        <d><strong></strong> ${person.description || 'Нет данных'}</d>
+    `;
+    popup.style.display = 'flex';
+    popup.style.justifyContent = 'center';
+    popup.classList.add('shake2');
+    popup.style.opacity = '0';
+    popup.style.transition = 'opacity 0.3s ease';
+    setTimeout(() => {
+        popup.style.opacity = '1';
+    }, 50);
+    setTimeout(() => {
+        popup.classList.remove('shake2');
+    }, 300);
+    popup.style.alignItems = 'center';
+}
+
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+    if (navigator.vibrate) {
+        navigator.vibrate([6]);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    let popup = document.createElement('div');
+    popup.id = 'popup';
+    popup.classList.add('popup');
+    
+    let popupContent = document.createElement('div');
+    popupContent.id = 'popup-content';
+    popupContent.classList.add('popup-content');
+    
+    popup.appendChild(popupContent);
+    popup.addEventListener('click', (event) => {
+        if (event.target === popup) closePopup();
+    });
+    document.body.appendChild(popup);
+    
+    let nav = document.getElementById('nav');
+let buttonContainer = document.createElement('div');
+buttonContainer.classList.add('sort-buttons');
+
+let ascButton = document.createElement('button');
+ascButton.id = 'sort-asc';
+ascButton.innerHTML = '';
+ascButton.classList.add('sort-button');
+ascButton.disabled = true;
+ascButton.addEventListener('click', () => loadBlacklist('asc'));
+
+let descButton = document.createElement('button');
+descButton.id = 'sort-desc';
+descButton.innerHTML = '';
+descButton.classList.add('sort-button');
+descButton.disabled = true;
+descButton.addEventListener('click', () => loadBlacklist('desc'));
+document.addEventListener('DOMContentLoaded', () => {
+    let ascButton = document.getElementById('sort-asc');
+    let descButton = document.getElementById('sort-desc');
+
+    // Устанавливаем первую кнопку как выбранную по умолчанию
+    ascButton.classList.add('selected');
+    
+    ascButton.addEventListener('click', () => {
+        // Снимаем класс с обеих кнопок
+        ascButton.classList.add('selected');
+        descButton.classList.remove('selected');
+        
+        // Загружаем список с сортировкой по возрастанию
+        loadBlacklist('asc');
+    });
+
+    descButton.addEventListener('click', () => {
+        // Снимаем класс с обеих кнопок
+        descButton.classList.add('selected');
+        ascButton.classList.remove('selected');
+        
+        // Загружаем список с сортировкой по убыванию
+        loadBlacklist('desc');
+    });
+});
+buttonContainer.appendChild(ascButton);
+buttonContainer.appendChild(descButton);
+nav.appendChild(buttonContainer);
+    loadBlacklist();
+});
+    </script>
+</body>
+</html>

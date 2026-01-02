@@ -1,0 +1,215 @@
+html {
+    background-color: #000;
+}
+
+body { font-family: Arial, sans-serif; text-align: center;  justify-content: flex-start; color: rgb(228, 66, 66);}
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: 0.4rem; padding: 0.4rem; padding-top: 3.1rem;}
+        .card {
+            display: flex;
+            align-items: center;
+            background: #3f3f3f60;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .card:hover { color: #ff0000; background-color: #4d4d4d62;}
+
+        .avatar { width: 6rem; height: 6rem; border-radius: 10%; object-fit: cover; margin-bottom: 10px; user-select: none;}
+        .info { text-align: left; width: 100%; user-select: none;}
+        .name { font-weight: bold; margin: 5px 0; user-select: none; padding-bottom: 0.7rem;}
+        .reason { font-size: 14px; color: rgba(148, 47, 47, 0.769); margin-top: auto; user-select: none; align-items: bottom;}
+        .nav { user-select: none; position: fixed; z-index: 1000; width: 100%; background-color: #000; padding: 0.3rem; top: 0; left: 0; font-size: 1.97rem; 
+            text-align: left; /* Выровнять по вертикали по центру */  border-bottom: 0.2rem solid #ff02022b;}
+
+            #sort-asc {
+                background-image: url('images/A-B.svg'); /* Путь к твоему SVG */
+                background-size: contain;
+                background-repeat: no-repeat;
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+            
+            #sort-desc {
+                background-image: url('images/B-A.svg'); /* Путь к другому SVG */
+                background-size: contain;
+                background-repeat: no-repeat;
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+            .sort-buttons {
+                display: flex;
+                justify-content: right;
+                gap: 0.7rem;
+                margin-top: -2.3rem;
+                padding-right: 0.6rem;
+                user-select: none;
+                outline: none;
+        -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
+            }
+
+        @media (min-width: 60rem) {
+            .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: 20px; padding: 20px; padding-top: 3rem;}
+        .card { display: flex; align-items: center; background: #3f3f3f60; padding: 15px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); position: relative; flex-direction: column; align-items: flex-start; }
+        .avatar { width: 9rem; height: 9rem; border-radius: 10%; object-fit: cover; margin-bottom: 10px; }
+        .info { text-align: left; width: 100%; }
+        .name { font-size: 1.5rem; font-weight: bold; margin: 5px 0; }
+        .reason { font-size: 1.2rem; color: rgba(148, 47, 47, 0.769); margin-top: auto; }
+        .nav {padding: 0.3rem; top: 0; left: 0; font-size: 2.3rem;
+            align-items: center; /* Выровнять по вертикали по центру */  border-bottom: 0.2rem solid #ff02022b;}
+            #sort-asc {
+                width: 2.7rem;
+                height: 2.7rem;
+            }
+            
+            #sort-desc {
+                width: 2.7rem;
+                height: 2.7rem;
+            }
+            .sort-buttons {
+                margin-top: -2.7rem;
+                padding-right: 0.6rem;
+            }
+
+        }
+
+        .popup-avatar {
+            width: 15rem; /* Максимальная ширина */
+            height: 15rem; /* Максимальная высота */
+            object-fit: cover; /* Растягивать изображение */
+            transform: translateY(-1rem);
+            border-radius: 10px; /* Скругленные углы для красоты */
+            color: #2e2e2e86;
+            user-select: none;
+            outline: none;
+    -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
+        }
+
+
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+            outline: none;
+    -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
+        }
+        /* Анимация тряски */
+@keyframes shake2 {
+    0% { transform: translate(-0%, -0%) translateX(0); }
+    25% { transform: translate(-0%, -0%) translateX(-5px); }
+    50% { transform: translate(-0%, -0%) translateX(5px); }
+    75% { transform: translate(-0%, -0%) translateX(-5px); }
+    100% { transform: translate(-0%, -0%) translateX(0); }
+}
+
+.shake2 {
+    animation: shake2 0.5s ease; /* Применяем анимацию тряски */
+}
+        .popup-content {
+            background-color: rgba(145, 144, 144, 0.169);
+            padding: 0.6rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 15rem;
+            text-align: center;
+            outline: none;
+    -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии */
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            transform: translateY(-1rem);
+        }
+        
+        .popup-header button {
+            position: absolute;
+            right: -0.5rem;
+            background: transparent;
+            border: none;
+            font-size: 3rem;
+            color: #000;
+            cursor: pointer;
+            transition: 0.3s;
+            user-select: none;
+        }
+        
+        .popup-header button:hover {
+            color: #ff0000;
+            user-select: none;
+        }
+
+        .popup-content p {
+            word-wrap: break-word;
+            white-space: normal;
+            font-size: 0.99rem;
+            user-select: none;
+        }
+        .popup-content d {
+            word-wrap: break-word;
+            white-space: normal;
+            color: #ab8888;
+            font-weight: 800;
+            user-select: none;
+        }
+
+        @keyframes fadeInZoom {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+
+        .sort-button {
+            background-color: #44444400;
+            color: rgba(255, 255, 255, 0);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            font-size: 1rem;
+            
+        }
+        
+        .sort-button.selected {
+    opacity: 1; /* Кнопка с классом selected будет полностью непрозрачной */
+}
+
+.sort-button:hover {
+    background-color: #66666608;
+    transform: scale(1.1);
+}
+
+.sort-button:active {
+    transform: scale(0.95);
+}
+
+.sort-button:disabled {
+    background-color: #88888821;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.sort-button.loading {
+    background-color: #aaaaaa0e;
+    transform: scale(0.7);
+    cursor: wait;
+}

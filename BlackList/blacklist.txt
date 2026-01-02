@@ -1,0 +1,63 @@
+[
+  { "name": "ArtyomK", "reason": "Постоянно мне звонит", "avatar": "images/artyomk.webp", 
+  "description": "ХВАТИТ МНЕ ЗВОНИТЬ!!!!!!!!" },
+
+  { "name": "Игорь Шлепцов", "reason": "Гей, педофил, программист.", "avatar": "images/igor.png", 
+  "description": "Соре игор" },
+
+  { "name": "Полина хз", "reason": " Полина Заслуженно", "avatar": "images/polina.png", 
+  "description": "Она меня оскорбляет наверное" },
+
+  { "name": "Nikita Noviko64", "reason": " Он в доту играет", "avatar": "images/Nikita.jpg", 
+  "description": "НЕНАВИЖУ ДОТЕРОВ!!!" },
+
+  { "name": "Егор", "reason": " Кидает закладки в Москве", "avatar": "images/egor.png", 
+  "description": "Дебил, а мог бы щас на Камчатке быть" },
+
+  { "name": "Усама Ben Ладен", "reason": " Самый конченный пользователь денфолда", "avatar": "images/denfold1.png", 
+  "description": "НУ ОН РЕАЛЬНО КОНЧЕННЫЙ" },
+
+  { "name": " Кореш", "reason": " Его только девочки пяти лет смотрят", "avatar": "images/koresh.png", 
+  "description": "А ещё все стримеры тупые" },
+
+  { "name": "Qkie", "reason": " Он какой то минус вайб", "avatar": "images/qkie.png", 
+  "description": "Не слишком жёстко потому что это друг Арсения" },
+
+  { "name": "Девочка Лиза", "reason": " Странная очень (на аватарке не она)", "avatar": "images/dvchka.png", 
+  "description": "Вроде норм но чёт не норм" },
+
+  { "name": "Девочка Дарина", "reason": " Ещё более странная", "avatar": "images/dvchka2.png", 
+  "description": "У всех пятиклассниц проблемы с ментальным здоровьем." },
+
+  { "name": "Павел Дуров", "reason": " Подписка в тг дорого стоит", "avatar": "images/pavel.png", 
+  "description": "Очень" },
+
+  { "name": " Влад", "reason": " читайте описание", "avatar": "images/vlad.png", 
+  "description": "В НАЧАЛЬНОЙ ШКОЛЕ СЛОМАЛ МОЙ ЗВЕЗДОЛЁТ ИЗ ПЛАСТИЛИНА" },
+
+  { "name": "Illumina", "reason": " Лол гей пендос плюс вайб", "avatar": "images/illumina.png", 
+  "description": "Это правда." },
+
+  { "name": "Ирина Степановна", "reason": " Она меня не любит очень", "avatar": "images/unknown.png", 
+  "description": "Лан шучу я её обожаю :heart:" },
+
+  { "name": " Андрей", "reason": " это вообще кто", "avatar": "images/andrey.png", 
+  "description": "Печка" },
+
+  { "name": " Папич", "reason": " Слишком адекватный", "avatar": "images/papich.png", 
+  "description": "ну лан не оч" },
+
+  { "name": "Лёша Катков", "reason": " Не скидывает что задали, ссылаясь на тг ", "avatar": "images/lesha.jpg", 
+  "description": "Совершает свинские поступки, ещё на геометрии с алгеброй не помогает лох" },
+
+  { "name": "Olivia Rodrigo", "reason": " Песни не про меня((", "avatar": "images/olivia.jpeg", 
+  "description": "Извени пожалуста оливия родрига соре" },
+
+  { "name": "Антон", "reason": " Ну а чё он в школу не ходит", "avatar": "images/anton.png", 
+  "description": "без комментариев, отличный человек" },
+
+  { "name": "Hardonium", "reason": " Фембой без паспорта а ещё ава чушпанская ", "avatar": "images/hardonium.png", 
+  "description": "Лох" }
+
+]
+
