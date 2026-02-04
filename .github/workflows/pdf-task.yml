@@ -21,7 +21,6 @@ jobs:
         with:
           python-version: "3.11"
 
-      # ✅ ВАЖНО: системные зависимости для OCR и PDF
       - name: Install system dependencies
         run: |
           sudo apt-get update
