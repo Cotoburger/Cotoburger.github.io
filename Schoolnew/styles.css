@@ -600,7 +600,7 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
      font-size: 1.7rem;
      font-weight: 600;
      margin-bottom: -3rem;
-     color: #1b1b1bcd;
+     color: #000;
      margin-bottom: 0;
      text-align: center;
 }
@@ -924,7 +924,7 @@ body.night-mode #meals-full .full-lesson-name {
      margin-bottom: 0.5rem;
      font-weight: 600;
      text-align: center;
-     color: #171717cb;
+     color: #171717d6;
      background-color: rgba(0, 0, 0, 0.073);
      border-radius: 0.5rem;
 }
