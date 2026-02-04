@@ -72,8 +72,6 @@ if len(text_output.strip()) < 50:
         text_output += page_text + "\n"
 
 def get_section(text, start_pattern, end_patterns):
-    # \b гарантирует, что "Обед" не совпадет с "Обедняя"
-    # re.M позволяет ^ искать в начале каждой строки
     regex_start = rf'^\s*{start_pattern}\b'
     m = re.search(regex_start, text, flags=re.I | re.M)
     if not m:
@@ -95,18 +93,20 @@ def extract_dish_names(section_text):
     
     for line in section_text.splitlines():
         line = line.strip()
+
+        # исправление OCR-ошибок
+        line = re.sub(r'2\(', 'Х', line)
+
         if not line or len(line) < 3:
             continue
         if any(word in line.lower() for word in stop_words):
             continue
-        if re.search(r'\d-\d', line): # убираем "7-11 лет"
+        if re.search(r'\d-\d', line):
             continue
 
-        # Отсекаем цифры (вес, цена) после названия
         parts = re.split(r'\s+\d', line)
         name = parts[0].strip('.,;:- ')
         
-        # Проверка, что в названии есть буквы, а не только мусор
         if name and re.search(r'[а-яА-Я]', name):
             names.append(name)
 
