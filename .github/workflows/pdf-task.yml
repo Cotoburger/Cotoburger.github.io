@@ -2,7 +2,7 @@ name: PDF Auto Parser
 
 on:
   schedule:
-    - cron: "0 */2 * * *"   # запуск каждые 2 часа
+    - cron: "0 */24 * * *"   # запуск каждые 2 часа
   workflow_dispatch:
 
 jobs:
