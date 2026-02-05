@@ -779,18 +779,16 @@ body.night-mode .meal-table {
 
   width: 91%;
   max-width: 42rem;
-  height: 83%;
+  height: 90%;
 
   box-sizing: border-box;
   padding: 1.5rem;
 
   border-radius: 1.8rem;
-  border: 2px solid rgba(255, 255, 255, 0.1);
 
   backdrop-filter: blur(10rem) saturate(120%);
   -webkit-backdrop-filter: blur(10rem) saturate(120%);
 
-  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.446);
 
   overflow-y: auto;
   scrollbar-width: none;
@@ -817,9 +815,6 @@ body.night-mode .meal-table {
     /* Уменьшение при закрытии */
      opacity: 0;
     /* Исчезновение */
-}
- body.night-mode .full-schedule-panel {
-     background: rgba(22, 22, 22, 0.95);
 }
  .panel-content {
      position: relative;
@@ -1100,18 +1095,24 @@ body.night-mode #meals-full .full-lesson-name {
  body.night-mode .day-navigation button {
      color: #f9f9f936;
 }
- .schedule-slider {
+.schedule-slider {
      margin-top: 1rem;
-     display: flex;
-     overflow: hidden;
      position: relative;
-     background: transparent;
      border-radius: 1rem;
      height: fit-content;
      width: 100%;
     /* Добавляем ширину 100% */
-     will-change: transform;
-    /* Оптимизация для браузера */
+}
+.schedule-viewport {
+    width: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+}
+.schedule-track {
+    display: flex;
+    width: 100%;
+    transition: transform 0.4s ease-in-out;
+    will-change: transform;
 }
  .day-schedule {
      flex: 0 0 100%;
@@ -1162,4 +1163,210 @@ body.night-mode #meals-full .full-lesson-name {
      border-radius: 12px;
      object-fit: contain;
      transition: transform 0.3s ease;
+}
+
+/* Mockup-style schedule panel */
+.full-schedule-panel {
+  width: min(92vw, 34rem);
+  padding: 1.25rem;
+  border-radius: 2.2rem;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.full-schedule-panel .panel-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+  position: relative;
+}
+
+.full-schedule-panel .close-panel {
+  position: absolute;
+  top: 0.2rem;
+  left: 0.2rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  border: 2px solid #b04a4a;
+  background: #d46a6a;
+  color: #6f2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  box-shadow: 0 0.4rem 0.9rem rgba(0, 0, 0, 0.2);
+}
+
+.full-schedule-panel .close-panel svg rect {
+  stroke: none;
+}
+
+.full-schedule-panel .close-panel svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.full-schedule-panel .day-navigation {
+  position: relative;
+  top: 0;
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border-radius: 999px;
+  border: 2px solid #9a9a9a;
+  background: #c8c8c8;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.full-schedule-panel .day-navigation h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #4a4a4a;
+  letter-spacing: 0.02em;
+  max-width: none;
+}
+
+.full-schedule-panel .day-navigation button {
+  position: relative;
+  width: 2.6rem;
+  height: 2.6rem;
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+  border-radius: 50%;
+  color: transparent;
+}
+
+.full-schedule-panel .day-navigation button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.full-schedule-panel #prevDay::before {
+  border-width: 0.7rem 1rem 0.7rem 0;
+  border-color: transparent #6a6a6a transparent transparent;
+}
+
+.full-schedule-panel #nextDay::before {
+  border-width: 0.7rem 0 0.7rem 1rem;
+  border-color: transparent transparent transparent #6a6a6a;
+}
+
+.full-schedule-panel .schedule-slider {
+  width: 100%;
+  margin-top: 0;
+  padding: 0.9rem;
+  background: #c1c1c1;
+  border-radius: 1.7rem;
+  box-shadow: inset 0 0 0 2px #8f8f8f00;
+}
+
+.full-schedule-panel .day-schedule {
+  margin-top: 0;
+  padding: 0.9rem;
+  background: #a5a5a5;
+  border-radius: 1.0rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+.full-schedule-panel .shift-schedule {
+  padding: 0;
+  gap: 0.6rem;
+}
+
+.full-schedule-panel .shift-schedule .schedule-index {
+  margin: 0;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: #8a8a8a;
+  color: #4b4b4b;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+}
+
+.full-schedule-panel .lesson-item {
+  margin: 0;
+  padding: 0.25rem 0.55rem;
+  border-radius: 2px;
+  background: #60606072;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  box-shadow: inset 0 0 0 1px rgba(38, 38, 38, 0.067);
+}
+
+.full-schedule-panel.open .lesson-item {
+  margin: 0;
+  padding: 0.25rem 0.35rem;
+  border-radius: 999px;
+}
+
+.full-schedule-panel.open .schedule-index {
+  margin: 0 !important;
+}
+
+.full-schedule-panel .lesson-number {
+  min-width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: #3f3f3f;
+  color: #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+}
+
+.full-schedule-panel .lesson-time {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #383838;
+  opacity: 1;
+  margin: 0;
+}
+
+.full-schedule-panel .full-lesson-name {
+  display: none;
+}
+
+@media (max-width: 37.5rem) {
+  .full-schedule-panel {
+    width: min(92vw, 30rem);
+    padding: 1rem;
+  }
+
+  .full-schedule-panel .day-navigation h2 {
+    font-size: 1.4rem;
+  }
+
+  .full-schedule-panel .lesson-time {
+    font-size: 0.95rem;
+  }
+}
+
+body.night-mode .full-schedule-panel .schedule-slider {
+background: #393838;
+}
+
+body.night-mode .day-navigation{
+background: #393838;
+border: 2px solid #0000001a;
+box-shadow: inset 0 0 0 1px #0000001a;
 }
