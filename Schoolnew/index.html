@@ -737,22 +737,34 @@
       function removeClouds() { const c = document.getElementById("cloud-container"); if (c) c.remove(); }
       function removeStars() { document.querySelectorAll('div[style*="position: fixed"] .star').forEach(s => s.closest("div").remove()); }
 
+      function getLessonBadge(label, index) {
+        const m = label.match(/\d+/);
+        if (m) return m[0];
+        if (/классн/i.test(label)) return "КЛ";
+        return String(index + 1);
+      }
+
       function renderWeeklySchedule() {
         const slider = document.getElementById("scheduleSlider"); if (!slider) return;
         slider.innerHTML = "";
+        const viewport = document.createElement("div"); viewport.className = "schedule-viewport";
+        const track = document.createElement("div"); track.className = "schedule-track";
+        viewport.appendChild(track);
+        slider.appendChild(viewport);
         for (let d = 1; d <= 5; d++) {
           const dayEl = document.createElement("div"); dayEl.className = "day-schedule";
           ["shift1", "shift2"].forEach(k => {
             const sEl = document.createElement("div"); sEl.className = "shift-schedule";
             sEl.innerHTML = `<div class="schedule-index">${k === "shift1" ? "1 смена" : "2 смена"}</div>`;
-            schedule[d][k].forEach(l => {
+            schedule[d][k].forEach((l, index) => {
               const lEl = document.createElement("div"); lEl.className = "lesson-item";
-              lEl.innerHTML = `<div class="lesson-time">${l.start} - ${l.end}</div><div class="full-lesson-name">${l.lesson}</div>`;
+              const badge = getLessonBadge(l.lesson, index);
+              lEl.innerHTML = `<div class="lesson-number">${badge}</div><div class="lesson-time">${l.start} - ${l.end}</div>`;
               sEl.appendChild(lEl);
             });
             dayEl.appendChild(sEl);
           });
-          slider.appendChild(dayEl);
+          track.appendChild(dayEl);
         }
       }
 
@@ -769,9 +781,10 @@
       let currentDayIndex = getCurrentDayOfWeek(); if (currentDayIndex === 0 || currentDayIndex === 6) currentDayIndex = 1;
       function updateDayDisplay() {
         const names = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
-        const t = document.getElementById("currentDayTitle"), s = document.getElementById("scheduleSlider");
+        const t = document.getElementById("currentDayTitle");
+        const track = document.querySelector("#scheduleSlider .schedule-track");
         if (t) t.textContent = names[currentDayIndex];
-        if (s) Array.from(s.children).forEach(c => c.style.transform = `translateX(-${(currentDayIndex - 1) * 100}%)`);
+        if (track) track.style.transform = `translateX(-${(currentDayIndex - 1) * 100}%)`;
       }
 
       window.addEventListener("resize", updateClouds);
@@ -779,6 +792,14 @@
       document.getElementById("nextDay")?.addEventListener("click", () => { if (currentDayIndex < 5) { currentDayIndex++; updateDayDisplay(); } });
       document.querySelector(".open-full-schedule")?.addEventListener("click", openSchedulePanel);
       document.querySelector(".close-panel")?.addEventListener("click", closeSchedulePanel);
+      document.addEventListener("click", (e) => {
+        const panel = document.querySelector(".full-schedule-panel");
+        if (!panel || !panel.classList.contains("open")) return;
+        if (panel.contains(e.target)) return;
+        e.preventDefault();
+        e.stopPropagation();
+        closeSchedulePanel();
+      }, true);
 
       setInterval(updateSchedule, 1000);
       updateSchedule();
