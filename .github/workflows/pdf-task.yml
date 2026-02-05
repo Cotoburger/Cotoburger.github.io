@@ -2,7 +2,7 @@ name: PDF Auto Parser
 
 on:
   schedule:
-    - cron: "0 */24 * * *"   # запуск каждые 2 часа
+    - cron: "0 */2 * * *"   # запуск каждые 2 часа
   workflow_dispatch:
 
 jobs:
@@ -34,10 +34,59 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Capture current menu date
+        id: menu_state
+        run: |
+          python - <<'PY'
+          from datetime import datetime, timedelta
+          from zoneinfo import ZoneInfo
+          import os
+          import pathlib
+          import re
+
+          today = (datetime.now(ZoneInfo("Asia/Kamchatka")) + timedelta(hours=5)).strftime("%d.%m.%Y")
+          path = pathlib.Path("Schoolnew/foodmenu.txt")
+          existing_date = ""
+          if path.exists():
+              m = re.search(r"\u0414\u0430\u0442\u0430 \u043c\u0435\u043d\u044e:\s*(\d{2}\.\d{2}\.\d{4})", path.read_text(encoding="utf-8", errors="ignore"))
+              if m:
+                  existing_date = m.group(1)
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+              f.write(f"today={today}\n")
+              f.write(f"existing_date={existing_date}\n")
+          PY
+
       - name: Run PDF script
         run: python background.py
 
+      - name: Decide whether to push
+        id: decide_push
+        env:
+          EXISTING_DATE: ${{ steps.menu_state.outputs.existing_date }}
+          TODAY: ${{ steps.menu_state.outputs.today }}
+        run: |
+          python - <<'PY'
+          import os
+          import pathlib
+
+          bad_phrase = "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442 \u043d\u0435\u043f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u043e \u043e\u0442\u0441\u043a\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u043d"
+          path = pathlib.Path("Schoolnew/foodmenu.txt")
+          text = path.read_text(encoding="utf-8", errors="ignore") if path.exists() else ""
+          has_bad = bad_phrase in text
+
+          existing_date = os.environ.get("EXISTING_DATE", "")
+          today = os.environ.get("TODAY", "")
+          should_push = "true"
+          if has_bad and existing_date and existing_date == today:
+              should_push = "false"
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+              f.write(f"should_push={should_push}\n")
+          PY
+
       - name: Commit changes
+        if: steps.decide_push.outputs.should_push == 'true'
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
