@@ -8,7 +8,7 @@ from zoneinfo import ZoneInfo
 import urllib3
 import pathlib
 
-DEV = 1
+DEV = 0
 OUTPUT_FILE = "Schoolnew/foodmenu.txt"
 MAX_RETRIES = 5
 RETRY_DELAY = 2  # секунды
