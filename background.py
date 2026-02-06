@@ -1,4 +1,5 @@
 import os
+import time
 import requests
 from google import genai
 from google.genai import types
@@ -7,8 +8,10 @@ from zoneinfo import ZoneInfo
 import urllib3
 import pathlib
 
-DEV = 0
+DEV = 1
 OUTPUT_FILE = "Schoolnew/foodmenu.txt"
+MAX_RETRIES = 5
+RETRY_DELAY = 2  # секунды
 
 KAMCHATKA_TZ = ZoneInfo("Asia/Kamchatka")
 now_kamchatka = datetime.now(KAMCHATKA_TZ)
@@ -59,13 +62,28 @@ def get_menu():
                 Полдник: Кекс творожный, Йогурт питьевой, Яблоко
                      (это лишь пример. тебе нужно подставить наименования из файла. не используй форматирование и четко соответствуй формату)"""
         
-        response = client.models.generate_content(
-            model="gemini-3-flash-preview",
-            contents=[
-                types.Part.from_bytes(data=pdf_data, mime_type='application/pdf'),
-                prompt
-            ]
-        )
+        # Функция для повторных попыток
+        def call_api_with_retry():
+            for attempt in range(MAX_RETRIES):
+                try:
+                    response = client.models.generate_content(
+                        model="gemini-3-flash-preview",
+                        contents=[
+                            types.Part.from_bytes(data=pdf_data, mime_type='application/pdf'),
+                            prompt
+                        ]
+                    )
+                    return response
+                except Exception as e:
+                    print(f"Попытка {attempt + 1}/{MAX_RETRIES} не удалась: {e}")
+                    if attempt < MAX_RETRIES - 1:
+                        print(f"Повторная попытка через {RETRY_DELAY} секунд...")
+                        time.sleep(RETRY_DELAY)
+                    else:
+                        raise
+        
+        # Вызов API с повторными попытками
+        response = call_api_with_retry()
         
         menu_text = response.text.strip()
         
@@ -78,6 +96,6 @@ def get_menu():
             print("✅ Готово!")
 
     except Exception as e:
-        print(f"Ошибка: {e}")
+        print(f"Ошибка после {MAX_RETRIES} попыток: {e}")
 
 get_menu()
