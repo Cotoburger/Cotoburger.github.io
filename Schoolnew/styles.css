@@ -1370,3 +1370,93 @@ background: #393838;
 border: 2px solid #0000001a;
 box-shadow: inset 0 0 0 1px #0000001a;
 }
+
+      /* Анимации для секретной функции Алины */
+      @keyframes heartFly {
+        0% {
+          transform: translateY(0) translateX(0) scale(1) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-50vh) translateX(calc(sin(45deg) * 30vw)) scale(1);
+        }
+        100% {
+          transform: translateY(-120vh) translateX(calc(sin(45deg) * 50vw)) scale(0.3) rotate(360deg);
+        }
+      }
+
+      @keyframes heartFade {
+        0% {
+          opacity: 1;
+          filter: blur(0px);
+        }
+        80% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          filter: blur(2px);
+        }
+      }
+
+      @keyframes alinaAppear {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.3);
+          filter: blur(10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+          filter: blur(0px);
+        }
+      }
+
+      @keyframes alinaGlow {
+        0%, 100% {
+          text-shadow: 0 0 20px rgba(255, 20, 147, 0.6), 
+                       0 0 40px rgba(255, 20, 147, 0.3),
+                       -2px -2px 0 rgba(255, 105, 180, 0.4),
+                       2px 2px 0 rgba(255, 105, 180, 0.4);
+        }
+        50% {
+          text-shadow: 0 0 40px rgba(255, 20, 147, 0.9), 
+                       0 0 80px rgba(255, 20, 147, 0.6),
+                       -3px -3px 0 rgba(255, 105, 180, 0.6),
+                       3px 3px 0 rgba(255, 105, 180, 0.6);
+        }
+      }
+
+      @keyframes alinaDisappear {
+        0% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+          text-shadow: 0 0 40px rgba(255, 20, 147, 0.9), 
+                       0 0 80px rgba(255, 20, 147, 0.6);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.8);
+          text-shadow: 0 0 0 rgba(255, 20, 147, 0);
+        }
+      }
+
+      /* Адаптив для мобильных устройств */
+      @media (max-width: 600px) {
+        #alina-animation-container > div {
+          font-size: clamp(1.5rem, 8vw, 4rem) !important;
+        }
+      }
+
+      /* Адаптив для планшетов */
+      @media (min-width: 601px) and (max-width: 1024px) {
+        #alina-animation-container > div {
+          font-size: clamp(3rem, 12vw, 6rem) !important;
+        }
+      }
+
+      /* Адаптив для больших экранов */
+      @media (min-width: 1025px) {
+        #alina-animation-container > div {
+          font-size: clamp(5rem, 15vw, 8rem) !important;
+        }
+      }
