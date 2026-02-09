@@ -989,6 +989,11 @@ body.night-mode #meals-full .full-lesson-name {
     }
 }
  @media (min-width: 37.5625rem) {
+
+      .meal-table {
+        /* width: 100%; */
+        font-size: 1.4em;
+    }
      .full-lesson-name {
          font-size: 1.3rem;
     }
