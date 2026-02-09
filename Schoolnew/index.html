@@ -170,7 +170,7 @@
         }
         originalLog.apply(console, args);
       };
-            (function () {
+      (function () {
         function updateVh() {
           const vh = window.innerHeight * 0.01;
           document.documentElement.style.setProperty("--vh", vh + "px");
@@ -438,15 +438,15 @@
         nameEl.textContent = 'Алина';
         document.body.appendChild(nameEl);
         
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 45; i++) {
           const heart = document.createElement('div');
           const size = Math.random() * 30 + 15;
           const startX = Math.random() * 100;
           const startY = Math.random() * 100;
-          const duration = Math.random() * 3 + 3;
-          const delay = Math.random() * 0.5;
+          const duration = Math.random() * 10 + 3;
+          const delay = Math.random() * 1.5;
           const fadeStart = Math.min(0.8, Math.max(0, (startY - 10) / 120));
-          const fadeDuration = duration * 0.2;
+          const fadeDuration = duration * 0.1;
           const fadeDelay = delay + duration * fadeStart;
           
           heart.style.cssText = `
