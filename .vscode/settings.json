@@ -1,3 +1,7 @@
 {
-    "Lingma.methodQuickOperation": false
+    "Lingma.methodQuickOperation": false,
+    "github-actions.workflows.pinned.refresh.enabled": true,
+    "github-actions.workflows.pinned.workflows": [
+        "dynamic/pages/pages-build-deployment"
+    ]
 }
