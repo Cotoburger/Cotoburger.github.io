@@ -162,7 +162,15 @@
       </div>
     </div>
     <script>
-      (function () {
+      console.log("Алина, я тебя люблю! ❤️");
+      const originalLog = console.log;
+      console.log = function(...args) {
+        if (args[0] && args[0].includes && args[0].includes('[Telegram.WebView]')) {
+          return;
+        }
+        originalLog.apply(console, args);
+      };
+            (function () {
         function updateVh() {
           const vh = window.innerHeight * 0.01;
           document.documentElement.style.setProperty("--vh", vh + "px");
