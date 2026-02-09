@@ -11,7 +11,7 @@ import pathlib
 DEV = 0
 OUTPUT_FILE = "Schoolnew/foodmenu.txt"
 MAX_RETRIES = 5
-RETRY_DELAY = 2  # секунды
+RETRY_DELAY = 2
 
 KAMCHATKA_TZ = ZoneInfo("Asia/Kamchatka")
 now_kamchatka = datetime.now(KAMCHATKA_TZ)
@@ -62,7 +62,6 @@ def get_menu():
                 Полдник: Блюдо1, Блюдо2, Блюдо3, Блюдо4
                      (это лишь пример. тебе нужно подставить наименования из файла. не используй форматирование и четко соответствуй формату)"""
         
-        # Функция для повторных попыток
         def call_api_with_retry():
             for attempt in range(MAX_RETRIES):
                 try:
@@ -82,7 +81,6 @@ def get_menu():
                     else:
                         raise
         
-        # Вызов API с повторными попытками
         response = call_api_with_retry()
         
         menu_text = response.text.strip()

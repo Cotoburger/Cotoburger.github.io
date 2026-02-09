@@ -400,7 +400,7 @@ body.night-mode .meal-header {
 }
 
 .meal-row:last-child {
-  border-bottom: none; /* убираем нижнюю границу у последнего ряда */
+  border-bottom: none; 
 }
 
 /* Название блюда */
@@ -411,7 +411,6 @@ body.night-mode .meal-header {
 
 /* Сами блюда */
 .meal-items {
-  /* здесь можно добавить отступы или перенос строк, если нужно */
   word-break: break-word;
 }
 
@@ -438,7 +437,7 @@ body.night-mode .meal-header {
 }
 
 .shift-schedule {
-  padding: 0 0.2rem; /* отступ слева и справа */
+  padding: 0 0.2rem;
 }
 
 
@@ -512,7 +511,6 @@ body.night-mode .meal-header {
  .cloud {
      position: absolute;
      width: 130px;
-    /* можешь менять размер */
      height: 90px;
      background: no-repeat center/contain;
      background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 67 44' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='paint_linear_0' x1='33.5' x2='33.5' y1='0' y2='44' gradientUnits='userSpaceOnUse'><stop stop-color='rgb(239,239,239)' offset='0' stop-opacity='0.289999992'/><stop stop-color='rgb(239,239,239)' offset='1' stop-opacity='0.0500000007'/></linearGradient></defs><path d='M14.6289 43.4133C18.6212 43.4133 22.2401 41.8099 24.8796 39.2102C25.0305 39.3761 25.1851 39.5386 25.3433 39.6974C27.9911 42.3552 31.6515 44 35.6943 44C39.6608 44 43.2585 42.4173 45.8936 39.8473C47.8462 40.8157 50.0454 41.36 52.3713 41.36C60.4504 41.36 67 34.7935 67 26.6932C67 18.5931 60.4504 12.0266 52.3713 12.0266C50.1559 12.0266 48.0555 12.5204 46.1736 13.4041C45.535 5.89504 39.2533 0 31.5984 0C23.6522 0 17.1857 6.35194 16.9748 14.2675C16.211 14.1441 15.4274 14.08 14.6289 14.08C6.54956 14.08 0 20.6465 0 28.7466C0 36.8468 6.54956 43.4133 14.6289 43.4133Z' fill='url(%23paint_linear_0)' fill-rule='evenodd'/></svg>");
@@ -694,33 +692,30 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
 /* Общий стиль для смен */
 .shift-schedule {
   display: flex;
-  flex-direction: column; /* уроки по вертикали */
-  gap: 0.3rem; /* расстояние между уроками */
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
 /* Первая смена — отступ слева */
 #shift1-full {
-  margin-left: 0.3rem; /* левый отступ */
+  margin-left: 0.3rem;
 }
 
 /* Вторая смена — отступ справа */
 #shift2-full {
-  margin-right: 0.3rem; /* правый отступ */
+  margin-right: 0.3rem;
 }
 
 
  .lesson-item {
      gap: 0.1rem;
-    /* Добавляем отступ */
 }
  .full-schedule-panel .lesson-item {
      display: flex;
      align-items: center;
      padding-left: 0.5rem;
      justify-content: space-between;
-    /* Добавляем распределение пространства */
      gap: 1rem;
-    /* Добавляем промежуток между элементами */
 }
 
 body.night-mode .meal-table {
@@ -756,14 +751,12 @@ body.night-mode .meal-table {
      user-select: none;
      outline: none;
      -webkit-tap-highlight-color: transparent;
-    /* Убирает подсветку при нажатии */
 }
  .open-full-schedule:hover {
      transform: scale(1.1);
      user-select: none;
      outline: none;
      -webkit-tap-highlight-color: transparent;
-    /* Убирает подсветку при нажатии */
 }
  body.night-mode .open-full-schedule {
      color: #f9f9f936;
@@ -771,15 +764,14 @@ body.night-mode .meal-table {
  .schedule-slider {
      will-change: transform;
 }
-/* Стили для панели с расписанием */
 .full-schedule-panel {
   position: fixed;
   inset: 0;
   margin: auto;
 
-  width: 91%;
+  width: 90%;
   max-width: 42rem;
-  height: 90%;
+  height: 50%;
 
   box-sizing: border-box;
   padding: 1.5rem;
@@ -812,14 +804,11 @@ body.night-mode .meal-table {
 
  .full-schedule-panel.closing {
      transform: scale(0.8);
-    /* Уменьшение при закрытии */
      opacity: 0;
-    /* Исчезновение */
 }
  .panel-content {
      position: relative;
      margin-top: 0;
-    /* Убираем верхний отступ */
 }
  .full-schedule-panel h2 {
      text-align: center;
@@ -832,16 +821,13 @@ body.night-mode .meal-table {
      z-index: 1;
      padding: 0.4rem;
      margin-top: 0;
-    /* Убираем верхний отступ */
 }
  body.night-mode .full-schedule-panel h2 {
      color: #ffffff60;
 }
  .close-panel {
      position: sticky;
-    /* добавлено */
      top: -0.7rem;
-    /* добавлено, чтобы кнопка была ниже заголовка */
      margin-top: -2rem;
      margin-left: -0.3rem;
      right: 2rem;
@@ -855,7 +841,6 @@ body.night-mode .meal-table {
      color: #ff000084;
      transition: transform 0.3s ease;
      z-index: 5;
-    /* добавлено, чтобы кнопка была поверх содержимого */
      outline: none;
 }
  .close-panel:hover {
@@ -888,18 +873,13 @@ body.night-mode .meal-table {
  .full-lesson-name {
      padding-right: 0.5rem;
      text-align: right;
-    /* Выравнивание текста по правому краю */
      flex-shrink: 0;
-    /* Запрещаем уменьшение элемента */
      margin-left: auto;
-    /* Прижимаем элемент к правому краю */
      max-width: 60%;
-    /* Ограничиваем ширину для переноса текста */
 }
  body.night-mode .full-lesson-name {
      color: #99999979;
 }
-/* Делает шрифт названий питания таким же, как в верхних картах */
 #meal-name, #meals-full .full-lesson-name {
   font-size: 2rem;
   font-weight: 600;
@@ -1053,7 +1033,6 @@ body.night-mode #meals-full .full-lesson-name {
      background: #cbcbcb6b;
      border: 1px solid rgba(41, 41, 41, 0.281);
      flex-direction: row;
-    /* Важно - горизонтальное расположение */
      align-items: center;
      justify-content: space-between;
      z-index: 11;
@@ -1062,30 +1041,24 @@ body.night-mode #meals-full .full-lesson-name {
 }
  .day-navigation h2 {
      margin: 0;
-    /* Убираем отступы */
      padding: 0.1rem;
      max-width: 11rem;
      font-size: 1.6rem;
-    /* Регулируем размер шрифта */
      line-height: 1;
-    /* Исправляем высоту строки */
      background-color: #00000000;
 }
  .day-navigation button {
      background: none;
      border: none;
      font-size: 2.4rem;
-    /* Увеличиваем размер стрелок */
      cursor: pointer;
      color: #0000008a;
      transition: transform 0.3s ease;
      line-height: 1;
-    /* Исправляем высоту строки */
      padding-left: 0.6rem;
      padding-right: 0.6rem;
      margin-top: -0.6rem;
      margin: 0rem 0.3rem;
-    /* Добавляем небольшие внешние отступы */
      outline: none;
 }
  .day-navigation button:hover {
@@ -1101,7 +1074,6 @@ body.night-mode #meals-full .full-lesson-name {
      border-radius: 1rem;
      height: fit-content;
      width: 100%;
-    /* Добавляем ширину 100% */
 }
 .schedule-viewport {
     width: 100%;
@@ -1116,19 +1088,15 @@ body.night-mode #meals-full .full-lesson-name {
 }
  .day-schedule {
      flex: 0 0 100%;
-    /* Меняем на 100% */
      transition: transform 0.4s ease-in-out;
      padding: 0.6rem;
      min-width: 100%;
-    /* Добавляем минимальную ширину */
      margin-top: -0.7rem;
      box-sizing: border-box;
-    /* Учитываем padding в размерах */
 }
  .schedule-slider.active .day-schedule {
      transform: translateX(-100%);
 }
-/* Заголовок смены при отмене */
  .no-lessons-header {
      font-size: 1.4rem;
      font-weight: 600;
@@ -1140,12 +1108,10 @@ body.night-mode #meals-full .full-lesson-name {
      border-radius: 4rem;
      padding: 0 1.2rem;
 }
-/* Ночная тема — заголовок */
  body.night-mode .no-lessons-header {
      color: #ffffff60;
      background-color: rgba(255, 255, 255, 0.1);
 }
-/* Контейнер для контента */
  .no-lessons-content {
      display: flex;
      flex-direction: column;
@@ -1154,7 +1120,6 @@ body.night-mode #meals-full .full-lesson-name {
      gap: 12px;
      padding: 0px 0px 0px;
 }
-/* Картинка */
  .no-lessons-image {
      max-width: 100%;
      max-height: 15rem;
@@ -1165,7 +1130,6 @@ body.night-mode #meals-full .full-lesson-name {
      transition: transform 0.3s ease;
 }
 
-/* Mockup-style schedule panel */
 .full-schedule-panel {
   width: min(92vw, 34rem);
   padding: 1.25rem;
@@ -1371,7 +1335,6 @@ border: 2px solid #0000001a;
 box-shadow: inset 0 0 0 1px #0000001a;
 }
 
-      /* Анимации для секретной функции Алины */
       @keyframes heartFly {
         0% {
           transform: translateY(0) translateX(0) scale(1) rotate(0deg);
@@ -1444,21 +1407,18 @@ box-shadow: inset 0 0 0 1px #0000001a;
         }
       }
 
-      /* Адаптив для мобильных устройств */
       @media (max-width: 600px) {
         #alina-animation-container > div {
           font-size: clamp(1.5rem, 8vw, 4rem) !important;
         }
       }
 
-      /* Адаптив для планшетов */
       @media (min-width: 601px) and (max-width: 1024px) {
         #alina-animation-container > div {
           font-size: clamp(3rem, 12vw, 6rem) !important;
         }
       }
 
-      /* Адаптив для больших экранов */
       @media (min-width: 1025px) {
         #alina-animation-container > div {
           font-size: clamp(5rem, 15vw, 8rem) !important;
