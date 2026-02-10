@@ -787,7 +787,7 @@ body.night-mode .meal-table {
 
   width: 90%;
   max-width: 42rem;
-  height: 50%;
+  height: fit-content;
 
   box-sizing: border-box;
   padding: 1.5rem;
