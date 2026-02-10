@@ -657,8 +657,13 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
  .lesson-item.current {
      background: #52ce52c6 !important;
 }
+.lesson-item.past {
+    background-color: #0000001b;
+    opacity: 0.7; /* слегка прозрачный для контраста с текущим */
+}
+
  body.night-mode .lesson-number {
-     color: #a5a5a57e;
+     color: #00000020;
      background: rgba(0, 0, 0, 0.1);
 }
  .lesson-number {
