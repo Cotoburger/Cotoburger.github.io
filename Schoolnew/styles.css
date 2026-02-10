@@ -663,8 +663,7 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
 }
 
  body.night-mode .lesson-number {
-     color: #00000020;
-     background: rgba(0, 0, 0, 0.1);
+     background: rgba(255, 255, 255, 0.059);
 }
  .lesson-number {
      font-weight: 600;
@@ -1338,6 +1337,11 @@ body.night-mode #meals-full .full-lesson-name {
 .full-schedule-panel .full-lesson-name {
   display: none;
 }
+
+body.night-mode .full-schedule-panel .lesson-number {
+  color: #0000003d !important; 
+} 
+
 
 @media (max-width: 37.5rem) {
   .full-schedule-panel {
