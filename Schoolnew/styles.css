@@ -1255,7 +1255,7 @@ body.night-mode #meals-full .full-lesson-name {
   width: 100%;
   margin-top: 0;
   padding: 0.9rem;
-  background: #c1c1c1;
+  background: #c1c1c138;
   border-radius: 1.7rem;
   box-shadow: inset 0 0 0 2px #8f8f8f00;
 }
