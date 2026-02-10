@@ -745,7 +745,7 @@
           let isBreak = false, next = null, bStart = null;
           for (let i = 0; i < data.length - 1; i++) {
             const e = timeToSeconds(data[i].end), s = timeToSeconds(data[i+1].start), n = (timeToSeconds(curr) + (12 * 60 + new Date().getTimezoneOffset()) * 60) % 86400;
-            if (n > e && n < s) { isBreak = true; next = data[i+1]; bStart = data[i].end; break; }
+            if (n >= e && n < s) { isBreak = true; next = data[i+1]; bStart = data[i].end; break; }
           }
           if (isBreak && next) {
             nameEl.textContent = "Перемена";
