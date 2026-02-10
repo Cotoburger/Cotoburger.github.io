@@ -4,11 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="theme-color" id="themeColor" content="#87CEEB" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="preconnect" href="https://telegram.org" />
-    <link rel="dns-prefetch" href="//telegram.org" />
     <link rel="preconnect" href="https://api.github.com" />
     <link rel="dns-prefetch" href="//api.github.com" />
-    <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
     <meta
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
@@ -162,14 +159,6 @@
       </div>
     </div>
     <script>
-      console.log("Алина, я тебя люблю! ❤️");
-      const originalLog = console.log;
-      console.log = function(...args) {
-        if (args[0] && args[0].includes && args[0].includes('[Telegram.WebView]')) {
-          return;
-        }
-        originalLog.apply(console, args);
-      };
       (function () {
         function updateVh() {
           const vh = window.innerHeight * 0.01;
