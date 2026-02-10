@@ -382,16 +382,12 @@
       function triggerAlinaAnimation() {
         const container = document.createElement('div');
         container.id = 'alina-animation-container';
-        container.className = 'alina-animation-container';
         container.style.cssText = `
           position: fixed;
           top: 0;
           left: 0;
           width: 100vw;
           height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
           pointer-events: none;
           z-index: 9999;
           overflow: hidden;
@@ -402,7 +398,11 @@
         
         const nameEl = document.createElement('div');
         nameEl.style.cssText = `
-          position: relative;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: clamp(4.5rem, 10vw, 8rem);
           font-weight: 900;
           color: #ff1493;
           text-shadow: 0 0 20px rgba(255, 20, 147, 0.6), 
@@ -411,31 +411,25 @@
                        2px 2px 0 rgba(255, 105, 180, 0.4);
           font-family: 'Arial Black', sans-serif;
           letter-spacing: 0.05em;
-          text-align: center;
           animation: alinaAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
                      alinaGlow 2s ease-in-out infinite 0.8s,
                      alinaDisappear 0.6s ease-out 4.4s forwards;
           z-index: 10000;
           pointer-events: none;
         `;
-        nameEl.className = 'alina-name';
-        nameEl.innerHTML = '<span class="alina-first">Алина </span><span class="alina-last">Бакун</span>';
-        container.appendChild(nameEl);
+        nameEl.textContent = 'Алина';
+        document.body.appendChild(nameEl);
         
-          const screenFactor = Math.min(window.innerWidth / 400, 1.5); 
-
-          for (let i = 0; i < 45; i++) {
-            const heart = document.createElement('div');
-            const size = (Math.random() * 30 + 15) * screenFactor;
-            const startX = Math.random() * 100;
-            const startY = Math.random() * 100;
-            const duration = Math.random() * 8 + 3;
-            const delay = Math.random() * 2;
-            const fadeStart = Math.min(0.8, Math.max(0, (startY - 25) / 120));
-            const fadeDuration = duration * 0.45;
-            const fadeDelay = delay + duration * fadeStart;
-          
-
+        for (let i = 0; i < 45; i++) {
+          const heart = document.createElement('div');
+          const size = Math.random() * 30 + 15;
+          const startX = Math.random() * 100;
+          const startY = Math.random() * 100;
+          const duration = Math.random() * 10 + 3;
+          const delay = Math.random() * 2;
+          const fadeStart = Math.min(0.8, Math.max(0, (startY - 10) / 120));
+          const fadeDuration = duration * 0.2;
+          const fadeDelay = delay + duration * fadeStart;
           
           heart.style.cssText = `
             position: fixed;
