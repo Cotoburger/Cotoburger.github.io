@@ -949,6 +949,23 @@
         setInterval(updateSchedule, 1000);
       });
 
+      // Обновляем тему когда приложение возвращается в фокус
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+          updateThemeAndBackground();
+        }
+      });
+
+      // Обновляем тему при восстановлении из кэша браузера
+      window.addEventListener("pageshow", () => {
+        updateThemeAndBackground();
+      });
+
+      // Обновляем тему при возвращении приложения в фокус на iOS
+      window.addEventListener("pagehide", () => {
+        updateThemeAndBackground();
+      });
+
       function updateDeployment() {
         const el = document.getElementById("last-deployment");
         fetch("https://api.github.com/repos/Cotoburger/Cotoburger.github.io/deployments", { headers: { Accept: "application/vnd.github.v3+json" } })
