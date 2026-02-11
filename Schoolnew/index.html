@@ -235,7 +235,7 @@
             { lesson: "4-й урок", start: "11:00", end: "11:40" },
             { lesson: "5-й урок", start: "11:50", end: "12:30" },
             { lesson: "6-й урок", start: "12:50", end: "13:30" },
-            { lesson: "7-й урок", start: "13:50", end: "14:30" },
+            { lesson: "7-й урок", start: "19:50", end: "20:30" },
           ],
           shift2: [
             { lesson: "0-й урок", start: "11:50", end: "12:30" },
@@ -772,13 +772,15 @@
         const now = new Date(), off = 12 * 60 + now.getTimezoneOffset(), kDate = new Date(now.getTime() + off * 60 * 1000), hour = kDate.getHours();
         const names = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
         document.getElementById("dayOfWeek").textContent = names[getCurrentDayOfWeek()];
-        let bg, color, isNight = hour < 6 || hour >= 19;
+        let bg, color, isNight = hour < 6 || hour >= 20;
         if (isNight) { bg = "#000000"; color = "#000000"; removeClouds(); if (!document.querySelector(".star")) createStars(); document.body.classList.add("night-mode"); }
         else {
-          if (hour < 10) bg = color = "#927A46"; 
+          if (hour < 9) bg = color = "#927A46"; 
+          else if (hour < 11) bg = color = "#548393"; 
           else if (hour < 13) bg = color = "#5D827F"; 
           else if (hour < 18) bg = color = "#6B7C8E"; 
-          else bg = color = "#4B5B6E";
+          else if (hour < 19) bg = color = "#4B5B6E";
+          else bg = color = "#31363C";
           removeStars(); if (!document.querySelector(".cloud")) createClouds(); document.body.classList.remove("night-mode");
         }
         document.documentElement.style.backgroundColor = bg;
