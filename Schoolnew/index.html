@@ -1,62 +1,53 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
+    <!-- Базовые метаданные -->
     <meta charset="UTF-8" />
-    <meta name="theme-color" id="themeColor" content="#87CEEB" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="preconnect" href="https://api.github.com" />
-    <link rel="dns-prefetch" href="//api.github.com" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
-    />
-    <link rel="shortcut icon" href="icons/icon-dark1x.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-dark1x.png">
-    <link
-      name="apple-touch-icon"
-      href="icons/icon-dark1x.png"
-      media="(prefers-color-scheme: dark)"
-      sizes="502x502"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="description" content="Расписание звонков в МАОУ Средняя школа №1" />
+    <meta name="theme-color" content="#87CEEB" />
+    
+    <!-- SEO и индексирование -->
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="Russian" />
+    
+    <!-- PWA и мобильные приложения -->
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover"
-    />
-    <meta property="og:title" content="Schedule" />
-    <meta
-      property="og:description"
-      content="Расписание звонков в МАОУ Средняя школа №1"
-    />
-    <meta
-      property="og:image"
-      content="https://cotoburger.github.io/Schoolnew/icons/icon.svg"
-    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Расписание" />
+    
+    <!-- Open Graph для социальных сетей -->
+    <meta property="og:title" content="Расписание уроков" />
+    <meta property="og:description" content="Расписание звонков в МАОУ Средняя школа №1" />
+    <meta property="og:image" content="https://cotoburger.github.io/Schoolnew/icons/icon.svg" />
     <meta property="og:url" content="https://cotoburger.github.io/Schoolnew/" />
     <meta property="og:type" content="website" />
+    
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Schedule" />
-    <meta
-      name="twitter:description"
-      content="Расписание звонков в МАОУ Средняя школа №1 v2"
-    />
-    <meta
-      name="twitter:image"
-      content="https://cotoburger.github.io/Schoolnew/icons/icon.svg"
-    />
-    <meta
-      name="twitter:url"
-      content="https://cotoburger.github.io/Schoolnew/"
-    />
-    <link rel="manifest" href="manifest.json" />
+    <meta name="twitter:title" content="Расписание уроков" />
+    <meta name="twitter:description" content="Расписание звонков в МАОУ Средняя школа №1" />
+    <meta name="twitter:image" content="https://cotoburger.github.io/Schoolnew/icons/icon.svg" />
+    
+    <!-- Иконки -->
     <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link rel="shortcut icon" href="icons/icon-dark1x.png" />
+    <link rel="apple-touch-icon" href="icons/icon-dark1x.png" sizes="180x180" />
     
-    <link rel="prefetch" href="foodmenu.txt" as="fetch" crossorigin>
+    <!-- Ресурсы -->
+    <link rel="manifest" href="manifest.json" />
+    <link rel="preconnect" href="https://api.github.com" />
+    <link rel="prefetch" href="foodmenu.txt" as="fetch" crossorigin />
     
-    <link rel="stylesheet" href="styles.css">
+    <!-- Стили -->
+    <link rel="stylesheet" href="styles.css" />
+    
+    <!-- Производительность -->
+    <link rel="preload" href="styles.css" as="style" />
+    <link rel="preload" href="icons/icon.svg" as="image" type="image/svg+xml" />
     
     <title>Расписание уроков</title>
-    
   </head>
   <body>
     <div class="day-header" id="dayOfWeek"></div>
@@ -192,10 +183,7 @@
         1: "Занятия отменены из за плохой погоды",
         2: "Уроков нет по техническим причинам",
         3: "☺︎ Каникулы ☃︎",
-        4: "Кимпинтяо",
-        5: "Чупапимуняню",
-        6: "Уроков нет — день самоуправления",
-        7: "/Schoolnew/icons/icon-dark1x.png",
+        4: "",
       };
       const schedule = {
         1: {

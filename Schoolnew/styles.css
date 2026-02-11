@@ -15,9 +15,7 @@
      height: 100%;
      margin: 0;
      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    /* поддержка iPhone с "чёлкой" */
      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    /* запрет выделения текста */
      user-select: none;
      -webkit-user-select: none;
      -moz-user-select: none;
@@ -27,12 +25,10 @@
 }
  body {
      min-height: 100vh;
-    /* вместо 100% */
      display: flex;
      flex-direction: column;
      align-items: stretch;
      position: relative;
-    /* скролл без полос */
      overflow-y: auto;
      overflow-x: hidden;
 }
@@ -49,7 +45,6 @@
 }
  body::-webkit-scrollbar {
      display: none;
-    /* убрать скроллбар в Safari */
 }
  body::-webkit-scrollbar {
      display: none;
@@ -128,13 +123,11 @@
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   background: rgba(255, 253, 253, 0.153);
 
-  /* ✔ transition больше НЕ мешает animation */
   transition: max-height 0.3s ease;
 
   overflow: hidden;
   color: #000;
 }
-/* Внутренний светящийся эффект */
  .lesson-card::before {
      content: "";
      position: absolute;
@@ -147,7 +140,6 @@
      z-index: 0;
 }
 
-/* Внутренний светящийся эффект */
  .lesson-card-full::before {
      content: "";
      position: absolute;
@@ -165,10 +157,8 @@
   max-height: 8.5rem;
   min-height: fit-content;
 }
-/* Эффект сжатия */
  .lesson-card.collapsed {
      transform: scaleY(0.98);
-    /* лёгкое сжатие для визуального эффекта */
 }
  .progress-bar, .progress-time-labels {
      transition: opacity 0.3s ease;
@@ -197,7 +187,6 @@
      animation-delay: 0.35s;
 }
 
-/* Стили для карточки меню */
 .meal-card-header {
     display: flex;
     align-items: center;
@@ -243,7 +232,6 @@
     height: 18px;
 }
 
-/* Стили для ночной темы */
 body.night-mode .meal-title {
     color: #ffffff58;
 }
@@ -257,7 +245,6 @@ body.night-mode .copy-menu-btn:hover {
     background: rgba(255, 255, 255, 0.15);
 }
 
-/* Уведомление о копировании */
 .copy-notification {
     position: fixed;
     top: 20px;
@@ -300,7 +287,6 @@ body.night-mode .schedule-header-container {
     color: inherit;
 }
 
-/* Кнопка в углу заголовка */
 .open-full-schedule {
     position: absolute !important;
     right: 0.4rem !important;
@@ -334,21 +320,16 @@ body.night-mode .copy-notification {
      margin-bottom: 1.25rem;
      border-radius: 1.4rem;
      border: 1px solid rgba(255, 255, 255, 0.1);
-    /* Размытие фона */
      backdrop-filter: blur(1.3rem) saturate(115%);
      -webkit-backdrop-filter: blur(1.3rem) saturate(115%);
-    /* Плавная анимация появления */
      opacity: 0;
      transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
      overflow: hidden;
-    /* max-height: 31.25rem; */
      color: #232323;
-    /* Контрастный текст */
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     background: rgba(255, 253, 253, 0.153);
 }
 
-/* Контейнер таблицы еды */
 .meal-table {
   width: 100%;
   font-size: 1.1em;
@@ -357,7 +338,6 @@ body.night-mode .copy-notification {
   overflow: hidden;
 }
 
-/* Заголовок таблицы меню */
 .meal-header {
   display: flex;
   align-items: center;
@@ -377,7 +357,6 @@ body.night-mode .meal-header {
   font-weight: 600;
 }
 
-/* Кнопка копирования */
 .copy-button {
   position: absolute;
   right: 8px;
@@ -400,7 +379,6 @@ body.night-mode .meal-header {
   stroke-linejoin: round;
 }
 
-/* Ряд блюда */
 .meal-row {
   margin-bottom: 0.5em;
   padding: 0.6em 0.3em;
@@ -411,18 +389,15 @@ body.night-mode .meal-header {
   border-bottom: none; 
 }
 
-/* Название блюда */
 .meal-title {
   font-weight: 600;
   margin-bottom: 0.2em;
 }
 
-/* Сами блюда */
 .meal-items {
   word-break: break-word;
 }
 
-/* Плейсхолдер таблицы */
 .meal-placeholder {
   text-align: center;
   font-weight: 600;
@@ -659,7 +634,7 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
 }
 .lesson-item.past {
     background-color: #0000001b;
-    opacity: 0.7; /* слегка прозрачный для контраста с текущим */
+    opacity: 0.7;
 }
 
  body.night-mode .lesson-number {
@@ -709,19 +684,16 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
   margin-right: 0.3rem;
 }
 
-/* Общий стиль для смен */
 .shift-schedule {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
 }
 
-/* Первая смена — отступ слева */
 #shift1-full {
   margin-left: 0.3rem;
 }
 
-/* Вторая смена — отступ справа */
 #shift2-full {
   margin-right: 0.3rem;
 }
