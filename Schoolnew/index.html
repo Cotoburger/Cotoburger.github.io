@@ -233,21 +233,19 @@
             { lesson: "1-й урок", start: "08:15", end: "08:55" },
             { lesson: "2-й урок", start: "09:05", end: "09:45" },
             { lesson: "3-й урок", start: "10:00", end: "10:40" },
-            { lesson: "Классный час", start: "10:55", end: "11:25" },
-            { lesson: "4-й урок", start: "11:30", end: "12:10" },
-            { lesson: "5-й урок", start: "12:20", end: "13:00" },
-            { lesson: "6-й урок", start: "13:20", end: "14:00" },
-            { lesson: "7-й урок", start: "14:15", end: "14:55" },
+            { lesson: "4-й урок", start: "11:00", end: "11:40" },
+            { lesson: "5-й урок", start: "11:50", end: "12:30" },
+            { lesson: "6-й урок", start: "12:50", end: "13:30" },
+            { lesson: "7-й урок", start: "13:50", end: "14:30" },
           ],
           shift2: [
-            { lesson: "0-й урок", start: "12:20", end: "13:00" },
-            { lesson: "1-й урок", start: "13:20", end: "14:00" },
-            { lesson: "2-й урок", start: "14:15", end: "14:55" },
-            { lesson: "3-й урок", start: "15:10", end: "15:50" },
-            { lesson: "Классный час", start: "16:05", end: "16:35" },
-            { lesson: "4-й урок", start: "16:40", end: "17:20" },
-            { lesson: "5-й урок", start: "17:30", end: "18:10" },
-            { lesson: "6-й урок", start: "18:20", end: "19:00" },
+            { lesson: "0-й урок", start: "11:50", end: "12:30" },
+            { lesson: "1-й урок", start: "12:50", end: "13:30" },
+            { lesson: "2-й урок", start: "13:50", end: "14:30" },
+            { lesson: "3-й урок", start: "14:45", end: "15:25" },
+            { lesson: "4-й урок", start: "15:40", end: "16:20" },
+            { lesson: "5-й урок", start: "16:30", end: "17:10" },
+            { lesson: "6-й урок", start: "17:20", end: "18:00" },
           ],
         },
         4: {
@@ -682,7 +680,10 @@
         if (eSec < sSec) eSec += 86400;
         const total = eSec - sSec;
         const elapsed = currSec - sSec;
-        bar.style.width = (total > 0 && elapsed >= 0) ? `${Math.min(100, (elapsed / total) * 100)}%` : "0%";
+        
+        // ИСПРАВЛЕНИЕ: Используем CSS переменную вместо inline стиля
+        const percentage = (total > 0 && elapsed >= 0) ? Math.min(100, (elapsed / total) * 100) : 0;
+        bar.style.setProperty('--progress', percentage + '%');
       }
 
       function findNextLessonTime(shiftData, curr, day, shiftKey) {
@@ -725,9 +726,10 @@
         const curr = getCurrentTimeInKamchatkaContext();
         const idx = data.findIndex(l => isTimeBetween(curr, l.start, l.end));
         if (idx !== -1) {
-          const l = data[idx];
-          nameEl.textContent = l.lesson;
-          remEl.style.visibility = "visible";
+        const l = data[idx];
+        nameEl.textContent = l.lesson;
+        bar.classList.remove('break');
+        remEl.style.visibility = "visible";
           remEl.querySelector(".remaining-text").textContent = calculateRemainingTime(curr, l.end);
           const { startDate, endDate } = getLocalTimes(l.start, l.end);
           startEl.textContent = `${String(startDate.getHours()).padStart(2, "0")}:${String(startDate.getMinutes()).padStart(2, "0")}`;
@@ -741,6 +743,7 @@
           }
           if (isBreak && next) {
             nameEl.textContent = "Перемена";
+            bar.classList.add('break');
             remEl.style.visibility = "visible";
             remEl.querySelector(".remaining-text").textContent = calculateRemainingTime(curr, next.start);
             const { startDate, endDate } = getLocalTimes(bStart, next.start);
@@ -946,6 +949,25 @@
       window.addEventListener("pagehide", () => {
         updateThemeAndBackground();
       });
+
+
+      // ===== ОПТИМИЗАЦИЯ ПРОИЗВОДИТЕЛЬНОСТИ =====
+      // Отключаем blur при прокрутке (экономит CPU)
+      let scrollTimeout = null;
+      let isScrolling = false;
+
+      document.addEventListener('scroll', () => {
+        if (!isScrolling) {
+          isScrolling = true;
+          document.body.classList.add('scrolling');
+        }
+        
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          isScrolling = false;
+          document.body.classList.remove('scrolling');
+        }, 150);
+      }, { passive: true });
 
       function updateDeployment() {
         const el = document.getElementById("last-deployment");
