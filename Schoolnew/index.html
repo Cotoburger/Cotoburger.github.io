@@ -692,7 +692,10 @@
         if (eSec < sSec) eSec += 86400;
         const total = eSec - sSec;
         const elapsed = currSec - sSec;
-        bar.style.width = (total > 0 && elapsed >= 0) ? `${Math.min(100, (elapsed / total) * 100)}%` : "0%";
+        
+        // ИСПРАВЛЕНИЕ: Используем CSS переменную вместо inline стиля
+        const percentage = (total > 0 && elapsed >= 0) ? Math.min(100, (elapsed / total) * 100) : 0;
+        bar.style.setProperty('--progress', percentage + '%');
       }
 
       function findNextLessonTime(shiftData, curr, day, shiftKey) {

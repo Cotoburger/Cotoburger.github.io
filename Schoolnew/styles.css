@@ -1,5 +1,4 @@
-
- button {
+button {
      outline: none !important;
      -webkit-tap-highlight-color: transparent;
 }
@@ -554,12 +553,12 @@ body.night-mode .meal-header {
      overflow: hidden;
      transition: opacity 0.3s ease;
      margin-bottom: 0;
+     --progress: 0%;
 }
     #lesson1-progress, #lesson2-progress, #meal-progress {
      height: 100%;
      background-color: #52ce52c6;
-     width: 0%;
-     transition: width 0.3s ease;
+     width: var(--progress);
 }
  @keyframes twinkle2 {
      0% {
