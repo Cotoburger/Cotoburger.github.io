@@ -556,10 +556,24 @@ body.night-mode .meal-header {
      --progress: 0%;
 }
     #lesson1-progress, #lesson2-progress, #meal-progress {
-     height: 100%;
-     background-color: #52ce52c6;
-     width: var(--progress);
+    height: 100%;
+    width: var(--progress);
+    transition: width 0.3s ease, background-color 0.5s ease;
+
 }
+
+/* Цвет для перемены */
+#lesson1-progress.break,
+#lesson2-progress.break {
+  background-color: #4198ea !important;
+}
+
+/* Цвет для обычного урока */
+#lesson1-progress,
+#lesson2-progress {
+  background-color: #52ce52c6;
+}
+
  @keyframes twinkle2 {
      0% {
          opacity: 0.6;

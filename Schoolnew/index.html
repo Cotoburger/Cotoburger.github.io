@@ -738,9 +738,10 @@
         const curr = getCurrentTimeInKamchatkaContext();
         const idx = data.findIndex(l => isTimeBetween(curr, l.start, l.end));
         if (idx !== -1) {
-          const l = data[idx];
-          nameEl.textContent = l.lesson;
-          remEl.style.visibility = "visible";
+        const l = data[idx];
+        nameEl.textContent = l.lesson;
+        bar.classList.remove('break');
+        remEl.style.visibility = "visible";
           remEl.querySelector(".remaining-text").textContent = calculateRemainingTime(curr, l.end);
           const { startDate, endDate } = getLocalTimes(l.start, l.end);
           startEl.textContent = `${String(startDate.getHours()).padStart(2, "0")}:${String(startDate.getMinutes()).padStart(2, "0")}`;
@@ -754,6 +755,7 @@
           }
           if (isBreak && next) {
             nameEl.textContent = "Перемена";
+            bar.classList.add('break');
             remEl.style.visibility = "visible";
             remEl.querySelector(".remaining-text").textContent = calculateRemainingTime(curr, next.start);
             const { startDate, endDate } = getLocalTimes(bStart, next.start);
