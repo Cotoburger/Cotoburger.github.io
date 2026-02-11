@@ -164,10 +164,8 @@ button {
   max-height: 8.5rem;
   min-height: fit-content;
 }
-/* Эффект сжатия */
  .lesson-card.collapsed {
      transform: scaleY(0.98);
-    /* лёгкое сжатие для визуального эффекта */
 }
  .progress-bar, .progress-time-labels {
      transition: opacity 0.3s ease;
