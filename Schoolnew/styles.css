@@ -1456,3 +1456,36 @@ box-shadow: inset 0 0 0 1px #0000001a;
           font-size: clamp(5rem, 15vw, 8rem) !important;
         }
       }
+
+
+      /* ===== ОПТИМИЗАЦИЯ ПРОИЗВОДИТЕЛЬНОСТИ ===== */
+
+/* Отключаем дорогие эффекты при прокрутке */
+body.scrolling .lesson-card,
+body.scrolling .lesson-card-full {
+  backdrop-filter: 0.1rem !important;
+  -webkit-backdrop-filter: 0.1rem !important;
+}
+
+body:not(.scrolling) .lesson-card,
+body:not(.scrolling) .lesson-card-full {
+  transition: backdrop-filter 0.3s ease;
+}
+
+/* GPU ускорение для контейнеров */
+.container {
+  will-change: contents;
+  transform: translateZ(0);
+}
+
+/* Оптимизация снежинок и облаков */
+#cloud-container {
+  will-change: contents;
+  transform: translateZ(0);
+}
+
+/* Улучшение производительности меню */
+.meal-table {
+  will-change: contents;
+  transform: translateZ(0);
+}

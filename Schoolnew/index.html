@@ -960,6 +960,25 @@
         updateThemeAndBackground();
       });
 
+
+      // ===== ОПТИМИЗАЦИЯ ПРОИЗВОДИТЕЛЬНОСТИ =====
+      // Отключаем blur при прокрутке (экономит CPU)
+      let scrollTimeout = null;
+      let isScrolling = false;
+
+      document.addEventListener('scroll', () => {
+        if (!isScrolling) {
+          isScrolling = true;
+          document.body.classList.add('scrolling');
+        }
+        
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          isScrolling = false;
+          document.body.classList.remove('scrolling');
+        }, 150);
+      }, { passive: true });
+
       function updateDeployment() {
         const el = document.getElementById("last-deployment");
         fetch("https://api.github.com/repos/Cotoburger/Cotoburger.github.io/deployments", { headers: { Accept: "application/vnd.github.v3+json" } })
