@@ -413,7 +413,7 @@ body.night-mode .meal-header {
      align-self: flex-end;
      margin-top: -0.125rem;
      margin-right: -0.125rem;
-     background-color: rgba(0, 0, 0, 0.15);
+     background-color: rgba(255, 255, 255, 0.13);
      border-radius: 4rem;
      padding: 0 1.2rem;
 }
