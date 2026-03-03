@@ -860,10 +860,10 @@
             leaf.style.setProperty("--leaf-drift", `${driftRem.toFixed(2)}rem`);
             leaf.style.setProperty("--leaf-tilt", `${baseTilt}deg`);
             leaf.style.setProperty("--leaf-sway-angle", `${swayAngle.toFixed(2)}deg`);
-            leaf.style.setProperty("--sway-duration", `${(Math.random() * (isSmallViewport ? 2.4 : 1.8) + (isSmallViewport ? 4.8 : 3.4)).toFixed(2)}s`);
+            leaf.style.setProperty("--sway-duration", `${(Math.random() * (isSmallViewport ? 2.8 : 2.2) + (isSmallViewport ? 6.6 : 5.2)).toFixed(2)}s`);
             leaf.style.setProperty("--sway-delay", `${(Math.random() * -5).toFixed(2)}s`);
             leaf.style.animationDelay = `${Math.random() * -20}s`;
-            leaf.style.animationDuration = `${(Math.random() * (isSmallViewport ? 9 : 8) + (isSmallViewport ? 15 : 12)).toFixed(2)}s`;
+            leaf.style.animationDuration = `${(Math.random() * (isSmallViewport ? 12 : 10) + (isSmallViewport ? 22 : 18)).toFixed(2)}s`;
             leaf.appendChild(leafBody);
             c.appendChild(leaf);
           }
