@@ -321,11 +321,9 @@
           
           await navigator.clipboard.writeText(textToCopy.trim());
           
-          // Показываем галочку
           const checkmarkIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
           btn.innerHTML = checkmarkIcon;
           
-          // Обычное восстановление иконки через 2 секунды
           clearTimeout(copyButtonResetTimer);
           copyButtonResetTimer = setTimeout(() => {
             btn.innerHTML = btn.dataset.originalIcon || originalIcon;
@@ -622,7 +620,7 @@
                 let lessonNumber = isClassHour ? "КЛ" : (lessonNumberMatch ? lessonNumberMatch[1] : "");
 
                 const isCurrent = isTimeBetween(currentTime, lesson.start, lesson.end);
-                const isPast = currentTime > lesson.end; // урок уже прошёл
+                const isPast = currentTime > lesson.end;
 
                 const lessonEl = document.createElement("div");
                 lessonEl.className = `lesson-item ${isCurrent ? "current" : ""} ${isPast ? "past" : ""}`;
@@ -680,7 +678,6 @@
         const total = eSec - sSec;
         const elapsed = currSec - sSec;
         
-        // ИСПРАВЛЕНИЕ: Используем CSS переменную вместо inline стиля
         const percentage = (total > 0 && elapsed >= 0) ? Math.min(100, (elapsed / total) * 100) : 0;
         bar.style.setProperty('--progress', percentage + '%');
       }
@@ -966,26 +963,21 @@
         setInterval(updateSchedule, 1000);
       });
 
-      // Обновляем тему когда приложение возвращается в фокус
       document.addEventListener("visibilitychange", () => {
         if (!document.hidden) {
           updateThemeAndBackground();
         }
       });
 
-      // Обновляем тему при восстановлении из кэша браузера
       window.addEventListener("pageshow", () => {
         updateThemeAndBackground();
       });
 
-      // Обновляем тему при возвращении приложения в фокус на iOS
       window.addEventListener("pagehide", () => {
         updateThemeAndBackground();
       });
 
 
-      // ===== ОПТИМИЗАЦИЯ ПРОИЗВОДИТЕЛЬНОСТИ =====
-      // Отключаем blur при прокрутке (экономит CPU)
       let scrollTimeout = null;
       let isScrolling = false;
 

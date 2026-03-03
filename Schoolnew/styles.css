@@ -98,7 +98,7 @@ button {
     will-change: transform, opacity;
 }
 .sakura-leaf-body.leaf-variant-1 {
-    /* Более классическая вытянутая форма */
+    /* Классическая форма */
     --leaf-shape: polygon(4% 72%, 12% 54%, 24% 38%, 40% 24%, 60% 12%, 82% 4%, 98% 7%, 92% 20%, 80% 36%, 64% 56%, 46% 74%, 26% 90%, 10% 99%);
     --leaf-fill: linear-gradient(146deg, rgba(255, 240, 248, 0.97) 0%, rgba(246, 187, 214, 0.95) 44%, rgba(226, 134, 177, 0.95) 100%);
     --leaf-origin: 16% 84%;
