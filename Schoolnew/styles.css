@@ -81,6 +81,50 @@ button {
     10% { opacity: 1; }
     100% { transform: translateY(110vh); opacity: 0.4; }
 }
+.sakura-leaf {
+    position: absolute;
+    top: -6vh;
+    clip-path: polygon(2% 68%, 10% 50%, 24% 34%, 42% 20%, 62% 9%, 84% 2%, 98% 6%, 90% 20%, 76% 38%, 60% 58%, 40% 78%, 18% 94%, 5% 100%);
+    background:
+      linear-gradient(145deg, rgba(209, 146, 231, 0.95) 0%, rgba(184, 122, 225, 0.95) 45%, rgba(187, 215, 147, 0.95) 100%);
+    box-shadow: inset -1px -1px 0 rgba(62, 87, 28, 0.35);
+    transform-origin: 16% 84%;
+    animation: sakuraFall linear infinite;
+    will-change: transform, opacity;
+}
+.sakura-leaf::before {
+    content: "";
+    position: absolute;
+    top: 12%;
+    left: 10%;
+    width: 75%;
+    height: 30%;
+    border-radius: 999px;
+    transform: rotate(-18deg);
+    background: rgba(210, 228, 160, 0.26);
+}
+@keyframes sakuraFall {
+    0% {
+        transform: translate3d(0, 0, 0) rotate(calc(var(--leaf-tilt, -20deg) - 12deg));
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    25% {
+        transform: translate3d(calc(var(--leaf-drift, 20px) * 0.55), 25vh, 0) rotate(calc(var(--leaf-tilt, -20deg) + 18deg));
+    }
+    50% {
+        transform: translate3d(calc(var(--leaf-drift, 20px) * -0.85), 52vh, 0) rotate(calc(var(--leaf-tilt, -20deg) - 20deg));
+    }
+    75% {
+        transform: translate3d(var(--leaf-drift, 20px), 78vh, 0) rotate(calc(var(--leaf-tilt, -20deg) + 16deg));
+    }
+    100% {
+        transform: translate3d(calc(var(--leaf-drift, 20px) * -0.6), 112vh, 0) rotate(calc(var(--leaf-tilt, -20deg) - 14deg));
+        opacity: 0.45;
+    }
+}
  .container {
      width: 90%;
      max-width: 35.25rem;

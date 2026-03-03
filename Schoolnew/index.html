@@ -772,7 +772,7 @@
         const now = new Date(), off = 12 * 60 + now.getTimezoneOffset(), kDate = new Date(now.getTime() + off * 60 * 1000), hour = kDate.getHours();
         const names = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
         document.getElementById("dayOfWeek").textContent = names[getCurrentDayOfWeek()];
-        let bg, color, isNight = hour < 6 || hour >= 20;
+        let bg, color, isNight = hour < 6 || hour >= 23;
         if (isNight) { bg = "#000000"; color = "#000000"; removeClouds(); if (!document.querySelector(".star")) createStars(); document.body.classList.add("night-mode"); }
         else {
           if (hour < 9) bg = color = "#927A46"; 
@@ -781,7 +781,7 @@
           else if (hour < 18) bg = color = "#6B7C8E"; 
           else if (hour < 19) bg = color = "#4B5B6E";
           else bg = color = "#31363C";
-          removeStars(); if (!document.querySelector(".cloud")) createClouds(); document.body.classList.remove("night-mode");
+          removeStars(); if (!document.getElementById("cloud-container")) createClouds(); document.body.classList.remove("night-mode");
         }
         document.documentElement.style.backgroundColor = bg;
         const meta = document.getElementById("themeColor"); if (meta) meta.setAttribute("content", color);
@@ -832,10 +832,29 @@
 
       function createClouds() {
         if (document.getElementById("cloud-container")) return;
-        const isWinter = [12, 1, 2].includes(new Date().getMonth() + 1), c = document.createElement("div");
+        const month = new Date().getMonth() + 1;
+        const isWinter = [12, 1, 2].includes(month);
+        const isSpring = [3, 4, 5].includes(month);
+        const c = document.createElement("div");
         c.id = "cloud-container"; Object.assign(c.style, { position: "fixed", top: "0", left: "0", width: "100vw", height: "100vh", pointerEvents: "none", zIndex: "1", overflow: "hidden" });
         const sw = window.innerWidth;
-        if (!isWinter) {
+        if (isSpring) {
+          for (let i = 0; i < Math.floor(sw / 25); i++) {
+            const leaf = document.createElement("div");
+            leaf.classList.add("sakura-leaf");
+            const size = Math.random() * 11 + 10;
+            const baseTilt = Math.random() * 120 - 60;
+            leaf.style.width = `${size}px`;
+            leaf.style.height = `${size * 1.15}px`;
+            leaf.style.left = `${Math.random() * 100}vw`;
+            leaf.style.opacity = `${Math.random() * 0.5 + 0.35}`;
+            leaf.style.setProperty("--leaf-drift", `${Math.random() * 36 + 12}px`);
+            leaf.style.setProperty("--leaf-tilt", `${baseTilt}deg`);
+            leaf.style.animationDelay = `${Math.random() * -20}s`;
+            leaf.style.animationDuration = `${Math.random() * 10 + 10}s`;
+            c.appendChild(leaf);
+          }
+        } else if (!isWinter) {
           const num = Math.max(6, Math.min(20, Math.round(((sw - 400) / 1600) * 14 + 6)));
           for (let i = 0; i < num; i++) {
             const cl = document.createElement("div"); cl.classList.add("cloud");
@@ -851,7 +870,7 @@
           }
         }
         document.body.appendChild(c);
-        if (!isWinter) updateClouds();
+        if (!isWinter && !isSpring) updateClouds();
       }
 
       function updateClouds() {
