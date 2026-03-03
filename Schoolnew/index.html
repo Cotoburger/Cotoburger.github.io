@@ -778,8 +778,8 @@
           if (hour < 9) bg = color = "#927A46"; 
           else if (hour < 11) bg = color = "#548393"; 
           else if (hour < 13) bg = color = "#5D827F"; 
-          else if (hour < 18) bg = color = "#6B7C8E"; 
-          else if (hour < 19) bg = color = "#4B5B6E";
+          else if (hour < 23) bg = color = "#6B7C8E"; 
+          else if (hour < 23) bg = color = "#4B5B6E";
           else bg = color = "#31363C";
           removeStars(); if (!document.getElementById("cloud-container")) createClouds(); document.body.classList.remove("night-mode");
         }
@@ -838,20 +838,33 @@
         const c = document.createElement("div");
         c.id = "cloud-container"; Object.assign(c.style, { position: "fixed", top: "0", left: "0", width: "100vw", height: "100vh", pointerEvents: "none", zIndex: "1", overflow: "hidden" });
         const sw = window.innerWidth;
+        const sh = window.innerHeight;
+        const diag = Math.hypot(sw, sh);
+        const isSmallViewport = diag < 760;
         if (isSpring) {
-          for (let i = 0; i < Math.floor(sw / 25); i++) {
+          const leafCount = Math.max(10, Math.floor(sw / (isSmallViewport ? 34 : 25)));
+          for (let i = 0; i < leafCount; i++) {
             const leaf = document.createElement("div");
+            const leafBody = document.createElement("div");
+            const leafVariant = Math.floor(Math.random() * 4) + 1;
             leaf.classList.add("sakura-leaf");
-            const size = Math.random() * 11 + 10;
-            const baseTilt = Math.random() * 120 - 60;
-            leaf.style.width = `${size}px`;
-            leaf.style.height = `${size * 1.15}px`;
+            leafBody.classList.add("sakura-leaf-body", `leaf-variant-${leafVariant}`);
+            const sizeRem = isSmallViewport ? (Math.random() * 0.22 + 0.72) : (Math.random() * 0.34 + 0.92);
+            const baseTilt = isSmallViewport ? (Math.random() * 52 - 26) : (Math.random() * 80 - 40);
+            const swayAngle = isSmallViewport ? (Math.random() * 5 + 8) : (Math.random() * 6 + 12);
+            leaf.style.width = `${sizeRem.toFixed(2)}rem`;
+            leaf.style.height = `${(sizeRem * 1.15).toFixed(2)}rem`;
             leaf.style.left = `${Math.random() * 100}vw`;
             leaf.style.opacity = `${Math.random() * 0.5 + 0.35}`;
-            leaf.style.setProperty("--leaf-drift", `${Math.random() * 36 + 12}px`);
+            const driftRem = isSmallViewport ? (Math.random() * 0.8 + 0.6) : (Math.random() * 2.0 + 1.4);
+            leaf.style.setProperty("--leaf-drift", `${driftRem.toFixed(2)}rem`);
             leaf.style.setProperty("--leaf-tilt", `${baseTilt}deg`);
+            leaf.style.setProperty("--leaf-sway-angle", `${swayAngle.toFixed(2)}deg`);
+            leaf.style.setProperty("--sway-duration", `${(Math.random() * (isSmallViewport ? 2.4 : 1.8) + (isSmallViewport ? 4.8 : 3.4)).toFixed(2)}s`);
+            leaf.style.setProperty("--sway-delay", `${(Math.random() * -5).toFixed(2)}s`);
             leaf.style.animationDelay = `${Math.random() * -20}s`;
-            leaf.style.animationDuration = `${Math.random() * 10 + 10}s`;
+            leaf.style.animationDuration = `${(Math.random() * (isSmallViewport ? 9 : 8) + (isSmallViewport ? 15 : 12)).toFixed(2)}s`;
+            leaf.appendChild(leafBody);
             c.appendChild(leaf);
           }
         } else if (!isWinter) {
