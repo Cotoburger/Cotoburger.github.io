@@ -839,14 +839,14 @@
         const diag = Math.hypot(sw, sh);
         const isSmallViewport = diag < 760;
         if (isSpring) {
-          const leafCount = Math.max(10, Math.floor(sw / (isSmallViewport ? 34 : 25)));
+          const leafCount = Math.max(16, Math.floor(sw / (isSmallViewport ? 22 : 16)));
           for (let i = 0; i < leafCount; i++) {
             const leaf = document.createElement("div");
             const leafBody = document.createElement("div");
             const leafVariant = Math.floor(Math.random() * 4) + 1;
             leaf.classList.add("sakura-leaf");
             leafBody.classList.add("sakura-leaf-body", `leaf-variant-${leafVariant}`);
-            const sizeRem = isSmallViewport ? (Math.random() * 0.22 + 0.72) : (Math.random() * 0.34 + 0.92);
+            const sizeRem = isSmallViewport ? (Math.random() * 0.34 + 0.94) : (Math.random() * 0.46 + 1.12);
             const baseTilt = isSmallViewport ? (Math.random() * 52 - 26) : (Math.random() * 80 - 40);
             const swayAngle = isSmallViewport ? (Math.random() * 5 + 8) : (Math.random() * 6 + 12);
             leaf.style.width = `${sizeRem.toFixed(2)}rem`;
