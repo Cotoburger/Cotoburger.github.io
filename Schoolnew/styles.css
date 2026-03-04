@@ -269,16 +269,81 @@
      margin: 0;
      overflow: hidden;
 }
- .lesson-card:nth-child(1) {
-     animation-delay: 0.15s;
+.shift-card-1 {
+    animation-delay: 0.15s;
 }
 
- .lesson-card:nth-child(2) {
-     animation-delay: 0.25s;
+.shift-card-2 {
+    animation-delay: 0.25s;
 }
 
- .lesson-card:nth-child(3) {
-     animation-delay: 0.35s;
+.meal-card {
+    animation-delay: 0.35s;
+}
+
+.birthday-card {
+    padding: 0;
+    overflow: hidden;
+    animation-delay: 0.35s;
+}
+
+#birthday-cards-container .birthday-card:nth-child(2) { animation-delay: 0.45s; }
+#birthday-cards-container .birthday-card:nth-child(3) { animation-delay: 0.55s; }
+#birthday-cards-container .birthday-card:nth-child(n+4) { animation-delay: 0.65s; }
+
+.birthday-card-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding: 1rem 1.1rem;
+    background:
+      radial-gradient(circle at 12% 20%, rgba(255, 255, 255, 0.231) 0%, rgba(255, 255, 255, 0) 45%),
+      linear-gradient(135deg, rgba(255, 231, 245, 0.215) 0%, rgba(244, 174, 206, 0.484) 50%, rgba(223, 132, 179, 0.58) 100%);
+}
+
+.birthday-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.34rem;
+}
+
+.birthday-date {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: rgba(92, 30, 63, 0.88);
+}
+
+.birthday-title {
+    font-size: 1.2rem;
+    line-height: 1.25;
+    font-weight: 700;
+    color: rgba(57, 16, 39, 0.95);
+}
+
+.birthday-subtitle {
+    font-size: 0.94rem;
+    line-height: 1.35;
+    color: rgba(69, 30, 52, 0.85);
+}
+
+.birthday-illustration {
+    width: 6.6rem;
+    min-width: 6.6rem;
+    height: 6.6rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.24);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.birthday-illustration svg {
+    width: 100%;
+    height: 100%;
 }
 
 .meal-card-header {
