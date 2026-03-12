@@ -1771,7 +1771,7 @@ body:not(.scrolling) .lesson-card-full {
 
 @media (min-aspect-ratio: 16/9) and (min-width: 1024px) {
   html {
-    font-size: clamp(16px, calc(0.85vw + 0.15vh), 18px);
+    font-size: clamp(21px, calc(0.85vw + 0.15vh), 18px);
   }
 
   .lesson-number {
