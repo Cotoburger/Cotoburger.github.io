@@ -22,6 +22,9 @@
      scrollbar-width: none;
      -ms-overflow-style: none;
 }
+ :root {
+     --card-gap: 1.25rem;
+ }
  body {
      min-height: 100vh;
      display: flex;
@@ -56,6 +59,7 @@
      color: rgba(255, 255, 255, 0.534);
      animation: cardFadeIn 0.55s ease-out;
      padding: 3rem 0;
+     margin-bottom: 0.6rem;
      z-index: 3;
      min-height: 3.3rem;
 }
@@ -179,11 +183,14 @@
  .container {
      width: 90%;
      max-width: 35.25rem;
-     margin: 0 auto 2rem;
+     margin: 0 auto var(--card-gap);
      padding: 0 0.625rem;
      box-sizing: border-box;
      z-index: 2;
      padding-top: 5rem;
+     display: flex;
+     flex-direction: column;
+     gap: var(--card-gap);
 }
  @keyframes cardFadeIn {
      0% {
@@ -205,7 +212,7 @@
   display: flex;
   flex-direction: column;
   padding: 1rem 1rem 1rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0;
   border-radius: 1.4rem;
   transform: translateZ(0);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -246,11 +253,12 @@
      z-index: 0;
 }
 
-
-.lesson-card:nth-child(-n+2) {
+/* ИЗМЕНЕНО: заменён nth-child на .shift-card */
+.shift-card {
   max-height: 8.5rem;
   min-height: fit-content;
 }
+
  .lesson-card.collapsed {
      transform: scaleY(0.98);
 }
@@ -283,8 +291,19 @@
 
 .birthday-card {
     padding: 0;
+    margin-bottom: 0;
     overflow: hidden;
     animation-delay: 0.35s;
+}
+
+#birthday-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+}
+
+#birthday-cards-container:empty {
+    display: none;
 }
 
 #birthday-cards-container .birthday-card:nth-child(2) { animation-delay: 0.45s; }
@@ -476,7 +495,7 @@ body.night-mode .copy-notification {
      opacity: 0;
      animation: cardFadeIn 0.4s ease-out 0.2s forwards;
      padding: 1rem;
-     margin-bottom: 1.25rem;
+     margin-bottom: 0;
      border-radius: 1.4rem;
      border: 1px solid rgba(255, 255, 255, 0.1);
      backdrop-filter: blur(1.3rem) saturate(115%);
@@ -576,6 +595,8 @@ body.night-mode .meal-header {
      background-color: rgba(255, 255, 255, 0.13);
      border-radius: 4rem;
      padding: 0 1.2rem;
+     position: relative;
+     z-index: 2;
 }
 
 .shift-schedule {
@@ -815,7 +836,7 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
 }
  .lesson-number {
      font-weight: 600;
-     min-width: 1.4rem;
+     min-width: 1.5rem;
      text-align: center;
      background: rgba(0, 0, 0, 0.089);
      border-radius: 0.5rem;
@@ -1084,7 +1105,7 @@ body.night-mode #meals-full .full-lesson-name {
      .container {
          width: 93%;
          max-width: none;
-         margin: 0 auto 2rem;
+         margin: 0 auto var(--card-gap);
          padding: 1rem 0.3125rem 0;
     }
      #lesson1-remaining, #lesson2-remaining {
@@ -1141,7 +1162,6 @@ body.night-mode #meals-full .full-lesson-name {
  @media (min-width: 37.5625rem) {
 
       .meal-table {
-        /* width: 100%; */
         font-size: 1.4em;
     }
      .full-lesson-name {
@@ -1158,7 +1178,7 @@ body.night-mode #meals-full .full-lesson-name {
          width: 55%;
          min-width: 30.125rem;
          max-width: 60rem;
-         margin: 0 auto 2rem;
+         margin: 0 auto var(--card-gap);
          padding: 1.2rem 0 0;
     }
 
@@ -1176,7 +1196,7 @@ body.night-mode #meals-full .full-lesson-name {
          padding-top: 0;
     }
      .container {
-         margin: 0 auto 2rem;
+         margin: 0 auto var(--card-gap);
          padding: 1rem 0.625rem 0;
          width: 90%;
          max-width: 62.5rem;
@@ -1635,4 +1655,145 @@ body:not(.scrolling) .lesson-card-full {
 .meal-table {
   will-change: contents;
   transform: translateZ(0);
+}
+
+
+/* Второй контейнер на мобильном: меню сверху, расписание снизу */
+.bottom-container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0 !important;  /* убираем унаследованный padding-top: 5rem от .container */
+  margin-top: 0 !important;
+}
+
+/* На мобильном меню идёт первым */
+.bottom-container .meal-card {
+  order: 1;
+}
+
+/* Сбрасываем отрицательный margin-top у lesson-card-full внутри bottom-container */
+.bottom-container .lesson-card-full {
+  order: 2;
+  margin-top: 0 !important;
+}
+
+/* ===================================================
+   LAYOUT ДЛЯ 16:9 И ШИРОКИХ ЭКРАНОВ
+   =================================================== */
+
+/* Обёртка для карточек смен: по умолчанию колонка */
+.shifts-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+}
+
+@media (min-aspect-ratio: 4/3) {
+
+  /* Расширяем контейнеры */
+  .container {
+    max-width: 80rem;
+    width: 90%;
+    min-width: unset;
+    padding-top: 1rem;
+  }
+
+  /* Первый контейнер: меньше отступ сверху */
+  .container:first-of-type {
+    padding-top: 0.5rem;
+  }
+
+  /* Карточки смен — рядом */
+  .shifts-row {
+    flex-direction: row;
+    gap: var(--card-gap);
+    margin-bottom: 0;
+  }
+
+  .shifts-row .lesson-card {
+    flex: 1;
+    margin-bottom: 0;
+    max-height: none !important;
+    min-height: 7rem;
+  }
+
+  /* Нижний контейнер: расписание и меню рядом, одинаковая высота */
+  .bottom-container {
+    display: flex;
+    flex-direction: row;
+    gap: var(--card-gap);
+    align-items: stretch;
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+  /* На широком экране сброс order — расписание слева, меню справа */
+  .bottom-container .lesson-card-full {
+    order: 1;
+  }
+
+  .bottom-container .meal-card {
+    order: 2;
+  }
+
+  .bottom-container .lesson-card-full {
+    flex: 1;
+    margin-top: 0 !important;
+    min-width: 0;
+  }
+
+  .bottom-container .meal-card {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+    animation-delay: 0.4s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bottom-container .meal-card #meal-table-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bottom-container .meal-card #meal-table-container .meal-table {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* День недели — меньше отступ сверху */
+  .day-header {
+    padding: 1.5rem 0 1rem;
+  }
+}
+
+@media (min-aspect-ratio: 16/9) and (min-width: 1024px) {
+  html {
+    font-size: clamp(16px, calc(0.85vw + 0.15vh), 18px);
+  }
+
+  .lesson-number {
+     min-width: 1.9rem;
+}
+
+  :root {
+    --card-gap: 1.05rem;
+  }
+
+  .container {
+    width: min(92%, 90rem);
+    padding-top: 0.6rem;
+  }
+
+  .day-header {
+    font-size: clamp(2.6rem, 3vw, 3.4rem);
+    padding: 1.1rem 0 0.7rem;
+  }
+
+  #last-deployment {
+    font-size: 0.9rem;
+    padding-bottom: 1.2rem;
+  }
 }

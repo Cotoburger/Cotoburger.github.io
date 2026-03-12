@@ -1,3 +1,8 @@
 .DS_Store
 Schoolnew/icons/.DS_Store
 Schoolnew/.vscode
+varya-monitor.py
+varya_monitor.db
+session.session
+.gitignore
+session.session-journal
