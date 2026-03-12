@@ -28,40 +28,60 @@ if DEV == 0 and weekday_num >= 5:
     print(f"Выходной: {today_str}. Пропускаем.")
     exit()
 
-PDF_URL = f"https://sh1-petropavlovskkamchatskij-r30.gosweb.gosuslugi.ru/netcat_files/50/2957/Menyu_na_{today_str}g..pdf"
+PDF_URLS = [
+    f"https://sh1-petropavlovskkamchatskij-r30.gosweb.gosuslugi.ru/netcat_files/50/2957/Menyu_na_{today_str}g..pdf",
+    f"https://sh1-petropavlovskkamchatskij-r30.gosweb.gosuslugi.ru/netcat_files/50/2957/Menyu_na_{today_str}..pdf"
+]
+
 api_key = os.environ.get("GOOGLE_API_KEY")
 
 if not api_key:
+    print("API ключ не найден.")
     exit()
 
 client = genai.Client(api_key=api_key)
 
+
 def get_menu():
     try:
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-        resp = requests.get(PDF_URL, verify=False, timeout=30)
-        
+
         pdf_data = None
-        if resp.status_code == 200:
-            pdf_data = resp.content
-            with open("temp.pdf", "wb") as f:
-                f.write(pdf_data)
-        elif DEV == 1 and os.path.exists("temp.pdf"):
+
+        for url in PDF_URLS:
+            try:
+                print(f"Пробую скачать: {url}")
+                resp = requests.get(url, verify=False, timeout=30)
+
+                if resp.status_code == 200:
+                    pdf_data = resp.content
+                    with open("temp.pdf", "wb") as f:
+                        f.write(pdf_data)
+                    print("PDF найден.")
+                    break
+                else:
+                    print(f"Не найдено (status {resp.status_code})")
+
+            except Exception as e:
+                print(f"Ошибка загрузки: {e}")
+
+        if not pdf_data and DEV == 1 and os.path.exists("temp.pdf"):
             print("DEV: Использую локальный temp.pdf")
             with open("temp.pdf", "rb") as f:
                 pdf_data = f.read()
-        
+
         if not pdf_data:
-            print("Файл не найден.")
+            print("Файл меню не найден ни по одной ссылке.")
             return
 
         print("Отправка PDF в Gemini API...")
+
         prompt = """Извлеки названия блюд. Формат:
-                Завтрак: Блюдо1, Блюдо2, Блюдо3, Блюдо4, Блюдо5
-                Обед: Блюдо1, Блюдо2, Блюдо3
-                Полдник: Блюдо1, Блюдо2, Блюдо3, Блюдо4
-                     (это лишь пример. тебе нужно подставить наименования из файла. не используй форматирование и четко соответствуй формату)"""
-        
+Завтрак: Блюдо1, Блюдо2, Блюдо3, Блюдо4, Блюдо5
+Обед: Блюдо1, Блюдо2, Блюдо3
+Полдник: Блюдо1, Блюдо2, Блюдо3, Блюдо4
+(это лишь пример. тебе нужно подставить наименования из файла. не используй форматирование и четко соответствуй формату)"""
+
         def call_api_with_retry():
             for attempt in range(MAX_RETRIES):
                 try:
@@ -73,27 +93,32 @@ def get_menu():
                         ]
                     )
                     return response
+
                 except Exception as e:
                     print(f"Попытка {attempt + 1}/{MAX_RETRIES} не удалась: {e}")
+
                     if attempt < MAX_RETRIES - 1:
                         print(f"Повторная попытка через {RETRY_DELAY} секунд...")
                         time.sleep(RETRY_DELAY)
                     else:
                         raise
-        
+
         response = call_api_with_retry()
-        
+
         menu_text = response.text.strip()
-        
+
         if menu_text:
             path = pathlib.Path(OUTPUT_FILE)
             path.parent.mkdir(parents=True, exist_ok=True)
+
             with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
                 f.write(menu_text + "\n")
                 f.write(f"Дата меню: {today_str}\n")
+
             print("✅ Меню успешно сохранено.")
 
     except Exception as e:
         print(f"Ошибка после {MAX_RETRIES} попыток: {e}")
+
 
 get_menu()
