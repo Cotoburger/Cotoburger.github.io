@@ -199,24 +199,14 @@
       const schedule = {
         1: {
           shift1: [
-            { lesson: "Классный час", start: "08:15", end: "08:45" },
             { lesson: "1-й урок", start: "08:55", end: "09:35" },
             { lesson: "2-й урок", start: "09:50", end: "10:30" },
             { lesson: "3-й урок", start: "10:45", end: "11:25" },
-            { lesson: "4-й урок", start: "11:30", end: "12:10" },
-            { lesson: "5-й урок", start: "12:20", end: "13:00" },
-            { lesson: "6-й урок", start: "13:20", end: "14:00" },
-            { lesson: "7-й урок", start: "14:15", end: "14:55" },
           ],
           shift2: [
             { lesson: "0-й урок", start: "12:20", end: "13:00" },
             { lesson: "1-й урок", start: "13:20", end: "14:00" },
             { lesson: "2-й урок", start: "14:15", end: "14:55" },
-            { lesson: "3-й урок", start: "15:10", end: "15:50" },
-            { lesson: "Классный час", start: "16:05", end: "16:35" },
-            { lesson: "4-й урок", start: "16:40", end: "17:20" },
-            { lesson: "5-й урок", start: "17:30", end: "18:10" },
-            { lesson: "6-й урок", start: "18:20", end: "19:00" },
           ],
         },
         2: {
@@ -266,19 +256,21 @@
             { lesson: "1-й урок", start: "08:15", end: "08:55" },
             { lesson: "2-й урок", start: "09:05", end: "09:45" },
             { lesson: "3-й урок", start: "10:00", end: "10:40" },
-            { lesson: "4-й урок", start: "11:00", end: "11:40" },
-            { lesson: "5-й урок", start: "11:50", end: "12:30" },
-            { lesson: "6-й урок", start: "12:50", end: "13:30" },
-            { lesson: "7-й урок", start: "13:50", end: "14:30" },
+            { lesson: "Классный час", start: "10:55", end: "11:25" },
+            { lesson: "4-й урок", start: "11:30", end: "12:10" },
+            { lesson: "5-й урок", start: "12:20", end: "13:00" },
+            { lesson: "6-й урок", start: "13:20", end: "14:00" },
+            { lesson: "7-й урок", start: "14:15", end: "14:55" },
           ],
           shift2: [
-            { lesson: "0-й урок", start: "11:50", end: "12:30" },
-            { lesson: "1-й урок", start: "12:50", end: "13:30" },
-            { lesson: "2-й урок", start: "13:50", end: "14:30" },
-            { lesson: "3-й урок", start: "14:45", end: "15:25" },
-            { lesson: "4-й урок", start: "15:40", end: "16:20" },
-            { lesson: "5-й урок", start: "16:30", end: "17:10" },
-            { lesson: "6-й урок", start: "17:20", end: "18:00" },
+            { lesson: "0-й урок", start: "12:20", end: "13:00" },
+            { lesson: "1-й урок", start: "13:20", end: "14:00" },
+            { lesson: "2-й урок", start: "14:15", end: "14:55" },
+            { lesson: "3-й урок", start: "15:10", end: "15:50" },
+            { lesson: "Классный час", start: "16:05", end: "16:35" },
+            { lesson: "4-й урок", start: "16:40", end: "17:20" },
+            { lesson: "5-й урок", start: "17:30", end: "18:10" },
+            { lesson: "6-й урок", start: "18:20", end: "19:00" },
           ],
         },
         5: {
@@ -915,7 +907,7 @@
           if (hour < 9) bg = color = "#9C6985"; 
           else if (hour < 11) bg = color = "#796D9D"; 
           else if (hour < 13) bg = color = "#5D827F"; 
-          else if (hour < 18) bg = color = "#6B7C8E"; 
+          else if (hour < 20) bg = color = "#6B7C8E"; 
           else if (hour < 19) bg = color = "#4B5B6E";
           else bg = color = "#31363C";
           removeStars(); if (!document.getElementById("cloud-container")) createClouds(); document.body.classList.remove("night-mode");
@@ -971,8 +963,8 @@
       function createClouds() {
         if (document.getElementById("cloud-container")) return;
         const month = new Date().getMonth() + 1;
-        const isWinter = [12, 1, 2].includes(month);
-        const isSpring = [3, 4, 5].includes(month);
+        const isWinter = [12, 1, 3].includes(month);
+        const isSpring = [4, 4, 5].includes(month);
         const c = document.createElement("div");
         c.id = "cloud-container"; Object.assign(c.style, { position: "fixed", top: "0", left: "0", width: "100vw", height: "100vh", pointerEvents: "none", zIndex: "1", overflow: "hidden" });
         const sw = window.innerWidth;
