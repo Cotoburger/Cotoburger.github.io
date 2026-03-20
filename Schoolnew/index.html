@@ -963,8 +963,8 @@
       function createClouds() {
         if (document.getElementById("cloud-container")) return;
         const month = new Date().getMonth() + 1;
-        const isWinter = [12, 1, 3].includes(month);
-        const isSpring = [4, 4, 5].includes(month);
+        const isWinter = [12, 1, 2].includes(month);
+        const isSpring = [3, 4, 5].includes(month);
         const c = document.createElement("div");
         c.id = "cloud-container"; Object.assign(c.style, { position: "fixed", top: "0", left: "0", width: "100vw", height: "100vh", pointerEvents: "none", zIndex: "1", overflow: "hidden" });
         const sw = window.innerWidth;
