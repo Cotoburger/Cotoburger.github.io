@@ -12,6 +12,8 @@ concurrency:
 jobs:
   update-telegram-message:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
@@ -26,7 +28,6 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-          TELEGRAM_MESSAGE_ID: ${{ secrets.TELEGRAM_MESSAGE_ID }}
           BOT_TIMEZONE: Asia/Kamchatka
           MENU_FILE_PATH: Schoolnew/foodmenu.txt
         run: python .github/scripts/update_telegram_status.py

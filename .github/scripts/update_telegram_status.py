@@ -1,5 +1,6 @@
 ﻿from __future__ import annotations
 
+import html
 import json
 import math
 import os
@@ -227,80 +228,68 @@ def progress_bar(ratio: float, width: int = 20) -> str:
     return f"[{'#' * filled}{'-' * (width - filled)}] {int(round(safe_ratio * 100))}%"
 
 
-def format_shift_state(shift_label: str, now: datetime, lessons: list[dict[str, str]]) -> str:
+def to_html_quote(lines: list[str]) -> str:
+    escaped = [html.escape(line, quote=False) for line in lines]
+    return "<blockquote>" + "<br>".join(escaped) + "</blockquote>"
+
+
+def to_html_pre(lines: list[str]) -> str:
+    return "<pre>" + html.escape("\n".join(lines), quote=False) + "</pre>"
+
+
+def split_menu_items(raw_items: str) -> list[str]:
+    return [part.strip() for part in raw_items.split(",") if part.strip()]
+
+
+def format_shift_state_lines(shift_label: str, now: datetime, lessons: list[dict[str, str]]) -> list[str]:
     if not lessons:
-        return "\n".join(
-            [
-                f"{shift_label}",
-                "Что сейчас: уроков нет",
-                "Промежуток: --",
-                "Сколько осталось: 0 мин",
-                f"Ползунок: {progress_bar(0.0)}",
-            ]
-        )
+        return [f"{shift_label}: уроков нет", "--", "Осталось примерно 0 мин", progress_bar(0.0)]
 
     segments = to_segments(now, lessons)
     first_lesson = segments[0]
     last_lesson = segments[-1]
 
     if now < first_lesson.start:
-        return "\n".join(
-            [
-                f"{shift_label}",
-                f"Что сейчас: до начала ({first_lesson.title})",
-                f"Промежуток: {first_lesson.start:%H:%M}-{first_lesson.end:%H:%M}",
-                f"Сколько осталось: {format_duration((first_lesson.start - now).total_seconds())}",
-                f"Ползунок: {progress_bar(0.0)}",
-            ]
-        )
+        return [
+            f"{shift_label}: до начала ({first_lesson.title})",
+            f"{first_lesson.start:%H:%M}-{first_lesson.end:%H:%M}",
+            f"Осталось примерно {format_duration((first_lesson.start - now).total_seconds())}",
+            progress_bar(0.0),
+        ]
 
     if now >= last_lesson.end:
-        return "\n".join(
-            [
-                f"{shift_label}",
-                "Что сейчас: уроки закончились",
-                f"Промежуток: {last_lesson.start:%H:%M}-{last_lesson.end:%H:%M}",
-                "Сколько осталось: 0 мин",
-                f"Ползунок: {progress_bar(1.0)}",
-            ]
-        )
+        return [
+            f"{shift_label}: уроки закончились",
+            f"{last_lesson.start:%H:%M}-{last_lesson.end:%H:%M}",
+            "Осталось примерно 0 мин",
+            progress_bar(1.0),
+        ]
 
     for segment in segments:
         if segment.start <= now < segment.end:
             total = (segment.end - segment.start).total_seconds()
             elapsed = (now - segment.start).total_seconds()
             remaining = (segment.end - now).total_seconds()
-            return "\n".join(
-                [
-                    f"{shift_label}",
-                    f"Что сейчас: {segment.title}",
-                    f"Промежуток: {segment.start:%H:%M}-{segment.end:%H:%M}",
-                    f"Сколько осталось: {format_duration(remaining)}",
-                    f"Ползунок: {progress_bar(elapsed / total if total else 0.0)}",
-                ]
-            )
+            return [
+                f"{shift_label}: {segment.title}",
+                f"{segment.start:%H:%M}-{segment.end:%H:%M}",
+                f"Осталось примерно {format_duration(remaining)}",
+                progress_bar(elapsed / total if total else 0.0),
+            ]
 
-    return "\n".join(
-        [
-            f"{shift_label}",
-            "Что сейчас: неизвестно",
-            "Промежуток: --",
-            "Сколько осталось: --",
-            f"Ползунок: {progress_bar(0.0)}",
-        ]
-    )
+    return [f"{shift_label}: неизвестно", "--", "Осталось примерно 0 мин", progress_bar(0.0)]
 
 
-def format_schedule(shift_label: str, lessons: list[dict[str, str]]) -> str:
+def schedule_shift_lines(shift_label: str, lessons: list[dict[str, str]]) -> list[str]:
     lines = [shift_label]
     if not lessons:
-        lines.append("- Уроков нет")
+        lines.append("Уроков нет")
     else:
-        lines.extend(f"- {lesson['start']}-{lesson['end']} {lesson['lesson']}" for lesson in lessons)
-    return "\n".join(lines)
+        lines.extend(f"{lesson['start']}-{lesson['end']} - {lesson['lesson']}" for lesson in lessons)
+    return lines
 
 
-def build_message(now: datetime, menu_path: Path) -> str:
+def build_messages(now: datetime, menu_path: Path) -> tuple[str, str]:
     day_index = now.weekday()
     day_title = DAY_NAMES[day_index]
     today_schedule = SCHEDULE[day_index]
@@ -313,45 +302,64 @@ def build_message(now: datetime, menu_path: Path) -> str:
 
     for meal in ordered_meals:
         if meal in menu:
-            menu_lines.append(f"- {meal}: {menu[meal]}")
+            menu_lines.append(f"- {meal}:")
+            menu_lines.extend(split_menu_items(menu[meal]))
+            menu_lines.append("")
 
     extra_items = [key for key in menu.keys() if key not in ordered_meals]
     for key in extra_items:
-        menu_lines.append(f"- {key}: {menu[key]}")
+        menu_lines.append(f"- {key}:")
+        menu_lines.extend(split_menu_items(menu[key]))
+        menu_lines.append("")
 
     if not menu_lines:
-        menu_lines.append("- Меню пока не найдено")
+        menu_lines.append("Меню пока не найдено")
 
     if menu_date and menu_date != today_text:
-        menu_lines.append(f"- Внимание: в файле меню дата {menu_date}, а сегодня {today_text}")
+        menu_lines.append("")
+        menu_lines.append(f"Внимание: в файле меню дата {menu_date}, а сегодня {today_text}")
     elif menu_date:
-        menu_lines.append(f"- Дата меню: {menu_date}")
+        menu_lines.append("")
+        menu_lines.append(f"Дата меню: {menu_date}")
 
-    state_shift_1 = format_shift_state("1 смена", now, today_schedule["shift1"])
-    state_shift_2 = format_shift_state("2 смена", now, today_schedule["shift2"])
+    if menu_lines and menu_lines[-1] == "":
+        menu_lines.pop()
 
-    message = "\n".join(
+    menu_message = "\n".join(
         [
-            f"Обновлено: {now:%d.%m.%Y %H:%M} ({day_title}, Камчатка)",
-            "",
-            "Расписание уроков на сегодня",
-            format_schedule("1 смена", today_schedule["shift1"]),
-            format_schedule("2 смена", today_schedule["shift2"]),
-            "",
-            "Меню еды на сегодня",
-            *menu_lines,
-            "",
-            "Состояние двух смен",
-            state_shift_1,
-            "",
-            state_shift_2,
+            html.escape(f"Обновлено: {now:%d.%m.%Y %H:%M}", quote=False),
+            html.escape("Меню еды на сегодня:", quote=False),
+            to_html_pre(menu_lines),
         ]
     )
 
-    if len(message) > 4096:
-        raise RuntimeError("Telegram message is too long (>4096 characters). Shorten menu content.")
+    schedule_block_1 = to_html_quote(schedule_shift_lines("1 смена", today_schedule["shift1"]))
+    schedule_block_2 = to_html_quote(schedule_shift_lines("2 смена", today_schedule["shift2"]))
+    state_block_1 = to_html_quote(format_shift_state_lines("1 смена", now, today_schedule["shift1"]))
+    state_block_2 = to_html_quote(format_shift_state_lines("2 смена", now, today_schedule["shift2"]))
 
-    return message
+    schedule_message = "<br>".join(
+        [
+            html.escape(f"Обновлено: {now:%d.%m.%Y %H:%M} ({day_title}, Камчатка)", quote=False),
+            "",
+            html.escape("Расписание уроков на сегодня:", quote=False),
+            schedule_block_1,
+            "",
+            schedule_block_2,
+            "",
+            html.escape("Данные обновляются раз в пять минут", quote=False),
+            state_block_1,
+            "",
+            state_block_2,
+        ]
+    )
+
+    if len(menu_message) > 4096:
+        raise RuntimeError("Menu message is too long (>4096 characters). Shorten menu content.")
+    if len(schedule_message) > 4096:
+        raise RuntimeError("Schedule message is too long (>4096 characters).")
+
+    return menu_message, schedule_message
 
 
 def telegram_request(token: str, method: str, payload: dict[str, Any]) -> dict[str, Any]:
@@ -386,30 +394,30 @@ def telegram_request(token: str, method: str, payload: dict[str, Any]) -> dict[s
     return data
 
 
-def resolve_message_id(token: str, channel_id: str, text: str) -> tuple[int, bool]:
-    explicit_message_id = os.getenv("TELEGRAM_MESSAGE_ID", "").strip()
-    if explicit_message_id:
-        return int(explicit_message_id), False
-
-    try:
-        chat_data = telegram_request(token, "getChat", {"chat_id": channel_id})
-        pinned = chat_data.get("result", {}).get("pinned_message", {})
-        pinned_id = pinned.get("message_id")
-        if pinned_id:
-            return int(pinned_id), False
-    except Exception as exc:
-        print(f"Could not read pinned message, will send a new one: {exc}")
-
-    sent = telegram_request(
+def create_message_pair(token: str, channel_id: str, menu_text: str, schedule_text: str) -> tuple[int, int]:
+    sent_menu = telegram_request(
         token,
         "sendMessage",
         {
             "chat_id": channel_id,
-            "text": text,
+            "text": menu_text,
+            "parse_mode": "HTML",
             "disable_web_page_preview": True,
         },
     )
-    new_message_id = int(sent["result"]["message_id"])
+    menu_id = int(sent_menu["result"]["message_id"])
+
+    sent_schedule = telegram_request(
+        token,
+        "sendMessage",
+        {
+            "chat_id": channel_id,
+            "text": schedule_text,
+            "parse_mode": "HTML",
+            "disable_web_page_preview": True,
+        },
+    )
+    schedule_id = int(sent_schedule["result"]["message_id"])
 
     if os.getenv("AUTO_PIN_SENT_MESSAGE", "1") == "1":
         try:
@@ -418,14 +426,37 @@ def resolve_message_id(token: str, channel_id: str, text: str) -> tuple[int, boo
                 "pinChatMessage",
                 {
                     "chat_id": channel_id,
-                    "message_id": new_message_id,
+                    "message_id": menu_id,
                     "disable_notification": True,
                 },
             )
         except Exception as exc:
-            print(f"Could not pin message automatically: {exc}")
+            print(f"Could not pin menu message automatically: {exc}")
 
-    return new_message_id, True
+    return menu_id, schedule_id
+
+
+def resolve_message_pair_ids(
+    token: str, channel_id: str, menu_text: str, schedule_text: str
+) -> tuple[int, int, bool]:
+    try:
+        chat_data = telegram_request(token, "getChat", {"chat_id": channel_id})
+        pinned = chat_data.get("result", {}).get("pinned_message", {})
+        pinned_id = pinned.get("message_id")
+        if pinned_id:
+            menu_id = int(pinned_id)
+            schedule_id = menu_id + 1
+            return menu_id, schedule_id, False
+    except Exception as exc:
+        print(f"Could not read pinned message, will create a new message pair: {exc}")
+
+    menu_id, schedule_id = create_message_pair(token, channel_id, menu_text, schedule_text)
+    return menu_id, schedule_id, True
+
+
+def is_recreate_worthy_edit_error(exc: Exception) -> bool:
+    lowered = str(exc).lower()
+    return "message to edit not found" in lowered or "message can't be edited" in lowered
 
 
 def main() -> None:
@@ -433,31 +464,57 @@ def main() -> None:
     tz_name = os.getenv("BOT_TIMEZONE", "Asia/Kamchatka")
     menu_path = Path(os.getenv("MENU_FILE_PATH", "Schoolnew/foodmenu.txt"))
     now = datetime.now(ZoneInfo(tz_name))
-    text = build_message(now, menu_path)
+    menu_text, schedule_text = build_messages(now, menu_path)
 
     if dry_run:
-        print(text)
+        print("=== MENU MESSAGE (HTML) ===")
+        print(menu_text)
+        print("\n=== SCHEDULE MESSAGE (HTML) ===")
+        print(schedule_text)
         return
 
     token = require_env("TELEGRAM_BOT_TOKEN")
     channel_id = require_env("TELEGRAM_CHANNEL_ID")
-    message_id, was_created = resolve_message_id(token, channel_id, text)
+    menu_id, schedule_id, was_created = resolve_message_pair_ids(token, channel_id, menu_text, schedule_text)
     if was_created:
-        print(f"Created message {message_id}. Next runs will edit pinned message automatically.")
+        print(
+            f"Created message pair (menu={menu_id}, schedule={schedule_id}). "
+            "Next runs will edit these messages."
+        )
         return
 
-    telegram_request(
-        token,
-        "editMessageText",
-        {
-            "chat_id": channel_id,
-            "message_id": message_id,
-            "text": text,
-            "disable_web_page_preview": True,
-        },
-    )
+    try:
+        telegram_request(
+            token,
+            "editMessageText",
+            {
+                "chat_id": channel_id,
+                "message_id": menu_id,
+                "text": menu_text,
+                "parse_mode": "HTML",
+                "disable_web_page_preview": True,
+            },
+        )
+        telegram_request(
+            token,
+            "editMessageText",
+            {
+                "chat_id": channel_id,
+                "message_id": schedule_id,
+                "text": schedule_text,
+                "parse_mode": "HTML",
+                "disable_web_page_preview": True,
+            },
+        )
+    except Exception as exc:
+        if not is_recreate_worthy_edit_error(exc):
+            raise
+        print(f"Edit failed ({exc}), creating a new message pair.")
+        menu_id, schedule_id = create_message_pair(token, channel_id, menu_text, schedule_text)
+        print(f"Created replacement message pair (menu={menu_id}, schedule={schedule_id}).")
+        return
 
-    print("Telegram message updated")
+    print(f"Telegram messages updated (menu={menu_id}, schedule={schedule_id})")
 
 
 if __name__ == "__main__":
