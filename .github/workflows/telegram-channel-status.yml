@@ -1,21 +1,21 @@
 name: Telegram Channel Status
 
 on:
-  schedule:
-    - cron: "2-59/5 * * * *"
   workflow_dispatch:
-
-concurrency:
-  group: telegram-channel-status
-  cancel-in-progress: true
+  schedule:
+    - cron: "*/5 * * * *"
 
 jobs:
   update-telegram-message:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
+      - name: Debug trigger
+        run: |
+          echo "event=${{ github.event_name }}"
+          echo "run_id=${{ github.run_id }}"
+          date -u
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
