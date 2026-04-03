@@ -1,0 +1,32 @@
+﻿name: Telegram Channel Status
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: telegram-channel-status
+  cancel-in-progress: true
+
+jobs:
+  update-telegram-message:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Update Telegram channel message
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          TELEGRAM_MESSAGE_ID: ${{ secrets.TELEGRAM_MESSAGE_ID }}
+          BOT_TIMEZONE: Asia/Kamchatka
+          MENU_FILE_PATH: Schoolnew/foodmenu.txt
+        run: python .github/scripts/update_telegram_status.py
