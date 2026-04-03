@@ -230,7 +230,7 @@ def progress_bar(ratio: float, width: int = 20) -> str:
 
 def to_html_quote(lines: list[str]) -> str:
     escaped = [html.escape(line, quote=False) for line in lines]
-    return "<blockquote>" + "<br>".join(escaped) + "</blockquote>"
+    return "<blockquote>" + "\n".join(escaped) + "</blockquote>"
 
 
 def to_html_pre(lines: list[str]) -> str:
@@ -338,7 +338,7 @@ def build_messages(now: datetime, menu_path: Path) -> tuple[str, str]:
     state_block_1 = to_html_quote(format_shift_state_lines("1 смена", now, today_schedule["shift1"]))
     state_block_2 = to_html_quote(format_shift_state_lines("2 смена", now, today_schedule["shift2"]))
 
-    schedule_message = "<br>".join(
+    schedule_message = "\n".join(
         [
             html.escape(f"Обновлено: {now:%d.%m.%Y %H:%M} ({day_title}, Камчатка)", quote=False),
             "",
