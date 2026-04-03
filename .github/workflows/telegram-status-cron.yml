@@ -1,4 +1,4 @@
-name: Telegram Channel Status
+name: Telegram Status Cron
 
 on:
   workflow_dispatch:
