@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
   <head>
     <!-- Базовые метаданные -->
@@ -50,7 +50,7 @@
   </head>
   <body>
     <div class="day-header" id="dayOfWeek"></div>
-    <div class="special-schedule-badge" id="specialScheduleBadge">уроки по 30 минут</div>
+    <div class="special-schedule-badge" id="specialScheduleBadge">без кл часа</div>
 
     <!-- ПЕРВЫЙ КОНТЕЙНЕР: карточки смен + день рождения -->
     <div class="container">
@@ -310,18 +310,24 @@
 
       const specialSchedules = {
         // Формат даты: "дд.мм"
-        "30.04": {
+        "07.05": {
           shift1: [
-            { lesson: "1-й урок", start: "08:15", end: "08:45" },
-            { lesson: "2-й урок", start: "08:55", end: "09:25" },
-            { lesson: "3-й урок", start: "09:35", end: "10:05" },
-            { lesson: "4-й урок", start: "10:15", end: "10:45" },
+            { lesson: "1-й урок", start: "08:15", end: "08:55" },
+            { lesson: "2-й урок", start: "09:05", end: "09:45" },
+            { lesson: "3-й урок", start: "10:00", end: "10:40" },
+            { lesson: "4-й урок", start: "11:00", end: "11:40" },
+            { lesson: "5-й урок", start: "11:50", end: "12:30" },
+            { lesson: "6-й урок", start: "12:50", end: "13:30" },
+            { lesson: "7-й урок", start: "13:50", end: "14:30" },
           ],
           shift2: [
-            { lesson: "0-й урок", start: "12:20", end: "12:50" },
-            { lesson: "1-й урок", start: "13:00", end: "13:30" },
-            { lesson: "2-й урок", start: "13:40", end: "14:10" },
-            { lesson: "3-й урок", start: "14:20", end: "14:50" },
+            { lesson: "0-й урок", start: "11:50", end: "12:30" },
+            { lesson: "1-й урок", start: "12:50", end: "13:30" },
+            { lesson: "2-й урок", start: "13:50", end: "14:30" },
+            { lesson: "3-й урок", start: "14:45", end: "15:25" },
+            { lesson: "4-й урок", start: "15:40", end: "16:20" },
+            { lesson: "5-й урок", start: "16:30", end: "17:10" },
+            { lesson: "6-й урок", start: "17:20", end: "18:00" },
           ],
         },
       };
