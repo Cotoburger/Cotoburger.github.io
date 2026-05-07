@@ -110,7 +110,9 @@
 .sakura-leaf {
     position: absolute;
     top: -6vh;
+    opacity: 0;
     animation: sakuraDrop linear infinite;
+    animation-fill-mode: backwards;
     will-change: transform, opacity;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
@@ -183,12 +185,15 @@
         transform: translate3d(0, 0, 0);
         opacity: 0;
     }
-    10% {
-        opacity: 1;
+    18% {
+        opacity: var(--leaf-opacity, 0.75);
+    }
+    84% {
+        opacity: var(--leaf-opacity, 0.75);
     }
     100% {
         transform: translate3d(0, 112vh, 0);
-        opacity: 0.45;
+        opacity: 0;
     }
 }
 @keyframes sakuraSway {
