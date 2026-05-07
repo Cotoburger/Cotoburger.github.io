@@ -202,6 +202,13 @@
         transform: translate3d(calc(var(--leaf-drift, 3rem) * -1), 0, 0) rotate(calc(var(--leaf-tilt, -20deg) - var(--leaf-sway-angle, 14deg)));
     }
 }
+.george-ribbon-snake-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
  .container {
      width: 90%;
      max-width: 35.25rem;
