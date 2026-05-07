@@ -833,10 +833,8 @@
             }
             container.innerHTML = "";
 
-            scheduleData[shiftKey].forEach((lesson) => {
-                const isClassHour = lesson.lesson.toLowerCase().includes("классный час");
-                const lessonNumberMatch = lesson.lesson.match(/^(\d+)-й урок/);
-                let lessonNumber = isClassHour ? "КЛ" : (lessonNumberMatch ? lessonNumberMatch[1] : "");
+            scheduleData[shiftKey].forEach((lesson, index) => {
+                const lessonNumber = getLessonBadge(lesson.lesson, index);
 
                 const isCurrent = isTimeBetween(currentTime, lesson.start, lesson.end);
                 const isPast = currentTime > lesson.end;
@@ -1124,7 +1122,7 @@
         const m = label.match(/\d+/);
         if (m) return m[0];
         if (/классн/i.test(label)) return "КЛ";
-        return String(index + 1);
+        return "★";
       }
 
       function renderWeeklySchedule() {
