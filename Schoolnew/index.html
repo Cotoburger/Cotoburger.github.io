@@ -833,8 +833,10 @@
             }
             container.innerHTML = "";
 
-            scheduleData[shiftKey].forEach((lesson, index) => {
-                const lessonNumber = getLessonBadge(lesson.lesson, index);
+            scheduleData[shiftKey].forEach((lesson) => {
+                const isClassHour = lesson.lesson.toLowerCase().includes("классный час");
+                const lessonNumberMatch = lesson.lesson.match(/^(\d+)-й урок/);
+                let lessonNumber = isClassHour ? "КЛ" : (lessonNumberMatch ? lessonNumberMatch[1] : "");
 
                 const isCurrent = isTimeBetween(currentTime, lesson.start, lesson.end);
                 const isPast = currentTime > lesson.end;
@@ -982,8 +984,6 @@
         return { startDate: sd, endDate: ed };
       }
 
-      let victoryRibbonIntroDone = false;
-
       function updateThemeAndBackground() {
         const now = new Date(), off = 12 * 60 + now.getTimezoneOffset(), kDate = new Date(now.getTime() + off * 60 * 1000), hour = kDate.getHours();
         const names = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
@@ -995,16 +995,7 @@
           specialBadge.textContent = specialEntry?.badgeText || "без кл часа";
         }
         let bg, color, isNight = hour < 6 || hour >= 20;
-        const isVictoryRibbonDay = isVictoryRibbonDate(kDate) && !victoryRibbonIntroDone;
-        if (isNight) {
-          bg = "#000000"; color = "#000000";
-          if (isVictoryRibbonDay) {
-            removeStars(); createClouds();
-          } else {
-            removeClouds(); if (!document.querySelector(".star")) createStars();
-          }
-          document.body.classList.add("night-mode");
-        }
+        if (isNight) { bg = "#000000"; color = "#000000"; removeClouds(); if (!document.querySelector(".star")) createStars(); document.body.classList.add("night-mode"); }
         else {
           if (hour < 9) bg = color = "#9C6985"; 
           else if (hour < 11) bg = color = "#796D9D"; 
@@ -1062,275 +1053,18 @@
         document.body.appendChild(container);
       }
 
-      function isVictoryRibbonDate(date = getCurrentKamchatkaDate()) {
-        const day = date.getDate();
-        const month = date.getMonth() + 1;
-        return month === 5 && day >= 8 && day <= 10;
-      }
-
-      function createVictoryRibbonSnakes(container, sw, sh, isSmallViewport, onComplete) {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
-        canvas.className = "george-ribbon-snake-canvas";
-        container.appendChild(canvas);
-
-        const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-        let width = sw;
-        let height = sh;
-        let dpr = 1;
-        let lastTime = performance.now();
-        let lastDraw = 0;
-        const frameInterval = reducedMotion ? 100 : 33;
-        const TAU = Math.PI * 2;
-
-        function normalizeAngle(angle) {
-          return ((angle + Math.PI) % TAU + TAU) % TAU - Math.PI;
-        }
-
-        function angleDelta(from, to) {
-          return normalizeAngle(to - from);
-        }
-
-        function limitAngleChange(from, to, maxTurn) {
-          const delta = angleDelta(from, to);
-          return normalizeAngle(from + Math.max(-maxTurn, Math.min(maxTurn, delta)));
-        }
-
-        function refillSnakeHistory(snake) {
-          snake.history.length = 0;
-          const maxHistory = snake.segmentCount * snake.gap + 12;
-          for (let i = 0; i < maxHistory; i++) {
-            snake.history.push({
-              x: snake.x - Math.cos(snake.angle) * i * snake.speed,
-              y: snake.y - Math.sin(snake.angle) * i * snake.speed,
-              angle: snake.angle,
-            });
-          }
-        }
-
-        function placeSnakeOffscreen(snake) {
-          const offset = Math.max(96, snake.segmentLength * 3);
-          const edge = Math.floor(Math.random() * 4);
-          if (edge === 0) {
-            snake.x = -offset;
-            snake.y = Math.random() * height;
-            snake.angle = (Math.random() - 0.5) * 0.7;
-          } else if (edge === 1) {
-            snake.x = width + offset;
-            snake.y = Math.random() * height;
-            snake.angle = Math.PI + (Math.random() - 0.5) * 0.7;
-          } else if (edge === 2) {
-            snake.x = Math.random() * width;
-            snake.y = -offset;
-            snake.angle = Math.PI / 2 + (Math.random() - 0.5) * 0.7;
-          } else {
-            snake.x = Math.random() * width;
-            snake.y = height + offset;
-            snake.angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.7;
-          }
-          refillSnakeHistory(snake);
-        }
-
-        function isPointNearViewport(point, margin) {
-          return (
-            point.x > -margin &&
-            point.x < width + margin &&
-            point.y > -margin &&
-            point.y < height + margin
-          );
-        }
-
-        function resizeCanvas() {
-          width = window.innerWidth;
-          height = window.innerHeight;
-          dpr = Math.min(window.devicePixelRatio || 1, reducedMotion ? 1 : 1.35);
-          canvas.width = Math.ceil(width * dpr);
-          canvas.height = Math.ceil(height * dpr);
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        }
-
-        function makeSnake(index, count) {
-          const segmentCount = isSmallViewport ? 10 : 20;
-          const gap = reducedMotion ? 1 : 2;
-          const segmentWidth = isSmallViewport ? 30 : 42;
-          const segmentLength = segmentWidth * 3.55;
-          const angle = (Math.PI * 2 * index) / count + Math.random() * 0.8;
-          const x = width * (0.18 + Math.random() * 0.64);
-          const y = height * (0.18 + Math.random() * 0.64);
-          const speed = (isSmallViewport ? 4.2 : 8.3) * (reducedMotion ? 0.45 : 1) * (0.8 + Math.random() * 0.45);
-          const snake = {
-            x,
-            y,
-            angle,
-            speed,
-            history: [],
-            gap,
-            segmentCount,
-            segmentWidth,
-            segmentLength,
-            sprite: createRibbonSegmentSprite(segmentLength, segmentWidth),
-            opacity: 0.34 + Math.random() * 0.18,
-            turn: 0.006 + Math.random() * 0.006,
-            maxTurn: (reducedMotion ? 0.45 : isSmallViewport ? 0.9 : 0.7) * Math.PI / 180,
-            wave: 0.65 + Math.random() * 0.85,
-            phase: Math.random() * Math.PI * 2,
-            active: true,
-            hasEnteredViewport: false,
-          };
-          placeSnakeOffscreen(snake);
-          return snake;
-        }
-
-        function drawRoundedRect(targetCtx, x, y, w, h, r) {
-          if (targetCtx.roundRect) {
-            targetCtx.roundRect(x, y, w, h, r);
-            return;
-          }
-          targetCtx.moveTo(x + r, y);
-          targetCtx.lineTo(x + w - r, y);
-          targetCtx.quadraticCurveTo(x + w, y, x + w, y + r);
-          targetCtx.lineTo(x + w, y + h - r);
-          targetCtx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-          targetCtx.lineTo(x + r, y + h);
-          targetCtx.quadraticCurveTo(x, y + h, x, y + h - r);
-          targetCtx.lineTo(x, y + r);
-          targetCtx.quadraticCurveTo(x, y, x + r, y);
-        }
-
-        function createRibbonSegmentSprite(length, ribbonWidth) {
-          const spriteScale = 2;
-          const padding = Math.ceil(ribbonWidth * 0.6);
-          const sprite = document.createElement("canvas");
-          const spriteCtx = sprite.getContext("2d");
-          const spriteWidth = length + padding * 2;
-          const spriteHeight = ribbonWidth + padding * 2;
-          sprite.width = Math.ceil(spriteWidth * spriteScale);
-          sprite.height = Math.ceil(spriteHeight * spriteScale);
-          spriteCtx.scale(spriteScale, spriteScale);
-
-          const colors = ["#111111", "#f29922", "#111111", "#f29922", "#111111"];
-          const stripeHeight = ribbonWidth / colors.length;
-          spriteCtx.save();
-          spriteCtx.translate(padding, padding);
-          spriteCtx.shadowColor = "rgba(0, 0, 0, 0.24)";
-          spriteCtx.shadowBlur = ribbonWidth * 0.34;
-          spriteCtx.shadowOffsetY = ribbonWidth * 0.12;
-          spriteCtx.beginPath();
-          drawRoundedRect(spriteCtx, 0, 0, length, ribbonWidth, ribbonWidth * 0.24);
-          spriteCtx.clip();
-          colors.forEach((color, i) => {
-            spriteCtx.fillStyle = color;
-            spriteCtx.fillRect(0, i * stripeHeight, length, stripeHeight + 0.5);
-          });
-          spriteCtx.shadowColor = "transparent";
-          spriteCtx.fillStyle = "rgba(255, 255, 255, 0.16)";
-          spriteCtx.fillRect(0, 0, length, stripeHeight * 0.7);
-          spriteCtx.restore();
-
-          return { canvas: sprite, width: spriteWidth, height: spriteHeight };
-        }
-
-        function drawRibbonSegment(x, y, angle, sprite, alpha) {
-          ctx.save();
-          ctx.translate(x, y);
-          ctx.rotate(angle);
-          ctx.globalAlpha = alpha;
-          ctx.drawImage(sprite.canvas, -sprite.width / 2, -sprite.height / 2, sprite.width, sprite.height);
-          ctx.restore();
-        }
-
-        resizeCanvas();
-        window.addEventListener("resize", resizeCanvas, { passive: true });
-
-        const snakeCount = 5;
-        const snakes = Array.from({ length: snakeCount }, (_, index) => makeSnake(index, snakeCount));
-
-        function tick(time) {
-          if (!canvas.isConnected) {
-            window.removeEventListener("resize", resizeCanvas);
-            return;
-          }
-          if (time - lastDraw < frameInterval) {
-            requestAnimationFrame(tick);
-            return;
-          }
-
-          const dt = Math.min(2.2, (time - lastTime) / 16.666);
-          lastTime = time;
-          lastDraw = time;
-          ctx.clearRect(0, 0, width, height);
-
-          let activeSnakes = 0;
-          snakes.forEach((snake) => {
-            if (!snake.active) return;
-            activeSnakes++;
-            const waveTurn = Math.sin(time * 0.001 * snake.wave + snake.phase) * snake.turn * dt;
-            const driftTurn = Math.sin(time * 0.0007 + snake.phase * 1.7) * 0.004 * dt;
-            snake.angle = limitAngleChange(snake.angle, snake.angle + waveTurn + driftTurn, snake.maxTurn * dt);
-
-            snake.x += Math.cos(snake.angle) * snake.speed * dt;
-            snake.y += Math.sin(snake.angle) * snake.speed * dt;
-
-            snake.history.unshift({ x: snake.x, y: snake.y, angle: snake.angle });
-            snake.history.length = Math.min(snake.history.length, snake.segmentCount * snake.gap + 12);
-
-            const resetMargin = snake.segmentLength + snake.segmentWidth * 2;
-            const isNearViewport = snake.history.some((point) => isPointNearViewport(point, resetMargin));
-            snake.hasEnteredViewport ||= isNearViewport;
-            if (snake.hasEnteredViewport && !isNearViewport) {
-              snake.active = false;
-              return;
-            }
-
-            const ribbonParts = [];
-            for (let i = 0; i < snake.segmentCount; i++) {
-              const point = snake.history[i * snake.gap];
-              if (!point) continue;
-              const tailFade = 1 - (i / snake.segmentCount) * 0.72;
-              ribbonParts.push({ x: point.x, y: point.y, angle: point.angle, alpha: snake.opacity * tailFade });
-            }
-            for (let i = ribbonParts.length - 1; i >= 0; i--) {
-              const part = ribbonParts[i];
-              drawRibbonSegment(part.x, part.y, part.angle, snake.sprite, part.alpha);
-            }
-          });
-
-          if (activeSnakes > 0) {
-            requestAnimationFrame(tick);
-          } else {
-            window.removeEventListener("resize", resizeCanvas);
-            onComplete?.();
-          }
-        }
-
-        requestAnimationFrame(tick);
-      }
-
       function createClouds() {
-        const kamchatkaDate = getCurrentKamchatkaDate();
-        const month = kamchatkaDate.getMonth() + 1;
+        if (document.getElementById("cloud-container")) return;
+        const month = new Date().getMonth() + 1;
         const isWinter = [12, 1, 2].includes(month);
         const isSpring = [3, 4, 5].includes(month);
-        const isVictory = isVictoryRibbonDate(kamchatkaDate) && !victoryRibbonIntroDone;
-        const variant = isVictory ? "victory-ribbons" : (isWinter ? "winter" : (isSpring ? "spring" : "clouds"));
-        const existing = document.getElementById("cloud-container");
-        if (existing?.dataset.variant === variant) return;
-        removeClouds();
         const c = document.createElement("div");
         c.id = "cloud-container"; Object.assign(c.style, { position: "fixed", top: "0", left: "0", width: "100vw", height: "100vh", pointerEvents: "none", zIndex: "1", overflow: "hidden" });
-        c.dataset.variant = variant;
         const sw = window.innerWidth;
         const sh = window.innerHeight;
         const diag = Math.hypot(sw, sh);
         const isSmallViewport = diag < 760;
-        if (isVictory) {
-          createVictoryRibbonSnakes(c, sw, sh, isSmallViewport, () => {
-            victoryRibbonIntroDone = true;
-            removeClouds();
-            updateThemeAndBackground();
-          });
-        } else if (isSpring) {
+        if (isSpring) {
           const leafCount = Math.max(16, Math.min(40, Math.round(((sw - 320) / 1200) * 24 + 16)));
           for (let i = 0; i < leafCount; i++) {
             const leaf = document.createElement("div");
@@ -1344,14 +1078,14 @@
             leaf.style.width = `${sizeRem.toFixed(2)}rem`;
             leaf.style.height = `${(sizeRem * 1.15).toFixed(2)}rem`;
             leaf.style.left = `${Math.random() * 100}vw`;
-            leaf.style.setProperty("--leaf-opacity", `${(Math.random() * 0.5 + 0.35).toFixed(2)}`);
+            leaf.style.opacity = `${Math.random() * 0.5 + 0.35}`;
             const driftRem = isSmallViewport ? (Math.random() * 0.8 + 0.6) : (Math.random() * 2.0 + 1.4);
             leaf.style.setProperty("--leaf-drift", `${driftRem.toFixed(2)}rem`);
             leaf.style.setProperty("--leaf-tilt", `${baseTilt}deg`);
             leaf.style.setProperty("--leaf-sway-angle", `${swayAngle.toFixed(2)}deg`);
             leaf.style.setProperty("--sway-duration", `${(Math.random() * (isSmallViewport ? 2.8 : 2.2) + (isSmallViewport ? 6.6 : 5.2)).toFixed(2)}s`);
             leaf.style.setProperty("--sway-delay", `${(Math.random() * -5).toFixed(2)}s`);
-            leaf.style.animationDelay = `${(Math.random() * 8).toFixed(2)}s`;
+            leaf.style.animationDelay = `${Math.random() * -20}s`;
             leaf.style.animationDuration = `${(Math.random() * (isSmallViewport ? 12 : 10) + (isSmallViewport ? 22 : 18)).toFixed(2)}s`;
             leaf.appendChild(leafBody);
             c.appendChild(leaf);
@@ -1372,7 +1106,7 @@
           }
         }
         document.body.appendChild(c);
-        if (variant === "clouds") updateClouds();
+        if (!isWinter && !isSpring) updateClouds();
       }
 
       function updateClouds() {
@@ -1390,7 +1124,7 @@
         const m = label.match(/\d+/);
         if (m) return m[0];
         if (/классн/i.test(label)) return "КЛ";
-        return "★";
+        return String(index + 1);
       }
 
       function renderWeeklySchedule() {
