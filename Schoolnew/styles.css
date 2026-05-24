@@ -1229,6 +1229,10 @@ body.night-mode #meals-full .full-lesson-name {
      body {
          padding-top: 0;
     }
+
+    .special-schedule-badge {
+    padding-top: 1rem;
+    }
      .container {
          margin: 0 auto var(--card-gap);
          padding: 1rem 0.625rem 0;
