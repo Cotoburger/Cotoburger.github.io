@@ -316,14 +316,14 @@
             { lesson: "2-й урок", start: "09:05", end: "09:45" },
             { lesson: "3-й урок", start: "10:00", end: "10:40" },
             { lesson: "Линейка", start: "11:00", end: "11:30" },
-            { lesson: "Кл. час", start: "11:40", end: "12:20" },
+            { lesson: "Классный час", start: "11:40", end: "12:20" },
           ],
           shift2: [
             { lesson: "1-й урок", start: "12:20", end: "13:10" },
             { lesson: "2-й урок", start: "13:30", end: "14:10" },
             { lesson: "3-й урок", start: "14:25", end: "15:05" },
             { lesson: "Линейка", start: "15:20", end: "15:50" },
-            { lesson: "Кл. час", start: "16:00", end: "16:40" },
+            { lesson: "Классный час", start: "16:00", end: "16:40" },
           ],
         },
       };
@@ -815,9 +815,9 @@
             container.innerHTML = "";
 
             scheduleData[shiftKey].forEach((lesson) => {
-                const isClassHour = lesson.lesson.toLowerCase().includes("классный час");
+                const isClassHour = /классн|кл\.\s*час/i.test(lesson.lesson);
                 const lessonNumberMatch = lesson.lesson.match(/^(\d+)-й урок/);
-                let lessonNumber = isClassHour ? "КЛ" : (lessonNumberMatch ? lessonNumberMatch[1] : "");
+                let lessonNumber = isClassHour ? "КЛ" : (lessonNumberMatch ? lessonNumberMatch[1] : "★");
 
                 const isCurrent = isTimeBetween(currentTime, lesson.start, lesson.end);
                 const isPast = currentTime > lesson.end;
@@ -1104,8 +1104,8 @@
       function getLessonBadge(label, index) {
         const m = label.match(/\d+/);
         if (m) return m[0];
-        if (/классн/i.test(label)) return "КЛ";
-        return String(index + 1);
+        if (/классн|кл\.\s*час/i.test(label)) return "КЛ";
+        return "★";
       }
 
       function renderWeeklySchedule() {
