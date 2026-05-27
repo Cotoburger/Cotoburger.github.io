@@ -195,8 +195,13 @@
         1: "Занятия отменены из за плохой погоды",
         2: "Уроков нет по техническим причинам",
         3: "Весенние каникулы",
+        5: "Летние каникулы",
         4: "",
       };
+      // Формат диапазона: "ДД.ММ-ДД.ММ". Можно добавлять любые промежутки.
+      const noLessonsRanges = [
+        { range: "27.05-01.09", lessons1: 5, lessons2: 5 },
+      ];
       const schedule = {
         1: {
           shift1: [
@@ -723,7 +728,47 @@
         lastBirthdayRenderKey = renderKey;
       }
 
+      function parseDayMonth(value) {
+        const m = /^(\d{2})\.(\d{2})$/.exec((value || "").trim());
+        if (!m) return null;
+        const day = Number(m[1]);
+        const month = Number(m[2]);
+        if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+        return { day, month };
+      }
+      function parseRange(value) {
+        const parts = (value || "").split("-");
+        if (parts.length !== 2) return null;
+        const start = parseDayMonth(parts[0]);
+        const end = parseDayMonth(parts[1]);
+        if (!start || !end) return null;
+        return { start, end };
+      }
+      function getDayOfYear(date, day, month) {
+        return Math.floor((Date.UTC(date.getFullYear(), month - 1, day) - Date.UTC(date.getFullYear(), 0, 0)) / 86400000);
+      }
+      function isDateInRangeDayMonth(date, rangeValue) {
+        const parsed = parseRange(rangeValue);
+        if (!parsed) return false;
+        const current = getDayOfYear(date, date.getDate(), date.getMonth() + 1);
+        const start = getDayOfYear(date, parsed.start.day, parsed.start.month);
+        const end = getDayOfYear(date, parsed.end.day, parsed.end.month);
+        if (start <= end) return current >= start && current <= end;
+        return current >= start || current <= end;
+      }
+      function getCurrentNoLessonsConfig(date = getCurrentKamchatkaDate()) {
+        const match = noLessonsRanges.find((item) => isDateInRangeDayMonth(date, item.range));
+        if (!match) return { lessons1, lessons2 };
+        return {
+          lessons1: match.lessons1 ?? lessons1,
+          lessons2: match.lessons2 ?? lessons2,
+        };
+      }
+
       function applyNoLessonsReasonToShifts() {
+        const currentNoLessons = getCurrentNoLessonsConfig();
+        const currentLessons1 = currentNoLessons.lessons1;
+        const currentLessons2 = currentNoLessons.lessons2;
         const shift1Card = document.querySelector(".lesson-card:nth-child(1)");
         const shift2Card = document.querySelector(".lesson-card:nth-child(2)");
         function getReasonContent(reasonId) {
@@ -735,21 +780,21 @@
           }
           return `<div class="no-lessons-message-text">${reason}</div>`;
         }
-        if (lessons1 !== 0 && shift1Card) {
-          shift1Card.innerHTML = `<div class="no-lessons-header">1 смена</div><div class="no-lessons-content">${getReasonContent(lessons1)}</div>`;
+        if (currentLessons1 !== 0 && shift1Card) {
+          shift1Card.innerHTML = `<div class="no-lessons-header">1 смена</div><div class="no-lessons-content">${getReasonContent(currentLessons1)}</div>`;
           shift1Card.classList.remove("collapsed");
           shift1Card.classList.add("no-lessons");
         } else if (shift1Card) shift1Card.classList.remove("no-lessons");
-        if (lessons2 !== 0 && shift2Card) {
-          shift2Card.innerHTML = `<div class="no-lessons-header">2 смена</div><div class="no-lessons-content">${getReasonContent(lessons2)}</div>`;
+        if (currentLessons2 !== 0 && shift2Card) {
+          shift2Card.innerHTML = `<div class="no-lessons-header">2 смена</div><div class="no-lessons-content">${getReasonContent(currentLessons2)}</div>`;
           shift2Card.classList.remove("collapsed");
           shift2Card.classList.add("no-lessons");
         } else if (shift2Card) shift2Card.classList.remove("no-lessons");
-        if (lessons1 !== 0 || lessons2 !== 0) document.body.classList.add("no-lessons");
+        if (currentLessons1 !== 0 || currentLessons2 !== 0) document.body.classList.add("no-lessons");
         else document.body.classList.remove("no-lessons");
         const mealCard = document.getElementById("meal-table-container")?.closest(".lesson-card");
         if (mealCard) {
-          if (lessons1 !== 0 && lessons2 !== 0) mealCard.style.display = "none";
+          if (currentLessons1 !== 0 && currentLessons2 !== 0) mealCard.style.display = "none";
           else {
             mealCard.style.display = "";
             if (!mealCard.querySelector("#meal-table-container")) {
