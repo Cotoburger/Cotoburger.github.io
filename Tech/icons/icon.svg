@@ -14,8 +14,8 @@
 			<feBlend result="shape" in="SourceGraphic" in2="effect_dropShadow_1" mode="normal" />
 		</filter>
 		<linearGradient id="paint_linear_0" x1="1004" x2="1004" y1="0" y2="2000" gradientUnits="userSpaceOnUse">
-			<stop stop-color="rgb(31,31,31)" offset="0" stop-opacity="1" />
-			<stop stop-color="rgb(8,8,8)" offset="1" stop-opacity="1" />
+			<stop stop-color="rgb(91,38,38)" offset="0" stop-opacity="1" />
+			<stop stop-color="rgb(66,22,22)" offset="1" stop-opacity="1" />
 		</linearGradient>
 		<linearGradient id="paint_linear_1" x1="4.0010376" x2="2004.00024" y1="0.000122070312" y2="2000" gradientUnits="userSpaceOnUse">
 			<stop stop-color="rgb(85,85,85)" offset="0" stop-opacity="1" />
@@ -55,15 +55,17 @@
 		</g>
 		<filter id="filter_3" width="1804.000000" height="824.000000" x="102.000000" y="1136.000000" filterUnits="userSpaceOnUse" customEffect="url(#pixso_custom_effect_3)" color-interpolation-filters="sRGB">
 			<feFlood flood-opacity="0" result="BackgroundImageFix" />
-			<feOffset dx="0.000000" dy="57.000000" in="SourceAlpha" />
+			<feColorMatrix result="hardAlpha" in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 0 " />
+			<feOffset dx="0.000000" dy="57.000000" in="hardAlpha" />
 			<feGaussianBlur stdDeviation="60" />
+			<feComposite k2="-1" k3="1" in2="hardAlpha" operator="out" />
 			<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25098 0 " />
 			<feBlend result="effect_dropShadow_1" in2="BackgroundImageFix" mode="normal" />
 			<feBlend result="shape" in="SourceGraphic" in2="effect_dropShadow_1" mode="normal" />
 		</filter>
 		<linearGradient id="paint_linear_2" x1="1004" x2="1004" y1="1259" y2="1723" gradientUnits="userSpaceOnUse">
-			<stop stop-color="rgb(9,9,9)" offset="0" stop-opacity="1" />
-			<stop stop-color="rgb(6,6,6)" offset="1" stop-opacity="1" />
+			<stop stop-color="rgb(24,17,14)" offset="0" stop-opacity="1" />
+			<stop stop-color="rgb(18,8,8)" offset="1" stop-opacity="1" />
 		</linearGradient>
 		<g id="pixso_custom_effect_4">
 			<effect x="0.000000" y="0.000000" visibility="visible" fill="rgb(67,175,74)" fill-opacity="0.310000002" effectType="dropShadow" stdDeviation="103" radius="-10" />
@@ -79,99 +81,57 @@
 			<feBlend result="shape" in="SourceGraphic" in2="effect_dropShadow_1" mode="normal" />
 		</filter>
 		<g id="pixso_custom_effect_5">
-			<effect x="20.000000" y="18.000000" visibility="visible" fill="rgb(39,102,48)" fill-opacity="0.629999995" effectType="dropShadow" stdDeviation="71" radius="-9" />
+			<effect x="25.000000" y="30.000000" visibility="visible" fill="rgb(39,102,48)" fill-opacity="0.629999995" effectType="dropShadow" stdDeviation="100" radius="0" />
 		</g>
-		<filter id="filter_5" width="431.000000" height="234.000000" x="320.000000" y="1105.000000" filterUnits="userSpaceOnUse" customEffect="url(#pixso_custom_effect_5)" color-interpolation-filters="sRGB">
+		<filter id="filter_5" width="507.000000" height="310.000000" x="287.000000" y="1079.000000" filterUnits="userSpaceOnUse" customEffect="url(#pixso_custom_effect_5)" color-interpolation-filters="sRGB">
 			<feFlood flood-opacity="0" result="BackgroundImageFix" />
 			<feColorMatrix result="hardAlpha" in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.43802 0 " />
-			<feOffset dx="20.000000" dy="18.000000" in="hardAlpha" />
-			<feMorphology radius="9" operator="erode" />
-			<feOffset dx="0.000000" dy="0.000000" />
-			<feGaussianBlur stdDeviation="23.666666" />
+			<feOffset dx="25.000000" dy="30.000000" in="hardAlpha" />
+			<feGaussianBlur stdDeviation="33.3333321" />
 			<feComposite k2="-1" k3="1" in2="hardAlpha" operator="out" />
 			<feColorMatrix type="matrix" values="0 0 0 0 0.152941 0 0 0 0 0.4 0 0 0 0 0.188235 0 0 0 0.63 0 " />
 			<feBlend result="effect_dropShadow_1" in2="BackgroundImageFix" mode="normal" />
 			<feBlend result="shape" in="SourceGraphic" in2="effect_dropShadow_1" mode="normal" />
 		</filter>
 		<g id="pixso_custom_effect_6">
-			<effect x="30.000000" y="38.000000" visibility="visible" fill="rgb(0,0,0)" fill-opacity="1" effectType="dropShadow" stdDeviation="100" radius="0" />
+			<effect x="25.000000" y="30.000000" visibility="visible" fill="rgb(39,102,48)" fill-opacity="0.629999995" effectType="dropShadow" stdDeviation="100" radius="0" />
 		</g>
-		<filter id="filter_6" width="1406.000000" height="310.000000" x="212.000000" y="317.000000" filterUnits="userSpaceOnUse" customEffect="url(#pixso_custom_effect_6)" color-interpolation-filters="sRGB">
-			<feFlood flood-opacity="0" result="BackgroundImageFix" />
-			<feOffset dx="30.000000" dy="38.000000" in="SourceAlpha" />
-			<feGaussianBlur stdDeviation="33.3333321" />
-			<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 " />
-			<feBlend result="effect_dropShadow_1" in2="BackgroundImageFix" mode="normal" />
-			<feBlend result="shape" in="SourceGraphic" in2="effect_dropShadow_1" mode="normal" />
-		</filter>
-		<g id="pixso_custom_effect_7">
-			<effect x="30.000000" y="38.000000" visibility="visible" fill="rgb(0,0,0)" fill-opacity="1" effectType="dropShadow" stdDeviation="100" radius="0" />
-		</g>
-		<filter id="filter_7" width="1406.000000" height="310.000000" x="450.000000" y="500.000000" filterUnits="userSpaceOnUse" customEffect="url(#pixso_custom_effect_7)" color-interpolation-filters="sRGB">
-			<feFlood flood-opacity="0" result="BackgroundImageFix" />
-			<feOffset dx="30.000000" dy="38.000000" in="SourceAlpha" />
-			<feGaussianBlur stdDeviation="33.3333321" />
-			<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 " />
-			<feBlend result="effect_dropShadow_1" in2="BackgroundImageFix" mode="normal" />
-			<feBlend result="shape" in="SourceGraphic" in2="effect_dropShadow_1" mode="normal" />
-		</filter>
-		<g id="pixso_custom_effect_8">
-			<effect x="30.000000" y="38.000000" visibility="visible" fill="rgb(0,0,0)" fill-opacity="1" effectType="dropShadow" stdDeviation="100" radius="0" />
-		</g>
-		<filter id="filter_8" width="982.000000" height="310.000000" x="212.000000" y="683.000000" filterUnits="userSpaceOnUse" customEffect="url(#pixso_custom_effect_8)" color-interpolation-filters="sRGB">
-			<feFlood flood-opacity="0" result="BackgroundImageFix" />
-			<feOffset dx="30.000000" dy="38.000000" in="SourceAlpha" />
-			<feGaussianBlur stdDeviation="33.3333321" />
-			<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 " />
-			<feBlend result="effect_dropShadow_1" in2="BackgroundImageFix" mode="normal" />
-			<feBlend result="shape" in="SourceGraphic" in2="effect_dropShadow_1" mode="normal" />
-		</filter>
-		<g id="pixso_custom_effect_9">
-			<effect x="20.000000" y="18.000000" visibility="visible" fill="rgb(39,102,48)" fill-opacity="0.629999995" effectType="dropShadow" stdDeviation="71" radius="-9" />
-		</g>
-		<filter id="filter_9" width="431.000000" height="234.000000" x="696.000000" y="1105.000000" filterUnits="userSpaceOnUse" customEffect="url(#pixso_custom_effect_9)" color-interpolation-filters="sRGB">
+		<filter id="filter_6" width="507.000000" height="310.000000" x="663.000000" y="1079.000000" filterUnits="userSpaceOnUse" customEffect="url(#pixso_custom_effect_6)" color-interpolation-filters="sRGB">
 			<feFlood flood-opacity="0" result="BackgroundImageFix" />
 			<feColorMatrix result="hardAlpha" in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.43802 0 " />
-			<feOffset dx="20.000000" dy="18.000000" in="hardAlpha" />
-			<feMorphology radius="9" operator="erode" />
-			<feOffset dx="0.000000" dy="0.000000" />
-			<feGaussianBlur stdDeviation="23.666666" />
+			<feOffset dx="25.000000" dy="30.000000" in="hardAlpha" />
+			<feGaussianBlur stdDeviation="33.3333321" />
 			<feComposite k2="-1" k3="1" in2="hardAlpha" operator="out" />
 			<feColorMatrix type="matrix" values="0 0 0 0 0.152941 0 0 0 0 0.4 0 0 0 0 0.188235 0 0 0 0.63 0 " />
 			<feBlend result="effect_dropShadow_1" in2="BackgroundImageFix" mode="normal" />
 			<feBlend result="shape" in="SourceGraphic" in2="effect_dropShadow_1" mode="normal" />
 		</filter>
 	</defs>
-	<g clip-path="url(#clipPath_0)" filter="url(#filter_0)" customFrame="url(#clipPath_0)">
-		<rect id="Frame 3" width="2000.000000" height="2000.000000" x="4.000000" y="0.000000" rx="446.000000" fill="url(#paint_linear_0)" />
-		<rect id="Frame 3" width="1995.000000" height="1995.000000" x="6.500000" y="2.500000" rx="443.500000" stroke="url(#paint_linear_1)" stroke-width="5.000000" />
-		<rect id="Frame 3" width="1995.000000" height="1995.000000" x="6.500000" y="2.500000" rx="443.500000" stroke="rgb(58,58,58)" stroke-opacity="0.200000003" stroke-width="5.000000" />
-		<g filter="url(#filter_1)">
-			<rect id="Rectangle 3" width="1655.000000" height="1655.000000" x="177.000000" y="172.000000" rx="314.000000" fill="rgb(7,7,7)" fill-opacity="0.729999959" />
+	<g filter="url(#filter_0)">
+		<g id="Frame 4" clip-path="url(#clipPath_0)" customFrame="url(#clipPath_0)">
+			<rect id="Frame 4" width="2000.000000" height="2000.000000" x="4.000000" y="0.000000" rx="446.000000" fill="url(#paint_linear_0)" />
+			<g filter="url(#filter_1)">
+				<rect id="Rectangle 3" width="1655.000000" height="1655.000000" x="177.000000" y="172.000000" rx="314.000000" fill="rgb(7,7,7)" fill-opacity="0.729999959" />
+			</g>
+			<g filter="url(#filter_2)">
+				<path id="Rectangle 4" d="M1506 1259C1585.53 1259 1650 1323.47 1650 1403L1650 1583C1650 1660.32 1587.32 1723 1510 1723L475 1723C368.409 1723 282 1636.59 282 1530L282 1452C282 1345.41 368.409 1259 475 1259L1506 1259Z" fill="rgb(40,40,40)" fill-rule="evenodd" />
+			</g>
+			<g filter="url(#filter_3)">
+				<rect id="Rectangle 1" width="1365.000000" height="385.000000" x="321.500000" y="1298.500000" rx="153.500000" stroke="url(#paint_linear_2)" stroke-width="79.000000" />
+				<rect id="Rectangle 1" width="1286.000000" height="306.000000" x="361.000000" y="1338.000000" rx="114.000000" stroke="rgb(0,0,0)" stroke-opacity="0.200000003" stroke-width="79.000000" />
+			</g>
+			<g filter="url(#filter_4)">
+				<rect id="Rectangle 1" width="761.000000" height="307.000000" x="362.000000" y="1338.000000" rx="115.000000" fill="rgb(67,175,74)" />
+			</g>
+			<g filter="url(#filter_5)">
+				<rect id="Rectangle 3" width="307.000000" height="110.000000" x="362.000000" y="1149.000000" rx="55.000000" fill="rgb(52,142,65)" fill-opacity="0.695402324" />
+			</g>
+			<g filter="url(#filter_6)">
+				<rect id="Rectangle 3" width="307.000000" height="110.000000" x="738.000000" y="1149.000000" rx="55.000000" fill="rgb(52,142,65)" fill-opacity="0.695402324" />
+			</g>
+			<path id="" d="M704.746 927L576.242 756.468L547.373 756.468L547.373 927L462.912 927L462.912 526.988L547.373 526.988L547.373 686.778L564.292 686.778L697.226 526.988L802.365 526.988L646.335 712.559L809.75 927L704.746 927ZM1094 927L965.5 756.468L936.63 756.468L936.63 927L852.17 927L852.17 526.988L936.63 526.988L936.63 686.778L953.549 686.778L1086.48 526.988L1191.62 526.988L1035.59 712.559L1199.01 927L1094 927ZM1225.99 596.678L1225.99 526.988L1554.7 526.988L1554.7 596.678L1432.1 596.678L1432.1 927L1348.58 927L1348.58 596.678L1225.99 596.678Z" fill="rgb(63,163,73)" fill-rule="nonzero" />
 		</g>
-		<g filter="url(#filter_2)">
-			<path id="Rectangle 4" d="M1506 1259C1585.53 1259 1650 1323.47 1650 1403L1650 1583C1650 1660.32 1587.32 1723 1510 1723L475 1723C368.409 1723 282 1636.59 282 1530L282 1452C282 1345.41 368.409 1259 475 1259L1506 1259Z" fill="rgb(40,40,40)" fill-rule="evenodd" />
-		</g>
-		<g filter="url(#filter_3)">
-			<rect id="Rectangle 1" width="1365.000000" height="385.000000" x="321.500000" y="1298.500000" rx="153.500000" stroke="url(#paint_linear_2)" stroke-width="79.000000" />
-		</g>
-		<g filter="url(#filter_4)">
-			<rect id="Rectangle 1" width="761.000000" height="307.000000" x="362.000000" y="1338.000000" rx="115.000000" fill="rgb(66.9375,175.312,74.4167)" />
-		</g>
-		<g filter="url(#filter_5)">
-			<rect id="Rectangle 3" width="307.000000" height="110.000000" x="362.000000" y="1149.000000" rx="55.000000" fill="rgb(52.3919,142.299,64.7929)" fill-opacity="0.695402324" />
-		</g>
-		<g filter="url(#filter_6)">
-			<rect id="Rectangle 3" width="1206.000000" height="110.000000" x="282.000000" y="379.000000" rx="55.000000" fill="rgb(32,32,32)" />
-		</g>
-		<g filter="url(#filter_7)">
-			<rect id="Rectangle 3" width="1206.000000" height="110.000000" x="520.000000" y="562.000000" rx="55.000000" fill="rgb(32,32,32)" />
-		</g>
-		<g filter="url(#filter_8)">
-			<rect id="Rectangle 3" width="782.000000" height="110.000000" x="282.000000" y="745.000000" rx="55.000000" fill="rgb(32,32,32)" />
-		</g>
-		<g filter="url(#filter_9)">
-			<rect id="Rectangle 3" width="307.000000" height="110.000000" x="738.000000" y="1149.000000" rx="55.000000" fill="rgb(52.3919,142.299,64.7929)" fill-opacity="0.695402324" />
-		</g>
+		<rect id="Frame 4" width="1995.000000" height="1995.000000" x="6.500000" y="2.500000" rx="443.500000" stroke="url(#paint_linear_1)" stroke-width="5.000000" />
+		<rect id="Frame 4" width="1995.000000" height="1995.000000" x="6.500000" y="2.500000" rx="443.500000" stroke="rgb(58,58,58)" stroke-opacity="0.200000003" stroke-width="5.000000" />
 	</g>
 </svg>

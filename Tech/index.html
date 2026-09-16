@@ -605,7 +605,7 @@ const specialSchedules = {
 
             scheduleData[shiftKey].forEach((lesson) => {
                 const isClassHour = /классн|кл\.\s*час/i.test(lesson.lesson);
-                const lessonNumberMatch = lesson.lesson.match(/^(\d+)-й урок/);
+                const lessonNumberMatch = lesson.lesson.match(/^(\d+)[\s-]*(?:й урок|я пара)/i);
                 let lessonNumber = isClassHour ? "КЛ" : (lessonNumberMatch ? lessonNumberMatch[1] : "★");
 
                 const isCurrent = isTimeBetween(currentTime, lesson.start, lesson.end);
