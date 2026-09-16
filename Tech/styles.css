@@ -839,7 +839,7 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress, body.night
 }
  .full-schedule-container {
      display: grid;
-     grid-template-columns: 1fr 1fr;
+     grid-template-columns: 1fr;
      align-items: center;
      width: 100%;
      opacity: 1;
