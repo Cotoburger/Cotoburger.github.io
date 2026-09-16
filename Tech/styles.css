@@ -1314,8 +1314,8 @@ body.night-mode #meals-full .full-lesson-name {
   padding: 0.9rem;
   background: #a5a5a5;
   border-radius: 1.0rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 0.9rem;
 }
 
