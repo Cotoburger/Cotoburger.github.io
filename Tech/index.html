@@ -995,7 +995,7 @@ const specialSchedules = {
             fetch(data[0].statuses_url, { headers: { Accept: "application/vnd.github.v3+json" } })
               .then(sr => sr.json()).then(st => {
                 const s = st[0]?.state === "success" ? "OK" : (st[0]?.state === "failure" ? "ERR" : "Work");
-                if (el) el.innerHTML = `Меню взято с сайта школы <br> Изменение кода: ${d.toLocaleDateString("ru-RU")} ${d.toLocaleTimeString("ru-RU")} (${s})`;
+                if (el) el.innerHTML = ` <br> Изменение кода: ${d.toLocaleDateString("ru-RU")} ${d.toLocaleTimeString("ru-RU")} (${s})`;
               });
           }).catch(() => { if (el) el.textContent = ""; });
       }
