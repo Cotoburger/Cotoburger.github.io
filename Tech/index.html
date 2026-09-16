@@ -38,7 +38,6 @@
     <!-- Ресурсы -->
     <link rel="manifest" href="manifest.json" />
     <link rel="preconnect" href="https://api.github.com" />
-    <link rel="prefetch" href="foodmenu.txt" as="fetch" crossorigin />
     
     <!-- Стили -->
     <link rel="stylesheet" href="styles.css" />
@@ -58,7 +57,7 @@
       <!-- ИЗМЕНЕНО: карточки смен обёрнуты в .shifts-row для 16:9 -->
       <div class="shifts-row">
         <div class="lesson-card shift-card shift-card-1">
-          <div class="shift-number"></div>
+          <div class="shift-number">1 смена</div>
           <div class="lesson-header">
             <div id="lesson1-name"></div>
             <div id="lesson1-remaining">
@@ -86,7 +85,7 @@
     <!-- ВТОРОЙ КОНТЕЙНЕР: расписание слева + меню справа на 16:9 -->
     <div class="container bottom-container">
       <div class="lesson-card-full">
-        <div class="meal-table">
+        <div class="schedule-box">
           
           <div class="schedule-header-container">
             <div class="schedule-header">Расписание</div>
@@ -109,10 +108,6 @@
           </div>
           
         </div>
-      </div>
-      <!-- ИЗМЕНЕНО: меню перенесено сюда для компоновки 16:9 -->
-      <div class="lesson-card meal-card">
-        <div id="meal-table-container"></div>
       </div>
     </div><!-- /bottom-container -->
 
@@ -254,77 +249,6 @@ const specialSchedules = {
   },
 };
 
-      let lastUpdateTime = 0;
-      const UPDATE_INTERVAL = 3600000;
-      
-      let copyButtonResetTimer = null;
-
-      async function copyMealMenu(btn) {
-        const container = document.getElementById("meal-table-container");
-        if (!container) return;
-        
-        const rows = container.querySelectorAll('.meal-row');
-        const dateHeader = container.querySelector('.meal-header-text')?.textContent || "Меню";
-        let textToCopy = `${dateHeader}:\n`;
-        
-        rows.forEach(row => {
-          const title = row.querySelector('.meal-title')?.textContent || "";
-          const items = row.querySelector('.meal-items')?.textContent || "";
-          if (title && items) textToCopy += `\n${title}: ${items}\n`;
-        });
-
-        try {
-          const originalIcon = btn.dataset.originalIcon || btn.innerHTML;
-          if (!btn.dataset.originalIcon) {
-            btn.dataset.originalIcon = originalIcon;
-          }
-          
-          await navigator.clipboard.writeText(textToCopy.trim());
-          
-          const checkmarkIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-          btn.innerHTML = checkmarkIcon;
-          
-          clearTimeout(copyButtonResetTimer);
-          copyButtonResetTimer = setTimeout(() => {
-            btn.innerHTML = btn.dataset.originalIcon || originalIcon;
-          }, 2000);
-        } catch (err) {
-          console.error('Ошибка копирования:', err);
-        }
-      }
-
-      function bindAlinaLongPress(root = document) {
-        const buttons = root.querySelectorAll('.copy-button');
-        if (!buttons.length) return;
-
-        const supportsPointer = "PointerEvent" in window;
-        const startEvents = supportsPointer ? ["pointerdown"] : ["touchstart", "mousedown"];
-        const endEvents = supportsPointer ? ["pointerup", "pointerleave", "pointercancel"] : ["touchend", "touchcancel", "mouseup", "mouseleave"];
-
-        buttons.forEach(btn => {
-          if (btn.dataset.longPressBound === "1") return;
-          btn.dataset.longPressBound = "1";
-
-          let pressTimer = null;
-
-          const startPress = (event) => {
-            if (event.type === "mousedown" && event.button !== 0) return;
-            clearTimeout(pressTimer);
-            pressTimer = setTimeout(() => {
-              triggerAlinaAnimation();
-            }, 2000);
-          };
-
-          const cancelPress = () => {
-            clearTimeout(pressTimer);
-            pressTimer = null;
-          };
-
-          startEvents.forEach(type => btn.addEventListener(type, startPress, { passive: true }));
-          endEvents.forEach(type => btn.addEventListener(type, cancelPress, { passive: true }));
-        });
-      }
-      
       function triggerAlinaAnimation() {
         const container = document.createElement('div');
         container.id = 'alina-animation-container';
@@ -408,96 +332,6 @@ const specialSchedules = {
         }, 4400);
       }
 
-      function updateMealDisplay() {
-        async function loadFoodMenu() {
-          try {
-            const resp = await fetch("./foodmenu.txt", { cache: "no-store" });
-            const text = await resp.text();
-            const lines = text.split("\n").map(l => l.trim()).filter(l => l);
-            const food = {};
-            lines.forEach(line => {
-              const [meal, items] = line.split(":");
-              food[meal] = items.split(",").map(i => i.trim());
-            });
-            return food;
-          } catch (e) {
-            console.error("Не удалось загрузить foodmenu.txt", e);
-            return null;
-          }
-        }
-
-        async function renderMealTable() {
-          const tableContainer = document.getElementById("meal-table-container");
-          if (!tableContainer) return;
-          const currentTime = Date.now();
-          if (currentTime - lastUpdateTime < UPDATE_INTERVAL) return;
-
-          renderPlaceholderTable(tableContainer);
-          lastUpdateTime = currentTime;
-          
-          let food = await loadFoodMenu();
-          if (food === null) food = {};
-
-          const menuDate = food["Дата меню"] || null;
-          if (menuDate) delete food["Дата меню"];
-          let dateLabel = menuDate ? ` (${menuDate})` : "";
-
-          let tableHtml = `
-            <div class="meal-table">
-              <div class="meal-header">
-                <div class="meal-header-text">Меню${dateLabel}</div>
-                <button class="copy-button" onclick="copyMealMenu(this)">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                  </svg>
-                </button>
-              </div>
-          `;
-
-          const order = ["Завтрак", "Обед", "Полдник"];
-          order.forEach(meal => {
-            const menuItems = food[meal] ? food[meal].join(", ") : "";
-            tableHtml += `
-              <div class="meal-row">
-                <div class="meal-title">${meal}</div>
-                <div class="meal-items">${menuItems}</div>
-              </div>
-            `;
-          });
-
-          tableHtml += `</div>`;
-
-          tableContainer.style.transition = 'height 0.3s ease-in-out';
-          tableContainer.style.overflow = 'hidden';
-          const currentHeight = tableContainer.offsetHeight;
-          tableContainer.style.height = `${currentHeight}px`;
-          tableContainer.offsetHeight;
-          tableContainer.innerHTML = tableHtml;
-          bindAlinaLongPress(tableContainer);
-          const newHeight = tableContainer.scrollHeight;
-          tableContainer.style.height = `${newHeight}px`;
-          setTimeout(() => {
-            tableContainer.style.height = '';
-            tableContainer.style.overflow = '';
-            tableContainer.style.transition = '';
-          }, 300);
-        }
-
-        function renderPlaceholderTable(container) {
-          container.innerHTML = `
-            <div class="meal-table">
-              <div class="meal-placeholder">Меню(xx.xx.xxxx)</div>
-            </div>
-          `;
-        }
-
-        renderMealTable();
-      }
-
-      try {
-        if (!(lessons1 !== 0 && lessons2 !== 0)) updateMealDisplay();
-      } catch (e) { console.warn("Meal update failed", e); }
 
       const birthdayPeople = [
         { firstName: "Алина", lastName: "Бакун", date: "03-04", message: "Желаю тебе всего наилучшего." },
@@ -701,17 +535,6 @@ const specialSchedules = {
         } else if (shift2Card) shift2Card.classList.remove("no-lessons");
         if (currentLessons1 !== 0 || currentLessons2 !== 0) document.body.classList.add("no-lessons");
         else document.body.classList.remove("no-lessons");
-        const mealCard = document.getElementById("meal-table-container")?.closest(".lesson-card");
-        if (mealCard) {
-          if (currentLessons1 !== 0 && currentLessons2 !== 0) mealCard.style.display = "none";
-          else {
-            mealCard.style.display = "";
-            if (!mealCard.querySelector("#meal-table-container")) {
-              mealCard.innerHTML = `<div id="meal-table-container"></div>`;
-            }
-            mealCard.classList.remove("no-lessons");
-          }
-        }
       }
 
       function getCurrentTimeInKamchatkaContext() {
@@ -969,7 +792,6 @@ const specialSchedules = {
           const nameEl = document.getElementById(`${s.name}-name`);
           if (s.cancel === 0 && nameEl) updateShiftDisplay(s.data, nameEl, document.getElementById(`${s.name}-remaining`), document.getElementById(`${s.name}-start-time`), document.getElementById(`${s.name}-end-time`), document.getElementById(`${s.name}-progress`), s.key);
         });
-        try { if (!(lessons1 !== 0 && lessons2 !== 0)) updateMealDisplay(); } catch (e) {}
         renderFullSchedule();
       }
 
@@ -1082,17 +904,15 @@ const specialSchedules = {
         slider.appendChild(viewport);
         for (let d = 1; d <= 5; d++) {
           const dayEl = document.createElement("div"); dayEl.className = "day-schedule";
-          ["shift1", "shift2"].forEach(k => {
-            const sEl = document.createElement("div"); sEl.className = "shift-schedule";
-            sEl.innerHTML = `<div class="schedule-index">${k === "shift1" ? "1 смена" : "2 смена"}</div>`;
-            schedule[d][k].forEach((l, index) => {
-              const lEl = document.createElement("div"); lEl.className = "lesson-item";
-              const badge = getLessonBadge(l.lesson, index);
-              lEl.innerHTML = `<div class="lesson-number">${badge}</div><div class="lesson-time">${l.start} - ${l.end}</div>`;
-              sEl.appendChild(lEl);
-            });
-            dayEl.appendChild(sEl);
+          const sEl = document.createElement("div"); sEl.className = "shift-schedule";
+          sEl.innerHTML = `<div class="schedule-index">1 смена</div>`;
+          schedule[d]["shift1"].forEach((l, index) => {
+            const lEl = document.createElement("div"); lEl.className = "lesson-item";
+            const badge = getLessonBadge(l.lesson, index);
+            lEl.innerHTML = `<div class="lesson-number">${badge}</div><div class="lesson-time">${l.start} - ${l.end}</div>`;
+            sEl.appendChild(lEl);
           });
+          dayEl.appendChild(sEl);
           track.appendChild(dayEl);
         }
       }
