@@ -1098,7 +1098,7 @@ const specialSchedules = {
             updateProgressBar(bar, curr, `${bStart}:00`, `${next.start}:00`);
           } else {
             const tNext = findNextLessonTime(data, curr, getCurrentDayOfWeek(), key);
-            nameEl.textContent = tNext ? `До урока: ${tNext}` : "Уроки кончились";
+            nameEl.textContent = tNext ? `До пары: ${tNext}` : "Уроки кончились";
             remEl.style.visibility = "hidden";
             bar.parentElement.classList.add("hidden");
             startEl.parentElement.classList.add("hidden");
@@ -1267,7 +1267,6 @@ const specialSchedules = {
         for (let d = 1; d <= 5; d++) {
           const dayEl = document.createElement("div"); dayEl.className = "day-schedule";
           const sEl = document.createElement("div"); sEl.className = "shift-schedule";
-          sEl.innerHTML = `<div class="schedule-index">1 смена</div>`;
           schedule[d]["shift1"].forEach((l, index) => {
             const lEl = document.createElement("div"); lEl.className = "lesson-item";
             const badge = getLessonBadge(l.lesson, index);
