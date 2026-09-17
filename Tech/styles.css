@@ -1657,8 +1657,13 @@ body:not(.scrolling) .lesson-card-full {
 }
 /* ===== Группа: слайдер выбора и карточки пар на сегодня ===== */
 .group-picker-card {
-  padding: 0.9rem 0.9rem 1rem !important;
+  padding: 1rem !important;
   margin-top: 0 !important;
+}
+
+.group-picker-card .schedule-header-container {
+  margin: 0 0 0.5em;
+  padding: 0.25em 0.6em;
 }
 
 .group-slider {
@@ -1666,9 +1671,12 @@ body:not(.scrolling) .lesson-card-full {
   gap: 0.5rem;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 0.3rem 0.1rem 0.15rem;
+  padding: 0.3rem 0 0.05rem;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  /* Плавное затухание по краям, чтобы не было видно жёсткой границы обрезки при скролле */
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 1.4rem, #000 calc(100% - 1.4rem), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 1.4rem, #000 calc(100% - 1.4rem), transparent 100%);
 }
 .group-slider::-webkit-scrollbar { display: none; }
 

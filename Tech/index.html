@@ -442,9 +442,7 @@
             const rest = parts.length > 1 ? "№ " + parts.slice(1).join(" · № ") : "";
             const card = document.createElement("div");
             card.className = "lesson-card today-lesson-card" + (idx === 0 ? " today-lesson-card-active" : "");
-            // Карточка со слайдером групп (.group-picker-card) начинает анимацию в 0.50s и длится 0.4s,
-            // т.е. заканчивается к ~0.9s. Ставим карточки пар появляться по очереди начиная с этого момента.
-            card.style.animationDelay = `${0.5 + idx * 0.12}s`;
+            card.style.animationDelay = `${0.35 + idx * 0.12}s`;
             card.innerHTML = `
               <div class="today-lesson-top">
                 <span class="today-lesson-badge">${idx === 0 ? (isCurrent ? "Сейчас" : "Далее") : `${l.number}-я пара`}</span>
