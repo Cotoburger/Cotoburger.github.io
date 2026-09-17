@@ -437,6 +437,7 @@ body.night-mode .schedule-header-container {
       animation-delay: 0.50s;
 }
 
+
  .lesson-card-full {
      margin-top: -3rem;
      opacity: 0;
@@ -1794,4 +1795,8 @@ body.night-mode .today-lesson-badge { background: rgba(255, 255, 255, 0.12); col
   font: inherit;
   cursor: pointer;
   padding: 0;
+}
+
+.container.group-schedule-container {
+  padding-top: 0 !important;
 }
