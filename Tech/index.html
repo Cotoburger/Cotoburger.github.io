@@ -402,12 +402,14 @@
           return h * 60 + m;
         }
 
+        let lastTodayLessonsRenderKey = "";
+
         function renderTodayLessons() {
           const container = document.getElementById("todayLessonsContainer");
           if (!container) return;
           const selectedKey = localStorage.getItem(STORAGE_KEY);
           const group = groupsIndex.find((g) => g.key === selectedKey);
-          if (!group) { container.innerHTML = ""; return; }
+          if (!group) { container.innerHTML = ""; lastTodayLessonsRenderKey = ""; return; }
 
           const kDate = getKamchatkaDate();
           const dateKey = `${String(kDate.getDate()).padStart(2, "0")}.${String(kDate.getMonth() + 1).padStart(2, "0")}.${kDate.getFullYear()}`;
@@ -419,6 +421,13 @@
             .sort((a, b) => a.number - b.number);
 
           const upcoming = dayLessons.filter((l) => timeToMinutes(l.end) > nowMinutes);
+
+          // Ключ учитывает группу, день, статус первой пары (сейчас/далее) и сам список пар —
+          // если ничего из этого не изменилось, DOM не трогаем и анимация не проигрывается заново.
+          const firstIsCurrent = upcoming.length ? (nowMinutes >= timeToMinutes(upcoming[0].start) ? 1 : 0) : 0;
+          const renderKey = `${group.key}|${dateKey}|${firstIsCurrent}|${upcoming.map((l) => `${l.number}:${l.start}-${l.end}:${l.text}`).join(",")}`;
+          if (renderKey === lastTodayLessonsRenderKey) return;
+          lastTodayLessonsRenderKey = renderKey;
 
           if (!upcoming.length) {
             container.innerHTML = `<div class="lesson-card no-lessons-today"><div class="no-lessons-message-text">${dayLessons.length ? "На сегодня пар больше нет" : "Сегодня пар нет"}</div></div>`;
@@ -433,6 +442,9 @@
             const rest = parts.length > 1 ? "№ " + parts.slice(1).join(" · № ") : "";
             const card = document.createElement("div");
             card.className = "lesson-card today-lesson-card" + (idx === 0 ? " today-lesson-card-active" : "");
+            // Карточка со слайдером групп (.group-picker-card) начинает анимацию в 0.50s и длится 0.4s,
+            // т.е. заканчивается к ~0.9s. Ставим карточки пар появляться по очереди начиная с этого момента.
+            card.style.animationDelay = `${0.5 + idx * 0.12}s`;
             card.innerHTML = `
               <div class="today-lesson-top">
                 <span class="today-lesson-badge">${idx === 0 ? (isCurrent ? "Сейчас" : "Далее") : `${l.number}-я пара`}</span>
