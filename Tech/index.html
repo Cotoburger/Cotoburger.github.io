@@ -113,7 +113,6 @@
 
           <div class="full-schedule-container">
             <div class="shift-schedule">
-              <div class="schedule-index">1 смена</div>
               <div id="shift1-full">
                 <div class="lesson-item"><div class="lesson-number">1</div><div class="lesson-time">8:15 - 8:55</div></div>
                 <div class="lesson-item"><div class="lesson-number">2</div><div class="lesson-time">...</div></div>
@@ -762,7 +761,7 @@ const specialSchedules = {
 
       // ===== ОТЛАДКА: поставьте здесь дату/время, чтобы весь сайт (пары, прогресс, "сейчас/далее") считал текущим именно его =====
       // Формат: "YYYY-MM-DDTHH:MM:SS" по камчатскому времени. Чтобы вернуть реальное время — поставьте null.
-      const DEBUG_DATETIME = "2026-09-17T10:15:00"; // например: "2026-09-17T10:15:00"
+      const DEBUG_DATETIME = null; // например: "2026-09-17T10:15:00"
 
       function getKamchatkaDate() {
         if (DEBUG_DATETIME) return new Date(DEBUG_DATETIME);
