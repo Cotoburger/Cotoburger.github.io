@@ -753,6 +753,12 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress {
   margin-right: 0.3rem;
 }
 
+/* Если смена одна (она и первая, и последняя одновременно) — отступы должны быть симметричными с обеих сторон */
+.shift-schedule:only-child .schedule-index {
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
+}
+
 .shift-schedule {
   display: flex;
   flex-direction: column;
@@ -765,6 +771,13 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress {
 
 #shift2-full {
   margin-right: 0.3rem;
+}
+
+/* Если это единственная смена — правый край тоже должен быть с отступом, а не впритык */
+.shift-schedule:only-child #shift1-full,
+.shift-schedule:only-child #shift2-full {
+  margin-right: 0.3rem;
+  margin-left: 0.3rem;
 }
 
 
@@ -1641,4 +1654,132 @@ body:not(.scrolling) .lesson-card-full {
     font-size: 0.9rem;
     padding-bottom: 1.2rem;
   }
+}
+/* ===== Группа: слайдер выбора и карточки пар на сегодня ===== */
+.group-picker-card {
+  padding: 0.9rem 0.9rem 1rem !important;
+  margin-top: 0 !important;
+}
+
+.group-slider {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.3rem 0.1rem 0.15rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.group-slider::-webkit-scrollbar { display: none; }
+
+.group-slider-loading,
+.group-slider-empty {
+  font-size: 0.95rem;
+  color: rgba(0, 0, 0, 0.6);
+  padding: 0.4rem 0.2rem;
+}
+.group-slider-empty a { color: inherit; text-decoration: underline; }
+
+.group-pill {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px) saturate(115%);
+  -webkit-backdrop-filter: blur(6px) saturate(115%);
+  color: #232323;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, color 0.2s ease;
+}
+.group-pill:active { transform: scale(0.96); }
+.group-pill.active {
+  background: rgba(30, 30, 30, 0.85);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+body.night-mode .group-pill {
+  background: rgba(0, 0, 0, 0.28);
+  color: #eaeaea;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+body.night-mode .group-pill.active {
+  background: rgba(255, 255, 255, 0.85);
+  color: #111;
+}
+
+.today-lessons-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+}
+
+.today-lesson-card { gap: 0.35rem; }
+
+.today-lesson-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.today-lesson-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+}
+
+.today-lesson-card-active .today-lesson-badge {
+  background: #2fae5c;
+  color: #fff;
+}
+.today-lesson-card-active {
+  border: 1px solid rgba(47, 174, 92, 0.5);
+}
+
+.today-lesson-time {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.today-lesson-subject {
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.today-lesson-meta {
+  font-size: 0.92rem;
+  color: rgba(0, 0, 0, 0.62);
+}
+
+.no-lessons-today {
+  align-items: center;
+  justify-content: center;
+  min-height: 4rem;
+}
+
+body.night-mode .today-lesson-time,
+body.night-mode .today-lesson-meta { color: rgba(255, 255, 255, 0.6); }
+body.night-mode .today-lesson-badge { background: rgba(255, 255, 255, 0.12); color: rgba(255, 255, 255, 0.85); }
+
+.group-slider-retry {
+  border: none;
+  background: none;
+  color: inherit;
+  text-decoration: underline;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
 }

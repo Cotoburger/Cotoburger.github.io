@@ -82,6 +82,20 @@
       <div id="birthday-cards-container"></div>
     </div><!-- /container -->
 
+    <!-- НОВЫЙ КОНТЕЙНЕР: выбор группы (слайдер) + пары на сегодня для этой группы -->
+    <div class="container group-schedule-container">
+      <div class="lesson-card-full group-picker-card">
+        <div class="schedule-header-container">
+          <div class="schedule-header">Моя группа</div>
+        </div>
+        <div class="group-slider" id="groupSlider">
+          <div class="group-slider-loading" id="groupSliderLoading">Загрузка списка групп…</div>
+        </div>
+      </div>
+
+      <div id="todayLessonsContainer" class="today-lessons-container"></div>
+    </div><!-- /group-schedule-container -->
+
     <!-- ВТОРОЙ КОНТЕЙНЕР: расписание слева + меню справа на 16:9 -->
     <div class="container bottom-container">
       <div class="lesson-card-full">
@@ -123,6 +137,350 @@
       </div>
     </div>
     <script>
+      // ===== Расписание по группам (источник: кнопка "Открыть" на koop41.ru/schedule → Google-таблица "Очная форма") =====
+      // ВАЖНО: техникум каждую неделю подкладывает в эту кнопку новую Google-таблицу с новым ID в ссылке.
+      // Когда расписание перестанет обновляться — нужно зайти на https://koop41.ru/schedule,
+      // открыть таблицу за кнопкой "Очная форма" → "Открыть" и скопировать её ID из адресной строки сюда:
+      const KOOP41_SHEET_ID = "1vQ6HXb2tpDGzC3b3e27JXz_bX9wSaqb1";
+      (function () {
+        const CSV_URL = `https://docs.google.com/spreadsheets/d/${KOOP41_SHEET_ID}/export?format=csv`;
+        // Резервный вариант, если основной способ (gviz, см. ниже) вдруг заблокируют: публичные CORS-прокси.
+        const PROXIES = [
+          (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+          (u) => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
+        ];
+        const STORAGE_KEY = "koop41-selected-group";
+        const CACHE_KEY = "koop41-schedule-cache-v2";
+
+        let groupsIndex = [];
+        let scheduleByDate = {};
+
+        function parseCsv(text) {
+          const rows = [];
+          let row = [], field = "", inQuotes = false;
+          for (let i = 0; i < text.length; i++) {
+            const c = text[i];
+            if (inQuotes) {
+              if (c === '"') {
+                if (text[i + 1] === '"') { field += '"'; i++; }
+                else inQuotes = false;
+              } else field += c;
+            } else if (c === '"') inQuotes = true;
+            else if (c === ",") { row.push(field); field = ""; }
+            else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
+            else if (c === "\r") { /* skip */ }
+            else field += c;
+          }
+          if (field.length || row.length) { row.push(field); rows.push(row); }
+          return rows;
+        }
+
+        function normalizeCell(v) {
+          return (v || "").replace(/\s+/g, " ").trim();
+        }
+
+        // Ищем строку заголовка динамически (её номер может отличаться от недели к неделе),
+        // а не полагаемся на жёстко зашитый индекс строки.
+        function findHeaderRowIndex(rows) {
+          for (let r = 0; r < Math.min(rows.length, 30); r++) {
+            const row = rows[r] || [];
+            for (let c = 0; c < row.length; c++) {
+              if (/день\s+недели/i.test(normalizeCell(row[c]))) return r;
+            }
+          }
+          return -1;
+        }
+
+        function buildScheduleFromRows(rows) {
+          const headerRowIdx = findHeaderRowIndex(rows);
+          if (headerRowIdx === -1) return { groups: [], byDate: {} };
+          const headerRow = rows[headerRowIdx] || [];
+
+          // Колонки "День недели" / "Номер пары" / "Время пары" ищем по тексту, а не по фиксированным индексам.
+          let dayCol = 0, numberCol = 1, timeCol = 2;
+          headerRow.forEach((v, c) => {
+            const t = normalizeCell(v);
+            if (/день\s+недели/i.test(t)) dayCol = c;
+            else if (/номер\s+пары/i.test(t)) numberCol = c;
+            else if (/время\s+пары/i.test(t)) timeCol = c;
+          });
+          const groupStartCol = Math.max(dayCol, numberCol, timeCol) + 1;
+
+          // Следующая строка может быть служебной ("Подгруппа №1/№2") — тогда данные начинаются на 2 строки ниже.
+          const nextRow = rows[headerRowIdx + 1] || [];
+          const nextRowIsSubgroupRow = nextRow.some((v) => /подгруппа/i.test(normalizeCell(v)));
+          const dataStartRow = headerRowIdx + (nextRowIsSubgroupRow ? 2 : 1);
+
+          // Название группы — это буквально то, что написано в строке заголовка (с проброской вправо
+          // на объединённые пустые ячейки этой же группы, т.к. Google-таблица отдаёт значение только в первой ячейке объединения).
+          const groupForCol = {};
+          let currentGroup = "";
+          for (let c = groupStartCol; c < headerRow.length; c++) {
+            const v = normalizeCell(headerRow[c]);
+            if (v) currentGroup = v;
+            groupForCol[c] = currentGroup;
+          }
+
+          // Группируем колонки по имени группы: у одной группы может быть 1 колонка или несколько (подгруппы).
+          const groups = [];
+          const groupByName = new Map();
+          for (let c = groupStartCol; c < headerRow.length; c++) {
+            const name = groupForCol[c];
+            if (!name) continue;
+            if (!groupByName.has(name)) {
+              const g = { key: name, name, cols: [] };
+              groupByName.set(name, g);
+              groups.push(g);
+            }
+            groupByName.get(name).cols.push(c);
+          }
+
+          const byDate = {};
+          let currentDateKey = null;
+          for (let r = dataStartRow; r < rows.length; r++) {
+            const row = rows[r];
+            if (!row) continue;
+            const colA = normalizeCell(row[dayCol]);
+            if (colA) {
+              const m = colA.match(/(\d{2}\.\d{2}\.\d{4})/);
+              currentDateKey = m ? m[1] : colA;
+            }
+            if (!currentDateKey) continue;
+            const number = normalizeCell(row[numberCol]);
+            const timeRaw = normalizeCell(row[timeCol]);
+            if (!timeRaw) continue;
+            const timeMatch = timeRaw.match(/(\d{1,2})[.:](\d{2})\s*-\s*(\d{1,2})[.:](\d{2})/);
+            if (!timeMatch) continue;
+            const start = `${timeMatch[1].padStart(2, "0")}:${timeMatch[2]}`;
+            const end = `${timeMatch[3].padStart(2, "0")}:${timeMatch[4]}`;
+            const cells = {};
+            for (let c = groupStartCol; c < row.length; c++) {
+              const v = normalizeCell(row[c]);
+              if (v) cells[c] = v;
+            }
+            if (!byDate[currentDateKey]) byDate[currentDateKey] = [];
+            byDate[currentDateKey].push({ number: Number(number) || byDate[currentDateKey].length + 1, start, end, cells });
+          }
+
+          return { groups, byDate };
+        }
+
+        // Основной способ: gviz-эндпоинт самой Google Таблицы, отдаваемый как <script>.
+        // Загрузка через <script src="..."> не подчиняется CORS вообще (в отличие от fetch),
+        // поэтому этот путь работает надёжнее любых сторонних прокси.
+        function fetchViaGviz() {
+          return new Promise((resolve, reject) => {
+            let done = false;
+            const script = document.createElement("script");
+            const timer = setTimeout(() => {
+              if (done) return;
+              done = true;
+              cleanup();
+              reject(new Error("Таймаут запроса к Google Таблице (gviz)"));
+            }, 12000);
+
+            function cleanup() {
+              clearTimeout(timer);
+              try { delete window.google.visualization.Query.setResponse; } catch (e) {}
+              if (script.parentNode) script.parentNode.removeChild(script);
+            }
+
+            window.google = window.google || {};
+            window.google.visualization = window.google.visualization || {};
+            window.google.visualization.Query = window.google.visualization.Query || {};
+            window.google.visualization.Query.setResponse = function (data) {
+              if (done) return;
+              done = true;
+              cleanup();
+              if (data && data.table) resolve(data.table);
+              else reject(new Error("Пустой ответ gviz"));
+            };
+
+            script.src = `https://docs.google.com/spreadsheets/d/${KOOP41_SHEET_ID}/gviz/tq?tqx=out:json&t=${Date.now()}`;
+            script.onerror = () => {
+              if (done) return;
+              done = true;
+              cleanup();
+              reject(new Error("Не удалось загрузить gviz-скрипт"));
+            };
+            document.body.appendChild(script);
+          });
+        }
+
+        function gvizTableToRows(table) {
+          const numCols = (table.cols || []).length;
+          return (table.rows || []).map((row) => {
+            const cells = row.c || [];
+            const out = [];
+            for (let i = 0; i < numCols; i++) {
+              const cell = cells[i];
+              if (!cell) { out.push(""); continue; }
+              out.push(cell.f != null ? String(cell.f) : cell.v != null ? String(cell.v) : "");
+            }
+            return out;
+          });
+        }
+
+        async function fetchCsvText() {
+          let lastError = null;
+          for (const buildUrl of PROXIES) {
+            try {
+              const res = await fetch(buildUrl(CSV_URL), { cache: "no-store" });
+              if (!res.ok) throw new Error("HTTP " + res.status);
+              const text = await res.text();
+              if (text && text.length > 200) return text;
+            } catch (e) { lastError = e; }
+          }
+          throw lastError || new Error("Не удалось получить таблицу");
+        }
+
+        async function loadSchedule() {
+          let rows;
+          try {
+            const table = await fetchViaGviz();
+            rows = gvizTableToRows(table);
+          } catch (gvizError) {
+            console.warn("gviz недоступен, пробуем через CORS-прокси:", gvizError);
+            const text = await fetchCsvText();
+            rows = parseCsv(text);
+          }
+          const { groups, byDate } = buildScheduleFromRows(rows);
+          if (!groups.length) throw new Error("В таблице не найдены группы — возможно, изменилась структура");
+          groupsIndex = groups;
+          scheduleByDate = byDate;
+          try { localStorage.setItem(CACHE_KEY, JSON.stringify({ groups, byDate })); } catch (e) {}
+        }
+
+        function loadCachedSchedule() {
+          try {
+            const raw = localStorage.getItem(CACHE_KEY);
+            if (!raw) return false;
+            const data = JSON.parse(raw);
+            if (!data || !data.groups || !data.byDate) return false;
+            groupsIndex = data.groups;
+            scheduleByDate = data.byDate;
+            return true;
+          } catch (e) { return false; }
+        }
+
+        function renderGroupSlider(errorMessage) {
+          const slider = document.getElementById("groupSlider");
+          if (!slider) return;
+          if (!groupsIndex.length) {
+            slider.innerHTML = `<div class="group-slider-empty">
+              ${errorMessage ? `Не удалось загрузить список групп: ${escapeHtml(errorMessage)}.` : "Не удалось загрузить список групп."}
+              <a href="https://koop41.ru/schedule" target="_blank" rel="noopener">Открыть таблицу на сайте</a>
+              · <button type="button" class="group-slider-retry" id="groupSliderRetry">Повторить</button>
+            </div>`;
+            const retryBtn = document.getElementById("groupSliderRetry");
+            if (retryBtn) retryBtn.addEventListener("click", () => initGroupSchedule());
+            return;
+          }
+          const selected = localStorage.getItem(STORAGE_KEY);
+          slider.innerHTML = "";
+          groupsIndex.forEach((g) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "group-pill";
+            btn.dataset.key = g.key;
+            btn.textContent = g.name;
+            if (g.key === selected) btn.classList.add("active");
+            btn.addEventListener("click", () => selectGroup(g.key));
+            slider.appendChild(btn);
+          });
+          const activeBtn = slider.querySelector(".group-pill.active");
+          if (activeBtn) activeBtn.scrollIntoView({ inline: "center", block: "nearest" });
+        }
+
+        function selectGroup(key) {
+          localStorage.setItem(STORAGE_KEY, key);
+          document.querySelectorAll(".group-pill").forEach((el) => el.classList.toggle("active", el.dataset.key === key));
+          renderTodayLessons();
+        }
+
+        function timeToMinutes(t) {
+          const [h, m] = t.split(":").map(Number);
+          return h * 60 + m;
+        }
+
+        function renderTodayLessons() {
+          const container = document.getElementById("todayLessonsContainer");
+          if (!container) return;
+          const selectedKey = localStorage.getItem(STORAGE_KEY);
+          const group = groupsIndex.find((g) => g.key === selectedKey);
+          if (!group) { container.innerHTML = ""; return; }
+
+          const kDate = getKamchatkaDate();
+          const dateKey = `${String(kDate.getDate()).padStart(2, "0")}.${String(kDate.getMonth() + 1).padStart(2, "0")}.${kDate.getFullYear()}`;
+          const nowMinutes = kDate.getHours() * 60 + kDate.getMinutes();
+
+          const dayLessons = (scheduleByDate[dateKey] || [])
+            .map((l) => ({ ...l, text: group.cols.map((c) => l.cells[c]).find((v) => v) || "" }))
+            .filter((l) => l.text)
+            .sort((a, b) => a.number - b.number);
+
+          const upcoming = dayLessons.filter((l) => timeToMinutes(l.end) > nowMinutes);
+
+          if (!upcoming.length) {
+            container.innerHTML = `<div class="lesson-card no-lessons-today"><div class="no-lessons-message-text">${dayLessons.length ? "На сегодня пар больше нет" : "Сегодня пар нет"}</div></div>`;
+            return;
+          }
+
+          container.innerHTML = "";
+          upcoming.forEach((l, idx) => {
+            const isCurrent = nowMinutes >= timeToMinutes(l.start) && nowMinutes < timeToMinutes(l.end);
+            const parts = l.text.split(/\s{2,}|№/).map((p) => p.trim()).filter(Boolean);
+            const subject = parts[0] || l.text;
+            const rest = parts.length > 1 ? "№ " + parts.slice(1).join(" · № ") : "";
+            const card = document.createElement("div");
+            card.className = "lesson-card today-lesson-card" + (idx === 0 ? " today-lesson-card-active" : "");
+            card.innerHTML = `
+              <div class="today-lesson-top">
+                <span class="today-lesson-badge">${idx === 0 ? (isCurrent ? "Сейчас" : "Далее") : `${l.number}-я пара`}</span>
+                <span class="today-lesson-time">${l.start} – ${l.end}</span>
+              </div>
+              <div class="today-lesson-subject">${escapeHtml(subject)}</div>
+              ${rest ? `<div class="today-lesson-meta">${escapeHtml(rest)}</div>` : ""}
+            `;
+            container.appendChild(card);
+          });
+        }
+
+        function showGroupSliderLoading(state) {
+          const el = document.getElementById("groupSliderLoading");
+          if (el) el.style.display = state ? "block" : "none";
+        }
+
+        async function initGroupSchedule() {
+          const hadCache = loadCachedSchedule();
+          if (hadCache) { renderGroupSlider(); renderTodayLessons(); }
+          showGroupSliderLoading(!hadCache);
+          try {
+            await loadSchedule();
+            showGroupSliderLoading(false);
+            renderGroupSlider();
+            renderTodayLessons();
+          } catch (e) {
+            showGroupSliderLoading(false);
+            console.warn("Не удалось обновить расписание групп:", e);
+            if (!hadCache) renderGroupSlider(e && e.message);
+            else {
+              const el = document.getElementById("groupSliderLoading");
+              if (el) {
+                el.style.display = "block";
+                el.className = "group-slider-empty";
+                el.textContent = `Не удалось обновить список групп (показаны старые данные): ${e && e.message ? e.message : "ошибка"}.`;
+              }
+            }
+          }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+          initGroupSchedule();
+          setInterval(renderTodayLessons, 30000);
+        });
+      })();
+
       console.log("Алина Бакун я люблю тебя ❤️");
       
       (function () {
@@ -402,7 +760,12 @@ const specialSchedules = {
         </svg>
       `;
 
+      // ===== ОТЛАДКА: поставьте здесь дату/время, чтобы весь сайт (пары, прогресс, "сейчас/далее") считал текущим именно его =====
+      // Формат: "YYYY-MM-DDTHH:MM:SS" по камчатскому времени. Чтобы вернуть реальное время — поставьте null.
+      const DEBUG_DATETIME = "2026-09-17T10:15:00"; // например: "2026-09-17T10:15:00"
+
       function getKamchatkaDate() {
+        if (DEBUG_DATETIME) return new Date(DEBUG_DATETIME);
         const now = new Date();
         return new Date(now.getTime() + (12 * 60 + now.getTimezoneOffset()) * 60 * 1000);
       }
