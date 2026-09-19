@@ -592,7 +592,17 @@ const schedule = {
     ],
   },
 
-  6: { shift1: [], shift2: [] },
+  6: {
+    shift1: [
+      { lesson: "1-я пара", start: "08:30", end: "10:00" },
+      { lesson: "2-я пара", start: "10:10", end: "11:40" },
+      { lesson: "3-я пара", start: "12:10", end: "13:40" },
+      { lesson: "4-я пара", start: "13:50", end: "15:20" },
+      { lesson: "5-я пара", start: "15:30", end: "17:00" },
+      { lesson: "6-я пара", start: "17:10", end: "18:40" },
+      { lesson: "7-я пара", start: "18:50", end: "20:20" },
+    ],
+  },
   0: { shift1: [], shift2: [] },
 };
 
@@ -1063,7 +1073,7 @@ const specialSchedules = {
         bar.parentElement.classList.remove("hidden");
         startEl.parentElement.classList.remove("hidden");
         if (!data || data.length === 0) {
-          nameEl.textContent = "Нет уроков";
+          nameEl.textContent = "Нет пар";
           remEl.style.visibility = "hidden";
           bar.parentElement.classList.add("hidden");
           startEl.parentElement.classList.add("hidden");
