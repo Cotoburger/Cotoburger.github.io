@@ -1796,6 +1796,7 @@ body.night-mode .today-lesson-badge { background: rgba(255, 255, 255, 0.12); col
   cursor: pointer;
   padding: 0;
 }
+body.night-mode .no-lessons-message-text { color: #eaeaea7a; }
 
 .container.group-schedule-container {
   padding-top: 0 !important;
