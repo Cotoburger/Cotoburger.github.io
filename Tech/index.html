@@ -137,12 +137,13 @@
     </div>
     <script>
       // ===== Расписание по группам (источник: кнопка "Открыть" на koop41.ru/schedule → Google-таблица "Очная форма") =====
-      // ВАЖНО: техникум каждую неделю подкладывает в эту кнопку новую Google-таблицу с новым ID в ссылке.
-      // Когда расписание перестанет обновляться — нужно зайти на https://koop41.ru/schedule,
-      // открыть таблицу за кнопкой "Очная форма" → "Открыть" и скопировать её ID из адресной строки сюда:
-      const KOOP41_SHEET_ID = "1vQ6HXb2tpDGzC3b3e27JXz_bX9wSaqb1";
+      // ID таблицы техникум меняет каждую неделю. Ниже — запасное значение на случай,
+      // если автоматическое обнаружение ID (см. discoverSheetId) не сработает.
+      // Обновить вручную: зайти на https://koop41.ru/schedule, открыть таблицу за кнопкой
+      // "Очная форма" → "Открыть" и скопировать её ID из адресной строки сюда:
+      const KOOP41_SHEET_ID_FALLBACK = "1kbARmLfBBKs3jBP-qUzZVDCfzsMadDzG";
+      const KOOP41_SCHEDULE_PAGE = "https://koop41.ru/schedule";
       (function () {
-        const CSV_URL = `https://docs.google.com/spreadsheets/d/${KOOP41_SHEET_ID}/export?format=csv`;
         // Резервный вариант, если основной способ (gviz, см. ниже) вдруг заблокируют: публичные CORS-прокси.
         const PROXIES = [
           (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
@@ -150,9 +151,56 @@
         ];
         const STORAGE_KEY = "koop41-selected-group";
         const CACHE_KEY = "koop41-schedule-cache-v2";
+        const SHEET_ID_CACHE_KEY = "koop41-sheet-id-cache";
 
         let groupsIndex = [];
         let scheduleByDate = {};
+        let activeSheetId = null;
+
+        // Пытаемся сами найти актуальный ID таблицы на странице koop41.ru/schedule,
+        // не дожидаясь, пока кто-то вручную обновит KOOP41_SHEET_ID_FALLBACK.
+        function extractSheetId(html, nearLabelRe) {
+          const idRe = /spreadsheets\/d\/([a-zA-Z0-9_-]{20,})/g;
+          if (nearLabelRe) {
+            const labelIdx = html.search(nearLabelRe);
+            if (labelIdx !== -1) {
+              const windowText = html.slice(labelIdx, labelIdx + 3000);
+              const m = windowText.match(/spreadsheets\/d\/([a-zA-Z0-9_-]{20,})/);
+              if (m) return m[1];
+            }
+          }
+          const matches = [...html.matchAll(idRe)];
+          return matches.length ? matches[0][1] : null;
+        }
+
+        async function discoverSheetId() {
+          for (const buildUrl of PROXIES) {
+            try {
+              const res = await fetch(buildUrl(KOOP41_SCHEDULE_PAGE), { cache: "no-store" });
+              if (!res.ok) continue;
+              const html = await res.text();
+              const id = extractSheetId(html, /очная/i);
+              if (id) return id;
+            } catch (e) { /* пробуем следующий прокси */ }
+          }
+          return null;
+        }
+
+        async function resolveSheetId() {
+          try {
+            const discovered = await discoverSheetId();
+            if (discovered) {
+              activeSheetId = discovered;
+              try { localStorage.setItem(SHEET_ID_CACHE_KEY, discovered); } catch (e) {}
+              return discovered;
+            }
+          } catch (e) {
+            console.warn("Не удалось автоматически найти ID таблицы:", e);
+          }
+          const cached = (() => { try { return localStorage.getItem(SHEET_ID_CACHE_KEY); } catch (e) { return null; } })();
+          activeSheetId = cached || KOOP41_SHEET_ID_FALLBACK;
+          return activeSheetId;
+        }
 
         function parseCsv(text) {
           const rows = [];
@@ -295,7 +343,7 @@
               else reject(new Error("Пустой ответ gviz"));
             };
 
-            script.src = `https://docs.google.com/spreadsheets/d/${KOOP41_SHEET_ID}/gviz/tq?tqx=out:json&t=${Date.now()}`;
+            script.src = `https://docs.google.com/spreadsheets/d/${activeSheetId}/gviz/tq?tqx=out:json&t=${Date.now()}`;
             script.onerror = () => {
               if (done) return;
               done = true;
@@ -321,10 +369,11 @@
         }
 
         async function fetchCsvText() {
+          const csvUrl = `https://docs.google.com/spreadsheets/d/${activeSheetId}/export?format=csv`;
           let lastError = null;
           for (const buildUrl of PROXIES) {
             try {
-              const res = await fetch(buildUrl(CSV_URL), { cache: "no-store" });
+              const res = await fetch(buildUrl(csvUrl), { cache: "no-store" });
               if (!res.ok) throw new Error("HTTP " + res.status);
               const text = await res.text();
               if (text && text.length > 200) return text;
@@ -333,7 +382,8 @@
           throw lastError || new Error("Не удалось получить таблицу");
         }
 
-        async function loadSchedule() {
+        async function loadScheduleWithId(sheetId) {
+          activeSheetId = sheetId;
           let rows;
           try {
             const table = await fetchViaGviz();
@@ -345,9 +395,34 @@
           }
           const { groups, byDate } = buildScheduleFromRows(rows);
           if (!groups.length) throw new Error("В таблице не найдены группы — возможно, изменилась структура");
-          groupsIndex = groups;
-          scheduleByDate = byDate;
-          try { localStorage.setItem(CACHE_KEY, JSON.stringify({ groups, byDate })); } catch (e) {}
+          return { groups, byDate };
+        }
+
+        function hasTodayInByDate(byDate) {
+          const kDate = getKamchatkaDate();
+          const dateKey = `${String(kDate.getDate()).padStart(2, "0")}.${String(kDate.getMonth() + 1).padStart(2, "0")}.${kDate.getFullYear()}`;
+          return !!byDate[dateKey];
+        }
+
+        async function loadSchedule() {
+          const discoveredId = await resolveSheetId();
+          let result = await loadScheduleWithId(discoveredId);
+
+          // Если автообнаруженная/кэшированная таблица не содержит сегодняшний день,
+          // это подозрительно похоже на устаревший ID — пробуем запасной вариант из кода.
+          if (!hasTodayInByDate(result.byDate) && discoveredId !== KOOP41_SHEET_ID_FALLBACK) {
+            try {
+              const fallbackResult = await loadScheduleWithId(KOOP41_SHEET_ID_FALLBACK);
+              if (hasTodayInByDate(fallbackResult.byDate)) {
+                result = fallbackResult;
+                try { localStorage.setItem(SHEET_ID_CACHE_KEY, KOOP41_SHEET_ID_FALLBACK); } catch (e) {}
+              }
+            } catch (e) { /* оставляем то, что уже получили */ }
+          }
+
+          groupsIndex = result.groups;
+          scheduleByDate = result.byDate;
+          try { localStorage.setItem(CACHE_KEY, JSON.stringify(result)); } catch (e) {}
         }
 
         function loadCachedSchedule() {
