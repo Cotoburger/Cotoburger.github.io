@@ -141,7 +141,7 @@
       // если автоматическое обнаружение ID (см. discoverSheetId) не сработает.
       // Обновить вручную: зайти на https://koop41.ru/schedule, открыть таблицу за кнопкой
       // "Очная форма" → "Открыть" и скопировать её ID из адресной строки сюда:
-      const KOOP41_SHEET_ID_FALLBACK = "1kbARmLfBBKs3jBP-qUzZVDCfzsMadDzG";
+      const KOOP41_SHEET_ID_FALLBACK = "1c480XngGyOABO2RLJn--32F6aE22nGuC";
       const KOOP41_SCHEDULE_PAGE = "https://koop41.ru/schedule";
       (function () {
         // Резервный вариант, если основной способ (gviz, см. ниже) вдруг заблокируют: публичные CORS-прокси.
@@ -150,36 +150,48 @@
           (u) => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
         ];
         const STORAGE_KEY = "koop41-selected-group";
-        const CACHE_KEY = "koop41-schedule-cache-v2";
+        const CACHE_KEY = "koop41-schedule-cache-v3";
         const SHEET_ID_CACHE_KEY = "koop41-sheet-id-cache";
 
         let groupsIndex = [];
         let scheduleByDate = {};
         let activeSheetId = null;
 
-        // Пытаемся сами найти актуальный ID таблицы на странице koop41.ru/schedule,
-        // не дожидаясь, пока кто-то вручную обновит KOOP41_SHEET_ID_FALLBACK.
-        function extractSheetId(html, nearLabelRe) {
-          const idRe = /spreadsheets\/d\/([a-zA-Z0-9_-]{20,})/g;
-          if (nearLabelRe) {
-            const labelIdx = html.search(nearLabelRe);
-            if (labelIdx !== -1) {
-              const windowText = html.slice(labelIdx, labelIdx + 3000);
-              const m = windowText.match(/spreadsheets\/d\/([a-zA-Z0-9_-]{20,})/);
+        // Актуальный ID таблицы берём так (по убыванию надёжности):
+        //  1) sheet-id.json рядом с сайтом — его раз в ~20 минут обновляет GitHub Action
+        //     (.github/workflows/update-sheet-id.yml), поэтому CORS-прокси не нужны;
+        //  2) прямо со страницы koop41.ru/schedule через публичный CORS-прокси (ненадёжно);
+        //  3) последний удачный ID из localStorage / запасной ID из кода (см. resolveSheetId).
+        const SHEET_ID_RE = /^[A-Za-z0-9_-]{20,}$/;
+
+        // Ищем именно ссылку с текстом "Очная форма" (а не "Очно-заочная" и не любые другие ссылки на Google Drive).
+        function extractSheetId(html) {
+          const doc = new DOMParser().parseFromString(html, "text/html");
+          const idRe = /\/(?:spreadsheets|file)\/d\/([A-Za-z0-9_-]{20,})/;
+          for (const a of doc.querySelectorAll("a[href]")) {
+            const text = (a.textContent || "").replace(/\s+/g, " ");
+            if (/(^|[^а-яё])очная\s+форма/i.test(text) && !/заочн/i.test(text)) {
+              const m = (a.getAttribute("href") || "").match(idRe);
               if (m) return m[1];
             }
           }
-          const matches = [...html.matchAll(idRe)];
-          return matches.length ? matches[0][1] : null;
+          return null;
         }
 
         async function discoverSheetId() {
+          try {
+            const res = await fetch(`sheet-id.json?t=${Date.now()}`, { cache: "no-store" });
+            if (res.ok) {
+              const data = await res.json();
+              if (data && SHEET_ID_RE.test(data.id || "")) return data.id;
+            }
+          } catch (e) { /* файла может не быть (например, при локальном запуске) — идём дальше */ }
+
           for (const buildUrl of PROXIES) {
             try {
               const res = await fetch(buildUrl(KOOP41_SCHEDULE_PAGE), { cache: "no-store" });
               if (!res.ok) continue;
-              const html = await res.text();
-              const id = extractSheetId(html, /очная/i);
+              const id = extractSheetId(await res.text());
               if (id) return id;
             } catch (e) { /* пробуем следующий прокси */ }
           }
@@ -437,6 +449,13 @@
           } catch (e) { return false; }
         }
 
+        function renderLessonsPlaceholder(text) {
+          const container = document.getElementById("todayLessonsContainer");
+          if (!container) return;
+          container.innerHTML = `<div class="lesson-card no-lessons-today"><div class="no-lessons-message-text">${escapeHtml(text)}</div></div>`;
+          lastTodayLessonsRenderKey = "";
+        }
+
         function renderGroupSlider(errorMessage) {
           const slider = document.getElementById("groupSlider");
           if (!slider) return;
@@ -537,7 +556,17 @@
 
         async function initGroupSchedule() {
           const hadCache = loadCachedSchedule();
-          if (hadCache) { renderGroupSlider(); renderTodayLessons(); }
+          const cacheCoversToday = hadCache && hasTodayInByDate(scheduleByDate);
+          if (hadCache) {
+            renderGroupSlider();
+            if (cacheCoversToday) {
+              renderTodayLessons();
+            } else {
+              // Кэш есть, но он не за сегодня (например, ещё с прошлой недели) —
+              // не показываем "нет пар" вслепую, ждём проверки по сети.
+              renderLessonsPlaceholder("Обновляем расписание…");
+            }
+          }
           showGroupSliderLoading(!hadCache);
           try {
             await loadSchedule();
@@ -554,6 +583,10 @@
                 el.style.display = "block";
                 el.className = "group-slider-empty";
                 el.textContent = `Не удалось обновить список групп (показаны старые данные): ${e && e.message ? e.message : "ошибка"}.`;
+              }
+              if (!cacheCoversToday) {
+                // Сеть не ответила, а старый кэш тоже не про сегодня — говорим прямо, а не "пар нет".
+                renderLessonsPlaceholder("Не удалось загрузить актуальное расписание. Проверь подключение и обнови страницу.");
               }
             }
           }
