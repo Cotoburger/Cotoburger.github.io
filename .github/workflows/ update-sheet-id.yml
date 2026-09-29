@@ -1,10 +1,10 @@
 name: Update schedule sheet ID
 
-# Раз в ~20 минут заходит на koop41.ru/schedule, достаёт ID Google-таблицы "Очная форма"
-# и, если он изменился, коммитит его в sheet-id.json. Сайт читает этот файл при загрузке.
+# Раз в ~20 минут заходит на koop41.ru/schedule, достаёт ID Google-таблицы "Очная форма"
+# и, если он изменился, коммитит его в sheet-id.json. Сайт читает этот файл при загрузке.
 on:
   schedule:
-    - cron: "*/59 * * * *" 
+    - cron: "*/20 * * * *"
   workflow_dispatch: {}   # можно запустить вручную: вкладка Actions → Run workflow
 
 permissions:
@@ -17,8 +17,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Fetch current sheet ID from koop41.ru
+        shell: python3 {0}
         env:
-          # Если index.html лежит не в корне репозитория, поменяй путь (например, docs/sheet-id.json)
+          # Если index.html лежит не в корне репозитория, поменяй путь (например, docs/sheet-id.json)
           OUT_PATH: sheet-id.json
         run: |
           import html as htmllib
@@ -35,22 +36,22 @@ jobs:
 
 
           def fetch_page():
-              if os.environ.get("PAGE_FILE"):  # для локальной проверки
+              if os.environ.get("PAGE_FILE"):  # для локальной проверки
                   return open(os.environ["PAGE_FILE"], encoding="utf-8").read()
               req = urllib.request.Request(PAGE_URL, headers={"User-Agent": "Mozilla/5.0 (schedule-sync)"})
               return urllib.request.urlopen(req, timeout=30).read().decode("utf-8", "replace")
 
 
           def find_sheet_id(page):
-              # 1) ссылка, текст которой "Очная форма" (а не "Очно-заочная форма")
+              # 1) ссылка, текст которой "Очная форма" (а не "Очно-заочная форма")
               for m in re.finditer(r'<a\b[^>]*?href="([^"]+)"[^>]*>(.*?)</a>', page, re.S | re.I):
                   text = " ".join(htmllib.unescape(re.sub(r"<[^>]+>", " ", m.group(2))).split())
-                  if re.search(r"(?<![а-яё])очная\s+форма", text, re.I) and not re.search(r"заочн", text, re.I):
+                  if re.search(r"(?<![а-яё])очная\s+форма", text, re.I) and not re.search(r"заочн", text, re.I):
                       found = ID_RE.search(htmllib.unescape(m.group(1)))
                       if found:
                           return found.group(1)
-              # 2) запасной вариант: ближайшая к надписи "Очная форма" ссылка на таблицу/файл
-              labels = [m.start() for m in re.finditer(r"(?<![а-яё])очная\s+форма", page, re.I)]
+              # 2) запасной вариант: ближайшая к надписи "Очная форма" ссылка на таблицу/файл
+              labels = [m.start() for m in re.finditer(r"(?<![а-яё])очная\s+форма", page, re.I)]
               ids = [(m.start(), m.group(1)) for m in ID_RE.finditer(page)]
               if labels and ids:
                   return min(ids, key=lambda p: min(abs(p[0] - l) for l in labels))[1]
@@ -60,7 +61,7 @@ jobs:
           page = fetch_page()
           sheet_id = find_sheet_id(page)
           if not sheet_id:
-              sys.exit("Не нашёл ссылку 'Очная форма' на koop41.ru/schedule — возможно, изменилась вёрстка страницы")
+              sys.exit("Не нашёл ссылку 'Очная форма' на koop41.ru/schedule — возможно, изменилась вёрстка страницы")
 
           old_id = None
           if os.path.exists(OUT_PATH):
@@ -75,7 +76,7 @@ jobs:
               with open(OUT_PATH, "w", encoding="utf-8") as f:
                   json.dump({"id": sheet_id, "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds")}, f, ensure_ascii=False, indent=2)
                   f.write("\n")
-              print("Новый ID:", sheet_id, "(был:", old_id, ")")
+              print("Новый ID:", sheet_id, "(был:", old_id, ")")
 
       - name: Commit if changed
         run: |
