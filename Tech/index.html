@@ -54,7 +54,6 @@
     <!-- ПЕРВЫЙ КОНТЕЙНЕР: карточки смен + день рождения -->
     <div class="container">
 
-      <!-- ИЗМЕНЕНО: карточки смен обёрнуты в .shifts-row для 16:9 -->
       <div class="shifts-row">
         <div class="lesson-card shift-card shift-card-1">
           <div class="shift-number"></div>
@@ -77,10 +76,10 @@
             <div id="lesson1-progress"></div>
           </div>
         </div>
-      </div><!-- /shifts-row -->
+      </div>
 
       <div id="birthday-cards-container"></div>
-    </div><!-- /container -->
+    </div>
 
     <!-- НОВЫЙ КОНТЕЙНЕР: выбор группы (слайдер) + пары на сегодня для этой группы -->
     <div class="container group-schedule-container">
@@ -94,7 +93,7 @@
       </div>
 
       <div id="todayLessonsContainer" class="today-lessons-container"></div>
-    </div><!-- /group-schedule-container -->
+    </div>
 
     <!-- ВТОРОЙ КОНТЕЙНЕР: расписание слева + меню справа на 16:9 -->
     <div class="container bottom-container">
@@ -122,7 +121,7 @@
           
         </div>
       </div>
-    </div><!-- /bottom-container -->
+    </div>
 
     <p id="last-deployment">Getting data...</p>
     <div class="full-schedule-panel" style="display: none">
@@ -136,35 +135,25 @@
       </div>
     </div>
     <script>
+      // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ для обмена данными между блоками =====
+      const STORAGE_KEY = "koop41-selected-group";
+      let groupsIndex = [];
+      let scheduleByDate = {};
+
       // ===== Расписание по группам (источник: кнопка "Открыть" на koop41.ru/schedule → Google-таблица "Очная форма") =====
-      // ID таблицы техникум меняет каждую неделю. Ниже — запасное значение на случай,
-      // если автоматическое обнаружение ID (см. discoverSheetId) не сработает.
-      // Обновить вручную: зайти на https://koop41.ru/schedule, открыть таблицу за кнопкой
-      // "Очная форма" → "Открыть" и скопировать её ID из адресной строки сюда:
       const KOOP41_SHEET_ID_FALLBACK = "1c480XngGyOABO2RLJn--32F6aE22nGuC";
       const KOOP41_SCHEDULE_PAGE = "https://koop41.ru/schedule";
       (function () {
-        // Резервный вариант, если основной способ (gviz, см. ниже) вдруг заблокируют: публичные CORS-прокси.
         const PROXIES = [
           (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
           (u) => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
         ];
-        const STORAGE_KEY = "koop41-selected-group";
         const CACHE_KEY = "koop41-schedule-cache-v3";
         const SHEET_ID_CACHE_KEY = "koop41-sheet-id-cache";
 
-        let groupsIndex = [];
-        let scheduleByDate = {};
         let activeSheetId = null;
-
-        // Актуальный ID таблицы берём так (по убыванию надёжности):
-        //  1) sheet-id.json рядом с сайтом — его раз в ~20 минут обновляет GitHub Action
-        //     (.github/workflows/update-sheet-id.yml), поэтому CORS-прокси не нужны;
-        //  2) прямо со страницы koop41.ru/schedule через публичный CORS-прокси (ненадёжно);
-        //  3) последний удачный ID из localStorage / запасной ID из кода (см. resolveSheetId).
         const SHEET_ID_RE = /^[A-Za-z0-9_-]{20,}$/;
 
-        // Ищем именно ссылку с текстом "Очная форма" (а не "Очно-заочная" и не любые другие ссылки на Google Drive).
         function extractSheetId(html) {
           const doc = new DOMParser().parseFromString(html, "text/html");
           const idRe = /\/(?:spreadsheets|file)\/d\/([A-Za-z0-9_-]{20,})/;
@@ -185,7 +174,7 @@
               const data = await res.json();
               if (data && SHEET_ID_RE.test(data.id || "")) return data.id;
             }
-          } catch (e) { /* файла может не быть (например, при локальном запуске) — идём дальше */ }
+          } catch (e) {}
 
           for (const buildUrl of PROXIES) {
             try {
@@ -193,7 +182,7 @@
               if (!res.ok) continue;
               const id = extractSheetId(await res.text());
               if (id) return id;
-            } catch (e) { /* пробуем следующий прокси */ }
+            } catch (e) {}
           }
           return null;
         }
@@ -227,7 +216,7 @@
             } else if (c === '"') inQuotes = true;
             else if (c === ",") { row.push(field); field = ""; }
             else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
-            else if (c === "\r") { /* skip */ }
+            else if (c === "\r") {}
             else field += c;
           }
           if (field.length || row.length) { row.push(field); rows.push(row); }
@@ -238,8 +227,6 @@
           return (v || "").replace(/\s+/g, " ").trim();
         }
 
-        // Ищем строку заголовка динамически (её номер может отличаться от недели к неделе),
-        // а не полагаемся на жёстко зашитый индекс строки.
         function findHeaderRowIndex(rows) {
           for (let r = 0; r < Math.min(rows.length, 30); r++) {
             const row = rows[r] || [];
@@ -255,7 +242,6 @@
           if (headerRowIdx === -1) return { groups: [], byDate: {} };
           const headerRow = rows[headerRowIdx] || [];
 
-          // Колонки "День недели" / "Номер пары" / "Время пары" ищем по тексту, а не по фиксированным индексам.
           let dayCol = 0, numberCol = 1, timeCol = 2;
           headerRow.forEach((v, c) => {
             const t = normalizeCell(v);
@@ -265,13 +251,10 @@
           });
           const groupStartCol = Math.max(dayCol, numberCol, timeCol) + 1;
 
-          // Следующая строка может быть служебной ("Подгруппа №1/№2") — тогда данные начинаются на 2 строки ниже.
           const nextRow = rows[headerRowIdx + 1] || [];
           const nextRowIsSubgroupRow = nextRow.some((v) => /подгруппа/i.test(normalizeCell(v)));
           const dataStartRow = headerRowIdx + (nextRowIsSubgroupRow ? 2 : 1);
 
-          // Название группы — это буквально то, что написано в строке заголовка (с проброской вправо
-          // на объединённые пустые ячейки этой же группы, т.к. Google-таблица отдаёт значение только в первой ячейке объединения).
           const groupForCol = {};
           let currentGroup = "";
           for (let c = groupStartCol; c < headerRow.length; c++) {
@@ -280,7 +263,6 @@
             groupForCol[c] = currentGroup;
           }
 
-          // Группируем колонки по имени группы: у одной группы может быть 1 колонка или несколько (подгруппы).
           const groups = [];
           const groupByName = new Map();
           for (let c = groupStartCol; c < headerRow.length; c++) {
@@ -324,9 +306,6 @@
           return { groups, byDate };
         }
 
-        // Основной способ: gviz-эндпоинт самой Google Таблицы, отдаваемый как <script>.
-        // Загрузка через <script src="..."> не подчиняется CORS вообще (в отличие от fetch),
-        // поэтому этот путь работает надёжнее любых сторонних прокси.
         function fetchViaGviz() {
           return new Promise((resolve, reject) => {
             let done = false;
@@ -420,8 +399,6 @@
           const discoveredId = await resolveSheetId();
           let result = await loadScheduleWithId(discoveredId);
 
-          // Если автообнаруженная/кэшированная таблица не содержит сегодняшний день,
-          // это подозрительно похоже на устаревший ID — пробуем запасной вариант из кода.
           if (!hasTodayInByDate(result.byDate) && discoveredId !== KOOP41_SHEET_ID_FALLBACK) {
             try {
               const fallbackResult = await loadScheduleWithId(KOOP41_SHEET_ID_FALLBACK);
@@ -429,7 +406,7 @@
                 result = fallbackResult;
                 try { localStorage.setItem(SHEET_ID_CACHE_KEY, KOOP41_SHEET_ID_FALLBACK); } catch (e) {}
               }
-            } catch (e) { /* оставляем то, что уже получили */ }
+            } catch (e) {}
           }
 
           groupsIndex = result.groups;
@@ -516,8 +493,6 @@
 
           const upcoming = dayLessons.filter((l) => timeToMinutes(l.end) > nowMinutes);
 
-          // Ключ учитывает группу, день, статус первой пары (сейчас/далее) и сам список пар —
-          // если ничего из этого не изменилось, DOM не трогаем и анимация не проигрывается заново.
           const firstIsCurrent = upcoming.length ? (nowMinutes >= timeToMinutes(upcoming[0].start) ? 1 : 0) : 0;
           const renderKey = `${group.key}|${dateKey}|${firstIsCurrent}|${upcoming.map((l) => `${l.number}:${l.start}-${l.end}:${l.text}`).join(",")}`;
           if (renderKey === lastTodayLessonsRenderKey) return;
@@ -562,8 +537,6 @@
             if (cacheCoversToday) {
               renderTodayLessons();
             } else {
-              // Кэш есть, но он не за сегодня (например, ещё с прошлой недели) —
-              // не показываем "нет пар" вслепую, ждём проверки по сети.
               renderLessonsPlaceholder("Обновляем расписание…");
             }
           }
@@ -585,7 +558,6 @@
                 el.textContent = `Не удалось обновить список групп (показаны старые данные): ${e && e.message ? e.message : "ошибка"}.`;
               }
               if (!cacheCoversToday) {
-                // Сеть не ответила, а старый кэш тоже не про сегодня — говорим прямо, а не "пар нет".
                 renderLessonsPlaceholder("Не удалось загрузить актуальное расписание. Проверь подключение и обнови страницу.");
               }
             }
@@ -640,99 +612,29 @@
         5: "Летние каникулы",
         4: "",
       };
-      // Формат диапазона: "ДД.ММ-ДД.ММ". Можно добавлять любые промежутки.
       const noLessonsRanges = [
         { range: "27.05-01.09", lessons1: 5, lessons2: 5 },
       ];
-const schedule = {
-  1: {
-    shift1: [
-      { lesson: "1-я пара", start: "08:30", end: "10:00" },
-      { lesson: "2-я пара", start: "10:10", end: "11:40" },
-      { lesson: "3-я пара", start: "12:10", end: "13:40" },
-      { lesson: "4-я пара", start: "13:50", end: "15:20" },
-      { lesson: "5-я пара", start: "15:30", end: "17:00" },
-      { lesson: "6-я пара", start: "17:10", end: "18:40" },
-    ],
-  },
 
-  2: {
-    shift1: [
-      { lesson: "1-я пара", start: "08:30", end: "10:00" },
-      { lesson: "2-я пара", start: "10:10", end: "11:40" },
-      { lesson: "3-я пара", start: "12:10", end: "13:40" },
-      { lesson: "4-я пара", start: "13:50", end: "15:20" },
-      { lesson: "5-я пара", start: "15:30", end: "17:00" },
-    ],
-  },
-
-  3: {
-    shift1: [
-      { lesson: "1-я пара", start: "08:30", end: "10:00" },
-      { lesson: "2-я пара", start: "10:10", end: "11:40" },
-      { lesson: "3-я пара", start: "12:10", end: "13:40" },
-      { lesson: "4-я пара", start: "13:50", end: "15:20" },
-      { lesson: "5-я пара", start: "15:30", end: "17:00" },
-      { lesson: "6-я пара", start: "17:10", end: "18:40" },
-      { lesson: "7-я пара", start: "18:50", end: "20:20" },
-    ],
-  },
-
-  4: {
-    shift1: [
-      { lesson: "1-я пара", start: "08:30", end: "10:00" },
-      { lesson: "2-я пара", start: "10:10", end: "11:40" },
-      { lesson: "3-я пара", start: "12:10", end: "13:40" },
-      { lesson: "4-я пара", start: "13:50", end: "15:20" },
-      { lesson: "5-я пара", start: "15:30", end: "17:00" },
-    ],
-  },
-
-  5: {
-    shift1: [
-      { lesson: "1-я пара", start: "08:30", end: "10:00" },
-      { lesson: "2-я пара", start: "10:10", end: "11:40" },
-      { lesson: "3-я пара", start: "12:10", end: "13:40" },
-      { lesson: "4-я пара", start: "13:50", end: "15:20" },
-      { lesson: "5-я пара", start: "15:30", end: "17:00" },
-      { lesson: "6-я пара", start: "17:10", end: "18:40" },
-      { lesson: "7-я пара", start: "18:50", end: "20:20" },
-    ],
-  },
-
-  6: {
-    shift1: [
-      { lesson: "1-я пара", start: "08:30", end: "10:00" },
-      { lesson: "2-я пара", start: "10:10", end: "11:40" },
-      { lesson: "3-я пара", start: "12:10", end: "13:40" },
-      { lesson: "4-я пара", start: "13:50", end: "15:20" },
-      { lesson: "5-я пара", start: "15:30", end: "17:00" },
-      { lesson: "6-я пара", start: "17:10", end: "18:40" },
-      { lesson: "7-я пара", start: "18:50", end: "20:20" },
-    ],
-  },
-  0: { shift1: [], shift2: [] },
-};
-
-const specialSchedules = {
-  "25.05": {
-    badgeText: "сокращенные пары",
-    shift1: [
-      { lesson: "1-я пара", start: "08:15", end: "08:55" },
-      { lesson: "2-я пара", start: "09:05", end: "09:45" },
-      { lesson: "3-я пара", start: "10:00", end: "10:40" },
-      { lesson: "Линейка", start: "11:00", end: "11:30" },
-      { lesson: "Классный час", start: "11:40", end: "12:20" },
-    ],
-    shift2: [
-      { lesson: "1-я пара", start: "12:30", end: "13:10" },
-      { lesson: "2-я пара", start: "13:30", end: "14:10" },
-      { lesson: "3-я пара", start: "14:25", end: "15:05" },
-      { lesson: "Линейка", start: "15:20", end: "15:50" },
-      { lesson: "Классный час", start: "16:00", end: "16:40" },
-    ],
-  },
-};
+      const specialSchedules = {
+        "25.05": {
+          badgeText: "сокращенные пары",
+          shift1: [
+            { lesson: "1-я пара", start: "08:15", end: "08:55" },
+            { lesson: "2-я пара", start: "09:05", end: "09:45" },
+            { lesson: "3-я пара", start: "10:00", end: "10:40" },
+            { lesson: "Линейка", start: "11:00", end: "11:30" },
+            { lesson: "Классный час", start: "11:40", end: "12:20" },
+          ],
+          shift2: [
+            { lesson: "1-я пара", start: "12:30", end: "13:10" },
+            { lesson: "2-я пара", start: "13:30", end: "14:10" },
+            { lesson: "3-я пара", start: "14:25", end: "15:05" },
+            { lesson: "Линейка", start: "15:20", end: "15:50" },
+            { lesson: "Классный час", start: "16:00", end: "16:40" },
+          ],
+        },
+      };
 
       function triggerAlinaAnimation() {
         const container = document.createElement('div');
@@ -878,9 +780,7 @@ const specialSchedules = {
         </svg>
       `;
 
-      // ===== ОТЛАДКА: поставьте здесь дату/время, чтобы весь сайт (пары, прогресс, "сейчас/далее") считал текущим именно его =====
-      // Формат: "YYYY-MM-DDTHH:MM:SS" по камчатскому времени. Чтобы вернуть реальное время — поставьте null.
-      const DEBUG_DATETIME = null; // например: "2026-09-17T10:15:00"
+      const DEBUG_DATETIME = null; // "2024-04-03T12:00:00+12:00" for testing
 
       function getKamchatkaDate() {
         if (DEBUG_DATETIME) return new Date(DEBUG_DATETIME);
@@ -1037,13 +937,43 @@ const specialSchedules = {
         const mm = String(date.getMonth() + 1).padStart(2, "0");
         return `${dd}.${mm}`;
       }
+      function getKamchatkaFullDateKey(date = getKamchatkaDate()) {
+        return `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}`;
+      }
+
+      // ===== АВТОМАТИЧЕСКИ СОБИРАЕМ ОБЩЕЕ РАСПИСАНИЕ ПАР ИЗ БАЗЫ САЙТА =====
+      // Вместо захардкоженной таблицы "schedule" — динамически извлекаем уникальные
+      // времена пар из scheduleByDate (Google-таблица техникума) для указанной даты.
+      function getCommonLessonsForDate(dateKey) {
+        const lessons = scheduleByDate[dateKey];
+        if (!lessons || !lessons.length) return [];
+        const seen = new Set();
+        const unique = [];
+        for (const l of lessons) {
+          const key = `${l.start}-${l.end}`;
+          if (!seen.has(key)) {
+            seen.add(key);
+            unique.push({
+              lesson: l.number + "-я пара",
+              start: l.start,
+              end: l.end,
+            });
+          }
+        }
+        unique.sort((a, b) => a.start.localeCompare(b.start));
+        return unique;
+      }
+      
       function getTodayScheduleData() {
-        const day = getCurrentDayOfWeek();
         const dateKey = getKamchatkaDateKey();
         const special = specialSchedules[dateKey];
-        if (special && special.shift1 && special.shift2) return special;
-        return schedule[day];
+        if (special && special.shift1) return special;
+        
+        const fullDateKey = getKamchatkaFullDateKey();
+        const shift1 = getCommonLessonsForDate(fullDateKey);
+        return { shift1, shift2: [] };
       }
+      
       function getTodaySpecialScheduleEntry() {
         const special = specialSchedules[getKamchatkaDateKey()];
         return special && special.shift1 && special.shift2 ? special : null;
@@ -1151,6 +1081,7 @@ const specialSchedules = {
         bar.style.setProperty('--progress', percentage + '%');
       }
 
+      // ===== ПЕРЕПИСАНО: ищет следующие общие пары по датам из scheduleByDate =====
       function findNextLessonTime(shiftData, curr, day, shiftKey) {
         const now = new Date();
         const offset = (12 * 60 + now.getTimezoneOffset()) * 60;
@@ -1158,10 +1089,24 @@ const specialSchedules = {
         if (currSec < 0) currSec += 86400;
         let next = shiftData.find(l => timeToSeconds(l.start) > currSec);
         let nextDay = day;
-        if (!next && day < 5) {
-          const nDay = schedule[day + 1];
-          if (nDay?.[shiftKey]?.[0]) { next = nDay[shiftKey][0]; nextDay = day + 1; }
+        
+        if (!next) {
+          const kDate = getKamchatkaDate();
+          // Ищем общие пары на следующие 14 дней (без привязки к группе)
+          for (let i = 1; i <= 14; i++) {
+            const futureDate = new Date(kDate);
+            futureDate.setDate(futureDate.getDate() + i);
+            const futureKey = `${String(futureDate.getDate()).padStart(2, "0")}.${String(futureDate.getMonth() + 1).padStart(2, "0")}.${futureDate.getFullYear()}`;
+            
+            const futureLessons = getCommonLessonsForDate(futureKey);
+            if (futureLessons.length > 0) {
+              next = futureLessons[0];
+              nextDay = day + i;
+              break;
+            }
+          }
         }
+        
         if (next) {
           const [h, m] = next.start.split(":").map(Number);
           let nDate = new Date();
@@ -1376,6 +1321,7 @@ const specialSchedules = {
         return "★";
       }
 
+      // ===== ПЕРЕПИСАНО: рендерит неделю (Пн-Пт) на основе общих данных из scheduleByDate =====
       function renderWeeklySchedule() {
         const slider = document.getElementById("scheduleSlider"); if (!slider) return;
         slider.innerHTML = "";
@@ -1383,15 +1329,37 @@ const specialSchedules = {
         const track = document.createElement("div"); track.className = "schedule-track";
         viewport.appendChild(track);
         slider.appendChild(viewport);
-        for (let d = 1; d <= 5; d++) {
+        
+        const kDate = getKamchatkaDate();
+        const dayOfWeek = kDate.getDay();
+        
+        // Определяем понедельник текущей недели (или следующей, если сегодня Сб/Вс)
+        let mondayOffset;
+        if (dayOfWeek === 0) mondayOffset = 1;        // Воскресенье → следующий Пн
+        else if (dayOfWeek === 6) mondayOffset = 2;   // Суббота → следующий Пн
+        else mondayOffset = 1 - dayOfWeek;            // Пн-Пт → текущий Пн
+        
+        const monday = new Date(kDate);
+        monday.setDate(monday.getDate() + mondayOffset);
+        
+        for (let d = 0; d < 5; d++) {
+          const date = new Date(monday);
+          date.setDate(monday.getDate() + d);
+          const dateKey = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}`;
+          
           const dayEl = document.createElement("div"); dayEl.className = "day-schedule";
           const sEl = document.createElement("div"); sEl.className = "shift-schedule";
-          schedule[d]["shift1"].forEach((l, index) => {
+          
+          // Общие времена пар для этого дня (без привязки к группе)
+          const lessons = getCommonLessonsForDate(dateKey);
+          
+          lessons.forEach((l, index) => {
             const lEl = document.createElement("div"); lEl.className = "lesson-item";
             const badge = getLessonBadge(l.lesson, index);
             lEl.innerHTML = `<div class="lesson-number">${badge}</div><div class="lesson-time">${l.start} - ${l.end}</div>`;
             sEl.appendChild(lEl);
           });
+          
           dayEl.appendChild(sEl);
           track.appendChild(dayEl);
         }
