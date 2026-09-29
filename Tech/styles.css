@@ -1749,8 +1749,8 @@ body.night-mode .group-pill.active {
 }
 
 .today-lesson-card-active .today-lesson-badge {
-  background: #2fae5c;
-  color: #fff;
+  background: #52ce52c6;
+  color: #232323;
 }
 .today-lesson-card-active {
   border: 1px solid rgba(47, 174, 92, 0.5);
