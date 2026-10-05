@@ -1,7 +1,7 @@
 name: Update schedule sheet ID
 
 # Раз в ~20 минут заходит на koop41.ru/schedule, достаёт ID Google-таблицы "Очная форма"
-# и, если он изменился, коммитит его в sheet-id.json. Сайт читает этот файл при загрузке.
+# и, если он изменился, коммитит его в Tech/sheet-id.json. Сайт читает этот файл при загрузке.
 on:
   schedule:
     - cron: "*/20 * * * *"
@@ -19,8 +19,8 @@ jobs:
       - name: Fetch current sheet ID from koop41.ru
         shell: python3 {0}
         env:
-          # Если index.html лежит не в корне репозитория, поменяй путь (например, docs/sheet-id.json)
-          OUT_PATH: sheet-id.json
+          # Путь рядом с index.html (сайт лежит в папке Tech/)
+          OUT_PATH: Tech/sheet-id.json
         run: |
           import html as htmllib
           import json
@@ -31,7 +31,7 @@ jobs:
           from datetime import datetime, timezone
 
           PAGE_URL = "https://koop41.ru/schedule"
-          OUT_PATH = os.environ.get("OUT_PATH", "sheet-id.json")
+          OUT_PATH = os.environ.get("OUT_PATH", "Tech/sheet-id.json")
           ID_RE = re.compile(r"/(?:spreadsheets|file)/d/([A-Za-z0-9_-]{20,})")
 
 
@@ -73,6 +73,7 @@ jobs:
           if sheet_id == old_id:
               print("ID не изменился:", sheet_id)
           else:
+              os.makedirs(os.path.dirname(OUT_PATH) or ".", exist_ok=True)
               with open(OUT_PATH, "w", encoding="utf-8") as f:
                   json.dump({"id": sheet_id, "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds")}, f, ensure_ascii=False, indent=2)
                   f.write("\n")
@@ -82,5 +83,5 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add sheet-id.json
+          git add Tech/sheet-id.json
           git diff --cached --quiet || (git commit -m "Update schedule sheet ID" && git push)

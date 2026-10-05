@@ -140,66 +140,42 @@
       let groupsIndex = [];
       let scheduleByDate = {};
 
-      // ===== Расписание по группам (источник: кнопка "Открыть" на koop41.ru/schedule → Google-таблица "Очная форма") =====
-      const KOOP41_SHEET_ID_FALLBACK = "1c480XngGyOABO2RLJn--32F6aE22nGuC";
-      const KOOP41_SCHEDULE_PAGE = "https://koop41.ru/schedule";
+      // ===== Расписание по группам =====
+      // Единственный источник ID — sheet-id.json, который обновляет GitHub Action.
+      // Никаких захардкоженных фолбэков: если файла нет или он битый — честно падаем.
       (function () {
+        // Прокси нужны только для скачивания CSV из Google (если gviz недоступен).
         const PROXIES = [
           (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
           (u) => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
         ];
-        const CACHE_KEY = "koop41-schedule-cache-v3";
-        const SHEET_ID_CACHE_KEY = "koop41-sheet-id-cache";
-
-        let activeSheetId = null;
+        const CACHE_KEY = "koop41-schedule-cache-v4";
         const SHEET_ID_RE = /^[A-Za-z0-9_-]{20,}$/;
 
-        function extractSheetId(html) {
-          const doc = new DOMParser().parseFromString(html, "text/html");
-          const idRe = /\/(?:spreadsheets|file)\/d\/([A-Za-z0-9_-]{20,})/;
-          for (const a of doc.querySelectorAll("a[href]")) {
-            const text = (a.textContent || "").replace(/\s+/g, " ");
-            if (/(^|[^а-яё])очная\s+форма/i.test(text) && !/заочн/i.test(text)) {
-              const m = (a.getAttribute("href") || "").match(idRe);
-              if (m) return m[1];
-            }
-          }
-          return null;
-        }
+        // Одноразовая зачистка мусора от прошлых версий сайта.
+        try {
+          localStorage.removeItem("koop41-sheet-id-cache");
+          localStorage.removeItem("koop41-schedule-cache-v3");
+          localStorage.removeItem("koop41-schedule-cache-v2");
+          localStorage.removeItem("koop41-schedule-cache");
+        } catch (e) {}
+
+        let activeSheetId = null;
 
         async function discoverSheetId() {
-          try {
-            const res = await fetch(`sheet-id.json?t=${Date.now()}`, { cache: "no-store" });
-            if (res.ok) {
-              const data = await res.json();
-              if (data && SHEET_ID_RE.test(data.id || "")) return data.id;
-            }
-          } catch (e) {}
-
-          for (const buildUrl of PROXIES) {
-            try {
-              const res = await fetch(buildUrl(KOOP41_SCHEDULE_PAGE), { cache: "no-store" });
-              if (!res.ok) continue;
-              const id = extractSheetId(await res.text());
-              if (id) return id;
-            } catch (e) {}
+          const res = await fetch(`sheet-id.json?t=${Date.now()}`, { cache: "no-store" });
+          if (!res.ok) throw new Error(`sheet-id.json: HTTP ${res.status}`);
+          const data = await res.json();
+          if (!data || !SHEET_ID_RE.test(data.id || "")) {
+            throw new Error("sheet-id.json: некорректный id");
           }
-          return null;
+          return data.id;
         }
 
         async function resolveSheetId() {
-          try {
-            const discovered = await discoverSheetId();
-            if (discovered) {
-              activeSheetId = discovered;
-              try { localStorage.setItem(SHEET_ID_CACHE_KEY, discovered); } catch (e) {}
-              return discovered;
-            }
-          } catch (e) {
-            console.warn("Не удалось автоматически найти ID таблицы:", e);
-          }
-          const cached = (() => { try { return localStorage.getItem(SHEET_ID_CACHE_KEY); } catch (e) { return null; } })();
-          activeSheetId = cached || KOOP41_SHEET_ID_FALLBACK;
+          const discovered = await discoverSheetId();
+          if (!discovered) throw new Error("Не удалось получить ID таблицы из sheet-id.json");
+          activeSheetId = discovered;
           return activeSheetId;
         }
 
@@ -396,19 +372,8 @@
         }
 
         async function loadSchedule() {
-          const discoveredId = await resolveSheetId();
-          let result = await loadScheduleWithId(discoveredId);
-
-          if (!hasTodayInByDate(result.byDate) && discoveredId !== KOOP41_SHEET_ID_FALLBACK) {
-            try {
-              const fallbackResult = await loadScheduleWithId(KOOP41_SHEET_ID_FALLBACK);
-              if (hasTodayInByDate(fallbackResult.byDate)) {
-                result = fallbackResult;
-                try { localStorage.setItem(SHEET_ID_CACHE_KEY, KOOP41_SHEET_ID_FALLBACK); } catch (e) {}
-              }
-            } catch (e) {}
-          }
-
+          const sheetId = await resolveSheetId();
+          const result = await loadScheduleWithId(sheetId);
           groupsIndex = result.groups;
           scheduleByDate = result.byDate;
           try { localStorage.setItem(CACHE_KEY, JSON.stringify(result)); } catch (e) {}
@@ -752,7 +717,7 @@
             <linearGradient id="flame" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stop-color="#fff2a6"/>
               <stop offset="100%" stop-color="#ff9f4b"/>
-            </radialGradient>
+            </linearGradient>
           </defs>
           <circle cx="26" cy="30" r="3" fill="#ffd86e"/>
           <circle cx="136" cy="34" r="2.7" fill="#9dd7ff"/>
@@ -942,8 +907,6 @@
       }
 
       // ===== АВТОМАТИЧЕСКИ СОБИРАЕМ ОБЩЕЕ РАСПИСАНИЕ ПАР ИЗ БАЗЫ САЙТА =====
-      // Вместо захардкоженной таблицы "schedule" — динамически извлекаем уникальные
-      // времена пар из scheduleByDate (Google-таблица техникума) для указанной даты.
       function getCommonLessonsForDate(dateKey) {
         const lessons = scheduleByDate[dateKey];
         if (!lessons || !lessons.length) return [];
@@ -1081,7 +1044,6 @@
         bar.style.setProperty('--progress', percentage + '%');
       }
 
-      // ===== ПЕРЕПИСАНО: ищет следующие общие пары по датам из scheduleByDate =====
       function findNextLessonTime(shiftData, curr, day, shiftKey) {
         const now = new Date();
         const offset = (12 * 60 + now.getTimezoneOffset()) * 60;
@@ -1092,7 +1054,6 @@
         
         if (!next) {
           const kDate = getKamchatkaDate();
-          // Ищем общие пары на следующие 14 дней (без привязки к группе)
           for (let i = 1; i <= 14; i++) {
             const futureDate = new Date(kDate);
             futureDate.setDate(futureDate.getDate() + i);
@@ -1321,7 +1282,6 @@
         return "★";
       }
 
-      // ===== ПЕРЕПИСАНО: рендерит неделю (Пн-Пт) на основе общих данных из scheduleByDate =====
       function renderWeeklySchedule() {
         const slider = document.getElementById("scheduleSlider"); if (!slider) return;
         slider.innerHTML = "";
@@ -1333,11 +1293,10 @@
         const kDate = getKamchatkaDate();
         const dayOfWeek = kDate.getDay();
         
-        // Определяем понедельник текущей недели (или следующей, если сегодня Сб/Вс)
         let mondayOffset;
-        if (dayOfWeek === 0) mondayOffset = 1;        // Воскресенье → следующий Пн
-        else if (dayOfWeek === 6) mondayOffset = 2;   // Суббота → следующий Пн
-        else mondayOffset = 1 - dayOfWeek;            // Пн-Пт → текущий Пн
+        if (dayOfWeek === 0) mondayOffset = 1;
+        else if (dayOfWeek === 6) mondayOffset = 2;
+        else mondayOffset = 1 - dayOfWeek;
         
         const monday = new Date(kDate);
         monday.setDate(monday.getDate() + mondayOffset);
@@ -1350,7 +1309,6 @@
           const dayEl = document.createElement("div"); dayEl.className = "day-schedule";
           const sEl = document.createElement("div"); sEl.className = "shift-schedule";
           
-          // Общие времена пар для этого дня (без привязки к группе)
           const lessons = getCommonLessonsForDate(dateKey);
           
           lessons.forEach((l, index) => {
