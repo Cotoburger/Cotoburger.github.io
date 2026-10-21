@@ -1801,11 +1801,15 @@ body:not(.scrolling) .lesson-card-full {
    блоки min-aspect-ratio выше.
    =================================================== */
 @media (orientation: landscape) and (max-height: 37.5rem) {
+  /* Safe-area (вырез iPhone) учитываем один раз — на body.
+     Раньше отступ стоял и на html, и на body, и боковые поля удваивались. */
+  html { padding: 0; }
   body { padding-top: 0; }
 
   .container {
-    width: 92%;
-    max-width: 62.5rem;
+    width: 96%;
+    min-width: 0;
+    max-width: 80rem;
     margin: 0 auto var(--card-gap);
     padding: 0.5rem 0 0;
   }
