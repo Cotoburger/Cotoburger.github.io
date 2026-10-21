@@ -48,9 +48,6 @@
  body::-webkit-scrollbar {
      display: none;
 }
- body::-webkit-scrollbar {
-     display: none;
-}
 .day-header {
      width: 100%;
      text-align: center;
@@ -287,7 +284,6 @@
      z-index: 0;
 }
 
-/* ИЗМЕНЕНО: заменён nth-child на .shift-card */
 .shift-card {
   max-height: 8.5rem;
   min-height: fit-content;
@@ -1225,37 +1221,6 @@ body.night-mode #meals-full .full-lesson-name {
          color: #1b1b1bcb;
     }
 }
- @media (orientation: landscape) and (max-height: 37.5rem) {
-     body {
-         padding-top: 0;
-    }
-
-    .special-schedule-badge {
-    padding-top: 1rem;
-    }
-     .container {
-         margin: 0 auto var(--card-gap);
-         padding: 1rem 0.625rem 0;
-         width: 90%;
-         max-width: 62.5rem;
-    }
-     .day-header {
-         font-size: 2rem;
-         padding: 0.5rem 0;
-    }
-     .shift-number {
-         align-self: flex-end;
-         margin-top: -0.125rem;
-         margin-bottom: -1.6rem;
-         margin-right: -0.125rem;
-    }
-     .no-lessons-header {
-         align-self: flex-end;
-         margin-top: -0.125rem;
-         margin-bottom: -1.6rem;
-         margin-right: -0.125rem;
-    }
-}
  .day-navigation {
      position: sticky;
      top: 0;
@@ -1700,7 +1665,7 @@ body:not(.scrolling) .lesson-card-full {
 .bottom-container {
   display: flex;
   flex-direction: column;
-  padding-top: 0 !important;  /* убираем унаследованный padding-top: 5rem от .container */
+  padding-top: 0 !important;
   margin-top: 0 !important;
 }
 
@@ -1728,7 +1693,6 @@ body:not(.scrolling) .lesson-card-full {
 
 @media (min-aspect-ratio: 4/3) {
 
-  /* Расширяем контейнеры */
   .container {
     max-width: 80rem;
     width: 90%;
@@ -1736,12 +1700,10 @@ body:not(.scrolling) .lesson-card-full {
     padding-top: 1rem;
   }
 
-  /* Первый контейнер: меньше отступ сверху */
   .container:first-of-type {
     padding-top: 0.5rem;
   }
 
-  /* Карточки смен — рядом */
   .shifts-row {
     flex-direction: row;
     gap: var(--card-gap);
@@ -1755,7 +1717,6 @@ body:not(.scrolling) .lesson-card-full {
     min-height: 7rem;
   }
 
-  /* Нижний контейнер: расписание и меню рядом, одинаковая высота */
   .bottom-container {
     display: flex;
     flex-direction: row;
@@ -1765,7 +1726,6 @@ body:not(.scrolling) .lesson-card-full {
     margin-top: 0;
   }
 
-  /* На широком экране сброс order — расписание слева, меню справа */
   .bottom-container .lesson-card-full {
     order: 1;
   }
@@ -1801,7 +1761,6 @@ body:not(.scrolling) .lesson-card-full {
     flex-direction: column;
   }
 
-  /* День недели — меньше отступ сверху */
   .day-header {
     padding: 1.5rem 0 1rem;
   }
@@ -1834,4 +1793,101 @@ body:not(.scrolling) .lesson-card-full {
     font-size: 0.9rem;
     padding-bottom: 1.2rem;
   }
+}
+
+/* ===================================================
+   АЛЬБОМНАЯ ОРИЕНТАЦИЯ НА ТЕЛЕФОНЕ
+   Должен идти В САМОМ КОНЦЕ файла, чтобы перебить
+   блоки min-aspect-ratio выше.
+   =================================================== */
+@media (orientation: landscape) and (max-height: 37.5rem) {
+  body { padding-top: 0; }
+
+  .container {
+    width: 92%;
+    max-width: 62.5rem;
+    margin: 0 auto var(--card-gap);
+    padding: 0.5rem 0 0;
+  }
+
+  /* Заголовок дня чуть ниже от верхнего края */
+  .day-header {
+    font-size: 1.6rem;
+    line-height: 1.2;
+    padding: 1.2rem 0;
+    margin-bottom: 0;
+    min-height: auto;
+    flex-shrink: 0; /* body — flex-колонка с height:100%, без этого заголовок сжимается и текст наезжает на карточки */
+  }
+
+  .special-schedule-badge,
+  .container,
+  #last-deployment {
+    flex-shrink: 0;
+  }
+
+  /* Отступ под заголовком уже задан его padding-bottom,
+     поэтому у первого контейнера свой верхний отступ обнуляем */
+  .day-header + .special-schedule-badge + .container,
+  .special-schedule-badge + .container {
+    padding-top: 0;
+  }
+
+  .special-schedule-badge {
+    margin: 0 auto 0.6rem;
+    padding: 0.15rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  /* Карточки смен: компактнее, высота по содержимому */
+  .shifts-row .lesson-card {
+    min-height: 0;
+    padding: 0.7rem 0.9rem;
+  }
+
+  /* Бейдж смены — отдельной строкой сверху, без наложения */
+  .shift-number,
+  .no-lessons-header {
+    align-self: flex-start;
+    margin: 0 0 0.4rem;
+    padding: 0.1rem 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  /* Заголовок и таймер: при нехватке места таймер переносится вниз */
+  .lesson-header {
+    max-height: none;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.6rem;
+  }
+
+  #lesson1-name,
+  #lesson2-name {
+    font-size: 1.3rem;
+    line-height: 1.2;
+    max-height: none;
+  }
+
+  #lesson1-remaining,
+  #lesson2-remaining {
+    margin: 0;
+    padding: 0.15rem 0.6rem;
+    min-width: 0;
+    font-size: 1rem;
+  }
+
+  .progress-time-labels {
+    font-size: 0.95rem;
+    padding-top: 0.3rem;
+  }
+
+  .progress-bar { height: 0.9rem; }
+
+  .lesson-card.collapsed { padding-bottom: 0.7rem; }
+
+  /* Нижние карточки (расписание и меню) */
+  .meal-table { font-size: 1rem; }
+  .lesson-time { font-size: 1rem; }
+  .schedule-header { font-size: 1.1rem !important; }
 }
