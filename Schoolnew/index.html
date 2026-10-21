@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
   <head>
     <!-- Базовые метаданные -->
@@ -1274,6 +1274,127 @@
 
       const obs = new IntersectionObserver((es, o) => { es.forEach(e => { if (e.isIntersecting) { updateDeployment(); setInterval(updateDeployment, 90000); o.unobserve(e.target); } }); });
       if (target = document.getElementById("last-deployment")) obs.observe(target);
+
+
+      // Совет «Добавить на главный экран»
+  (function () {
+    const STORAGE_KEY = "a2hsTipHiddenUntil";
+    const HIDE_MS = 7 * 24 * 60 * 60 * 1000; // неделя
+
+    const ua = navigator.userAgent;
+    const isIPhone = /iPhone|iPod/.test(ua);
+    // Safari и встроенный браузер Telegram: без меток сторонних браузеров
+    const isOtherBrowser = /CriOS|FxiOS|EdgiOS|OPiOS|YaBrowser/.test(ua);
+    const isStandalone =
+      window.navigator.standalone === true ||
+      (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+
+    if (!isIPhone || isOtherBrowser || isStandalone) return;
+
+    try {
+      const until = Number(localStorage.getItem(STORAGE_KEY) || 0);
+      if (Date.now() < until) return;
+    } catch (e) {}
+
+    const bottom = document.querySelector(".bottom-container");
+    if (!bottom) return;
+
+    const tip = document.createElement("div");
+    tip.className = "container";
+    tip.id = "a2hs-tip";
+    tip.style.paddingTop = "0";
+    tip.innerHTML = `
+      <div class="lesson-card">
+        <div class="meal-table">
+          <div class="meal-header">
+            <div class="meal-header-text">Совет</div>
+            <button class="copy-button" type="button" aria-label="Закрыть">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="width:20px;height:20px">
+              <rect x="1" y="1" rx="7" width="18" height="18" stroke="currentColor" stroke-width="2"></rect>
+              <path d="M6.5 6.5l7 7M13.5 6.5l-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+          </button>
+          </div>
+          <div class="meal-row">
+            <div class="meal-title">Сайт на главном экране</div>
+            <div class="meal-items">Вы можете добавить сайт на главный экран своего телефона как обычное приложение</div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-items">
+              1. Откройте сайт в <b>Safari</b><br>
+              2. Вызовите меню <b>Поделиться</b><br>
+              3. Нажмите <b>добавить на экран "домой"</b>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    let closing = false;
+    tip.querySelector(".copy-button").addEventListener("click", () => {
+      if (closing) return;
+      closing = true;
+
+      // Скрываем на неделю сразу при нажатии
+      try {
+        localStorage.setItem(STORAGE_KEY, String(Date.now() + HIDE_MS));
+      } catch (e) {}
+
+      const card = tip.querySelector(".lesson-card");
+      const reduceMotion =
+        window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduceMotion || !card.animate) {
+        tip.remove();
+        return;
+      }
+
+      // 1) Карточка уменьшается, поднимается и растворяется
+      const fade = card.animate(
+        [
+          { opacity: 1, transform: "scale(1) translateY(0)", filter: "blur(0px)" },
+          { opacity: 0, transform: "scale(0.85) translateY(-0.75rem)", filter: "blur(8px)" },
+        ],
+        { duration: 380, easing: "cubic-bezier(0.4, 0, 0.2, 1)", fill: "forwards" }
+      );
+
+      // 2) Пустое место плавно схлопывается, блоки ниже подъезжают вверх
+      fade.onfinish = () => {
+        const cs = getComputedStyle(tip);
+        const from = {
+          height: tip.offsetHeight + "px",
+          marginBottom: cs.marginBottom,
+          paddingTop: cs.paddingTop,
+          paddingBottom: cs.paddingBottom,
+        };
+        const to = {
+          height: "0px",
+          marginBottom: "0px",
+          paddingTop: "0px",
+          paddingBottom: "0px",
+        };
+
+        tip.style.overflow = "hidden";
+        const collapse = tip.animate([from, to], {
+          duration: 300,
+          easing: "ease-in-out",
+          fill: "forwards",
+        });
+        collapse.onfinish = () => tip.remove();
+      };
+    });
+        // Порядок появления: смены (0.15 / 0.25) → совет → меню → расписание
+    tip.querySelector(".lesson-card").style.animationDelay = "0.35s";
+
+    const mealCard = document.querySelector(".meal-card");
+    if (mealCard) mealCard.style.animationDelay = "0.5s";
+
+    const fullCard = document.querySelector(".lesson-card-full");
+    if (fullCard) fullCard.style.animationDelay = "0.65s";
+
+    // Над блоком с меню (на телефоне меню первое в нижнем контейнере)
+    bottom.parentNode.insertBefore(tip, bottom);
+  })();
+
     </script>
   </body>
 </html>
