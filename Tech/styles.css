@@ -1801,3 +1801,22 @@ body.night-mode .no-lessons-message-text { color: #eaeaea7a; }
 .container.group-schedule-container {
   padding-top: 0 !important;
 }
+
+/* ===== Строка "Пары на завтра" ===== */
+.next-day-notice {
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.62);
+  margin: -0.4rem 0 -0.5rem;
+  padding: 0 0.5rem;
+  opacity: 0;
+  animation: cardFadeIn 0.35s ease-out 0.25s forwards;
+  transition: color 0.5s ease;
+}
+
+body.night-mode .next-day-notice {
+  color: #ffffff58;
+}

@@ -440,6 +440,7 @@
 
         let lastTodayLessonsRenderKey = "";
 
+        // Показывает пары на сегодня; если они кончились — ближайший день с парами
         function renderTodayLessons() {
           const container = document.getElementById("todayLessonsContainer");
           if (!container) return;
@@ -448,38 +449,78 @@
           if (!group) { container.innerHTML = ""; lastTodayLessonsRenderKey = ""; return; }
 
           const kDate = getKamchatkaDate();
-          const dateKey = `${String(kDate.getDate()).padStart(2, "0")}.${String(kDate.getMonth() + 1).padStart(2, "0")}.${kDate.getFullYear()}`;
+          const fmtKey = (d) => `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`;
           const nowMinutes = kDate.getHours() * 60 + kDate.getMinutes();
 
-          const dayLessons = (scheduleByDate[dateKey] || [])
-            .map((l) => ({ ...l, text: group.cols.map((c) => l.cells[c]).find((v) => v) || "" }))
-            .filter((l) => l.text)
-            .sort((a, b) => a.number - b.number);
+          const getGroupLessons = (dateKey) =>
+            (scheduleByDate[dateKey] || [])
+              .map((l) => ({ ...l, text: group.cols.map((c) => l.cells[c]).find((v) => v) || "" }))
+              .filter((l) => l.text)
+              .sort((a, b) => a.number - b.number);
 
-          const upcoming = dayLessons.filter((l) => timeToMinutes(l.end) > nowMinutes);
+          const todayKey = fmtKey(kDate);
+          const todayLessons = getGroupLessons(todayKey);
+          const upcomingToday = todayLessons.filter((l) => timeToMinutes(l.end) > nowMinutes);
 
-          const firstIsCurrent = upcoming.length ? (nowMinutes >= timeToMinutes(upcoming[0].start) ? 1 : 0) : 0;
-          const renderKey = `${group.key}|${dateKey}|${firstIsCurrent}|${upcoming.map((l) => `${l.number}:${l.start}-${l.end}:${l.text}`).join(",")}`;
+          // Если на сегодня пары кончились — ищем ближайший день с парами
+          let showDate = kDate;
+          let dayOffset = 0;
+          let lessonsToShow = upcomingToday;
+          let isFuture = false;
+
+          if (!upcomingToday.length) {
+            for (let i = 1; i <= 14; i++) {
+              const d = new Date(kDate);
+              d.setDate(d.getDate() + i);
+              const found = getGroupLessons(fmtKey(d));
+              if (found.length) {
+                showDate = d;
+                dayOffset = i;
+                lessonsToShow = found;
+                isFuture = true;
+                break;
+              }
+            }
+          }
+
+          const firstIsCurrent = !isFuture && lessonsToShow.length
+            ? (nowMinutes >= timeToMinutes(lessonsToShow[0].start) ? 1 : 0) : 0;
+          const renderKey = `${group.key}|${todayKey}|${dayOffset}|${firstIsCurrent}|${lessonsToShow.map((l) => `${l.number}:${l.start}-${l.end}:${l.text}`).join(",")}`;
           if (renderKey === lastTodayLessonsRenderKey) return;
           lastTodayLessonsRenderKey = renderKey;
 
-          if (!upcoming.length) {
-            container.innerHTML = `<div class="lesson-card no-lessons-today"><div class="no-lessons-message-text">${dayLessons.length ? "На сегодня пар больше нет" : "Сегодня пар нет"}</div></div>`;
+          if (!lessonsToShow.length) {
+            container.innerHTML = `<div class="lesson-card no-lessons-today"><div class="no-lessons-message-text">${todayLessons.length ? "На сегодня пар больше нет" : "Сегодня пар нет"}</div></div>`;
             return;
           }
 
           container.innerHTML = "";
-          upcoming.forEach((l, idx) => {
-            const isCurrent = nowMinutes >= timeToMinutes(l.start) && nowMinutes < timeToMinutes(l.end);
+
+          // Заголовок для будущего дня
+          if (isFuture) {
+            const dayNames = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
+            const dateLabel = `${showDate.getDate()} ${ruMonthNamesGenitive[showDate.getMonth()]}`;
+            const title = dayOffset === 1 ? "Пары на завтра" : `Пары: ${dayNames[showDate.getDay()].toLowerCase()}`;
+            const head = document.createElement("div");
+            head.className = "next-day-notice";
+            head.textContent = `${title} · ${dateLabel}`;
+            container.appendChild(head);
+          }
+
+          lessonsToShow.forEach((l, idx) => {
+            const isCurrent = !isFuture && nowMinutes >= timeToMinutes(l.start) && nowMinutes < timeToMinutes(l.end);
             const parts = l.text.split(/\s{2,}|№/).map((p) => p.trim()).filter(Boolean);
             const subject = parts[0] || l.text;
             const rest = parts.length > 1 ? "№ " + parts.slice(1).join(" · № ") : "";
+            const badge = isFuture
+              ? `${l.number}-я пара`
+              : (idx === 0 ? (isCurrent ? "Сейчас" : "Далее") : `${l.number}-я пара`);
             const card = document.createElement("div");
-            card.className = "lesson-card today-lesson-card" + (idx === 0 ? " today-lesson-card-active" : "");
-            card.style.animationDelay = `${0.35 + idx * 0.12}s`;
+            card.className = "lesson-card today-lesson-card" + (!isFuture && idx === 0 ? " today-lesson-card-active" : "");
+            card.style.animationDelay = `${0.35 + (idx + (isFuture ? 1 : 0)) * 0.12}s`;
             card.innerHTML = `
               <div class="today-lesson-top">
-                <span class="today-lesson-badge">${idx === 0 ? (isCurrent ? "Сейчас" : "Далее") : `${l.number}-я пара`}</span>
+                <span class="today-lesson-badge">${badge}</span>
                 <span class="today-lesson-time">${l.start} – ${l.end}</span>
               </div>
               <div class="today-lesson-subject">${escapeHtml(subject)}</div>
