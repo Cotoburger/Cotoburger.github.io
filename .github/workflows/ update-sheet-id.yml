@@ -1,7 +1,11 @@
 name: Update schedule sheet ID
 
-# Раз в ~20 минут заходит на koop41.ru/schedule, достаёт ID Google-таблицы "Очная форма"
-# и, если он изменился, коммитит его в Tech/sheet-id.json. Сайт читает этот файл при загрузке.
+# Раз в ~20 минут:
+#  1) заходит на koop41.ru/schedule, достаёт ID Google-таблицы "Очная форма"
+#     и, если он изменился, коммитит его в Tech/sheet-id.json;
+#  2) скачивает саму таблицу, смотрит на объединённые ячейки и коммитит в
+#     Tech/subgroup-hints.json список пар, которые есть только у 1-й подгруппы.
+# Сайт читает оба файла при загрузке.
 on:
   schedule:
     - cron: "*/20 * * * *"
@@ -79,9 +83,26 @@ jobs:
                   f.write("\n")
               print("Новый ID:", sheet_id, "(был:", old_id, ")")
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install parser deps
+        run: pip install openpyxl xlrd
+
+      # Если таблицу не удалось скачать или разобрать — шаг не роняет весь job:
+      # сайт продолжит работать, просто без точной подсказки по подгруппам.
+      - name: Build subgroup hints from merged cells
+        continue-on-error: true
+        env:
+          SHEET_ID_PATH: Tech/sheet-id.json
+          OUT_PATH: Tech/subgroup-hints.json
+        run: python .github/scripts/build_subgroup_hints.py
+
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add Tech/sheet-id.json
-          git diff --cached --quiet || (git commit -m "Update schedule sheet ID" && git push)
+          if [ -f Tech/subgroup-hints.json ]; then git add Tech/subgroup-hints.json; fi
+          git diff --cached --quiet || (git commit -m "Update schedule sheet ID / subgroup hints" && git push)

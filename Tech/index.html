@@ -41,6 +41,28 @@
     
     <!-- Стили -->
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* Подгруппы: две кнопки на всю ширину карточки + разделитель сверху */
+      .subgroup-slider {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(255, 255, 255, 0.14);
+        overflow: visible !important;
+        -webkit-mask-image: none !important;
+        mask-image: none !important;
+      }
+      .subgroup-slider::before,
+      .subgroup-slider::after { display: none !important; }
+      .subgroup-slider .group-pill {
+        width: 100%;
+        min-width: 0;
+        justify-content: center;
+        text-align: center;
+      }
+    </style>
     
     <!-- Производительность -->
     <link rel="preload" href="styles.css" as="style" />
@@ -81,7 +103,7 @@
       <div id="birthday-cards-container"></div>
     </div>
 
-    <!-- НОВЫЙ КОНТЕЙНЕР: выбор группы (слайдер) + пары на сегодня для этой группы -->
+    <!-- НОВЫЙ КОНТЕЙНЕР: выбор группы (слайдер) + подгруппы + пары на сегодня для этой группы -->
     <div class="container group-schedule-container">
       <div class="lesson-card-full group-picker-card">
         <div class="schedule-header-container">
@@ -90,6 +112,7 @@
         <div class="group-slider" id="groupSlider">
           <div class="group-slider-loading" id="groupSliderLoading">Загрузка списка групп…</div>
         </div>
+        <div class="group-slider subgroup-slider" id="subgroupSlider"></div>
       </div>
 
       <div id="todayLessonsContainer" class="today-lessons-container"></div>
@@ -149,18 +172,44 @@
           (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
           (u) => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
         ];
-        const CACHE_KEY = "koop41-schedule-cache-v4";
+        const CACHE_KEY = "koop41-schedule-cache-v5";
         const SHEET_ID_RE = /^[A-Za-z0-9_-]{20,}$/;
 
         // Одноразовая зачистка мусора от прошлых версий сайта.
         try {
           localStorage.removeItem("koop41-sheet-id-cache");
+          localStorage.removeItem("koop41-schedule-cache-v4");
           localStorage.removeItem("koop41-schedule-cache-v3");
           localStorage.removeItem("koop41-schedule-cache-v2");
           localStorage.removeItem("koop41-schedule-cache");
         } catch (e) {}
 
         let activeSheetId = null;
+
+        // Пары, которые есть только у 1-й подгруппы (из subgroup-hints.json, его строит GitHub Action
+        // по объединённым ячейкам исходной таблицы). Ключ: "ДД.ММ.ГГГГ|ЧЧ:ММ|Группа".
+        const HINTS_CACHE_KEY = "koop41-subgroup-hints-v1";
+        let sub1Only = new Set();
+
+        function loadCachedHints() {
+          try {
+            const raw = localStorage.getItem(HINTS_CACHE_KEY);
+            if (raw) sub1Only = new Set(JSON.parse(raw));
+          } catch (e) {}
+        }
+
+        async function loadSubgroupHints() {
+          try {
+            const res = await fetch(`subgroup-hints.json?t=${Date.now()}`, { cache: "no-store" });
+            if (!res.ok) return;
+            const data = await res.json();
+            if (!data || !Array.isArray(data.sub1Only)) return;
+            sub1Only = new Set(data.sub1Only);
+            try { localStorage.setItem(HINTS_CACHE_KEY, JSON.stringify(data.sub1Only)); } catch (e) {}
+          } catch (e) {
+            console.warn("subgroup-hints.json недоступен, подгруппы определяются по значениям:", e);
+          }
+        }
 
         async function discoverSheetId() {
           const res = await fetch(`sheet-id.json?t=${Date.now()}`, { cache: "no-store" });
@@ -245,11 +294,20 @@
             const name = groupForCol[c];
             if (!name) continue;
             if (!groupByName.has(name)) {
-              const g = { key: name, name, cols: [] };
+              const g = { key: name, name, cols: [], subs: {} };
               groupByName.set(name, g);
               groups.push(g);
             }
-            groupByName.get(name).cols.push(c);
+            const g = groupByName.get(name);
+            g.cols.push(c);
+            // номер подгруппы берём из строки «Подгруппа №N», иначе — по порядку столбцов
+            let subNum = 0;
+            if (nextRowIsSubgroupRow) {
+              const m = normalizeCell(nextRow[c]).match(/(\d+)/);
+              if (m) subNum = Number(m[1]);
+            }
+            if (!subNum) subNum = g.cols.length;
+            g.subs[subNum] = c;
           }
 
           const byDate = {};
@@ -377,6 +435,7 @@
           groupsIndex = result.groups;
           scheduleByDate = result.byDate;
           try { localStorage.setItem(CACHE_KEY, JSON.stringify(result)); } catch (e) {}
+          await loadSubgroupHints();
         }
 
         function loadCachedSchedule() {
@@ -425,12 +484,73 @@
           });
           const activeBtn = slider.querySelector(".group-pill.active");
           if (activeBtn) activeBtn.scrollIntoView({ inline: "center", block: "nearest" });
+          renderSubgroupSlider();
         }
 
         function selectGroup(key) {
           localStorage.setItem(STORAGE_KEY, key);
-          document.querySelectorAll(".group-pill").forEach((el) => el.classList.toggle("active", el.dataset.key === key));
+          document.querySelectorAll("#groupSlider .group-pill").forEach((el) => el.classList.toggle("active", el.dataset.key === key));
+          renderSubgroupSlider();
           renderTodayLessons();
+        }
+
+        // ===== Подгруппы =====
+        // Выбор хранится отдельно для каждой группы. По умолчанию — подгруппа 1.
+        function getSelectedSub(groupKey) {
+          const v = Number(localStorage.getItem(`koop41-selected-subgroup:${groupKey}`));
+          return v === 2 ? 2 : 1;
+        }
+
+        function selectSubgroup(sub) {
+          const key = localStorage.getItem(STORAGE_KEY);
+          if (!key) return;
+          localStorage.setItem(`koop41-selected-subgroup:${key}`, String(sub));
+          renderSubgroupSlider();
+          renderTodayLessons();
+        }
+
+        function renderSubgroupSlider() {
+          const el = document.getElementById("subgroupSlider");
+          if (!el) return;
+          const key = localStorage.getItem(STORAGE_KEY);
+          if (!groupsIndex.find((g) => g.key === key)) { el.innerHTML = ""; return; }
+          const current = getSelectedSub(key);
+          el.innerHTML = "";
+          [[1, "Подгруппа 1"], [2, "Подгруппа 2"]].forEach(([n, label]) => {
+            const b = document.createElement("button");
+            b.type = "button";
+            b.className = "group-pill" + (n === current ? " active" : "");
+            b.textContent = label;
+            b.addEventListener("click", () => selectSubgroup(n));
+            el.appendChild(b);
+          });
+        }
+
+        // Пары группы на дату с учётом подгруппы (sub: 0 = все, 1, 2).
+        // Пара всей группы в таблице — это ячейка, объединённая на оба столбца подгрупп:
+        // значение лежит только в столбце «Подгруппа №1». Пара одной подгруппы — отдельная ячейка.
+        // Без subgroup-hints.json пара только 1-й подгруппы неотличима от пары всей группы.
+        function getGroupEntries(group, dateKey, sub) {
+          const subs = group.subs || {};
+          const c1 = subs[1] != null ? subs[1] : group.cols[0];
+          const c2 = subs[2] != null ? subs[2] : group.cols[1];
+          const out = [];
+          (scheduleByDate[dateKey] || []).forEach((l) => {
+            const a = c1 != null ? (l.cells[c1] || "") : "";
+            const b = c2 != null ? (l.cells[c2] || "") : "";
+            const add = (text, s) => out.push({ ...l, text, sub: s });
+            if (a && b) {
+              if (a === b) add(a, 0);
+              else { if (sub !== 2) add(a, 1); if (sub !== 1) add(b, 2); }
+            } else if (a) {
+              // Пара всей группы (объединённая ячейка) или только 1-й подгруппы:
+              // по значениям не отличить, поэтому смотрим подсказку от GitHub Action.
+              if (sub1Only.has(`${dateKey}|${l.start}|${group.key}`)) { if (sub !== 2) add(a, 1); }
+              else add(a, 0);
+            }
+            else if (b) { if (sub !== 1) add(b, 2); }  // только 2-я подгруппа
+          });
+          return out.sort((x, y) => x.number - y.number || x.sub - y.sub);
         }
 
         function timeToMinutes(t) {
@@ -452,11 +572,8 @@
           const fmtKey = (d) => `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`;
           const nowMinutes = kDate.getHours() * 60 + kDate.getMinutes();
 
-          const getGroupLessons = (dateKey) =>
-            (scheduleByDate[dateKey] || [])
-              .map((l) => ({ ...l, text: group.cols.map((c) => l.cells[c]).find((v) => v) || "" }))
-              .filter((l) => l.text)
-              .sort((a, b) => a.number - b.number);
+          const sub = getSelectedSub(group.key);
+          const getGroupLessons = (dateKey) => getGroupEntries(group, dateKey, sub);
 
           const todayKey = fmtKey(kDate);
           const todayLessons = getGroupLessons(todayKey);
@@ -485,7 +602,7 @@
 
           const firstIsCurrent = !isFuture && lessonsToShow.length
             ? (nowMinutes >= timeToMinutes(lessonsToShow[0].start) ? 1 : 0) : 0;
-          const renderKey = `${group.key}|${todayKey}|${dayOffset}|${firstIsCurrent}|${lessonsToShow.map((l) => `${l.number}:${l.start}-${l.end}:${l.text}`).join(",")}`;
+          const renderKey = `${group.key}|${sub}|${todayKey}|${dayOffset}|${firstIsCurrent}|${lessonsToShow.map((l) => `${l.number}:${l.sub}:${l.start}-${l.end}:${l.text}`).join(",")}`;
           if (renderKey === lastTodayLessonsRenderKey) return;
           lastTodayLessonsRenderKey = renderKey;
 
@@ -515,12 +632,13 @@
             const badge = isFuture
               ? `${l.number}-я пара`
               : (idx === 0 ? (isCurrent ? "Сейчас" : "Далее") : `${l.number}-я пара`);
+            const subTag = l.sub ? ` · ${l.sub} подгр.` : "";
             const card = document.createElement("div");
             card.className = "lesson-card today-lesson-card" + (!isFuture && idx === 0 ? " today-lesson-card-active" : "");
             card.style.animationDelay = `${0.35 + (idx + (isFuture ? 1 : 0)) * 0.12}s`;
             card.innerHTML = `
               <div class="today-lesson-top">
-                <span class="today-lesson-badge">${badge}</span>
+                <span class="today-lesson-badge">${badge}${subTag}</span>
                 <span class="today-lesson-time">${l.start} – ${l.end}</span>
               </div>
               <div class="today-lesson-subject">${escapeHtml(subject)}</div>
@@ -536,6 +654,7 @@
         }
 
         async function initGroupSchedule() {
+          loadCachedHints();
           const hadCache = loadCachedSchedule();
           const cacheCoversToday = hadCache && hasTodayInByDate(scheduleByDate);
           if (hadCache) {
