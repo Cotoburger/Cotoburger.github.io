@@ -86,7 +86,7 @@ def get_menu():
             for attempt in range(MAX_RETRIES):
                 try:
                     response = client.models.generate_content(
-                        model="gemini-3-flash-preview",
+                        model="gemini-3.6-flash",
                         contents=[
                             types.Part.from_bytes(data=pdf_data, mime_type='application/pdf'),
                             prompt
