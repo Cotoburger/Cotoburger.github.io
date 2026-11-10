@@ -1,5 +1,4 @@
 import os
-import re
 import time
 import requests
 from google import genai
@@ -12,16 +11,7 @@ import pathlib
 DEV = 0
 OUTPUT_FILE = "Schoolnew/foodmenu.txt"
 MAX_RETRIES = 5
-RETRY_DELAY = 3
-
-# Текущее семейство: gemini-3-flash. Берём такую же или новее.
-BASE_VERSION = (3, 0)
-FALLBACK_MODEL = "gemini-3.6-flash"      # если список моделей получить не удалось
-MODEL_OVERRIDE = os.environ.get("GEMINI_MODEL")  # можно задать вручную
-
-# То, что не является обычной flash-моделью
-BAD_WORDS = ("image", "tts", "live", "embedding", "robotics", "audio",
-             "native", "computer-use", "pro", "imagen", "veo", "lyria", "lite")
+RETRY_DELAY = 2
 
 KAMCHATKA_TZ = ZoneInfo("Asia/Kamchatka")
 now_kamchatka = datetime.now(KAMCHATKA_TZ)
@@ -50,43 +40,6 @@ if not api_key:
     exit()
 
 client = genai.Client(api_key=api_key)
-
-
-def pick_model():
-    """Самая новая модель семейства gemini-N-flash, не старше BASE_VERSION."""
-    if MODEL_OVERRIDE:
-        print(f"Модель задана вручную: {MODEL_OVERRIDE}")
-        return MODEL_OVERRIDE
-
-    best = None  # (ключ сортировки, имя)
-    try:
-        for m in client.models.list():
-            name = m.name.replace("models/", "")
-            actions = getattr(m, "supported_actions", None)
-            if actions is not None and "generateContent" not in actions:
-                continue
-
-            match = re.fullmatch(r"gemini-(\d+)(?:\.(\d+))?-flash(?:-.+)?", name)
-            if not match or any(w in name for w in BAD_WORDS):
-                continue
-
-            version = (int(match.group(1)), int(match.group(2) or 0))
-            if version < BASE_VERSION:
-                continue
-
-            is_stable = not ("preview" in name or "exp" in name)
-            key = (version, is_stable)  # новее версия лучше, при равенстве стабильная лучше
-            if best is None or key > best[0]:
-                best = (key, name)
-    except Exception as e:
-        print(f"Не удалось получить список моделей: {e}")
-
-    if best:
-        print(f"Выбрана модель: {best[1]}")
-        return best[1]
-
-    print(f"Подходящая модель не найдена, использую {FALLBACK_MODEL}")
-    return FALLBACK_MODEL
 
 
 def get_menu():
@@ -129,24 +82,21 @@ def get_menu():
 Полдник: Блюдо1, Блюдо2, Блюдо3, Блюдо4
 (это лишь пример. тебе нужно подставить наименования из файла. не используй форматирование и четко соответствуй формату)"""
 
-        model = pick_model()
-
         def call_api_with_retry():
             for attempt in range(MAX_RETRIES):
                 try:
-                    return client.models.generate_content(
-                        model=model,
+                    response = client.models.generate_content(
+                        model="gemini-3.6-flash",
                         contents=[
                             types.Part.from_bytes(data=pdf_data, mime_type='application/pdf'),
                             prompt
                         ]
                     )
+                    return response
+
                 except Exception as e:
                     print(f"Попытка {attempt + 1}/{MAX_RETRIES} не удалась: {e}")
 
-                    # 404 и 400 повторять бессмысленно
-                    if "404" in str(e) or "400" in str(e):
-                        raise
                     if attempt < MAX_RETRIES - 1:
                         print(f"Повторная попытка через {RETRY_DELAY} секунд...")
                         time.sleep(RETRY_DELAY)
@@ -154,6 +104,7 @@ def get_menu():
                         raise
 
         response = call_api_with_retry()
+
         menu_text = response.text.strip()
 
         if menu_text:
@@ -167,7 +118,7 @@ def get_menu():
             print("✅ Меню успешно сохранено.")
 
     except Exception as e:
-        print(f"Ошибка: {e}")
+        print(f"Ошибка после {MAX_RETRIES} попыток: {e}")
 
 
 get_menu()
