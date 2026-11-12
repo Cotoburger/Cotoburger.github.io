@@ -8,7 +8,7 @@ name: Update schedule sheet ID
 # Сайт читает оба файла при загрузке.
 on:
   schedule:
-    - cron: "*/20 * * * *"
+    - cron: "0 */12 * * *"
   workflow_dispatch: {}   # можно запустить вручную: вкладка Actions → Run workflow
 
 permissions:
