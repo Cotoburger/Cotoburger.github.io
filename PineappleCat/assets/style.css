@@ -1,0 +1,425 @@
+/* SaveBot — панель состояния.
+   Мобильный-first, с упором на iOS Safari: safe-area, dvh, без зума,
+   без hover-зависимостей, safe-area insets внизу под «домашнюю» полоску. */
+
+:root {
+  --bg: #0b0f16;
+  --bg-2: #111823;
+  --card: rgba(255, 255, 255, .045);
+  --card-brd: rgba(255, 255, 255, .09);
+  --txt: #e7edf5;
+  --txt-dim: #8a97ab;
+  --accent: #4c8dff;
+  --green: #3ecf8e;
+  --yellow: #f5c451;
+  --red: #ff6b6b;
+  --purple: #a78bfa;
+  --radius: 18px;
+  --pad: 16px;
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f2f5fa;
+    --bg-2: #ffffff;
+    --card: rgba(255, 255, 255, .82);
+    --card-brd: rgba(16, 24, 40, .09);
+    --txt: #131a26;
+    --txt-dim: #5c6a80;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;   /* не раздувать шрифт в ландшафте на iOS */
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--txt);
+  font: 400 16px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  /* clip, а не hidden: hidden на body создаёт прокручиваемый контейнер
+     и ломает position: sticky у шапки в iOS Safari */
+  overflow-x: clip;
+  overscroll-behavior-y: none;
+}
+
+/* старые Safari (до 16) не знают clip — им подойдёт hidden */
+@supports not (overflow-x: clip) {
+  body { overflow-x: hidden; }
+}
+
+/* Фоновый градиент — лёгкий, без тяжёлых фильтров (iOS тормозит blur на больших площадях) */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 500px at 12% -8%, rgba(76, 141, 255, .20), transparent 60%),
+    radial-gradient(700px 460px at 92% 4%, rgba(167, 139, 250, .16), transparent 62%),
+    radial-gradient(800px 600px at 50% 108%, rgba(62, 207, 142, .10), transparent 60%);
+}
+
+.wrap {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-left: max(var(--pad), var(--sal));
+  padding-right: max(var(--pad), var(--sar));
+}
+
+/* ─────────────────────────── шапка ─────────────────────────── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding-top: var(--sat);
+  /* сначала простой цвет — для Safari без поддержки color-mix */
+  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid var(--card-brd);
+}
+
+.topbar-in {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.brand { display: flex; align-items: center; gap: 11px; min-width: 0; flex: 1; }
+
+.logo {
+  flex: none;
+  width: 38px; height: 38px;
+  display: grid; place-items: center;
+  border-radius: 12px;
+  color: #fff;
+  background: linear-gradient(145deg, var(--accent), var(--purple));
+  box-shadow: 0 6px 18px rgba(76, 141, 255, .30);
+}
+.logo svg { width: 21px; height: 21px; }
+
+.brand-txt { min-width: 0; }
+.brand-txt h1 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -.01em;
+}
+.brand-txt p {
+  margin: 1px 0 0;
+  font-size: 12.5px;
+  color: var(--txt-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-refresh {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;                 /* комфортная зона нажатия для iOS */
+  padding: 0 14px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 550;
+  color: var(--txt);
+  background: var(--card);
+  border: 1px solid var(--card-brd);
+  border-radius: 12px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;         /* без задержки 300ms на iOS */
+  transition: transform .12s ease, background .2s ease;
+}
+.btn-refresh svg { width: 16px; height: 16px; }
+.btn-refresh:active { transform: scale(.95); }
+.btn-refresh.loading svg { animation: spin 1s linear infinite; }
+.btn-refresh[disabled] { opacity: .5; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─────────────────────────── герой ─────────────────────────── */
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 22px;
+  background: var(--card);
+  border: 1px solid var(--card-brd);
+}
+
+.hero-ring { position: relative; flex: none; width: 108px; height: 108px; }
+.hero-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring-bg, .ring-fg {
+  fill: none;
+  stroke-width: 9;
+  stroke-linecap: round;
+}
+.ring-bg { stroke: rgba(255, 255, 255, .08); }
+.ring-fg {
+  stroke: var(--accent);
+  stroke-dasharray: 326.7;
+  stroke-dashoffset: calc(326.7 - 326.7 * var(--pct) / 100);
+  transition: stroke-dashoffset .7s cubic-bezier(.4, 0, .2, 1);
+}
+
+.hero-ring-txt {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
+.hero-ring-txt b { display: block; font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
+.hero-ring-txt span { font-size: 11px; color: var(--txt-dim); }
+
+.hero-info { flex: 1; min-width: 0; }
+
+.hero-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 13px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid var(--card-brd);
+}
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--txt-dim);
+  flex: none;
+}
+.hero-state.ok .dot { background: var(--green); box-shadow: 0 0 0 4px rgba(62, 207, 142, .18); }
+.hero-state.bad .dot { background: var(--red); box-shadow: 0 0 0 4px rgba(255, 107, 107, .18); }
+
+.hero-sub { margin: 10px 0 0; font-size: 13.5px; color: var(--txt-dim); }
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 16px 0 0;
+}
+.hero-stats > div {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .04);
+  border: 1px solid var(--card-brd);
+}
+.hero-stats dt { font-size: 11.5px; color: var(--txt-dim); }
+.hero-stats dd { margin: 3px 0 0; font-size: 15px; font-weight: 620; }
+
+/* ─────────────────────────── секции ─────────────────────────── */
+.sec-title {
+  margin: 30px 0 12px;
+  font-size: 12.5px;
+  font-weight: 650;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--txt-dim);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+}
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+
+.card {
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--card);
+  border: 1px solid var(--card-brd);
+}
+
+.card header { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
+.card h3 { margin: 0; font-size: 13px; font-weight: 600; color: var(--txt-dim); }
+
+.ic {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  flex: none;
+  background: rgba(255, 255, 255, .07);
+  position: relative;
+}
+.ic::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+.ic-mem::after { background: var(--accent); }
+.ic-swap::after { background: var(--purple); }
+.ic-disk::after { background: var(--green); }
+.ic-cpu::after { background: var(--yellow); }
+.ic-bot::after { background: var(--green); }
+.ic-db::after { background: var(--accent); }
+
+.val {
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -.025em;
+  line-height: 1.15;
+  word-break: break-word;
+}
+.sub { margin-top: 5px; font-size: 13px; color: var(--txt-dim); }
+
+.bar {
+  margin-top: 12px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .08);
+  overflow: hidden;
+}
+.bar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: width .7s cubic-bezier(.4, 0, .2, 1), background .3s ease;
+}
+.bar i.warn { background: var(--yellow); }
+.bar i.bad { background: var(--red); }
+.bar i.good { background: var(--green); }
+
+/* ─────────────────────────── сервисы ─────────────────────────── */
+.svc { display: flex; align-items: center; gap: 12px; }
+.svc-txt { flex: 1; min-width: 0; }
+.svc-name { font-size: 15px; font-weight: 600; }
+.svc-sub { font-size: 12.5px; color: var(--txt-dim); margin-top: 2px; }
+
+.badge {
+  flex: none;
+  padding: 5px 11px;
+  font-size: 11.5px;
+  font-weight: 650;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.badge.on { color: var(--green); background: rgba(62, 207, 142, .14); }
+.badge.off { color: var(--red); background: rgba(255, 107, 107, .14); }
+
+/* ─────────────────────────── пользователи ─────────────────────────── */
+.card-list { padding: 6px; }
+
+.users { display: flex; flex-direction: column; }
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 12px;
+  border-radius: 12px;
+}
+.user + .user { border-top: 1px solid var(--card-brd); }
+
+.user-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; background: var(--txt-dim); }
+.user-dot.on { background: var(--green); }
+.user-dot.off { background: rgba(255, 255, 255, .28); }
+.user-dot.rej { background: var(--red); }
+.user-dot.own { background: var(--yellow); }
+
+.user-txt { flex: 1; min-width: 0; }
+.user-name {
+  font-size: 14.5px;
+  font-weight: 570;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.user-meta { font-size: 12px; color: var(--txt-dim); margin-top: 1px; }
+.user-id { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+
+/* ─────────────────────────── подвал / тост ─────────────────────────── */
+.foot {
+  margin: 34px 0 0;
+  padding-bottom: calc(26px + var(--sab));
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--txt-dim);
+}
+.foot p { margin: 0; }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(20px + var(--sab));
+  transform: translate(-50%, 24px);
+  padding: 11px 18px;
+  font-size: 14px;
+  border-radius: 12px;
+  background: rgba(20, 26, 38, .95);
+  border: 1px solid var(--card-brd);
+  color: var(--txt);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+  z-index: 50;
+  max-width: calc(100vw - 32px);
+  text-align: center;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.err { border-color: rgba(255, 107, 107, .5); }
+
+/* ─────────────────────────── адаптив ─────────────────────────── */
+@media (max-width: 700px) {
+  .hero { flex-direction: column; align-items: stretch; text-align: left; gap: 18px; }
+  .hero-ring { margin: 0 auto; }
+  .hero-stats { grid-template-columns: 1fr; }
+  .hero-stats > div { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .hero-stats dd { margin: 0; }
+  .btn-refresh span { display: none; }
+  .btn-refresh { padding: 0 12px; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .val { font-size: 21px; }
+}
+
+@media (max-width: 380px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+/* Крупные экраны */
+@media (min-width: 900px) {
+  .hero { padding: 26px 30px; }
+  .val { font-size: 28px; }
+}
+
+/* Уважаем системную настройку анимаций (iOS: Reduce Motion) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+/* Повышенная контрастность */
+@media (prefers-contrast: more) {
+  :root { --card-brd: rgba(255, 255, 255, .3); --txt-dim: #b9c4d4; }
+}

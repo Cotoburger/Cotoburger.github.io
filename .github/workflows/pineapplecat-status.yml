@@ -1,0 +1,74 @@
+name: Обновить панель PineappleCat
+
+# Раз в ~10 минут забираем снимок состояния сервера SaveBot по SSH
+# и коммитим его в PineappleCat/status.json — сайт читает этот файл.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}   # вручную: Actions → Run workflow
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pineapplecat-status
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Подготовить SSH-ключ
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          HOST_KEY: ${{ secrets.SERVER_HOST_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          # Порт снаружи проброшен через NAT, ssh-keyscan не отвечает —
+          # отпечаток хоста задаём явно секретом.
+          if [ -n "${HOST_KEY:-}" ]; then
+            printf '%s\n' "$HOST_KEY" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -p "${SERVER_PORT:-42781}" "${SERVER_HOST}" >> ~/.ssh/known_hosts 2>/dev/null || true
+          fi
+
+      - name: Собрать снимок состояния сервера
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_BASE: ${{ vars.SERVER_BASE }}
+        run: |
+          set -euo pipefail
+          : "${SERVER_HOST:?задайте secret SERVER_HOST}"
+          : "${SERVER_USER:?задайте secret SERVER_USER}"
+          PORT="${SERVER_PORT:-42781}"
+          BASE="${SERVER_BASE:-/root/SaveBot}"
+
+          scp -P "$PORT" .github/scripts/pineapplecat_status.py \
+              "${SERVER_USER}@${SERVER_HOST}:/tmp/pineapplecat_status.py"
+          ssh -p "$PORT" "${SERVER_USER}@${SERVER_HOST}" \
+            "python3 /tmp/pineapplecat_status.py --base '${BASE}' > /tmp/status.json && rm -f /tmp/pineapplecat_status.py"
+
+          scp -P "$PORT" "${SERVER_USER}@${SERVER_HOST}:/tmp/status.json" PineappleCat/status.json
+          python3 -c "import json;d=json.load(open('PineappleCat/status.json'));print('снимок от',d['generated_at_local'])"
+
+      - name: Закоммитить, если изменилось
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- PineappleCat/status.json; then
+            echo "Данные не изменились — коммит не нужен"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PineappleCat/status.json
+          git commit -m "Auto update PineappleCat status"
+          git push
