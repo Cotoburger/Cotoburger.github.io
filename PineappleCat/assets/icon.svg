@@ -1,12 +1,61 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#4c8dff"/>
-      <stop offset="1" stop-color="#a78bfa"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a2233"/>
+      <stop offset="1" stop-color="#101722"/>
+    </linearGradient>
+    <linearGradient id="pine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd76a"/>
+      <stop offset="1" stop-color="#f2a93b"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#3f9b5f"/>
+      <stop offset="1" stop-color="#74d48d"/>
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="112" fill="url(#g)"/>
-  <path d="M256 96 136 142v104c0 86 52 152 120 170 68-18 120-84 120-170V142L256 96Z"
-        fill="none" stroke="#fff" stroke-width="26" stroke-linejoin="round"/>
-  <circle cx="256" cy="248" r="42" fill="none" stroke="#fff" stroke-width="26"/>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <rect x="18" y="18" width="476" height="476" rx="98" fill="none" stroke="#2b3548" stroke-width="4"/>
+
+  <!-- leaves -->
+  <g transform="translate(256 150)">
+    <path d="M0 10 C-10 -40 -55 -70 -92 -78 C-60 -45 -48 -10 -34 18 Z" fill="url(#leaf)"/>
+    <path d="M0 10 C10 -40 55 -70 92 -78 C60 -45 48 -10 34 18 Z" fill="url(#leaf)"/>
+    <path d="M0 8 C-22 -30 -30 -78 -10 -118 C8 -78 14 -34 18 16 Z" fill="#57b873"/>
+    <path d="M0 8 C22 -30 30 -78 10 -118 C-8 -78 -14 -34 -18 16 Z" fill="#4fae69"/>
+    <ellipse cx="0" cy="8" rx="18" ry="26" fill="#6fc985"/>
+  </g>
+
+  <!-- cat ears -->
+  <path d="M168 182 L214 126 L232 198 Z" fill="#ffcf5c"/>
+  <path d="M344 182 L298 126 L280 198 Z" fill="#ffcf5c"/>
+  <path d="M182 178 L214 142 L224 188 Z" fill="#ffb3a7"/>
+  <path d="M330 178 L298 142 L288 188 Z" fill="#ffb3a7"/>
+
+  <!-- pineapple body -->
+  <ellipse cx="256" cy="286" rx="118" ry="138" fill="url(#pine)"/>
+  <ellipse cx="256" cy="286" rx="118" ry="138" fill="none" stroke="#d98c2e" stroke-width="6"/>
+
+  <!-- diamond pattern -->
+  <g stroke="#d7922b" stroke-width="5" opacity="0.55" fill="none">
+    <path d="M158 240 L256 170 L354 240 L256 310 Z"/>
+    <path d="M158 300 L256 230 L354 300 L256 370 Z"/>
+    <path d="M158 360 L256 290 L354 360"/>
+    <path d="M256 170 L256 410"/>
+    <path d="M207 205 L207 360"/>
+    <path d="M305 205 L305 360"/>
+  </g>
+
+  <!-- face -->
+  <g fill="#7a4a12">
+    <ellipse cx="220" cy="276" rx="10" ry="13"/>
+    <ellipse cx="292" cy="276" rx="10" ry="13"/>
+    <path d="M246 304 Q256 314 266 304" fill="none" stroke="#7a4a12" stroke-width="6" stroke-linecap="round"/>
+    <path d="M256 292 L249 301 Q256 306 263 301 Z" fill="#d97a4a"/>
+  </g>
+  <g stroke="#9a6420" stroke-width="4" stroke-linecap="round" opacity="0.7">
+    <path d="M170 292 L205 286"/>
+    <path d="M172 312 L206 312"/>
+    <path d="M342 292 L307 286"/>
+    <path d="M340 312 L306 312"/>
+  </g>
 </svg>
