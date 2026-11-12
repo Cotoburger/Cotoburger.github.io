@@ -3,7 +3,9 @@
   "use strict";
 
   var DATA_URL = "status.json";
-  var REFRESH_MS = 5 * 60 * 1000;      // автообновление раз в 5 минут
+  var AUTO_CHECK_MS = 15 * 1000;         // каждые 15 секунд проверяем, не пора ли обновить
+  var STALE_MS = 5 * 60 * 1000;          // обновляем, если данные старше 5 минут
+  var lastDataAt = 0;                    // время последнего успешного получения данных
 
   var $ = function (id) { return document.getElementById(id); };
 
@@ -12,6 +14,14 @@
     n = Number(n) || 0;
     if (n >= 1073741824) return (n / 1073741824).toFixed(1) + " ГБ";
     if (n >= 1048576) return (n / 1048576).toFixed(1) + " МБ";
+    if (n >= 1024) return Math.round(n / 1024) + " КБ";
+    return n + " Б";
+  }
+
+  function bytesWhole(n) {
+    n = Number(n) || 0;
+    if (n >= 1073741824) return Math.round(n / 1073741824) + " ГБ";
+    if (n >= 1048576) return Math.round(n / 1048576) + " МБ";
     if (n >= 1024) return Math.round(n / 1024) + " КБ";
     return n + " Б";
   }
@@ -93,13 +103,13 @@
     upd.dataset.ts = d.generated_at || "";
 
     // ОЗУ
-    $("memVal").textContent = bytes(d.mem.used) + " / " + bytes(d.mem.total);
-    $("memSub").textContent = "свободно " + bytes(d.mem.available) + " · " + pctText(d.mem.used, d.mem.total);
+    $("memVal").textContent = bytesWhole(d.mem.used) + " / " + bytesWhole(d.mem.total);
+    $("memSub").textContent = "свободно " + bytesWhole(d.mem.available) + " · " + pctText(d.mem.used, d.mem.total);
     setBar("memBar", memPct);
 
     // Swap
     var swapPct = pct(d.swap.used, d.swap.total);
-    $("swapVal").textContent = d.swap.total ? bytes(d.swap.used) + " / " + bytes(d.swap.total) : "нет";
+    $("swapVal").textContent = d.swap.total ? bytesWhole(d.swap.used) + " / " + bytesWhole(d.swap.total) : "нет";
     $("swapSub").textContent = d.swap.total ? pctText(d.swap.used, d.swap.total) : "своп не подключён";
     setBar("swapBar", swapPct);
 
@@ -204,6 +214,7 @@
       })
       .then(function (d) {
         render(d);
+        lastDataAt = Date.now();
         if (showErr) toast("Данные обновлены");
       })
       .catch(function (e) {
@@ -218,7 +229,9 @@
   // ─────────────────────────── старт ───────────────────────────
   document.addEventListener("DOMContentLoaded", function () {
     load(false);
-    setInterval(function () { load(false); }, REFRESH_MS);
+    setInterval(function () {
+      if (lastDataAt && Date.now() - lastDataAt >= STALE_MS) load(false);
+    }, AUTO_CHECK_MS);
     $("refresh").addEventListener("click", function () { load(true); });
 
     // обновляем «N минут назад», не перезапрашивая сервер

@@ -38,6 +38,13 @@
 html {
   -webkit-text-size-adjust: 100%;   /* не раздувать шрифт в ландшафте на iOS */
   text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+html, body, * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 body {
@@ -52,6 +59,10 @@ body {
      и ломает position: sticky у шапки в iOS Safari */
   overflow-x: clip;
   overscroll-behavior-y: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 /* ── Полоса прокрутки скрыта полностью ──
@@ -305,6 +316,7 @@ body::-webkit-scrollbar,
   line-height: 1.15;
   word-break: break-word;
 }
+.resources-grid .val { font-size: 22px; }
 .sub { margin-top: 5px; font-size: 13px; color: var(--txt-dim); }
 
 .bar {
@@ -416,6 +428,7 @@ body::-webkit-scrollbar,
   .btn-refresh { padding: 0 12px; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .val { font-size: 21px; }
+  .resources-grid .val { font-size: 18px; }
 }
 
 @media (max-width: 380px) {
@@ -426,6 +439,7 @@ body::-webkit-scrollbar,
 @media (min-width: 900px) {
   .hero { padding: 26px 30px; }
   .val { font-size: 28px; }
+  .resources-grid .val { font-size: 24px; }
 }
 
 /* Уважаем системную настройку анимаций (iOS: Reduce Motion) */
