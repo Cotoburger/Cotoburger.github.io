@@ -54,6 +54,24 @@ body {
   overscroll-behavior-y: none;
 }
 
+/* ── Полоса прокрутки скрыта полностью ──
+   Правило ниже действует для всех элементов, поэтому полоса не появится
+   ни у окна, ни у любого вложенного прокручиваемого блока.
+   Стандартный способ для WebKit (Safari): псевдоэлемент ::-webkit-scrollbar
+   с нулевыми размерами. Firefox — свойство scrollbar-width. */
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
 /* старые Safari (до 16) не знают clip — им подойдёт hidden */
 @supports not (overflow-x: clip) {
   body { overflow-x: hidden; }
