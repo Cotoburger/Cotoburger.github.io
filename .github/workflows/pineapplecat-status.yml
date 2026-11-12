@@ -1,10 +1,10 @@
 name: Обновить панель PineappleCat
 
-# Раз в ~10 минут забираем снимок состояния сервера SaveBot по SSH
+# Раз в ~5 минут забираем снимок состояния сервера SaveBot по SSH
 # и коммитим его в PineappleCat/status.json — сайт читает этот файл.
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch: {}   # вручную: Actions → Run workflow
 
 permissions:

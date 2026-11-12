@@ -135,11 +135,13 @@
     $("botProcSub").textContent = "swap " + bytes(d.bot.swap) +
       " · потоков " + d.bot.threads + " · пик " + bytes(d.bot.peak);
 
-    // хранилище
-    $("dbSize").textContent = bytes(d.db.size);
-    $("dbSub").textContent = "сообщений " + d.db.messages +
-      " · " + d.db.users + " " + plural(d.db.users, "пользователь", "пользователя", "пользователей") +
-      " · кэш " + bytes(d.db.cache_tl + d.db.cache_biz);
+    // хранилище: полный объём на диске — база + кэш медиа
+    var cacheTotal = (d.db.cache_tl || 0) + (d.db.cache_biz || 0);
+    $("dbSize").textContent = bytes((d.db.size || 0) + cacheTotal);
+    $("dbSub").textContent = "база " + bytes(d.db.size) +
+      " · кэш " + bytes(cacheTotal) +
+      " · сообщений " + d.db.messages +
+      " · " + d.db.users + " " + plural(d.db.users, "пользователь", "пользователя", "пользователей");
 
     // пользователи — формат как в команде «пользователи»
     var users = d.db.users_list || [];
