@@ -847,7 +847,7 @@
       (function () {
         function updateVh() {
           const vh = window.innerHeight * 0.01;
-          document.documentElement.style.setProperty("--vh", vh + "px");
+          // --vh нигде не используется; запись на <html> заставляла пересчитывать стили всей страницы
         }
         function resetScroll() {
           window.scrollTo(0, 0);
@@ -1165,6 +1165,10 @@
         const currentNoLessons = getCurrentNoLessonsConfig();
         const currentLessons1 = currentNoLessons.lessons1;
         const currentLessons2 = currentNoLessons.lessons2;
+        // Перестраиваем карточки только когда состояние реально изменилось (раньше — каждую секунду)
+        const _nlKey = currentLessons1 + "|" + currentLessons2;
+        if (applyNoLessonsReasonToShifts._key === _nlKey) return;
+        applyNoLessonsReasonToShifts._key = _nlKey;
         const shift1Card = document.querySelector(".lesson-card:nth-child(1)");
         const shift2Card = document.querySelector(".lesson-card:nth-child(2)");
         function getReasonContent(reasonId) {
@@ -1276,38 +1280,23 @@
         const currentTime = getCurrentTimeInKamchatkaContext();
         const scheduleData = getTodayScheduleData();
 
-        function renderShift(shiftKey, containerId) {
-            const container = document.getElementById(containerId);
-            if (!container || !scheduleData || !scheduleData[shiftKey]) {
-                if (container) container.innerHTML = "";
-                return;
-            }
-            container.innerHTML = "";
-
-            scheduleData[shiftKey].forEach((lesson) => {
-                const isClassHour = /классн|кл\.\s*час/i.test(lesson.lesson);
-                const lessonNumberMatch = lesson.lesson.match(/^(\d+)[\s-]*(?:й урок|я пара)/i);
-                let lessonNumber = isClassHour ? "КЛ" : (lessonNumberMatch ? lessonNumberMatch[1] : "★");
-
-                const isCurrent = isTimeBetween(currentTime, lesson.start, lesson.end);
-                const isPast = currentTime > lesson.end;
-
-                const lessonEl = document.createElement("div");
-                lessonEl.className = `lesson-item ${isCurrent ? "current" : ""} ${isPast ? "past" : ""}`;
-                lessonEl.innerHTML = `<div class="lesson-number">${lessonNumber}</div><div class="lesson-time">${lesson.start} - ${lesson.end}</div>`;
-                container.appendChild(lessonEl);
-            });
-        }
-
-        renderShift("shift1", "shift1-full");
-
-        try {
-            const mealsContainer = document.getElementById("meals-full");
-            if (mealsContainer) {
-                const parent = mealsContainer.closest('.shift-schedule');
-                if (parent) parent.style.display = 'none';
-            }
-        } catch (e) {}
+        [["shift1", "shift1-full"], ["shift2", "shift2-full"]].forEach(([shiftKey, containerId]) => {
+          const container = document.getElementById(containerId);
+          if (!container) return;
+          const lessons = scheduleData && scheduleData[shiftKey] ? scheduleData[shiftKey] : [];
+          const html = lessons.map((lesson) => {
+            const isClassHour = /классн|кл\.\s*час/i.test(lesson.lesson);
+            const numMatch = lesson.lesson.match(/^(\d+)[\s-]*(?:й урок|я пара)/i);
+            const lessonNumber = isClassHour ? "КЛ" : (numMatch ? numMatch[1] : "★");
+            const isCurrent = isTimeBetween(currentTime, lesson.start, lesson.end);
+            const isPast = currentTime > lesson.end;
+            return `<div class="lesson-item ${isCurrent ? "current" : ""} ${isPast ? "past" : ""}"><div class="lesson-number">${lessonNumber}</div><div class="lesson-time">${lesson.start} - ${lesson.end}</div></div>`;
+          }).join("");
+          // DOM трогаем только если что-то реально изменилось (раньше пересобирался каждую секунду)
+          if (container._renderedHtml === html) return;
+          container._renderedHtml = html;
+          container.innerHTML = html;
+        });
       }
 
 
@@ -1388,13 +1377,15 @@
         return null;
       }
 
+      function setText(el, v) { if (el && el.textContent !== v) el.textContent = v; }
+
       function updateShiftDisplay(data, nameEl, remEl, startEl, endEl, bar, key) {
         const lessonCard = nameEl.closest(".lesson-card");
         lessonCard.classList.remove("collapsed");
         bar.parentElement.classList.remove("hidden");
         startEl.parentElement.classList.remove("hidden");
         if (!data || data.length === 0) {
-          nameEl.textContent = "Нет пар";
+          setText(nameEl, "Нет пар");
           remEl.style.visibility = "hidden";
           bar.parentElement.classList.add("hidden");
           startEl.parentElement.classList.add("hidden");
@@ -1405,13 +1396,13 @@
         const idx = data.findIndex(l => isTimeBetween(curr, l.start, l.end));
         if (idx !== -1) {
         const l = data[idx];
-        nameEl.textContent = l.lesson;
+        setText(nameEl, l.lesson);
         bar.classList.remove('break');
         remEl.style.visibility = "visible";
-          remEl.querySelector(".remaining-text").textContent = calculateRemainingTime(curr, l.end);
+          setText(remEl.querySelector(".remaining-text"), calculateRemainingTime(curr, l.end));
           const { startDate, endDate } = getLocalTimes(l.start, l.end);
-          startEl.textContent = `${String(startDate.getHours()).padStart(2, "0")}:${String(startDate.getMinutes()).padStart(2, "0")}`;
-          endEl.textContent = `${String(endDate.getHours()).padStart(2, "0")}:${String(endDate.getMinutes()).padStart(2, "0")}`;
+          setText(startEl, `${String(startDate.getHours()).padStart(2, "0")}:${String(startDate.getMinutes()).padStart(2, "0")}`);
+          setText(endEl, `${String(endDate.getHours()).padStart(2, "0")}:${String(endDate.getMinutes()).padStart(2, "0")}`);
           updateProgressBar(bar, curr, `${l.start}:00`, `${l.end}:00`);
         } else {
           let isBreak = false, next = null, bStart = null;
@@ -1420,17 +1411,17 @@
             if (n >= e && n < s) { isBreak = true; next = data[i+1]; bStart = data[i].end; break; }
           }
           if (isBreak && next) {
-            nameEl.textContent = "Перемена";
+            setText(nameEl, "Перемена");
             bar.classList.add('break');
             remEl.style.visibility = "visible";
-            remEl.querySelector(".remaining-text").textContent = calculateRemainingTime(curr, next.start);
+            setText(remEl.querySelector(".remaining-text"), calculateRemainingTime(curr, next.start));
             const { startDate, endDate } = getLocalTimes(bStart, next.start);
-            startEl.textContent = `${String(startDate.getHours()).padStart(2, "0")}:${String(startDate.getMinutes()).padStart(2, "0")}`;
-            endEl.textContent = `${String(endDate.getHours()).padStart(2, "0")}:${String(endDate.getMinutes()).padStart(2, "0")}`;
+            setText(startEl, `${String(startDate.getHours()).padStart(2, "0")}:${String(startDate.getMinutes()).padStart(2, "0")}`);
+            setText(endEl, `${String(endDate.getHours()).padStart(2, "0")}:${String(endDate.getMinutes()).padStart(2, "0")}`);
             updateProgressBar(bar, curr, `${bStart}:00`, `${next.start}:00`);
           } else {
             const tNext = findNextLessonTime(data, curr, getCurrentDayOfWeek(), key);
-            nameEl.textContent = tNext ? `До пары: ${tNext}` : "Уроки кончились";
+            setText(nameEl, tNext ? `До пары: ${tNext}` : "Уроки кончились");
             remEl.style.visibility = "hidden";
             bar.parentElement.classList.add("hidden");
             startEl.parentElement.classList.add("hidden");
@@ -1498,12 +1489,12 @@
       function updateThemeAndBackground() {
         const now = new Date(), off = 12 * 60 + now.getTimezoneOffset(), kDate = new Date(now.getTime() + off * 60 * 1000), hour = kDate.getHours();
         const names = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
-        document.getElementById("dayOfWeek").textContent = names[getCurrentDayOfWeek()];
+        setText(document.getElementById("dayOfWeek"), names[getCurrentDayOfWeek()]);
         const specialBadge = document.getElementById("specialScheduleBadge");
         if (specialBadge) {
           const specialEntry = getTodaySpecialScheduleEntry();
           specialBadge.classList.toggle("show", !!specialEntry);
-          specialBadge.textContent = getSpecialBadgeText(specialEntry);
+          setText(specialBadge, getSpecialBadgeText(specialEntry));
         }
         const themeName = DEBUG_APPEARANCE.theme || getAutoThemeForHour(hour);
         const preset = DEBUG_THEME_PRESETS[themeName] || DEBUG_THEME_PRESETS.night;
@@ -1514,7 +1505,7 @@
         setAmbientEffect(effectName);
         document.documentElement.style.backgroundColor = bg;
         const meta = document.getElementById("themeColor"); if (meta) meta.setAttribute("content", color);
-        setTimeout(() => { document.documentElement.style.transition = "background-color 0.5s ease"; }, 50);
+        if (!document.documentElement.style.transition) setTimeout(() => { document.documentElement.style.transition = "background-color 0.5s ease"; }, 50);
       }
 
       function updateSchedule() {
@@ -1695,7 +1686,14 @@
         if (track) track.style.transform = `translateX(-${(currentDayIndex - 1) * 100}%)`;
       }
 
-      window.addEventListener("resize", updateClouds);
+      let _lastViewportWidth = window.innerWidth;
+      window.addEventListener("resize", () => {
+        // На iOS resize срабатывает при сворачивании панели Safari во время прокрутки.
+        // Облака пересчитываем только при реальном изменении ширины.
+        if (window.innerWidth === _lastViewportWidth) return;
+        _lastViewportWidth = window.innerWidth;
+        updateClouds();
+      }, { passive: true });
       document.getElementById("prevDay")?.addEventListener("click", () => { if (currentDayIndex > 1) { currentDayIndex--; updateDayDisplay(); } });
       document.getElementById("nextDay")?.addEventListener("click", () => { if (currentDayIndex < 5) { currentDayIndex++; updateDayDisplay(); } });
       document.querySelector(".open-full-schedule")?.addEventListener("click", openSchedulePanel);
@@ -1821,22 +1819,7 @@
       });
 
 
-      let scrollTimeout = null;
-      let isScrolling = false;
-
-      document.addEventListener('scroll', () => {
-        if (!isScrolling) {
-          isScrolling = true;
-          document.body.classList.add('scrolling');
-        }
-        
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-          isScrolling = false;
-          document.body.classList.remove('scrolling');
-        }, 150);
-      }, { passive: true });
-
+      
       function updateDeployment() {
         const el = document.getElementById("last-deployment");
         fetch("https://api.github.com/repos/Cotoburger/Cotoburger.github.io/deployments", { headers: { Accept: "application/vnd.github.v3+json" } })
@@ -1851,7 +1834,7 @@
           }).catch(() => { if (el) el.textContent = ""; });
       }
 
-      const obs = new IntersectionObserver((es, o) => { es.forEach(e => { if (e.isIntersecting) { updateDeployment(); setInterval(updateDeployment, 90000); o.unobserve(e.target); } }); });
+      const obs = new IntersectionObserver((es, o) => { es.forEach(e => { if (e.isIntersecting) { updateDeployment(); setInterval(updateDeployment, 600000); o.unobserve(e.target); } }); });
       if (target = document.getElementById("last-deployment")) obs.observe(target);
     </script>
   </body>
