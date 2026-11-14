@@ -171,25 +171,44 @@ def db_snapshot(base: Path) -> dict:
         out["users"] = conn.execute(
             "SELECT COUNT(*) FROM users").fetchone()[0]
 
-        # личный (Telethon) кэш
-        tl = 0
-        for r in conn.execute(
-                "SELECT path FROM messages WHERE path IS NOT NULL"):
-            try:
-                tl += os.path.getsize(r["path"])
-            except OSError:
-                pass
-        out["cache_tl"] = tl
+        # кэш медиа: общий размер и размер на каждого пользователя
+        per_user = {}
 
-        # бизнес-кэш
-        biz = 0
-        for r in conn.execute(
-                "SELECT path FROM biz_msg WHERE path IS NOT NULL"):
+        def media_col(table):
+            """Колонка-владелец файла в таблице, если она есть."""
             try:
-                biz += os.path.getsize(r["path"])
-            except OSError:
-                pass
-        out["cache_biz"] = biz
+                cols = [r[1] for r in conn.execute(f"PRAGMA table_info({table})")]
+            except sqlite3.Error:
+                cols = []
+            for cand in ("user_id", "chat_id", "dialog_id", "peer_id",
+                         "sender_id", "from_id"):
+                if cand in cols:
+                    return cand
+            return ""
+
+        def media_size(table):
+            """Суммарный размер файлов кэша таблицы (+размер по пользователям)."""
+            total = 0
+            col = media_col(table)
+            sql = (f"SELECT {col} AS uid, path FROM {table} WHERE path IS NOT NULL"
+                   if col else
+                   f"SELECT NULL AS uid, path FROM {table} WHERE path IS NOT NULL")
+            for r in conn.execute(sql):
+                try:
+                    n = os.path.getsize(r["path"])
+                except OSError:
+                    continue
+                total += n
+                if r["uid"] is not None:
+                    try:
+                        uid = int(r["uid"])
+                    except (TypeError, ValueError):
+                        continue
+                    per_user[uid] = per_user.get(uid, 0) + n
+            return total
+
+        out["cache_tl"] = media_size("messages")
+        out["cache_biz"] = media_size("biz_msg")
 
         # пользователи бота — как в команде «пользователи»
         rows = conn.execute(
@@ -201,12 +220,17 @@ def db_snapshot(base: Path) -> dict:
             "LEFT JOIN biz_approval a ON a.user_id = c.user_id "
             "ORDER BY c.enabled DESC, c.user_id").fetchall()
         for r in rows:
+            try:
+                uid = int(r["user_id"] or 0)
+            except (TypeError, ValueError):
+                uid = 0
             out["users_list"].append({
                 "id": r["user_id"],
                 "name": r["name"] or "",
                 "username": r["username"] or "",
                 "enabled": bool(r["enabled"]),
                 "approval": r["approval"] or "",
+                "size": per_user.get(uid, 0),
             })
         conn.close()
     except sqlite3.Error:

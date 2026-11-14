@@ -429,11 +429,8 @@ body.night-mode .schedule-header-container {
     height: auto !important;
 }
 
- .lesson-card-full:nth-child(1) {
-     animation-delay: 0.35s;
-}
-
- .lesson-card-full.group-picker-card:nth-child(2) {
+ /* Карточка «Моя группа» — первая (nth-child(1)) в своём контейнере */
+ .group-picker-card:nth-child(1) {
       animation-delay: 0.50s;
 }
 
@@ -742,6 +739,8 @@ body.night-mode #lesson1-progress, body.night-mode #lesson2-progress {
      justify-items: center;
      padding-bottom: 2rem;
      min-height: 2.6rem;
+     cursor: pointer;  /* клик открывает дебаг-панель оформления */
+     -webkit-tap-highlight-color: transparent;
 }
  body.night-mode #last-deployment {
      color: #4c4c4c92;
@@ -1559,10 +1558,12 @@ body:not(.scrolling) .lesson-card-full {
   margin-top: 0 !important;
 }
 
-/* Сбрасываем отрицательный margin-top у lesson-card-full внутри bottom-container */
+/* Сбрасываем отрицательный margin-top у lesson-card-full внутри bottom-container.
+   Задержка 0.65s: карточка «Расписание» появляется по порядку — после карточки группы (0.5s) */
 .bottom-container .lesson-card-full {
   order: 2;
   margin-top: 0 !important;
+  animation-delay: 0.65s !important;
 }
 
 /* ===================================================
@@ -1819,4 +1820,93 @@ body.night-mode .no-lessons-message-text { color: #eaeaea7a; }
 
 body.night-mode .next-day-notice {
   color: #ffffff58;
+}
+/* ===== Дебаг-панель оформления (открывается кликом по плашке «Изменение кода»;
+   выбор не сохраняется и сбрасывается при перезагрузке страницы) ===== */
+
+.debug-appearance-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.debug-appearance-panel.open { opacity: 1; }
+
+.debug-appearance-card {
+  width: min(92vw, 26rem);
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  box-sizing: border-box;
+  padding: 1.1rem;
+  border-radius: 1.6rem;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #232323;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.25);
+}
+body.night-mode .debug-appearance-card {
+  background: rgba(0, 0, 0, 0.45);
+  color: #eaeaea;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.debug-appearance-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
+}
+.debug-appearance-header span {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.debug-appearance-close {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 2px solid #b04a4a;
+  background: #d46a6a;
+  color: #6f2a2a;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+.debug-appearance-section {
+  margin-bottom: 0.9rem;
+}
+.debug-appearance-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  opacity: 0.7;
+  margin-bottom: 0.45rem;
+}
+.debug-appearance-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.debug-appearance-note {
+  font-size: 0.8rem;
+  opacity: 0.65;
+  margin-top: 0.2rem;
 }

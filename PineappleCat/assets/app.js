@@ -172,11 +172,12 @@
         cls = "off"; who = "решения нет";
       }
       var label = esc(u.name || "") + (u.username ? " @" + esc(u.username) : "");
+      var mem = (u.size || u.size === 0) ? " · " + bytesWhole(u.size) : "";
       uHtml += '<div class="user">'
         + '<span class="user-dot ' + cls + '"></span>'
         + '<div class="user-txt">'
         + '<div class="user-name">' + label + '</div>'
-        + '<div class="user-meta">' + who + ' · <span class="user-id">' + u.id + '</span></div>'
+        + '<div class="user-meta">' + who + mem + ' · <span class="user-id">' + u.id + '</span></div>'
         + '</div></div>';
     }
     if (!users.length) {
